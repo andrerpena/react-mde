@@ -1,0 +1,57 @@
+{
+  "name": "react-mde",
+  "version": "0.0.1",
+  "description": "A boilerplate for creating react components",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development babel-node ./demo/server.js",
+    "build": "cross-env NODE_ENV=production gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrerpena/react-mde.git"
+  },
+  "keywords": [
+    "boilerplate",
+    "react",
+    "component"
+  ],
+  "author": "Andre Pena",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrerpena/react-mde.git/issues"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-loader": "^6.2.8",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-react-hmre": "^1.1.1",
+    "babel-preset-stage-0": "^6.16.0",
+    "colors": "^1.1.2",
+    "cross-env": "^3.1.3",
+    "express": "^4.14.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-cli": "^1.2.2",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "node-sass": "^3.13.0",
+    "react-hot-loader": "^3.0.0-beta.6",
+    "react-redux": "^4.4.6",
+    "redux": "^3.6.0",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.3",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-hot-middleware": "^2.13.2"
+  },
+  "homepage": "https://github.com/andrerpena/react-mde.git#readme",
+  "dependencies": {
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1"
+  }
+}
