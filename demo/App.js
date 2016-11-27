@@ -4,17 +4,17 @@ import ReactMde from '../src/ReactMde';
 class App extends Component {
 
     state = {
-        value: ""
+        mdeValue: {text: "abcde", selection: null}
     }
 
     handleValueChange(value) {
-
+        this.setState({mdeValue: value});
     }
 
     render() {
         return (
             <div className="container">
-                <ReactMde value={this.state.value} onChange={this.handleValueChange.bind(this)} />
+                <ReactMde value={this.state.mdeValue} onChange={this.handleValueChange.bind(this)} />
             </div>
         );
     }
