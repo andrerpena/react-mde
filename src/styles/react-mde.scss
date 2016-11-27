@@ -1,0 +1,31 @@
+@import "variables";
+
+.react-mde {
+    border: 1px solid $default-border-color;
+    .mde-header {
+        color: pink;
+        padding: 0.5rem;
+        border-bottom: 1px solid $default-border-color;
+        ul.mde-header-group {
+            display:inline-block;
+            margin: 0;
+            margin-right: 1rem;
+            padding: 0;
+            list-style: none;
+            li.mde-header-item {
+                display: inline-block;
+                margin: 0 0.5rem;
+            }
+        }
+    }
+
+    .mde-text {
+        textarea {
+            width: 100%;
+        }
+    }
+
+    .mde-preview {
+
+    }
+}
