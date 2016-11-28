@@ -70,24 +70,32 @@ class ReactMde extends Component {
         }
     }
 
-    handleBoldCommand() {
+    /**
+     * Handles the execution of a command
+     * @param {function} command
+     * @memberOf ReactMde
+     */
+    handleCommand(command) 
+    {
         let {
             value: { text },
             onChange
         } = this.props;
         let textarea = this.refs.textarea;
-        var newValue = ReactMdeCommands.makeBold(text, getSelection(textarea));
+        var newValue = command(text, getSelection(textarea));
         onChange(newValue);
     }
 
+    handleBoldCommand() {
+        this.handleCommand(ReactMdeCommands.makeBold);
+    }
+
     handleItalicCommand() {
-        let {
-            value: { text },
-            onChange
-        } = this.props;
-        let textarea = this.refs.textarea;
-        var newValue = ReactMdeCommands.makeItalic(text, getSelection(textarea));
-        onChange(newValue);
+        this.handleCommand(ReactMdeCommands.makeItalic);
+    }
+
+    handleLinkCommand() {
+        this.handleCommand(ReactMdeCommands.makeLink);
     }
 
     componentDidMount() {
@@ -113,7 +121,7 @@ class ReactMde extends Component {
                         <HeaderItem icon="italic" onClick={this.handleItalicCommand.bind(this)} />
                     </HeaderGroup>
                     <HeaderGroup>
-                        <HeaderItem icon="link" />
+                        <HeaderItem icon="link" onClick={this.handleLinkCommand.bind(this)} />
                         <HeaderItem icon="quote-right" />
                         <HeaderItem icon="picture-o" />
                     </HeaderGroup>
