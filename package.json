@@ -4,6 +4,7 @@
   "description": "A react markdown-editor like Stackoverflow and Github",
   "main": "index.js",
   "scripts": {
+    "test": "mocha --timeout 15000 --compilers js:babel-register ./test/*Spec.js",
     "start": "cross-env NODE_ENV=development babel-node ./demo/server.js",
     "build": "cross-env NODE_ENV=production gulp build"
   },
@@ -30,6 +31,7 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.16.0",
     "bootstrap": "^4.0.0-alpha.5",
+    "chai": "^3.5.0",
     "colors": "^1.1.2",
     "cross-env": "^3.1.3",
     "css-loader": "^0.26.0",
@@ -41,6 +43,7 @@
     "gulp-cli": "^1.2.2",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "mocha": "^3.2.0",
     "node-sass": "^3.13.0",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-redux": "^4.4.6",
