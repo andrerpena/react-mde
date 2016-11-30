@@ -5,3 +5,4 @@ logs
 /lib/
 node_modules
 .idea
+lab.js
