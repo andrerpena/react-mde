@@ -75,35 +75,16 @@ class ReactMde extends Component {
      * @param {function} command
      * @memberOf ReactMde
      */
-    handleCommand(command) 
-    {
-        let {
-            value: { text },
-            onChange
-        } = this.props;
-        let textarea = this.refs.textarea;
-        var newValue = command(text, getSelection(textarea));
-        onChange(newValue);
-    }
-
-    handleBoldCommand() {
-        this.handleCommand(ReactMdeCommands.makeBold);
-    }
-
-    handleItalicCommand() {
-        this.handleCommand(ReactMdeCommands.makeItalic);
-    }
-
-    handleLinkCommand() {
-        this.handleCommand(ReactMdeCommands.makeLink);
-    }
-
-    componentDidMount() {
-        this.handleSelection();
-    }
-
-    componentDidUpdate() {
-        this.handleSelection();
+    getCommandHandler(command) {
+        return function () {
+            let {
+                value: { text },
+                onChange
+            } = this.props;
+            let textarea = this.refs.textarea;
+            var newValue = command(text, getSelection(textarea));
+            onChange(newValue);
+        }
     }
 
     render() {
@@ -117,11 +98,11 @@ class ReactMde extends Component {
             <div className="react-mde">
                 <div className="mde-header">
                     <HeaderGroup>
-                        <HeaderItem icon="bold" onClick={this.handleBoldCommand.bind(this)} />
-                        <HeaderItem icon="italic" onClick={this.handleItalicCommand.bind(this)} />
+                        <HeaderItem icon="bold" onClick={this.getCommandHandler(ReactMdeCommands.makeBold).bind(this)} />
+                        <HeaderItem icon="italic" onClick={this.getCommandHandler(ReactMdeCommands.makeItalic).bind(this)} />
                     </HeaderGroup>
                     <HeaderGroup>
-                        <HeaderItem icon="link" onClick={this.handleLinkCommand.bind(this)} />
+                        <HeaderItem icon="link" onClick={this.getCommandHandler(ReactMdeCommands.makeLink).bind(this)} />
                         <HeaderItem icon="quote-right" />
                         <HeaderItem icon="picture-o" />
                     </HeaderGroup>
@@ -133,6 +114,9 @@ class ReactMde extends Component {
                         <HeaderItem icon="at" />
                         <HeaderItem icon="bookmark" />
                     </HeaderGroup>
+                    <HeaderGroup>
+                        <HeaderItem icon="star" />
+                    </HeaderGroup>
                 </div>
                 <div className="mde-text">
                     <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" />
@@ -140,6 +124,14 @@ class ReactMde extends Component {
                 <div className="mde-preview"></div>
             </div>
         );
+    }
+
+    componentDidMount() {
+        this.handleSelection();
+    }
+
+    componentDidUpdate() {
+        this.handleSelection();
     }
 }
 
