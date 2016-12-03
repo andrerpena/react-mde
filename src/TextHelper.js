@@ -44,7 +44,6 @@ export function getSurroundingWord(text, position) {
 
     return {
         word: text.slice(leftIndex, rightIndex),
-        leftIndex: leftIndex,
-        rightIndex: rightIndex
+        position: [leftIndex,rightIndex]
     };
 }

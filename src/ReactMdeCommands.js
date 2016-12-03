@@ -1,4 +1,4 @@
-import { insertText } from './TextHelper';
+import { insertText, getSurroundingWord } from './TextHelper';
 
 export default {
 
@@ -10,6 +10,13 @@ export default {
      * @returns
      */
     makeBold: function (text, selection) {
+
+        if (selection[0] == selection[1]) {
+            // the user is pointing to a word
+            selection = getSurroundingWord(text, selection[0]).position;
+
+        }
+        // the user is selecting a word section
         var newText = insertText(text, '**', selection[0]);
         newText = insertText(newText, '**', selection[1] + 2);
         return {
