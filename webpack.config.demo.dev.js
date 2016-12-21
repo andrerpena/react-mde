@@ -1,6 +1,6 @@
-import webpack from 'webpack';
+const webpack = require('webpack');
 
-export default {
+module.exports = {
 
     entry: [
         'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
@@ -27,7 +27,6 @@ export default {
             { test: /\.js/, loaders: ['babel'], exclude: /node_modules/ },
             { test: /\.jsx/, loaders: ['babel'], exclude: /node_modules/ },
             { test: /\.css/, loader: 'style-loader!css-loader' },
-            { test: /\.less$/, loader: 'style!css!less' },
             { test: /\.scss$/, loader: 'style!css!sass'},
             { test: /\.json$/, loader: 'json' },
             { test: /\.jpe?g$|\.gif$|\.png$|\.ico$/, loader: 'file?name=[name].[ext]' },

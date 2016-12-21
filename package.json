@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --timeout 15000 --compilers js:babel-register ./test/*Spec.js",
     "start": "cross-env NODE_ENV=development babel-node ./demo/server.js",
-    "build": "cross-env NODE_ENV=production gulp build"
+    "build": "cross-env NODE_ENV=production gulp build",
+    "build-demo": "cross-env NODE_ENV=production gulp build-demo"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,8 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-cli": "^1.2.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-webpack": "^1.5.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "mocha": "^3.2.0",
