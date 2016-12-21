@@ -7,6 +7,7 @@ import App from './App';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../node_modules/font-awesome/css/font-awesome.css';
 import '../src/styles/react-mde.scss';
+import './styles/demo.scss';
 
 render(
     <App>

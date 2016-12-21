@@ -28,6 +28,8 @@
     .mde-text {
         textarea {
             width: 100%;
+            min-height: $textarea-min-height;
+            padding: $textarea-padding;
         }
     }
 

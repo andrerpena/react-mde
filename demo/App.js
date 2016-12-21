@@ -13,7 +13,7 @@ class App extends Component {
 
     render() {
         return (
-            <div className="container">
+            <div className="react-mde-demo container">
                 <ReactMde value={this.state.mdeValue} onChange={this.handleValueChange.bind(this)} />
             </div>
         );
