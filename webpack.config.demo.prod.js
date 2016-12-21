@@ -9,7 +9,7 @@ module.exports = {
     output: {
         filename: 'bundle-prod.js',
         path: '/docs/',
-        publicPath: '/'
+        publicPath: ''
     },
 
     externals: undefined,
