@@ -20,6 +20,7 @@ export default {
         var newText = insertText(text, '**', selection[0]);
         newText = insertText(newText, '**', selection[1] + 2);
         return {
+            previousText: text,
             text: newText,
             selection: [selection[0] + 2, selection[1] + 2]
         }
@@ -36,6 +37,7 @@ export default {
         var newText = insertText(text, '*', selection[0]);
         newText = insertText(newText, '*', selection[1] + 1);
         return {
+            previousText: text,
             text: newText,
             selection: [selection[0] + 1, selection[1] + 1]
         }
@@ -53,6 +55,7 @@ export default {
         var newText = insertText(text, '[', selection[0]);
         newText = insertText(newText, '](url)', selection[1] + 1);
         return {
+            previousText: text,
             text: newText,
             selection: [selection[0] + 1, selection[1] + 1]
         }
@@ -62,6 +65,7 @@ export default {
         var newText = insertText(text, '[', selection[0]);
         newText = insertText(newText, '](url)', selection[1] + 1);
         return {
+            previousText: text,
             text: newText,
             selection: [selection[0] + 1, selection[1] + 1]
         }

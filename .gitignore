@@ -1,6 +1,6 @@
 # Logs
 logs
-*.log
+*.log*
 .idea
 /lib/
 node_modules

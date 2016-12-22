@@ -53,19 +53,36 @@ class ReactMde extends Component {
 
     handleValueChange(e) {
         let {
+            value: { text },
             onChange
         } = this.props;
         onChange({ text: e.target.value, selection: null });
     }
 
-    handleSelection() {
+    /**
+     * Handles what happens after the mount
+     */
+    handleAfterMount() {
         let {
-            value: { text, selection },
+            value: { text, selection, previousText },
             onChange
         } = this.props;
         if (selection) {
             if (!selection.constructor === Array)
                 throw Error('selection should be falsy or an array');
+            try {
+                // In order to minimize the history problem with inputs, we're doing some tricks:
+                //  - Set focus on the textarea
+                //  - Set the value back to its previous value.
+                //  - Select the whole text
+                //  - Insert the new value
+                this.refs.textarea.focus();
+                this.refs.textarea.value = previousText;
+                setSelection(this.refs.textarea, 0, previousText.length);
+                document.execCommand("insertText", false, text);
+            } catch (ex) {
+                // It's not recommended but I'm swalling the exception here
+            }
             setSelection(this.refs.textarea, selection[0], selection[1]);
         }
     }
@@ -90,7 +107,7 @@ class ReactMde extends Component {
     render() {
 
         let {
-            value: { text },
+            value: { text, selection },
             onChange
         } = this.props;
 
@@ -127,11 +144,11 @@ class ReactMde extends Component {
     }
 
     componentDidMount() {
-        this.handleSelection();
+        this.handleAfterMount();
     }
 
     componentDidUpdate() {
-        this.handleSelection();
+        this.handleAfterMount();
     }
 }
 
