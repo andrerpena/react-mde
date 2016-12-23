@@ -10,19 +10,17 @@ export default {
      * @returns
      */
     makeBold: function (text, selection) {
-
         if (selection[0] == selection[1]) {
             // the user is pointing to a word
             selection = getSurroundingWord(text, selection[0]).position;
-
         }
         // the user is selecting a word section
-        var newText = insertText(text, '**', selection[0]);
-        newText = insertText(newText, '**', selection[1] + 2);
+        var {newText, insertionLength} = insertText(text, '**', selection[0]);
+        newText = insertText(newText, '**', selection[1] + insertionLength).newText;
         return {
             previousText: text,
             text: newText,
-            selection: [selection[0] + 2, selection[1] + 2]
+            selection: [selection[0] + insertionLength, selection[1] + insertionLength]
         }
     },
 
@@ -34,12 +32,17 @@ export default {
      * @returns
      */
     makeItalic: function (text, selection) {
-        var newText = insertText(text, '*', selection[0]);
-        newText = insertText(newText, '*', selection[1] + 1);
+        if (selection[0] == selection[1]) {
+            // the user is pointing to a word
+            selection = getSurroundingWord(text, selection[0]).position;
+        }
+        // the user is selecting a word section
+        var {newText, insertionLength} = insertText(text, '_', selection[0]);
+        newText = insertText(newText, '_', selection[1] + insertionLength).newText;
         return {
             previousText: text,
             text: newText,
-            selection: [selection[0] + 1, selection[1] + 1]
+            selection: [selection[0] + insertionLength, selection[1] + insertionLength]
         }
     },
 
@@ -51,23 +54,32 @@ export default {
      * @returns
      */
     makeLink: function (text, selection) {
-
-        var newText = insertText(text, '[', selection[0]);
-        newText = insertText(newText, '](url)', selection[1] + 1);
+        var {newText, insertionLength} = insertText(text, '[', selection[0]);
+        newText = insertText(newText, '](url)', selection[1] + insertionLength).newText;
         return {
             previousText: text,
             text: newText,
-            selection: [selection[0] + 1, selection[1] + 1]
+            selection: [selection[0] + insertionLength, selection[1] + insertionLength]
         }
     },
 
     makeQuote: function (text, selection) {
-        var newText = insertText(text, '[', selection[0]);
-        newText = insertText(newText, '](url)', selection[1] + 1);
+        if (selection[0] == selection[1]) {
+            // the user is pointing to a word
+            selection = getSurroundingWord(text, selection[0]).position;
+        }
+
+        let insertionBefore = '\n> ';
+        if(selection[0] > 0 && selection[1] != '\n')
+            insertionBefore = '\n' + insertionBefore;
+
+        // the user is selecting a word section
+        var {newText, insertionLength} = insertText(text, insertionBefore, selection[0]);
+        newText = insertText(newText, '\n\n', selection[1] + insertionLength).newText;
         return {
             previousText: text,
             text: newText,
-            selection: [selection[0] + 1, selection[1] + 1]
+            selection: [selection[0] + insertionLength, selection[1] + insertionLength]
         }
     }
 }

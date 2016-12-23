@@ -71,15 +71,15 @@ class ReactMde extends Component {
             if (!selection.constructor === Array)
                 throw Error('selection should be falsy or an array');
             try {
-                // In order to minimize the history problem with inputs, we're doing some tricks:
-                //  - Set focus on the textarea
-                //  - Set the value back to its previous value.
-                //  - Select the whole text
-                //  - Insert the new value
-                this.refs.textarea.focus();
-                this.refs.textarea.value = previousText;
-                setSelection(this.refs.textarea, 0, previousText.length);
-                document.execCommand("insertText", false, text);
+            // In order to minimize the history problem with inputs, we're doing some tricks:
+            //  - Set focus on the textarea
+            //  - Set the value back to its previous value.
+            //  - Select the whole text
+            //  - Insert the new value
+            this.refs.textarea.focus();
+            this.refs.textarea.value = previousText;
+            setSelection(this.refs.textarea, 0, previousText.length);
+            document.execCommand("insertText", false, text);
             } catch (ex) {
                 // It's not recommended but I'm swalling the exception here
             }
@@ -120,7 +120,7 @@ class ReactMde extends Component {
                     </HeaderGroup>
                     <HeaderGroup>
                         <HeaderItem icon="link" onClick={this.getCommandHandler(ReactMdeCommands.makeLink).bind(this)} />
-                        <HeaderItem icon="quote-right" />
+                        <HeaderItem icon="quote-right" onClick={this.getCommandHandler(ReactMdeCommands.makeQuote).bind(this)} />
                         <HeaderItem icon="picture-o" />
                     </HeaderGroup>
                     <HeaderGroup>

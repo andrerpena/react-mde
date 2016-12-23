@@ -61,6 +61,7 @@
   "dependencies": {
     "font-awesome": "^4.7.0",
     "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react-dom": "^15.4.1",
+    "showdown": "^1.5.3"
   }
 }

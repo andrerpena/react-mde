@@ -7,7 +7,8 @@
  * @returns
  */
 export function  insertText(text, insertionText, position) {
-    return [text.slice(0, position), insertionText, text.slice(position)].join('');
+    let newText = [text.slice(0, position), insertionText, text.slice(position)].join('');
+    return { newText, insertionLength: insertionText.length };
 }
 
 /**
