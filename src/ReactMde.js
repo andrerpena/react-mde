@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactMdeCommands from './ReactMdeCommands';
+import BoldButton from './buttons/BoldButton';
 
 /**
  * Gets the selection of the given element
@@ -34,13 +35,16 @@ const HeaderGroup = (props) => (
     </ul>
 );
 
-const HeaderItem = ({icon, onClick}) => (
-    <li className="mde-header-item">
-        <button type="button" onClick={onClick}>
-            <i className={`fa fa-${icon}`} aria-hidden="true"></i>
-        </button>
-    </li>
-);
+const HeaderItem = ({icon, onClick}) => {
+    var x = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"></i>
+    return (
+        <li className="mde-header-item">
+            <button type="button" onClick={onClick}>
+                { x }
+            </button>
+        </li>
+    );
+}
 
 class ReactMde extends Component {
 
@@ -71,15 +75,15 @@ class ReactMde extends Component {
             if (!selection.constructor === Array)
                 throw Error('selection should be falsy or an array');
             try {
-            // In order to minimize the history problem with inputs, we're doing some tricks:
-            //  - Set focus on the textarea
-            //  - Set the value back to its previous value.
-            //  - Select the whole text
-            //  - Insert the new value
-            this.refs.textarea.focus();
-            this.refs.textarea.value = previousText;
-            setSelection(this.refs.textarea, 0, previousText.length);
-            document.execCommand("insertText", false, text);
+                // In order to minimize the history problem with inputs, we're doing some tricks:
+                //  - Set focus on the textarea
+                //  - Set the value back to its previous value.
+                //  - Select the whole text
+                //  - Insert the new value
+                this.refs.textarea.focus();
+                this.refs.textarea.value = previousText;
+                setSelection(this.refs.textarea, 0, previousText.length);
+                document.execCommand("insertText", false, text);
             } catch (ex) {
                 // It's not recommended but I'm swalling the exception here
             }
@@ -115,7 +119,7 @@ class ReactMde extends Component {
             <div className="react-mde">
                 <div className="mde-header">
                     <HeaderGroup>
-                        <HeaderItem icon="bold" onClick={this.getCommandHandler(ReactMdeCommands.makeBold).bind(this)} />
+                        <HeaderItem icon={<BoldButton/>} onClick={this.getCommandHandler(ReactMdeCommands.makeBold).bind(this)} />
                         <HeaderItem icon="italic" onClick={this.getCommandHandler(ReactMdeCommands.makeItalic).bind(this)} />
                     </HeaderGroup>
                     <HeaderGroup>

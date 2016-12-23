@@ -69,9 +69,12 @@ export default {
             selection = getSurroundingWord(text, selection[0]).position;
         }
 
-        let insertionBefore = '\n> ';
-        if(selection[0] > 0 && selection[1] != '\n')
-            insertionBefore = '\n' + insertionBefore;
+        let insertionBefore = '> ';
+        if(selection[0] > 0) {
+            
+            if(selection[0] != '\n')
+                insertionBefore = '\n' + insertionBefore;
+        }
 
         // the user is selecting a word section
         var {newText, insertionLength} = insertText(text, insertionBefore, selection[0]);
