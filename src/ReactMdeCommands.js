@@ -1,4 +1,4 @@
-import { insertText, getSurroundingWord } from './TextHelper';
+import { insertText, getSurroundingWord, getBreaksNeededForQuote } from './TextHelper';
 
 export default {
 
@@ -71,9 +71,8 @@ export default {
 
         let insertionBefore = '> ';
         if(selection[0] > 0) {
-            
-            if(selection[0] != '\n')
-                insertionBefore = '\n' + insertionBefore;
+            let breaksNeeded = getBreaksNeededForQuote(text, selection[0]);
+            insertionBefore = Array(breaksNeeded + 1).join("\n") + insertionBefore;
         }
 
         // the user is selecting a word section

@@ -48,3 +48,22 @@ export function getSurroundingWord(text, position) {
         position: [leftIndex,rightIndex]
     };
 }
+
+export function getBreaksNeededForQuote(text, selectionStart) {
+    if(!text) throw Error('Argument \'text\' should be truthy');
+    if(selectionStart == 0) return 0;
+
+    let neededBreaks = 2;
+    let noBreaksFound = true;
+    for(let i = selectionStart - 1; i  >= 0 && (neededBreaks >=0) ; i --) {
+        switch(text.charCodeAt(i)) {
+            case 32: continue;
+            case 10: {
+                neededBreaks--;
+                noBreaksFound = false;
+            }
+            default: return neededBreaks;
+        }
+    }
+    return noBreaksFound ? 0 : neededBreaks;
+}
