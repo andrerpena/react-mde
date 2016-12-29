@@ -1,3 +1,12 @@
-.react-mde-demo {
-    margin-top: 50px;
+@import 'variables.scss';
+
+.container {
+
+        width: 600px;
+        margin: 100px auto;
+
+        border: 1px solid $default-border-color;
+        margin-top: 50px;
+        padding: 10px;
+
 }

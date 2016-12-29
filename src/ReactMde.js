@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactMdeCommands from './ReactMdeCommands';
-import BoldButton from './buttons/BoldButton';
+import showdown from 'showdown';
 
 /**
  * Gets the selection of the given element
@@ -53,6 +53,7 @@ class ReactMde extends Component {
      */
     constructor() {
         super();
+        this.converter = new showdown.Converter();
     }
 
     handleValueChange(e) {
@@ -115,11 +116,13 @@ class ReactMde extends Component {
             onChange
         } = this.props;
 
+        let html = this.converter.makeHtml(text) || '<p>&nbsp</p>';
+
         return (
             <div className="react-mde">
                 <div className="mde-header">
                     <HeaderGroup>
-                        <HeaderItem icon={<BoldButton/>} onClick={this.getCommandHandler(ReactMdeCommands.makeBold).bind(this)} />
+                        <HeaderItem icon="bold" onClick={this.getCommandHandler(ReactMdeCommands.makeBold).bind(this)} />
                         <HeaderItem icon="italic" onClick={this.getCommandHandler(ReactMdeCommands.makeItalic).bind(this)} />
                     </HeaderGroup>
                     <HeaderGroup>
@@ -129,20 +132,19 @@ class ReactMde extends Component {
                     </HeaderGroup>
                     <HeaderGroup>
                         <HeaderItem icon="list-ol" />
-                        <HeaderItem icon="list" />
+                        <HeaderItem icon="list-ul" />
                     </HeaderGroup>
                     <HeaderGroup>
                         <HeaderItem icon="at" />
                         <HeaderItem icon="bookmark" />
                     </HeaderGroup>
-                    <HeaderGroup>
-                        <HeaderItem icon="star" />
-                    </HeaderGroup>
                 </div>
                 <div className="mde-text">
                     <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" />
                 </div>
-                <div className="mde-preview"></div>
+                <div className="mde-preview">
+                    <div dangerouslySetInnerHTML={{__html: html}} />
+                </div>
             </div>
         );
     }

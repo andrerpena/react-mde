@@ -1,10 +1,8 @@
 @import "variables";
 
 .react-mde {
-    border: 1px solid $default-border-color;
     .mde-header {
-        padding: 0.5rem;
-        border-bottom: 1px solid $default-border-color;
+        padding: 6px 0;
         ul.mde-header-group {
             display:inline-block;
             margin: 0;
@@ -20,6 +18,9 @@
                     margin: 0;
                     border: none;
                     background: none;
+                    .fa {
+                        color: $mde-button-color;
+                    }
                 }
             }
         }
@@ -28,12 +29,21 @@
     .mde-text {
         textarea {
             width: 100%;
-            min-height: $textarea-min-height;
-            padding: $textarea-padding;
+            min-height: $mde-textarea-min-height;
+            padding: $mde-textarea-padding;
+            border-width: 1px;
+            border-style: solid;
+            border-bottom-style: dashed;
+            border-color: $mde-border-color;
+            border-radius: $mde-textarea-border-radious $mde-textarea-border-radious 0 0;
         }
     }
 
     .mde-preview {
-
+        padding: $mde-textarea-padding;
+        border-width: 0 1px 1px 1px;
+        border-style: solid;
+        border-color: $mde-border-color;
+        border-radius:  0 0 $mde-textarea-border-radious $mde-textarea-border-radious;
     }
 }
