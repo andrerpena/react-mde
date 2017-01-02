@@ -4,7 +4,7 @@ import ReactMde from '../src/ReactMde';
 class App extends Component {
 
     state = {
-        mdeValue: {text: "abcde", selection: null}
+        mdeValue: {text: "", selection: null}
     }
 
     handleValueChange(value) {

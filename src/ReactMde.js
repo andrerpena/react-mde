@@ -40,7 +40,7 @@ const HeaderItem = ({icon, onClick}) => {
     return (
         <li className="mde-header-item">
             <button type="button" onClick={onClick}>
-                { x }
+                {x}
             </button>
         </li>
     );
@@ -143,7 +143,7 @@ class ReactMde extends Component {
                     <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" />
                 </div>
                 <div className="mde-preview">
-                    <div dangerouslySetInnerHTML={{__html: html}} />
+                    <div dangerouslySetInnerHTML={{ __html: html }} />
                 </div>
             </div>
         );

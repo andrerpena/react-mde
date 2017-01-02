@@ -10,7 +10,7 @@ export default {
      * @returns
      */
     makeBold: function (text, selection) {
-        if (selection[0] == selection[1]) {
+        if (text && text.length && selection[0] == selection[1]) {
             // the user is pointing to a word
             selection = getSurroundingWord(text, selection[0]).position;
         }
@@ -32,7 +32,7 @@ export default {
      * @returns
      */
     makeItalic: function (text, selection) {
-        if (selection[0] == selection[1]) {
+        if (text && text.length && selection[0] == selection[1]) {
             // the user is pointing to a word
             selection = getSurroundingWord(text, selection[0]).position;
         }
@@ -64,7 +64,7 @@ export default {
     },
 
     makeQuote: function (text, selection) {
-        if (selection[0] == selection[1]) {
+        if (text && text.length && selection[0] == selection[1]) {
             // the user is pointing to a word
             selection = getSurroundingWord(text, selection[0]).position;
         }
