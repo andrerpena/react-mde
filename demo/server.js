@@ -8,6 +8,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpack from 'webpack';
 import packageJson from '../package.json';
 
+
 const webpackCompiler = webpack(webpackConfig);
 
 require.extensions['.html'] = function (module, filename) {

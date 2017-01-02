@@ -48,6 +48,7 @@
     "less-loader": "^2.2.3",
     "mocha": "^3.2.0",
     "node-sass": "^3.13.0",
+    "normalize.css": "^5.0.0",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-redux": "^4.4.6",
     "redux": "^3.6.0",

@@ -1,5 +1,9 @@
 @import 'variables.scss';
 
+body {
+        font-size: 14px;
+}
+
 .container {
 
         width: 600px;
@@ -7,6 +11,6 @@
 
         border: 1px solid $default-border-color;
         margin-top: 50px;
-        padding: 10px;
+        padding: 8px;
 
 }
