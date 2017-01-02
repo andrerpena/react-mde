@@ -5,4 +5,11 @@
         border-left: 0.25em solid #ddd;
         margin: 0;
     }
+    a {
+        color: #4078c0;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
