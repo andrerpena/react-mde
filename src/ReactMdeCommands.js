@@ -63,6 +63,23 @@ export default {
         }
     },
 
+    /**
+     * Makes an image
+     * 
+     * @param {any} text
+     * @param {any} selection
+     * @returns
+     */
+    makeImage: function (text, selection) {
+        var {newText, insertionLength} = insertText(text, '![', selection[0]);
+        newText = insertText(newText, '](image-url)', selection[1] + insertionLength).newText;
+        return {
+            previousText: text,
+            text: newText,
+            selection: [selection[0] + insertionLength, selection[1] + insertionLength]
+        }
+    },
+
     makeQuote: function (text, selection) {
         if (text && text.length && selection[0] == selection[1]) {
             // the user is pointing to a word

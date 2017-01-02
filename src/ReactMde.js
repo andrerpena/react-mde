@@ -128,7 +128,7 @@ class ReactMde extends Component {
                     <HeaderGroup>
                         <HeaderItem icon="link" onClick={this.getCommandHandler(ReactMdeCommands.makeLink).bind(this)} />
                         <HeaderItem icon="quote-right" onClick={this.getCommandHandler(ReactMdeCommands.makeQuote).bind(this)} />
-                        <HeaderItem icon="picture-o" />
+                        <HeaderItem icon="picture-o" onClick={this.getCommandHandler(ReactMdeCommands.makeImage).bind(this)} />
                     </HeaderGroup>
                     <HeaderGroup>
                         <HeaderItem icon="list-ol" />
