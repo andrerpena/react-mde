@@ -49,7 +49,10 @@ export function getSurroundingWord(text, position) {
     };
 }
 
-export function getBreaksNeededForQuote(text, selectionStart) {
+/**
+ *  Gets the number of breaks needed so that there will be an empty line between the previous text and what is being inserted
+ */
+export function getBreaksNeededForEmptyLineBefore(text, selectionStart) {
     if(!text) throw Error('Argument \'text\' should be truthy');
     if(selectionStart == 0) return 0;
 

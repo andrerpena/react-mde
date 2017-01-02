@@ -1,4 +1,4 @@
-import { insertText, getSurroundingWord, getBreaksNeededForQuote } from './TextHelper';
+import { insertText, getSurroundingWord, getBreaksNeededForEmptyLineBefore } from './TextHelper';
 
 export default {
 
@@ -63,6 +63,29 @@ export default {
         }
     },
 
+    makeQuote: function (text, selection) {
+        if (text && text.length && selection[0] == selection[1]) {
+            // the user is pointing to a word
+            selection = getSurroundingWord(text, selection[0]).position;
+        }
+
+        let insertionBefore = '> ';
+        if(selection[0] > 0) {
+            let breaksNeeded = getBreaksNeededForEmptyLineBefore(text, selection[0]);
+            insertionBefore = Array(breaksNeeded + 1).join("\n") + insertionBefore;
+        }
+
+        // the user is selecting a word section
+        var {newText, insertionLength} = insertText(text, insertionBefore, selection[0]);
+        newText = insertText(newText, '\n\n', selection[1] + insertionLength).newText;
+        return {
+            previousText: text,
+            text: newText,
+            selection: [selection[0] + insertionLength, selection[1] + insertionLength]
+        }
+    },
+
+
     /**
      * Makes an image
      * 
@@ -80,25 +103,8 @@ export default {
         }
     },
 
-    makeQuote: function (text, selection) {
-        if (text && text.length && selection[0] == selection[1]) {
-            // the user is pointing to a word
-            selection = getSurroundingWord(text, selection[0]).position;
-        }
-
-        let insertionBefore = '> ';
-        if(selection[0] > 0) {
-            let breaksNeeded = getBreaksNeededForQuote(text, selection[0]);
-            insertionBefore = Array(breaksNeeded + 1).join("\n") + insertionBefore;
-        }
-
-        // the user is selecting a word section
-        var {newText, insertionLength} = insertText(text, insertionBefore, selection[0]);
-        newText = insertText(newText, '\n\n', selection[1] + insertionLength).newText;
-        return {
-            previousText: text,
-            text: newText,
-            selection: [selection[0] + insertionLength, selection[1] + insertionLength]
-        }
+    makeUnorderedList: function (text, selection) {
+        
     }
+
 }

@@ -46,4 +46,25 @@
         border-color: $mde-border-color;
         border-radius: $mde-textarea-border-radious;
     }
+
+    .mde-help {
+        color: $mde-help-color;
+        margin-top: 4px;
+        margin-left: 1px;
+        a.markdown-help {
+            text-decoration: none;
+            font-size: 12px;
+            color: gray;
+            svg.markdown-help-svg {
+                fill: gray;
+                display: inline-block;
+                vertical-align: bottom !important;
+            }
+            span.markdown-help-text {
+                margin-left: 3px;
+                display: inline-block;
+                vertical-align: center;
+            }
+        }
+    }
 }
