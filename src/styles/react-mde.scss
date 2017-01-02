@@ -33,17 +33,17 @@
             padding: $mde-textarea-padding;
             border-width: 1px;
             border-style: solid;
-            border-bottom-style: dashed;
             border-color: $mde-border-color;
-            border-radius: $mde-textarea-border-radious $mde-textarea-border-radious 0 0;
+            border-radius: $mde-textarea-border-radious;
         }
     }
 
     .mde-preview {
-        padding: $mde-textarea-padding;
-        border-width: 0 1px 1px 1px;
-        border-style: solid;
+        margin-top: $mde-preview-margin-top;
+        padding: $mde-preview-vertical-padding $mde-preview-horizontal-padding;
+        border-width: 1px;
+        border-style: dotted;
         border-color: $mde-border-color;
-        border-radius:  0 0 $mde-textarea-border-radious $mde-textarea-border-radious;
+        border-radius: $mde-textarea-border-radious;
     }
 }

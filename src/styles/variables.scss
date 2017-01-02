@@ -1,5 +1,8 @@
-$mde-button-color:              #767676 !default;
-$mde-border-color:              rgba(0,0,0,.15) !default; // this defaults to the Bootstrap 4 default border color
-$mde-textarea-min-height:       200px;
-$mde-textarea-padding:          0.5rem;
-$mde-textarea-border-radious:   .25rem;
+$mde-button-color:                  #767676 !default;
+$mde-border-color:                  rgba(0,0,0,.15) !default; // this defaults to the Bootstrap 4 default border color
+$mde-textarea-min-height:           200px !default;
+$mde-textarea-padding:              0.5rem !default;
+$mde-textarea-border-radious:       .25rem !default;
+$mde-preview-margin-top:            8px !default;
+$mde-preview-horizontal-padding:    8px !default;
+$mde-preview-vertical-padding:      0 !default;
