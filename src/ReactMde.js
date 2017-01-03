@@ -142,7 +142,7 @@ class ReactMde extends Component {
                     </HeaderGroup>
                     <HeaderGroup>
                         <HeaderItem icon="list-ul" onClick={this.getCommandHandler(ReactMdeCommands.makeUnorderedList).bind(this)} />
-                        <HeaderItem icon="list-ol" />
+                        <HeaderItem icon="list-ol" onClick={this.getCommandHandler(ReactMdeCommands.makeOrderedList).bind(this)} />
                     </HeaderGroup>
                     <HeaderGroup>
                         <HeaderItem icon="at" />
