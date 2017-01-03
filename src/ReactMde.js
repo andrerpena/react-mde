@@ -141,7 +141,7 @@ class ReactMde extends Component {
                         <HeaderItem icon="picture-o" onClick={this.getCommandHandler(ReactMdeCommands.makeImage).bind(this)} />
                     </HeaderGroup>
                     <HeaderGroup>
-                        <HeaderItem icon="list-ul" />
+                        <HeaderItem icon="list-ul" onClick={this.getCommandHandler(ReactMdeCommands.makeUnorderedList).bind(this)} />
                         <HeaderItem icon="list-ol" />
                     </HeaderGroup>
                     <HeaderGroup>

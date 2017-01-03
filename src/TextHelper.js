@@ -12,6 +12,16 @@ export function  insertText(text, insertionText, position) {
 }
 
 /**
+ * Inserts insertionString before each line
+ */
+export function insertBeforeEachLine(text, insertionString, selection) {
+    var substring = text.slice(selection[0], selection[1]);
+    var lines = substring.split(/\n/);
+    let newText = text.slice(0, selection[0]) + lines.map(l => insertionString + l).join('\n') + text.slice(selection[1])
+    return { newText, newSelection: [selection[0], selection[1] + lines.length * insertionString.length]  }
+}
+
+/**
  * Gets the word surrounding the given position. Word delimiters are spaces and line-breaks
  * 
  * @export
@@ -50,23 +60,57 @@ export function getSurroundingWord(text, position) {
 }
 
 /**
- *  Gets the number of breaks needed so that there will be an empty line between the previous text and what is being inserted
+ *  Gets the number of breaks needed so that there will be an empty line between the previous text
  */
-export function getBreaksNeededForEmptyLineBefore(text, selectionStart) {
+export function getBreaksNeededForEmptyLineBefore(text, startPosition) {
     if(!text) throw Error('Argument \'text\' should be truthy');
-    if(selectionStart == 0) return 0;
+    if(startPosition == 0) return 0;
+
+    // rules:
+    // - If we're in the first line, no breaks are needed
+    // - Otherwise there must be 2 breaks before the previous character. Depending on how many breaks exist already, we
+    //      may need to insert 0, 1 or 2 breaks
 
     let neededBreaks = 2;
-    let noBreaksFound = true;
-    for(let i = selectionStart - 1; i  >= 0 && (neededBreaks >=0) ; i --) {
+    let isInFirstLine = true;
+    for(let i = startPosition - 1; i  >= 0 && (neededBreaks >=0) ; i --) {
         switch(text.charCodeAt(i)) {
             case 32: continue;
             case 10: {
                 neededBreaks--;
-                noBreaksFound = false;
+                isInFirstLine = false;
+                break;
             }
             default: return neededBreaks;
         }
     }
-    return noBreaksFound ? 0 : neededBreaks;
+    return isInFirstLine ? 0 : neededBreaks;
+}
+
+/**
+ *  Gets the number of breaks needed so that there will be an empty line after the next text
+ */
+export function getBreaksNeededForEmptyLineAfter(text, startPosition) {
+    if(!text) throw Error('Argument \'text\' should be truthy');
+    if(startPosition == text.length - 1) return 0;
+
+    // rules:
+    // - If we're in the first line, no breaks are needed
+    // - Otherwise there must be 2 breaks before the previous character. Depending on how many breaks exist already, we
+    //      may need to insert 0, 1 or 2 breaks
+
+    let neededBreaks = 2;
+    let isInLastLine = true;
+    for(let i = startPosition; i < text.length && (neededBreaks >=0) ; i ++) {
+        switch(text.charCodeAt(i)) {
+            case 32: continue;
+            case 10: {
+                neededBreaks--;
+                isInLastLine = false;
+                break;
+            }
+            default: return neededBreaks;
+        }
+    }
+    return isInLastLine ? 0 : neededBreaks;
 }
