@@ -1,9 +1,38 @@
 .mde-preview {
+    p, blockquote, ul, ol, dl, table, pre {
+        margin-top: 0;
+        margin-bottom: 16px;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        font-weight: 600;
+        line-height: 1.25;
+    }
+    h1 {
+        padding-bottom: 0.3em;
+        font-size: 2em;
+        border-bottom: 1px solid #eee;
+    }
+    h2 {
+        padding-bottom: 0.3em;
+        font-size: 1.5em;
+        border-bottom: 1px solid #eee;
+    }
+    ul, ol {
+        padding-left: 2em;
+    }
     blockquote {
+        margin-left: 0;
         padding: 0 1em;
         color: #777;
         border-left: 0.25em solid #ddd;
-        margin: 0;
+        &>:first-child {
+            margin-top: 0;
+        }
+        &>:last-child {
+            margin-bottom: 0;
+        }
     }
     a {
         color: #4078c0;
@@ -11,5 +40,13 @@
         &:hover {
             text-decoration: underline;
         }
+    }
+    &>*:last-child {
+        margin-bottom: 0 !important;
+    }
+    &::after {
+        display: table;
+        clear: both;
+        content: "";
     }
 }

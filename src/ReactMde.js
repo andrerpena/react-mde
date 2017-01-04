@@ -125,21 +125,15 @@ class ReactMde extends Component {
                         <HeaderItem icon="quote-right" onClick={this.getCommandHandler(ReactMdeCommands.makeQuote).bind(this)} />
                         <HeaderItem icon="picture-o" onClick={this.getCommandHandler(ReactMdeCommands.makeImage).bind(this)} />
                     </HeaderGroup>
-
                     <HeaderGroup>
                         <HeaderItem icon="list-ul" onClick={this.getCommandHandler(ReactMdeCommands.makeUnorderedList).bind(this)} />
                         <HeaderItem icon="list-ol" onClick={this.getCommandHandler(ReactMdeCommands.makeOrderedList).bind(this)} />
-                    </HeaderGroup>
-                    <HeaderGroup>
-                        <HeaderItem icon="at" />
-                        <HeaderItem icon="bookmark" />
                     </HeaderGroup>
                 </div>
                 <div className="mde-text">
                     <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" />
                 </div>
-                <div className="mde-preview">
-                    <div dangerouslySetInnerHTML={{ __html: html }} />
+                <div className="mde-preview" dangerouslySetInnerHTML={{ __html: html }}>
                 </div>
                 <div className="mde-help">
                     <MarkdownHelp />
