@@ -64,84 +64,16 @@ class ReactMde extends Component {
     constructor() {
         super();
         this.converter = new showdown.Converter();
-        this.undoStack = [];
-        this.redoStack = [];
     }
 
-    static MAXIMUM_UNDO_REDO_STACK_SIZE = 256;
-
-    addToUndoStack(text, selection) {
-        this.clearRedoStack();
-        this.undoStack.push({
-            text: text,
-            selection: selection
-        });
-        if (this.undoStack.length == ReactMde.MAXIMUM_UNDO_REDO_STACK_SIZE)
-            this.undoStack.shift();
-    }
-
-    popFromUndoStack() {
-        if (this.undoStack.length) {
-            let state = this.undoStack.pop()
-            return state;
-        }
-        return null;
-    }
-
-    addToRedoStack(text, selection) {
-        this.redoStack.push({
-            text: text,
-            selection: selection
-        });
-        if (this.redoStack.length == ReactMde.MAXIMUM_UNDO_REDO_STACK_SIZE)
-            this.redoStack.shift();
-    }
-
-    popFromRedoStack() {
-        if (this.redoStack.length) {
-            let state = this.redoStack.pop()
-            return state;
-        }
-        return null;
-    }
-
-    clearRedoStack() {
-        this.redoStack = [];
-    }
 
     handleValueChange(e) {
         let {
             value: { text, selection },
             onChange
         } = this.props;
-        this.addToUndoStack(text, selection);
         onChange({ text: e.target.value, selection: null });
     }
-
-    handleKeyPress(e) {
-        let {
-            value: { text, selection },
-            onChange
-        } = this.props;
-
-        if (e.keyCode == 90 && e.ctrlKey) {
-            // undo
-            e.preventDefault();
-            let state = this.popFromUndoStack();
-            if (state) {
-                this.addToRedoStack(text, selection) // adds the current state to the redo stack
-                onChange(state);
-            }
-        }
-        else if (e.keyCode == 89 && e.ctrlKey) {
-            e.preventDefault();
-            let state = this.popFromRedoStack();
-            if (state)
-                onChange(state);
-        }
-    }
-
-
 
     /**
      * Handles the execution of a command
@@ -155,9 +87,20 @@ class ReactMde extends Component {
                 onChange
             } = this.props;
             let textarea = this.refs.textarea;
+
             var newValue = command(text, getSelection(textarea));
-            this.addToUndoStack(text, selection);
-            onChange(newValue);
+            
+            // let's select EVERYTHING and replace with the result of the command.
+            // This will cause an 'inconvenience' which is: Ctrl + Z will select the whole
+            // text. But this is the LEAST possible inconvenience. We can pretty much live
+            // with it. I've tried everything in my reach, including reimplementing the textarea
+            // history. That caused more problems than it solved.
+            
+            this.refs.textarea.focus();
+            setSelection(this.refs.textarea, 0, this.refs.textarea.value.length);
+            document.execCommand("insertText", false, newValue.text);
+
+            setSelection(this.refs.textarea, newValue.selection[0], newValue.selection[1]);
         }
     }
 
@@ -193,7 +136,7 @@ class ReactMde extends Component {
                     </HeaderGroup>
                 </div>
                 <div className="mde-text">
-                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" onKeyDown={this.handleKeyPress.bind(this)} />
+                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" />
                 </div>
                 <div className="mde-preview">
                     <div dangerouslySetInnerHTML={{ __html: html }} />
@@ -203,21 +146,6 @@ class ReactMde extends Component {
                 </div>
             </div>
         );
-    }
-
-    componentDidMount() {
-    }
-
-    componentDidUpdate() {
-        let {
-            value: { text, selection, previousText },
-            onChange
-        } = this.props;
-        if (selection) {
-            if (!selection.constructor === Array)
-                throw Error('selection should be falsy or an array');
-            setSelection(this.refs.textarea, selection[0], selection[1]);
-        }
     }
 }
 
