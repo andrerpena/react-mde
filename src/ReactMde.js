@@ -64,43 +64,84 @@ class ReactMde extends Component {
     constructor() {
         super();
         this.converter = new showdown.Converter();
+        this.undoStack = [];
+        this.redoStack = [];
+    }
+
+    static MAXIMUM_UNDO_REDO_STACK_SIZE = 256;
+
+    addToUndoStack(text, selection) {
+        this.clearRedoStack();
+        this.undoStack.push({
+            text: text,
+            selection: selection
+        });
+        if (this.undoStack.length == ReactMde.MAXIMUM_UNDO_REDO_STACK_SIZE)
+            this.undoStack.shift();
+    }
+
+    popFromUndoStack() {
+        if (this.undoStack.length) {
+            let state = this.undoStack.pop()
+            return state;
+        }
+        return null;
+    }
+
+    addToRedoStack(text, selection) {
+        this.redoStack.push({
+            text: text,
+            selection: selection
+        });
+        if (this.redoStack.length == ReactMde.MAXIMUM_UNDO_REDO_STACK_SIZE)
+            this.redoStack.shift();
+    }
+
+    popFromRedoStack() {
+        if (this.redoStack.length) {
+            let state = this.redoStack.pop()
+            return state;
+        }
+        return null;
+    }
+
+    clearRedoStack() {
+        this.redoStack = [];
     }
 
     handleValueChange(e) {
         let {
-            value: { text },
+            value: { text, selection },
             onChange
         } = this.props;
+        this.addToUndoStack(text, selection);
         onChange({ text: e.target.value, selection: null });
     }
 
-    /**
-     * Handles what happens after the mount
-     */
-    handleAfterMount() {
+    handleKeyPress(e) {
         let {
-            value: { text, selection, previousText },
+            value: { text, selection },
             onChange
         } = this.props;
-        if (selection) {
-            if (!selection.constructor === Array)
-                throw Error('selection should be falsy or an array');
-            try {
-                // In order to minimize the history problem with inputs, we're doing some tricks:
-                //  - Set focus on the textarea
-                //  - Set the value back to its previous value.
-                //  - Select the whole text
-                //  - Insert the new value
-                this.refs.textarea.focus();
-                this.refs.textarea.value = previousText;
-                setSelection(this.refs.textarea, 0, previousText.length);
-                document.execCommand("insertText", false, text);
-            } catch (ex) {
-                // It's not recommended but I'm swalling the exception here
+
+        if (e.keyCode == 90 && e.ctrlKey) {
+            // undo
+            e.preventDefault();
+            let state = this.popFromUndoStack();
+            if (state) {
+                this.addToRedoStack(text, selection) // adds the current state to the redo stack
+                onChange(state);
             }
-            setSelection(this.refs.textarea, selection[0], selection[1]);
+        }
+        else if (e.keyCode == 89 && e.ctrlKey) {
+            e.preventDefault();
+            let state = this.popFromRedoStack();
+            if (state)
+                onChange(state);
         }
     }
+
+
 
     /**
      * Handles the execution of a command
@@ -110,11 +151,12 @@ class ReactMde extends Component {
     getCommandHandler(command) {
         return function () {
             let {
-                value: { text },
+                value: { text, selection },
                 onChange
             } = this.props;
             let textarea = this.refs.textarea;
             var newValue = command(text, getSelection(textarea));
+            this.addToUndoStack(text, selection);
             onChange(newValue);
         }
     }
@@ -140,6 +182,7 @@ class ReactMde extends Component {
                         <HeaderItem icon="quote-right" onClick={this.getCommandHandler(ReactMdeCommands.makeQuote).bind(this)} />
                         <HeaderItem icon="picture-o" onClick={this.getCommandHandler(ReactMdeCommands.makeImage).bind(this)} />
                     </HeaderGroup>
+
                     <HeaderGroup>
                         <HeaderItem icon="list-ul" onClick={this.getCommandHandler(ReactMdeCommands.makeUnorderedList).bind(this)} />
                         <HeaderItem icon="list-ol" onClick={this.getCommandHandler(ReactMdeCommands.makeOrderedList).bind(this)} />
@@ -150,7 +193,7 @@ class ReactMde extends Component {
                     </HeaderGroup>
                 </div>
                 <div className="mde-text">
-                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" />
+                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" onKeyDown={this.handleKeyPress.bind(this)} />
                 </div>
                 <div className="mde-preview">
                     <div dangerouslySetInnerHTML={{ __html: html }} />
@@ -163,11 +206,18 @@ class ReactMde extends Component {
     }
 
     componentDidMount() {
-        this.handleAfterMount();
     }
 
     componentDidUpdate() {
-        this.handleAfterMount();
+        let {
+            value: { text, selection, previousText },
+            onChange
+        } = this.props;
+        if (selection) {
+            if (!selection.constructor === Array)
+                throw Error('selection should be falsy or an array');
+            setSelection(this.refs.textarea, selection[0], selection[1]);
+        }
     }
 }
 
