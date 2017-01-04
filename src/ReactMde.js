@@ -35,11 +35,19 @@ const HeaderGroup = (props) => (
     </ul>
 );
 
-const HeaderItem = ({icon, onClick}) => {
+const HeaderItem = ({icon, onClick, tooltip}) => {
     var x = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"></i>
+
+    let buttonProps = {};
+    if(tooltip) {
+        buttonProps = {
+            'aria-label': tooltip,
+            className: 'tooltipped'
+        }
+    }
     return (
         <li className="mde-header-item">
-            <button type="button" onClick={onClick}>
+            <button type="button" {...buttonProps} onClick={onClick}>
                 {x}
             </button>
         </li>
@@ -117,17 +125,17 @@ class ReactMde extends Component {
             <div className="react-mde">
                 <div className="mde-header">
                     <HeaderGroup>
-                        <HeaderItem icon="bold" onClick={this.getCommandHandler(ReactMdeCommands.makeBold).bind(this)} />
-                        <HeaderItem icon="italic" onClick={this.getCommandHandler(ReactMdeCommands.makeItalic).bind(this)} />
+                        <HeaderItem icon="bold" tooltip="Add bold text" onClick={this.getCommandHandler(ReactMdeCommands.makeBold).bind(this)} />
+                        <HeaderItem icon="italic" tooltip="Add italic text" onClick={this.getCommandHandler(ReactMdeCommands.makeItalic).bind(this)} />
                     </HeaderGroup>
                     <HeaderGroup>
-                        <HeaderItem icon="link" onClick={this.getCommandHandler(ReactMdeCommands.makeLink).bind(this)} />
-                        <HeaderItem icon="quote-right" onClick={this.getCommandHandler(ReactMdeCommands.makeQuote).bind(this)} />
-                        <HeaderItem icon="picture-o" onClick={this.getCommandHandler(ReactMdeCommands.makeImage).bind(this)} />
+                        <HeaderItem icon="link" tooltip="Insert a link" onClick={this.getCommandHandler(ReactMdeCommands.makeLink).bind(this)} />
+                        <HeaderItem icon="quote-right" tooltip="Insert a quote" onClick={this.getCommandHandler(ReactMdeCommands.makeQuote).bind(this)} />
+                        <HeaderItem icon="picture-o" tooltip="Insert a picture" onClick={this.getCommandHandler(ReactMdeCommands.makeImage).bind(this)} />
                     </HeaderGroup>
                     <HeaderGroup>
-                        <HeaderItem icon="list-ul" onClick={this.getCommandHandler(ReactMdeCommands.makeUnorderedList).bind(this)} />
-                        <HeaderItem icon="list-ol" onClick={this.getCommandHandler(ReactMdeCommands.makeOrderedList).bind(this)} />
+                        <HeaderItem icon="list-ul" tooltip="Add a bulleted list" onClick={this.getCommandHandler(ReactMdeCommands.makeUnorderedList).bind(this)} />
+                        <HeaderItem icon="list-ol" tooltip="Add a numbered list" onClick={this.getCommandHandler(ReactMdeCommands.makeOrderedList).bind(this)} />
                     </HeaderGroup>
                 </div>
                 <div className="mde-text">
