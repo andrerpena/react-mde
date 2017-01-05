@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import ReactMde from '../src/ReactMde';
-import ReactMdeCommands  from '../src/ReactMdeCommands'
+import { ReactMde, ReactMdeCommands } from '../src/';
 
 class App extends Component {
 
@@ -13,6 +12,7 @@ class App extends Component {
     }
 
     render() {
+        // get the default commands, you can pick individual commands if you like, or add your own
         let commands = ReactMdeCommands.getDefaultCommands()
         return (
             <div className="container">

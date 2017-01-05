@@ -1,2 +1,3 @@
 // import some styles here
-export default './ReactMde';
+export ReactMde from './ReactMde';
+export ReactMdeCommands from './ReactMdeCommands';
