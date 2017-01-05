@@ -1,2 +1,2 @@
 // import some styles here
-export default './myAwesomeComponent';
+export default './ReactMde';

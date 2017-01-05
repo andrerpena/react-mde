@@ -7,11 +7,11 @@ const webpackConfig = require('./webpack.config.demo.prod.js');
 // library
 gulp.task('copy_styles', function () {
     return gulp.src('./src/styles/**/*')
-        .pipe(gulp.dest('./lib'));
+        .pipe(gulp.dest('./lib/styles'));
 });
 
 gulp.task('build', ['copy_styles'], function () {
-    return gulp.src("./src/index.js")
+    return gulp.src("./src/*.js")
         .pipe(babel())
         .pipe(gulp.dest("./lib"));
 });
