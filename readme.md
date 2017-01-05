@@ -98,3 +98,19 @@ props:
  - **tooltip**: If any, it will print a tooltip with the passed text.
  - **execute**: The actual function that will execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
  Your function should return an object containing the `previousText`, the current `text` (after your command) and the current `selection` (after your command).
+
+ Next steps
+ ---
+
+  - [] Add commands for headings
+  - [] Add support for @mentions and #hashtags with dropdown and autocomplete
+
+  Licence
+  ---
+
+  React-mde is MIT licensed
+
+  About the author
+  ---
+
+  Made with :heart: by André Pena. Check out my website: http://andrerpena.me
