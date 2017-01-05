@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactMde from '../src/ReactMde';
+import ReactMdeCommands  from '../src/ReactMdeCommands'
 
 class App extends Component {
 
@@ -12,9 +13,10 @@ class App extends Component {
     }
 
     render() {
+        let commands = ReactMdeCommands.getDefaultCommands()
         return (
             <div className="container">
-                <ReactMde value={this.state.mdeValue} onChange={this.handleValueChange.bind(this)} />
+                <ReactMde value={this.state.mdeValue} onChange={this.handleValueChange.bind(this)} commands={commands} />
             </div>
         );
     }

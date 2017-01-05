@@ -36,10 +36,12 @@ const HeaderGroup = (props) => (
 );
 
 const HeaderItem = ({icon, onClick, tooltip}) => {
-    var x = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"></i>
+
+    // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
+    var iconElement = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"></i>
 
     let buttonProps = {};
-    if(tooltip) {
+    if (tooltip) {
         buttonProps = {
             'aria-label': tooltip,
             className: 'tooltipped'
@@ -48,7 +50,7 @@ const HeaderItem = ({icon, onClick, tooltip}) => {
     return (
         <li className="mde-header-item">
             <button type="button" {...buttonProps} onClick={onClick}>
-                {x}
+                {iconElement}
             </button>
         </li>
     );
@@ -65,6 +67,10 @@ const MarkdownHelp = ({helpText = 'Markdown styling is supported', markdownRefer
 }
 
 class ReactMde extends Component {
+
+    static propTypes = {
+        commands: React.PropTypes.array
+    }
 
     /**
      *
@@ -88,7 +94,7 @@ class ReactMde extends Component {
      * @param {function} command
      * @memberOf ReactMde
      */
-    getCommandHandler(command) {
+    getCommandHandler(commandFunction) {
         return function () {
             let {
                 value: { text, selection },
@@ -96,14 +102,14 @@ class ReactMde extends Component {
             } = this.props;
             let textarea = this.refs.textarea;
 
-            var newValue = command(text, getSelection(textarea));
-            
+            var newValue = commandFunction(text, getSelection(textarea));
+
             // let's select EVERYTHING and replace with the result of the command.
             // This will cause an 'inconvenience' which is: Ctrl + Z will select the whole
             // text. But this is the LEAST possible inconvenience. We can pretty much live
             // with it. I've tried everything in my reach, including reimplementing the textarea
             // history. That caused more problems than it solved.
-            
+
             this.refs.textarea.focus();
             setSelection(this.refs.textarea, 0, this.refs.textarea.value.length);
             document.execCommand("insertText", false, newValue.text);
@@ -116,28 +122,32 @@ class ReactMde extends Component {
 
         let {
             value: { text, selection },
-            onChange
+            onChange,
+            commands
         } = this.props;
 
         let html = this.converter.makeHtml(text) || '<p>&nbsp</p>';
 
+        let header = null;
+        if (commands) {
+            header = <div className="mde-header">
+                {
+                    commands.map((cg, i) => {
+                        return <HeaderGroup key={i}>
+                            {
+                                cg.map((c, j) => {
+                                    return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip} onClick={this.getCommandHandler(c.execute).bind(this)} />
+                                })
+                            }
+                        </HeaderGroup>
+                    })
+                }
+            </div>
+        }
+
         return (
             <div className="react-mde">
-                <div className="mde-header">
-                    <HeaderGroup>
-                        <HeaderItem icon="bold" tooltip="Add bold text" onClick={this.getCommandHandler(ReactMdeCommands.makeBold).bind(this)} />
-                        <HeaderItem icon="italic" tooltip="Add italic text" onClick={this.getCommandHandler(ReactMdeCommands.makeItalic).bind(this)} />
-                    </HeaderGroup>
-                    <HeaderGroup>
-                        <HeaderItem icon="link" tooltip="Insert a link" onClick={this.getCommandHandler(ReactMdeCommands.makeLink).bind(this)} />
-                        <HeaderItem icon="quote-right" tooltip="Insert a quote" onClick={this.getCommandHandler(ReactMdeCommands.makeQuote).bind(this)} />
-                        <HeaderItem icon="picture-o" tooltip="Insert a picture" onClick={this.getCommandHandler(ReactMdeCommands.makeImage).bind(this)} />
-                    </HeaderGroup>
-                    <HeaderGroup>
-                        <HeaderItem icon="list-ul" tooltip="Add a bulleted list" onClick={this.getCommandHandler(ReactMdeCommands.makeUnorderedList).bind(this)} />
-                        <HeaderItem icon="list-ol" tooltip="Add a numbered list" onClick={this.getCommandHandler(ReactMdeCommands.makeOrderedList).bind(this)} />
-                    </HeaderGroup>
-                </div>
+                {header}
                 <div className="mde-text">
                     <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" />
                 </div>
