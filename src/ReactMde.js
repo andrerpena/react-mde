@@ -62,28 +62,26 @@ class ReactMde extends Component {
      * @param {function} command
      * @memberOf ReactMde
      */
-    getCommandHandler(commandFunction) {
-        return function () {
-            let {
-                value: { text, selection },
-                onChange
-            } = this.props;
-            let textarea = this.refs.textarea;
+    executeCommand(command) {
+        let {
+            value: { text, selection },
+            onChange
+        } = this.props;
+        let textarea = this.refs.textarea;
 
-            var newValue = commandFunction(text, getSelection(textarea));
+        var newValue = command.execute(text, getSelection(textarea));
 
-            // let's select EVERYTHING and replace with the result of the command.
-            // This will cause an 'inconvenience' which is: Ctrl + Z will select the whole
-            // text. But this is the LEAST possible inconvenience. We can pretty much live
-            // with it. I've tried everything in my reach, including reimplementing the textarea
-            // history. That caused more problems than it solved.
+        // let's select EVERYTHING and replace with the result of the command.
+        // This will cause an 'inconvenience' which is: Ctrl + Z will select the whole
+        // text. But this is the LEAST possible inconvenience. We can pretty much live
+        // with it. I've tried everything in my reach, including reimplementing the textarea
+        // history. That caused more problems than it solved.
 
-            this.refs.textarea.focus();
-            setSelection(this.refs.textarea, 0, this.refs.textarea.value.length);
-            document.execCommand("insertText", false, newValue.text);
+        this.refs.textarea.focus();
+        setSelection(this.refs.textarea, 0, this.refs.textarea.value.length);
+        document.execCommand("insertText", false, newValue.text);
 
-            setSelection(this.refs.textarea, newValue.selection[0], newValue.selection[1]);
-        }
+        setSelection(this.refs.textarea, newValue.selection[0], newValue.selection[1]);
     }
 
     handleHeaderDropdown() {
@@ -108,19 +106,10 @@ class ReactMde extends Component {
                         return <HeaderGroup key={i}>
                             {
                                 cg.map((c, j) => {
-                                    if (c.type == 'command-set') {
-                                        return (
-                                            <HeaderItemDropdown key={j} icon={c.icon}>
-                                                {
-                                                    c.subCommands.map((sc, k) => {
-                                                        return <HeaderItemDropdownItem key={k} content={sc.content} onClick={this.getCommandHandler(sc.execute).bind(this)} />
-                                                    })
-                                                }
-                                            </HeaderItemDropdown>
-                                        )
-                                    }
+                                    if (c.type == 'command-set')
+                                        return <HeaderItemDropdown key={j} icon={c.icon} commands={c.subCommands} onCommand={c => this.executeCommand(c)} />
                                     else
-                                        return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip} onClick={this.getCommandHandler(c.execute).bind(this)} />
+                                        return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip} onClick={() => this.executeCommand(c)} />
                                 })
                             }
                         </HeaderGroup>

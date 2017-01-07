@@ -1,32 +1,64 @@
 import React, { Component } from 'react';
+import HeaderItemDropdownItem from './HeaderItemDropdownItem';
 
 class DropdownHeaderItem extends Component {
     constructor(props) {
         super(props)
         this.state = { open: false };
     }
-    handleOnClick() {
-        this.setState({ open: !this.state.open });
+
+    handleOpenDropdown() {
+        this.openDropdown();
     }
 
-    handleOnBlur() {
-        //this.setState({ open: false });
+    handleOnClickCommand(e, c) {
+        let onCommand = this.props.onCommand;
+        onCommand(c);
+        this.closeDropdown();
+    }
+
+    handleGlobalClick(e) {
+        if (this.state.open && this.refs.dropdown && this.refs.dropdownOpener && !this.refs.dropdown.contains(e.target) && !this.refs.dropdownOpener.contains(e.target)) {
+            // clicked outside the dropdown and the opener button
+            this.closeDropdown();
+        }
+    }
+
+    openDropdown() {
+        this.setState({ open: true });
+    }
+
+    closeDropdown() {
+        this.setState({ open: false });
+    }
+
+    componentDidMount() {
+        document.addEventListener('click', this.handleGlobalClick.bind(this), false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleGlobalClick.bind(this), false);
     }
 
     render() {
         let icon = this.props.icon;
         let open = this.state.open;
+        let commands = this.props.commands;
 
         let dropdown = open
-            ? <ul className="react-mde-dropdown">
-                {this.props.children}
+            ? <ul className="react-mde-dropdown" ref="dropdown" >
+                {
+                    commands.map((c, i) => {
+                        return <HeaderItemDropdownItem key={i} content={c.content} onClick={(e) => this.handleOnClickCommand(e, c)} />
+                    })
+                }
             </ul>
             : null;
 
         return (
-            <li className="mde-header-item" onBlur={this.handleOnBlur.bind(this)}>
-                <button type="button">
-                    <i className={`fa fa-${icon}`} aria-hidden="true" onClick={this.handleOnClick.bind(this)}></i>
+            <li className="mde-header-item">
+                <button type="button" ref="dropdownOpener" onClick={this.handleOpenDropdown.bind(this)}>
+                    <i className={`fa fa-${icon}`} aria-hidden="true"></i>
                 </button>
                 {dropdown}
             </li>

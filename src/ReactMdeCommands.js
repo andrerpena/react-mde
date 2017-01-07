@@ -65,19 +65,19 @@ export default {
             {
                 content: <p className="header-1">Header</p>,
                 execute: function (text, selection) {
-                    return makeHeader(text, selection, '#');
+                    return makeHeader(text, selection, '# ');
                 }
             },
             {
                 content: <p className="header-2">Header</p>,
                 execute: function (text, selection) {
-                    return makeHeader(text, selection, '##');
+                    return makeHeader(text, selection, '## ');
                 }
             },
             {
                 content: <p className="header-3">Header</p>,
                 execute: function (text, selection) {
-                    return makeHeader(text, selection, '###');
+                    return makeHeader(text, selection, '### ');
                 }
             }
         ]
