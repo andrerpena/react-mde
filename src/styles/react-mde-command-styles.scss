@@ -1,0 +1,23 @@
+.react-mde-dropdown {
+    li {
+        p {
+            font-weight: bold;
+            line-height: 1em;
+            background: none;
+            border: 0;
+            text-align: left;
+            &:hover {
+                 color: #4078c0;
+            }
+            &.header-1 {
+                font-size: 20px;
+            }
+            &.header-2 {
+                font-size: 18px;
+            }
+            &.header-3 {
+                font-size: 14px;
+            }
+        }
+    }
+}

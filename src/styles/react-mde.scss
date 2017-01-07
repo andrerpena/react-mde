@@ -1,6 +1,7 @@
 @import "variables";
 
 .react-mde {
+    button:focus {outline:0;}
     .mde-header {
         padding: 6px 0;
         ul.mde-header-group {
@@ -14,6 +15,7 @@
                 position: relative;
                 margin: 0 0.25rem;
                 button {
+                    text-align: left;
                     cursor: pointer;
                     padding: .25rem;
                     margin: 0;
@@ -73,8 +75,50 @@
                             white-space: nowrap;
                         }
                     }
+                    
                 }
+                .react-mde-dropdown {
+                        position: absolute;
+                        right: 50%;
+                        transform: translateX(50%);
+                        background-color: white;
+                        border: 1px solid $mde-border-color;
+                        padding: 5px;
+                        top: 30px;
+                        li {
+                            margin: 0;
+                            white-space: nowrap;
+                            list-style: none;
+                            p {
+                                margin: 0;
+                                padding: 0;
+                            }
+                        }
+                        &::before {
+                            position: absolute;
+                            content: "";
+                            width: 0;
+                            height: 0;
+                            border: 8px solid transparent;
+                            border-bottom-color: rgba(0,0,0,0.15);
+                            top: -16px;
+                            right: 50%;
+                            transform: translateX(50%);
+                        }
+                        &::after {
+                            position: absolute;
+                            content: "";
+                            width: 0;
+                            height: 0;
+                            border: 7px solid transparent;
+                            border-bottom-color: white;
+                            top: -14px;
+                            right: 50%;
+                            transform: translateX(50%);
+                        }
+                    }
             }
+
         }
     }
 

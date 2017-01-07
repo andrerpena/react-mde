@@ -7,6 +7,7 @@ import App from './App';
 import '../node_modules/normalize.css/normalize.css';
 import '../node_modules/font-awesome/css/font-awesome.css';
 import '../src/styles/react-mde.scss';
+import '../src/styles/react-mde-command-styles.scss';
 import './styles/demo.scss';
 import '../src/styles/markdown-default-theme.scss';
 

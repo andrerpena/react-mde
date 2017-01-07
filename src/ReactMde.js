@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import ReactMdeCommands from './ReactMdeCommands';
 import showdown from 'showdown';
+import HeaderGroup from './components/HeaderGroup';
+import HeaderItem from './components/HeaderItem';
+import HeaderItemDropdown from './components/HeaderItemDropdown';
+import HeaderItemDropdownItem from './components/HeaderItemDropdownItem';
+import MarkdownHelp from './components/MarkdownHelp';
 
 /**
  * Gets the selection of the given element
@@ -27,43 +32,6 @@ function setSelection(element, start, end) {
     if (!element.setSelectionRange)
         throw Error('Incompatible browser. element.setSelectionRange is not defined');
     element.setSelectionRange(start, end);
-}
-
-const HeaderGroup = (props) => (
-    <ul className="mde-header-group">
-        {props.children}
-    </ul>
-);
-
-const HeaderItem = ({icon, onClick, tooltip}) => {
-
-    // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
-    var iconElement = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"></i>
-
-    let buttonProps = {};
-    if (tooltip) {
-        buttonProps = {
-            'aria-label': tooltip,
-            className: 'tooltipped'
-        }
-    }
-    return (
-        <li className="mde-header-item">
-            <button type="button" {...buttonProps} onClick={onClick}>
-                {iconElement}
-            </button>
-        </li>
-    );
-}
-
-const MarkdownHelp = ({helpText = 'Markdown styling is supported', markdownReferenceUrl = 'http://commonmark.org/help/'}) => {
-    return <a className="markdown-help" href={markdownReferenceUrl} target="_blank">
-        <svg aria-hidden="true" className="markdown-help-svg" height="16" version="1.1" viewBox="0 0 16 16" width="16">
-            <path fillRule="evenodd" d="M14.85 3H1.15C.52 3 0 3.52 0 4.15v7.69C0 12.48.52 13 1.15 13h13.69c.64 0 1.15-.52 1.15-1.15v-7.7C16 3.52 15.48 3 14.85 3zM9 11H7V8L5.5 9.92 4 8v3H2V5h2l1.5 2L7 5h2v6zm2.99.5L9.5 8H11V5h2v3h1.5l-2.51 3.5z">
-            </path>
-        </svg>
-        <span className="markdown-help-text">{helpText}</span>
-    </a>;
 }
 
 class ReactMde extends Component {
@@ -118,6 +86,10 @@ class ReactMde extends Component {
         }
     }
 
+    handleHeaderDropdown() {
+
+    }
+
     render() {
 
         let {
@@ -136,7 +108,19 @@ class ReactMde extends Component {
                         return <HeaderGroup key={i}>
                             {
                                 cg.map((c, j) => {
-                                    return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip} onClick={this.getCommandHandler(c.execute).bind(this)} />
+                                    if (c.type == 'command-set') {
+                                        return (
+                                            <HeaderItemDropdown key={j} icon={c.icon}>
+                                                {
+                                                    c.subCommands.map((sc, k) => {
+                                                        return <HeaderItemDropdownItem key={k} content={sc.content} onClick={this.getCommandHandler(sc.execute).bind(this)} />
+                                                    })
+                                                }
+                                            </HeaderItemDropdown>
+                                        )
+                                    }
+                                    else
+                                        return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip} onClick={this.getCommandHandler(c.execute).bind(this)} />
                                 })
                             }
                         </HeaderGroup>

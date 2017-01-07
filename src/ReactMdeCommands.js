@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { insertText, insertBeforeEachLine, getSurroundingWord, getBreaksNeededForEmptyLineBefore, getBreaksNeededForEmptyLineAfter } from './TextHelper';
 
 function makeList(text, selection, insertionBeforeEachLine) {
@@ -40,7 +42,46 @@ function makeList(text, selection, insertionBeforeEachLine) {
     }
 }
 
+function makeHeader(text, selection, insertionBefore) {
+    if (text && text.length && selection[0] == selection[1]) {
+        // the user is pointing to a word
+        selection = getSurroundingWord(text, selection[0]).position;
+    }
+    // the user is selecting a word section
+    var {newText, insertionLength} = insertText(text, insertionBefore, selection[0]);
+    return {
+        previousText: text,
+        text: newText,
+        selection: [selection[0] + insertionLength, selection[1] + insertionLength]
+    }
+}
+
 export default {
+
+    makeHeader: {
+        type: 'command-set',
+        icon: 'header',
+        subCommands: [
+            {
+                content: <p className="header-1">Header</p>,
+                execute: function (text, selection) {
+                    return makeHeader(text, selection, '#');
+                }
+            },
+            {
+                content: <p className="header-2">Header</p>,
+                execute: function (text, selection) {
+                    return makeHeader(text, selection, '##');
+                }
+            },
+            {
+                content: <p className="header-3">Header</p>,
+                execute: function (text, selection) {
+                    return makeHeader(text, selection, '###');
+                }
+            }
+        ]
+    },
 
     makeBold: {
         icon: 'bold',
@@ -150,8 +191,9 @@ export default {
         }
     },
 
-    getDefaultCommands: function() {
+    getDefaultCommands: function () {
         return [
+            [this.makeHeader],
             [this.makeBold, this.makeItalic],
             [this.makeLink, this.makeQuote, this.makeImage],
             [this.makeUnorderedList, this.makeOrderedList]
