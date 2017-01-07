@@ -34,6 +34,55 @@
             margin-bottom: 0;
         }
     }
+
+    code {
+        padding: 0;
+        padding-top: 0.2em;
+        padding-bottom: 0.2em;
+        margin: 0;
+        font-size: 90%;
+        background-color: rgba(0,0,0,0.04);
+        border-radius: 3px;
+        &::before, &::after {
+            letter-spacing: -0.2em;
+            content: "\00a0";
+        }
+    }
+
+    pre {
+        padding: 16px;
+        overflow: auto;
+        font-size: 85%;
+        line-height: 1.45;
+        background-color: #f7f7f7;
+        border-radius: 3px;
+
+        code {
+            display: inline;
+            max-width: auto;
+            padding: 0;
+            margin: 0;
+            overflow: visible;
+            line-height: inherit;
+            word-wrap: normal;
+            background-color: transparent;
+            border: 0;
+            &::before, &::after {
+                content: none;
+            }
+        }
+
+        > code {
+            padding: 0;
+            margin: 0;
+            font-size: 100%;
+            word-break: normal;
+            white-space: pre;
+            background: transparent;
+            border: 0;
+        }
+    }
+
     a {
         color: #4078c0;
         text-decoration: none;
