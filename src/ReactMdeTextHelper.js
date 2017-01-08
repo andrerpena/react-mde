@@ -13,6 +13,41 @@ export function insertText(text, insertionText, position) {
     return { newText, insertionLength: insertionText.length };
 }
 
+export function insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection) {
+    let breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection[0]);
+    let insertionBefore = Array(breaksNeededBefore + 1).join("\n");
+
+    let newText = text;
+    let newSelection = selection;
+
+    // if line-breaks have to be added before
+    if (insertionBefore) {
+        let textInsertion = insertText(text, insertionBefore, selection[0]);
+        newText = textInsertion.newText;
+        newSelection = selection.map(s => s + textInsertion.insertionLength)
+    }
+
+    return { newText, newSelection };
+}
+
+export function insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection) {
+    let breaksNeededBefore = getBreaksNeededForEmptyLineAfter(text, selection[1]);
+    let insertionAfter = Array(breaksNeededBefore + 1).join("\n");
+
+    let newText = text;
+    let newSelection = selection;
+
+    // if line-breaks have to be added before
+    if (insertionAfter) {
+        let textInsertion = insertText(text, insertionAfter, selection[1]);
+        newText = textInsertion.newText;
+        newSelection = selection.map(s => s + textInsertion.insertionLength)
+    }
+
+    return { newText, newSelection };
+}
+
+
 /**
  * Inserts insertionString before each line
  */

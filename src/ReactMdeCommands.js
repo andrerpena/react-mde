@@ -78,6 +78,8 @@ export default {
         execute: function (text, selection) {
             selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
+            
+
             let insertionBefore = '> ';
             if (selection[0] > 0) {
                 let breaksNeeded = getBreaksNeededForEmptyLineBefore(text, selection[0]);

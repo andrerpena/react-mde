@@ -1,6 +1,8 @@
 import {
     insertText,
     insertBeforeEachLine,
+    insertBreaksBeforeSoThatTheresAnEmptyLineBefore,
+    insertBreaksAfterSoThatTheresAnEmptyLineAfter,
     getBreaksNeededForEmptyLineBefore,
     getBreaksNeededForEmptyLineAfter
 } from './ReactMdeTextHelper'
@@ -25,27 +27,17 @@ export function makeList(text, selection, insertionBeforeEachLine) {
 
     selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
-    let breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection[0]);
-    insertionBefore = Array(breaksNeededBefore + 1).join("\n");
-
-    // if line-breaks have to be added before
-    if (insertionBefore) {
-        textInsertion = insertText(text, insertionBefore, selection[0]);
-        text = textInsertion.newText;
-        selection = selection.map(s => s + textInsertion.insertionLength)
-    }
+    textInsertion = insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
 
     textInsertion = insertBeforeEachLine(text, insertionBeforeEachLine, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
 
-    let breaksNeededAfter = getBreaksNeededForEmptyLineAfter(text, selection[1]);
-    insertionAfter = Array(breaksNeededAfter + 1).join("\n");
-
-    if (insertionAfter) {
-        textInsertion = insertText(text, insertionAfter, selection[1]);
-        text = textInsertion.newText;
-    }
+    textInsertion = insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
 
     return {
         text: text,
