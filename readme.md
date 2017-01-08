@@ -7,6 +7,11 @@ Demo
 
 Checkout the [demo](http://andrerpena.me/react-mde)
 
+For the lazy
+---
+
+![image](https://github.com/andrerpena/react-mde/blob/master/assets/react-mde.gif)
+
 Installing
 ---
 
@@ -56,23 +61,38 @@ Styling
 2 styles from React-mde should be added:
 
  - **react-mde.scss**: The styling of the component itself.
+ - **react-mde-command-styles**: This is the styling for the built-in commands. If these commands are not going to be used. This doesn't have to be included.
  - **markdown-default-theme.scss**: The markdown theme to be used inside the preview box.
 
-Example:
+Example in importing styles in your `[entry_point].js`:
 
     import '../node_modules/normalize.css/normalize.css';
     import '../node_modules/font-awesome/css/font-awesome.css';
     import '../node_modules/react-mde/styles/react-mde.scss';
+    import '../src/styles/react-mde-command-styles.scss';
     import '../node_modules/react-mde/markdown-default-theme.scss';
+
+Dependencies
+---
+
+`React-mde` currently depends on:
+
+ - Font Awesome - For the icons
+ - Showdown - For rendering the markdown preview
 
 Commands
 ---
 
-React-mde allows you to implement your own commands.
+React-mde allows you to use the build-in commands, implement your own commands, or both.
 
-Anatomy of a command:
+There are two types of commands, the `button` commands (default if you don't say anything), and the `dropdown` commands.
+`button` commands appear as button and execute a single action when clicked. `dropdown` commands have `subCommands` and
+will display a dropdown when you click them.
+
+### Anatomy of a button command
 
     {
+        type: 'button', // this is optional as this is the default 
         icon: 'bold',
         tooltip: 'Add bold text',
         execute: function (text, selection) {
@@ -92,24 +112,64 @@ Anatomy of a command:
 
 props:
 
+- **type**: The type of the command.
  - **icon**: If this is a text, it will print a `font-awesome` `<i/>` element with the classes `fa fa-${icon}`. Passing `bold` will print `<i className="fa fa-bold"></i>`.
  If the passing value is a React element, it will print the react element.
  - **tooltip**: If any, it will print a tooltip with the passed text.
- - **execute**: The actual function that will execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
+ - **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
  Your function should return the current `text` (after your command) and the current `selection` (after your command).
 
- Next steps
+
+### Anatomy of a dropdown command
+
+{
+    type: 'dropdown',
+    icon: 'header',
+    subCommands: [
+        {
+            content: <p className="header-1">Header</p>,
+            execute: function (text, selection) {
+                return makeHeader(text, selection, '# ');
+            }
+        },
+        {
+            content: <p className="header-2">Header</p>,
+            execute: function (text, selection) {
+                return makeHeader(text, selection, '## ');
+            }
+        },
+        {
+            content: <p className="header-3">Header</p>,
+            execute: function (text, selection) {
+                return makeHeader(text, selection, '### ');
+            }
+        }
+    ]
+}
+
+ - **type**: The type of the command.
+ - **icon**: If this is a text, it will print a `font-awesome` `<i/>` element with the classes `fa fa-${icon}`. Passing `bold` will print `<i className="fa fa-bold"></i>`.
+ If the passing value is a React element, it will print the react element.
+ - **subCommands**: A list of commands that will dropdown when you click the button.
+
+ **subCommands** is an array of objects with these props:
+
+ - **content**: A React component that will be displayed within the `li`.
+ - **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
+ Your function should return the current `text` (after your command) and the current `selection` (after your command).
+
+Roadmap
  ---
 
-  - [] Add commands for headings
-  - [] Add support for @mentions and #hashtags with dropdown and autocomplete
+  - Add support for @mentions and #hashtags with dropdown and autocomplete.
+  - Add support for server-rendering the markdown preview (like GitHub does)
 
-  Licence
-  ---
+Licence
+---
 
-  React-mde is MIT licensed
+React-mde is MIT licensed
 
-  About the author
-  ---
+About the author
+---
 
-  Made with :heart: by André Pena. Check out my website: http://andrerpena.me
+Made with :heart: by André Pena. Check out my website: http://andrerpena.me

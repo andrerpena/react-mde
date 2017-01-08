@@ -24,7 +24,7 @@ import {
 export default {
 
     makeHeader: {
-        type: 'command-set',
+        type: 'dropdown',
         icon: 'header',
         subCommands: [
             {

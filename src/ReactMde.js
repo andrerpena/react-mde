@@ -86,7 +86,7 @@ class ReactMde extends Component {
                         return <HeaderGroup key={i}>
                             {
                                 cg.map((c, j) => {
-                                    if (c.type == 'command-set')
+                                    if (c.type == 'dropdown')
                                         return <HeaderItemDropdown key={j} icon={c.icon} commands={c.subCommands} onCommand={c => this.executeCommand(c)} />
                                     else
                                         return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip} onClick={() => this.executeCommand(c)} />
