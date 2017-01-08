@@ -1,5 +1,6 @@
 import {
     insertText,
+    insertBefore,
     insertBeforeEachLine,
     insertBreaksBeforeSoThatTheresAnEmptyLineBefore,
     insertBreaksAfterSoThatTheresAnEmptyLineAfter,
@@ -27,14 +28,17 @@ export function makeList(text, selection, insertionBeforeEachLine) {
 
     selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
+    // insert breaks before, if needed
     textInsertion = insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
 
+    // inserts 'insertionBeforeEachLine' before each line
     textInsertion = insertBeforeEachLine(text, insertionBeforeEachLine, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
 
+    // insert breaks after, if needed
     textInsertion = insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
@@ -55,10 +59,12 @@ export function makeList(text, selection, insertionBeforeEachLine) {
 export function makeHeader(text, selection, insertionBefore) {
     selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
     // the user is selecting a word section
-    var {newText, insertionLength} = insertText(text, insertionBefore, selection[0]);
+    let insertionText = insertBefore(text, insertionBefore, selection, false);
+    let newText = insertionText.newText;
+    let newSelection = insertionText.newSelection;
     return {
         text: newText,
-        selection: [selection[0] + insertionLength, selection[1] + insertionLength]
+        selection: newSelection
     }
 }
 

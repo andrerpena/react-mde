@@ -13,6 +13,62 @@ export function insertText(text, insertionText, position) {
     return { newText, insertionLength: insertionText.length };
 }
 
+
+/**
+ * Inserts the given text before. The selection is moved ahead so the 
+ *  
+ * @export
+ * @param {any} text
+ * @param {any} insertionText
+ * @param {any} selection
+ * @returns
+ */
+export function insertBefore(text, insertionText, selection, includeTheInsertionInTheSelectioStart = true) {
+    let textInsertion = insertText(text, insertionText, selection[0]);
+    let newText = textInsertion.newText;
+    let insertionLength = textInsertion.insertionLength;
+    let newSelection;
+
+    if (includeTheInsertionInTheSelectioStart) {
+        // in this case, the text inserted before will be part of the resulting selection
+        newSelection = [selection[0], selection[1] + insertionLength]
+    }
+    else {
+        // in this case, the inserted before will NOT be part of the resulting selection
+        newSelection = selection.map(s => s + textInsertion.insertionLength);
+    }
+
+    return { newText, newSelection };
+}
+
+/**
+ * Inserts the given text after. The selection will change to encompass the new text
+ * 
+ * @export
+ * @param {any} text
+ * @param {any} insertionText
+ * @param {any} selection
+ * @returns
+ */
+export function insertAfter(text, insertionText, selection) {
+    let textInsertion = insertText(text, insertionText, selection[1]);
+    let newText = textInsertion.newText;
+    let insertionLength = textInsertion.insertionLength;
+    let newSelection;
+
+    newSelection = [selection[0], selection[1] + insertionLength]
+
+    return { newText, newSelection };
+}
+
+/**
+ * Inserts breaks before, only if needed. The returned selection will not include this breaks
+ * 
+ * @export
+ * @param {any} text
+ * @param {any} selection
+ * @returns
+ */
 export function insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection) {
     let breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection[0]);
     let insertionBefore = Array(breaksNeededBefore + 1).join("\n");
@@ -30,6 +86,14 @@ export function insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection)
     return { newText, newSelection };
 }
 
+/**
+ * Inserts breaks after, only if needed. The returned selection will not include this breaks
+ * 
+ * @export
+ * @param {any} text
+ * @param {any} selection
+ * @returns
+ */
 export function insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection) {
     let breaksNeededBefore = getBreaksNeededForEmptyLineAfter(text, selection[1]);
     let insertionAfter = Array(breaksNeededBefore + 1).join("\n");

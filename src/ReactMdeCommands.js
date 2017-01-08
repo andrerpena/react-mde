@@ -3,12 +3,16 @@ import React from 'react';
 import {
     // text insertion
     insertText,
+    insertBefore,
     insertBeforeEachLine,
+    insertBreaksBeforeSoThatTheresAnEmptyLineBefore,
+    insertBreaksAfterSoThatTheresAnEmptyLineAfter,
     // others
     selectCurrentWorkIfCarretIsInsideOne,
     getSurroundingWord,
     getBreaksNeededForEmptyLineBefore,
-    getBreaksNeededForEmptyLineAfter } from './ReactMdeTextHelper';
+    getBreaksNeededForEmptyLineAfter
+} from './ReactMdeTextHelper';
 
 import {
     makeList,
@@ -78,20 +82,23 @@ export default {
         execute: function (text, selection) {
             selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
-            
+            let textInsertion;
 
-            let insertionBefore = '> ';
-            if (selection[0] > 0) {
-                let breaksNeeded = getBreaksNeededForEmptyLineBefore(text, selection[0]);
-                insertionBefore = Array(breaksNeeded + 1).join("\n") + insertionBefore;
-            }
+            textInsertion = insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection);
+            text = textInsertion.newText;
+            selection = textInsertion.newSelection;
 
-            // the user is selecting a word section
-            var {newText, insertionLength} = insertText(text, insertionBefore, selection[0]);
-            newText = insertText(newText, '\n\n', selection[1] + insertionLength).newText;
+            textInsertion = insertBefore(text, '> ', selection);
+            text = textInsertion.newText;
+            selection = textInsertion.newSelection;
+
+            textInsertion = insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection);
+            text = textInsertion.newText;
+            selection = textInsertion.newSelection;
+
             return {
-                text: newText,
-                selection: [selection[0] + insertionLength, selection[1] + insertionLength]
+                text: text,
+                selection: selection
             }
         }
     },
