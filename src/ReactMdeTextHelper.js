@@ -98,8 +98,7 @@ export function getSurroundingWord(text, position) {
 /**
  *  Gets the number of breaks needed so that there will be an empty line between the previous text
  */
-export function getBreaksNeededForEmptyLineBefore(text, startPosition) {
-    if (!text) throw Error('Argument \'text\' should be truthy');
+export function getBreaksNeededForEmptyLineBefore(text = "", startPosition) {
     if (startPosition == 0) return 0;
 
     // rules:

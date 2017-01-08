@@ -70,11 +70,11 @@ export function makeHeader(text, selection, insertionBefore) {
     }
 }
 
-export function makeACommandThatInsertsBeforeAndAfter(text, selection, inserton) {
+export function makeACommandThatInsertsBeforeAndAfter(text, selection, insertion) {
     selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
     // the user is selecting a word section
-    var {newText, insertionLength} = insertText(text, selection, selection[0]);
-    newText = insertText(newText, selection, selection[1] + insertionLength).newText;
+    var {newText, insertionLength} = insertText(text, insertion, selection[0]);
+    newText = insertText(newText, insertion, selection[1] + insertionLength).newText;
     return {
         text: newText,
         selection: [selection[0] + insertionLength, selection[1] + insertionLength]
