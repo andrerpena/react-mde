@@ -7,32 +7,10 @@ import HeaderItemDropdown from './components/HeaderItemDropdown';
 import HeaderItemDropdownItem from './components/HeaderItemDropdownItem';
 import MarkdownHelp from './components/MarkdownHelp';
 
-/**
- * Gets the selection of the given element
- * 
- * @param {any} element
- * @returns
- */
-function getSelection(element) {
-    if (!element) throw Error('Argument \'element\' should be truthy');
-    return [element.selectionStart, element.selectionEnd]
-}
-
-/**
- * Sets the selection of the given element
- * 
- * @param {any} element
- * @param {any} start
- * @param {any} end
- */
-function setSelection(element, start, end) {
-    if (!element) throw Error('Argument \'element\' should be truthy');
-
-    element.focus();
-    if (!element.setSelectionRange)
-        throw Error('Incompatible browser. element.setSelectionRange is not defined');
-    element.setSelectionRange(start, end);
-}
+import {
+    getSelection,
+    setSelection
+} from './ReactMdeSelectionHelper';
 
 class ReactMde extends Component {
 
@@ -40,15 +18,16 @@ class ReactMde extends Component {
         commands: React.PropTypes.array
     }
 
-    /**
-     *
-     */
     constructor() {
         super();
         this.converter = new showdown.Converter();
     }
 
-
+    /**
+     * Handler for the textarea value change
+     * @param {any} e
+     * @memberOf ReactMde
+     */
     handleValueChange(e) {
         let {
             value: { text, selection },
@@ -58,7 +37,7 @@ class ReactMde extends Component {
     }
 
     /**
-     * Handles the execution of a command
+     * Executes a command
      * @param {function} command
      * @memberOf ReactMde
      */
@@ -84,10 +63,11 @@ class ReactMde extends Component {
         setSelection(this.refs.textarea, newValue.selection[0], newValue.selection[1]);
     }
 
-    handleHeaderDropdown() {
-
-    }
-
+    /**
+     * Renders react-mde
+     * @returns
+     * @memberOf ReactMde
+     */
     render() {
 
         let {
