@@ -4,6 +4,7 @@ import {
     // text insertion
     insertText,
     insertBefore,
+    insertAfter,
     insertBeforeEachLine,
     insertBreaksBeforeSoThatTheresAnEmptyLineBefore,
     insertBreaksAfterSoThatTheresAnEmptyLineAfter,
@@ -103,6 +104,44 @@ export default {
         }
     },
 
+    makeCode: {
+        icon: 'code',
+        tooltip: 'Insert code',
+        execute: function (text = "", selection) {
+            selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
+
+            if (text.slice(selection[0], selection[1]).indexOf('\n') == -1) {
+                // when there's no breaking line
+                return makeACommandThatInsertsBeforeAndAfter(text, selection, '`');
+            }
+            else {
+                let textInsertion;
+
+                // insert breaks before, if needed
+                textInsertion = insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection);
+                text = textInsertion.newText;
+                selection = textInsertion.newSelection;
+
+                // inserts ```\n before
+                textInsertion = insertBefore(text, '```\n', selection, false);
+                text = textInsertion.newText;
+                selection = textInsertion.newSelection;
+
+                // inserts ```\n after
+                textInsertion = insertAfter(text, '\n```', selection, false);
+                text = textInsertion.newText;
+                selection = textInsertion.newSelection;
+
+                // insert breaks after, if needed
+                textInsertion = insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection);
+                text = textInsertion.newText;
+                selection = textInsertion.newSelection;
+
+                return { text, selection }
+            }
+        }
+    },
+
     makeImage: {
         icon: 'picture-o',
         tooltip: 'Insert a picture',
@@ -135,7 +174,7 @@ export default {
     getDefaultCommands: function () {
         return [
             [this.makeHeader, this.makeBold, this.makeItalic],
-            [this.makeLink, this.makeQuote, this.makeImage],
+            [this.makeLink, this.makeQuote, this.makeCode, this.makeImage],
             [this.makeUnorderedList, this.makeOrderedList]
         ]
     }
