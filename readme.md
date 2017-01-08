@@ -1,24 +1,20 @@
 # react-mde
 
-A simple yet powerful and extensible Markdown Editor editor for React, inspired by GitHub.
+A simple yet powerful and extensible Markdown Editor editor for React, inspired by GitHub. It is not supposed to run
+on mobile devices right now. I recommend you to do as GitHub does and simple render a textarea instead. I plan
+to support this graceful degradation automatically in the next releases.
 
-Demo
----
+![image](https://github.com/andrerpena/react-mde/blob/master/assets/react-mde.png)
 
-Checkout the [demo](http://andrerpena.me/react-mde)
+## Demo
 
-For the lazy
----
+Checkout the [demo](http://andrerpena.me/react-mde) (still doens't work on mobile devices)
 
-![image](https://github.com/andrerpena/react-mde/blob/master/assets/react-mde.gif)
-
-Installing
----
+## Installing
 
     npm install --save react-mde
 
-Using
----
+## Using
 
 React-mde is a completely controlled component. Example of usage:
 
@@ -55,8 +51,7 @@ Props:
  - **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
  - **commands**: An array or array of command objects. The first array represents groups, the second array represents commands inside that group. Take a look of how to create a custom command below.
 
-Styling
----
+## Styling
 
 2 styles from React-mde should be added:
 
@@ -72,16 +67,14 @@ Example in importing styles in your `[entry_point].js`:
     import '../src/styles/react-mde-command-styles.scss';
     import '../node_modules/react-mde/markdown-default-theme.scss';
 
-Dependencies
----
+## Dependencies
 
 `React-mde` currently depends on:
 
  - Font Awesome - For the icons
  - Showdown - For rendering the markdown preview
 
-Commands
----
+## Commands
 
 React-mde allows you to use the build-in commands, implement your own commands, or both.
 
@@ -158,18 +151,17 @@ props:
  - **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
  Your function should return the current `text` (after your command) and the current `selection` (after your command).
 
-Roadmap
- ---
+## Roadmap
 
+  - Make it to gracefully degradate to a simple text-area when on a mobile device
   - Add support for @mentions and #hashtags with dropdown and autocomplete.
   - Add support for server-rendering the markdown preview (like GitHub does)
 
-Licence
----
+## Licence
+
 
 React-mde is MIT licensed
 
-About the author
----
+## About the author
 
 Made with :heart: by André Pena. Check out my website: http://andrerpena.me
