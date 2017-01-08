@@ -84,7 +84,6 @@ Anatomy of a command:
             var {newText, insertionLength} = insertText(text, '**', selection[0]);
             newText = insertText(newText, '**', selection[1] + insertionLength).newText;
             return {
-                previousText: text,
                 text: newText,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
             }
@@ -97,7 +96,7 @@ props:
  If the passing value is a React element, it will print the react element.
  - **tooltip**: If any, it will print a tooltip with the passed text.
  - **execute**: The actual function that will execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
- Your function should return an object containing the `previousText`, the current `text` (after your command) and the current `selection` (after your command).
+ Your function should return the current `text` (after your command) and the current `selection` (after your command).
 
  Next steps
  ---

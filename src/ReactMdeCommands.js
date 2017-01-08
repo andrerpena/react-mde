@@ -1,6 +1,14 @@
 import React from 'react';
 
-import { insertText, insertBeforeEachLine, getSurroundingWord, getBreaksNeededForEmptyLineBefore, getBreaksNeededForEmptyLineAfter } from './TextHelper';
+import {
+    // text insertion
+    insertText,
+    insertBeforeEachLine,
+    // others
+    selectCurrentWorkIfCarretIsInsideOne,
+    getSurroundingWord,
+    getBreaksNeededForEmptyLineBefore,
+    getBreaksNeededForEmptyLineAfter } from './TextHelper';
 
 function makeList(text, selection, insertionBeforeEachLine) {
 
@@ -8,10 +16,7 @@ function makeList(text, selection, insertionBeforeEachLine) {
     var insertionBefore = '';
     var insertionAfter = '';
 
-    if (text && text.length && selection[0] == selection[1]) {
-        // the user is pointing to a word
-        selection = getSurroundingWord(text, selection[0]).position;
-    }
+    selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
     let breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection[0]);
     insertionBefore = Array(breaksNeededBefore + 1).join("\n");
@@ -36,21 +41,16 @@ function makeList(text, selection, insertionBeforeEachLine) {
     }
 
     return {
-        previousText: text,
         text: text,
         selection: selection
     }
 }
 
 function makeHeader(text, selection, insertionBefore) {
-    if (text && text.length && selection[0] == selection[1]) {
-        // the user is pointing to a word
-        selection = getSurroundingWord(text, selection[0]).position;
-    }
+    selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
     // the user is selecting a word section
     var {newText, insertionLength} = insertText(text, insertionBefore, selection[0]);
     return {
-        previousText: text,
         text: newText,
         selection: [selection[0] + insertionLength, selection[1] + insertionLength]
     }
@@ -87,15 +87,11 @@ export default {
         icon: 'bold',
         tooltip: 'Add bold text',
         execute: function (text, selection) {
-            if (text && text.length && selection[0] == selection[1]) {
-                // the user is pointing to a word
-                selection = getSurroundingWord(text, selection[0]).position;
-            }
+            selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
             // the user is selecting a word section
             var {newText, insertionLength} = insertText(text, '**', selection[0]);
             newText = insertText(newText, '**', selection[1] + insertionLength).newText;
             return {
-                previousText: text,
                 text: newText,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
             }
@@ -106,15 +102,11 @@ export default {
         icon: 'italic',
         tooltip: 'Add italic text',
         execute: function (text, selection) {
-            if (text && text.length && selection[0] == selection[1]) {
-                // the user is pointing to a word
-                selection = getSurroundingWord(text, selection[0]).position;
-            }
+            selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
             // the user is selecting a word section
             var {newText, insertionLength} = insertText(text, '_', selection[0]);
             newText = insertText(newText, '_', selection[1] + insertionLength).newText;
             return {
-                previousText: text,
                 text: newText,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
             }
@@ -128,7 +120,6 @@ export default {
             var {newText, insertionLength} = insertText(text, '[', selection[0]);
             newText = insertText(newText, '](url)', selection[1] + insertionLength).newText;
             return {
-                previousText: text,
                 text: newText,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
             }
@@ -139,10 +130,7 @@ export default {
         icon: 'quote-right',
         tooltip: 'Insert a quote',
         execute: function (text, selection) {
-            if (text && text.length && selection[0] == selection[1]) {
-                // the user is pointing to a word
-                selection = getSurroundingWord(text, selection[0]).position;
-            }
+            selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
             let insertionBefore = '> ';
             if (selection[0] > 0) {
@@ -154,7 +142,6 @@ export default {
             var {newText, insertionLength} = insertText(text, insertionBefore, selection[0]);
             newText = insertText(newText, '\n\n', selection[1] + insertionLength).newText;
             return {
-                previousText: text,
                 text: newText,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
             }
@@ -168,7 +155,6 @@ export default {
             var {newText, insertionLength} = insertText(text, '![', selection[0]);
             newText = insertText(newText, '](image-url)', selection[1] + insertionLength).newText;
             return {
-                previousText: text,
                 text: newText,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
             }
@@ -193,8 +179,7 @@ export default {
 
     getDefaultCommands: function () {
         return [
-            [this.makeHeader],
-            [this.makeBold, this.makeItalic],
+            [this.makeHeader, this.makeBold, this.makeItalic],
             [this.makeLink, this.makeQuote, this.makeImage],
             [this.makeUnorderedList, this.makeOrderedList]
         ]

@@ -1,3 +1,5 @@
+// TEXT INSERTION HELPERS
+
 /**
  * Inserts text in the given position
  * 
@@ -35,6 +37,24 @@ export function insertBeforeEachLine(text, insertion, selection) {
 
     let newText = text.slice(0, selection[0]) + modifiedText + text.slice(selection[1])
     return { newText, newSelection: [selection[0], selection[1] + insertionLength] }
+}
+
+// MISC
+
+
+/**
+ * Returns the selection of the current work if selection[0] is equal to selection[1] and carret is inside a word
+ * 
+ * @export
+ * @param {any} text
+ * @param {any} selection
+ */
+export function selectCurrentWorkIfCarretIsInsideOne(text, selection) {
+    if (text && text.length && selection[0] == selection[1]) {
+        // the user is pointing to a word
+        return getSurroundingWord(text, selection[0]).position;
+    }
+    return selection;
 }
 
 /**
