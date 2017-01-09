@@ -67,7 +67,7 @@ Example in importing styles in your `[entry_point].js`:
     import '../node_modules/normalize.css/normalize.css';
     import '../node_modules/font-awesome/css/font-awesome.css';
     import '../node_modules/react-mde/styles/react-mde.scss';
-    import '../src/styles/react-mde-command-styles.scss';
+    import '../node_modules/react-mde/styles/react-mde-command-styles.scss';
     import '../node_modules/react-mde/markdown-default-theme.scss';
 
 ## Dependencies
