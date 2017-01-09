@@ -5,12 +5,15 @@ body {
 }
 
 .container {
-
         width: 600px;
-        margin: 100px auto;
-
         border: 1px solid $default-border-color;
         margin-top: 50px;
         padding: 8px;
+        margin: 10px auto;
+}
 
+@media screen and (min-width: 768px) {
+    .container {
+        margin: 100px auto;
+    }
 }

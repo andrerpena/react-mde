@@ -6,7 +6,7 @@ A simple yet powerful and extensible Markdown Editor editor for React, inspired 
 
 ## Demo
 
-Checkout the [demo](http://andrerpena.me/react-mde) (still doens't work on mobile devices)
+Checkout the [demo](http://andrerpena.me/react-mde).
 
 ## Installing
 
