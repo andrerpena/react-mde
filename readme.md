@@ -1,8 +1,6 @@
 # react-mde
 
-A simple yet powerful and extensible Markdown Editor editor for React, inspired by GitHub. It is not supposed to run
-on mobile devices right now. I recommend you to do as GitHub does and simple render a textarea instead. I plan
-to support this graceful degradation automatically in the next releases.
+A simple yet powerful and extensible Markdown Editor editor for React, inspired by GitHub.
 
 ![image](https://github.com/andrerpena/react-mde/blob/master/assets/react-mde.png)
 
@@ -153,9 +151,8 @@ props:
 
 ## Roadmap
 
-  - Make it to gracefully degradate to a simple text-area when on a mobile device
   - Add support for @mentions and #hashtags with dropdown and autocomplete.
-  - Add support for server-rendering the markdown preview (like GitHub does)
+  - Add support for optionally server-rendering the markdown preview (like GitHub does)
 
 ## Licence
 
