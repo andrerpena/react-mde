@@ -106,7 +106,8 @@ will display a dropdown when you click them.
         }
     }
 
-props:
+
+**props:**
 
 - **type**: The type of the command.
  - **icon**: If this is a text, it will print a `font-awesome` `<i/>` element with the classes `fa fa-${icon}`. Passing `bold` will print `<i className="fa fa-bold"></i>`.
@@ -142,6 +143,10 @@ props:
 			}
 		]
 	}
+
+
+**props:**
+
 
  - **type**: The type of the command.
  - **icon**: If this is a text, it will print a `font-awesome` `<i/>` element with the classes `fa fa-${icon}`. Passing `bold` will print `<i className="fa fa-bold"></i>`.
