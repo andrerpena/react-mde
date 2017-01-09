@@ -34,13 +34,18 @@ React-mde is a completely controlled component. Example of usage:
             let commands = ReactMdeCommands.getDefaultCommands()
             return (
                 <div className="container">
-                    <ReactMde value={this.state.mdeValue} onChange={this.handleValueChange.bind(this)} commands={commands} />
+                    <ReactMde
+                        textareaId="ta1"
+                        textareaName="ta1"
+                        value={this.state.mdeValue}
+                        onChange={this.handleValueChange.bind(this)}
+                        commands={commands} />
                 </div>
             );
         }
     }
 
-    export default App;
+export default App;
 
 Props:
 

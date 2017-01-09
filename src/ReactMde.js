@@ -73,7 +73,9 @@ class ReactMde extends Component {
         let {
             value: { text, selection },
             onChange,
-            commands
+            commands,
+            textareaId,
+            textareaName,
         } = this.props;
 
         let html = this.converter.makeHtml(text) || '<p>&nbsp</p>';
@@ -102,7 +104,7 @@ class ReactMde extends Component {
             <div className="react-mde">
                 {header}
                 <div className="mde-text">
-                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" />
+                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" id={textareaId} name={textareaId}/>
                 </div>
                 <div className="mde-preview" dangerouslySetInnerHTML={{ __html: html }}>
                 </div>
