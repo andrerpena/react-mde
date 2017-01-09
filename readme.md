@@ -45,14 +45,14 @@ React-mde is a completely controlled component. Example of usage:
         }
     }
 
-export default App;
+    export default App;
 
 Props:
 
- - **value**: The current value. This property should look like `{text: "", selection: [2, 3]}` where `text` is the text and `selection` is an array with
+- **value**: The current value. This property should look like `{text: "", selection: [2, 3]}` where `text` is the text and `selection` is an array with
  the beggining and the end of the selection. Passing null to `selection` is perfectly fine.
- - **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
- - **commands**: An array or array of command objects. The first array represents groups, the second array represents commands inside that group. Take a look of how to create a custom command below.
+- **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
+- **commands**: An array or array of command objects. The first array represents groups, the second array represents commands inside that group. Take a look of how to create a custom command below.
 
 ## Styling
 
@@ -110,11 +110,10 @@ will display a dropdown when you click them.
 **props:**
 
 - **type**: The type of the command.
- - **icon**: If this is a text, it will print a `font-awesome` `<i/>` element with the classes `fa fa-${icon}`. Passing `bold` will print `<i className="fa fa-bold"></i>`.
+- **icon**: If this is a text, it will print a `font-awesome` `<i/>` element with the classes `fa fa-${icon}`. Passing `bold` will print `<i className="fa fa-bold"></i>`.
  If the passing value is a React element, it will print the react element.
- - **tooltip**: If any, it will print a tooltip with the passed text.
- - **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
- Your function should return the current `text` (after your command) and the current `selection` (after your command).
+- **tooltip**: If any, it will print a tooltip with the passed text.
+- **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection. Your function should return the current `text` (after your command) and the current `selection` (after your command).
 
 
 ### Anatomy of a dropdown command
