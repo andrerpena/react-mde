@@ -33,11 +33,13 @@ class DropdownHeaderItem extends Component {
     }
 
     componentDidMount() {
-        document.addEventListener('click', this.handleGlobalClick.bind(this), false);
+        this._handleGlobalClick = this.handleGlobalClick.bind(this);
+        document.addEventListener('click', this._handleGlobalClick, false);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('click', this.handleGlobalClick.bind(this), false);
+        if (this._handleGlobalClick)
+            document.removeEventListener('click', this._handleGlobalClick, false);
     }
 
     render() {
