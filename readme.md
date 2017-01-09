@@ -118,30 +118,30 @@ props:
 
 ### Anatomy of a dropdown command
 
-{
-    type: 'dropdown',
-    icon: 'header',
-    subCommands: [
-        {
-            content: <p className="header-1">Header</p>,
-            execute: function (text, selection) {
-                return makeHeader(text, selection, '# ');
-            }
-        },
-        {
-            content: <p className="header-2">Header</p>,
-            execute: function (text, selection) {
-                return makeHeader(text, selection, '## ');
-            }
-        },
-        {
-            content: <p className="header-3">Header</p>,
-            execute: function (text, selection) {
-                return makeHeader(text, selection, '### ');
-            }
-        }
-    ]
-}
+    {
+		type: 'dropdown',
+		icon: 'header',
+		subCommands: [
+			{
+				content: <p className="header-1">Header</p>,
+				execute: function (text, selection) {
+					return makeHeader(text, selection, '# ');
+				}
+			},
+			{
+				content: <p className="header-2">Header</p>,
+				execute: function (text, selection) {
+					return makeHeader(text, selection, '## ');
+				}
+			},
+			{
+				content: <p className="header-3">Header</p>,
+				execute: function (text, selection) {
+					return makeHeader(text, selection, '### ');
+				}
+			}
+		]
+	}
 
  - **type**: The type of the command.
  - **icon**: If this is a text, it will print a `font-awesome` `<i/>` element with the classes `fa fa-${icon}`. Passing `bold` will print `<i className="fa fa-bold"></i>`.
@@ -156,6 +156,7 @@ props:
 
 ## Roadmap
 
+  - Add support for undoing a command by clicking it twice
   - Add support for @mentions and #hashtags with dropdown and autocomplete.
   - Add support for optionally server-rendering the markdown preview (like GitHub does)
 
