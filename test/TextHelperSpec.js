@@ -1,24 +1,24 @@
 import { assert } from 'chai';
-import { insertText, getSurroundingWord } from '../src/TextHelper';
+import { insertText, getSurroundingWord } from '../src/ReactMdeTextHelper';
 
 describe("TextHelperSpec.js", function () {
     describe('insertText', function () {
         it('should work mid-string', function () {
             var text = insertText('bob school', 'went to ', 4);
-            assert.strictEqual(text, 'bob went to school');
+            assert.deepEqual(text, {newText: 'bob went to school', insertionLength: 8});
         });
         it('should work in the start', function () {
             var text = insertText('went to school', 'bob ', 0);
-            assert.strictEqual(text, 'bob went to school');
+            assert.deepEqual(text, {newText: 'bob went to school', insertionLength: 4});
         });
         it('should work in the end', function () {
             var text = insertText('bob went to', ' school', 11);
-            assert.strictEqual(text, 'bob went to school');
+            assert.deepEqual(text, {newText: 'bob went to school', insertionLength: 7});
         });
 
         it('should work with a position greater than the max', function () {
             var text = insertText('bob went to', ' school', 20);
-            assert.strictEqual(text, 'bob went to school');
+            assert.deepEqual(text, {newText: 'bob went to school', insertionLength: 7});
         });
     });
 
