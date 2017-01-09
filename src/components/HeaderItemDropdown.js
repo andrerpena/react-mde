@@ -43,11 +43,11 @@ class DropdownHeaderItem extends Component {
     }
 
     render() {
-        let icon = this.props.icon;
-        let open = this.state.open;
-        let commands = this.props.commands;
+        const icon = this.props.icon;
+        const open = this.state.open;
+        const commands = this.props.commands;
 
-        let dropdown = open
+        const dropdown = open
             ? <ul className="react-mde-dropdown" ref="dropdown" >
                 {
                     commands.map((c, i) => {
