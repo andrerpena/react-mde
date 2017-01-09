@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const HeaderGroup = (props) => (
     <ul className="mde-header-group">

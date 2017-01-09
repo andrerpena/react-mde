@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const HeaderItem = ({icon, onClick, tooltip}) => {
     // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
-    var iconElement = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"></i>
+    var iconElement = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"></i>;
 
     let buttonProps = {};
     if (tooltip) {

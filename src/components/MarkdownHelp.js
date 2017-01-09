@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const MarkdownHelp = ({helpText = 'Markdown styling is supported', markdownReferenceUrl = 'http://commonmark.org/help/'}) => {
     return <a className="markdown-help" href={markdownReferenceUrl} target="_blank">

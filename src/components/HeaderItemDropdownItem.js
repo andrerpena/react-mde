@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const HeaderItemDropdownItem = ({content, onClick}) => {
     // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
