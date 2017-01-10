@@ -8,6 +8,6 @@ const MarkdownHelp = ({helpText = 'Markdown styling is supported', markdownRefer
         </svg>
         <span className="markdown-help-text">{helpText}</span>
     </a>;
-}
+};
 
 export default MarkdownHelp;

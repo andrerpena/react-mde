@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-const HeaderGroup = (props) => (
+const propTypes = {
+    children: PropTypes.node.isRequired
+};
+
+const HeaderGroup = ({ children }) => (
     <ul className="mde-header-group">
-        {props.children}
+        {children}
     </ul>
 );
+
+HeaderGroup.propTypes = propTypes;
 
 export default HeaderGroup;
