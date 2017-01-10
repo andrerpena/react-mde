@@ -154,7 +154,7 @@ will display a dropdown when you click them.
  If the passing value is a React element, it will print the react element.
  - **subCommands**: A list of commands that will dropdown when you click the button.
 
- **subCommands** is an array of objects with these props:
+**subCommands** is an array of objects with the following props:
 
  - **content**: A React component that will be displayed within the `li`.
  - **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
