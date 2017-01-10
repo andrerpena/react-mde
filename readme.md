@@ -49,6 +49,8 @@ React-mde is a completely controlled component. Example of usage:
 
 Props:
 
+- **textareaId**: The id of the textarea.
+- **textareaName**: The name of the textarea.
 - **value**: The current value. This property should look like `{text: "", selection: [2, 3]}` where `text` is the text and `selection` is an array with
  the beggining and the end of the selection. Passing null to `selection` is perfectly fine.
 - **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
@@ -56,7 +58,7 @@ Props:
 
 ## Styling
 
-2 styles from React-mde should be added:
+The following tyles from React-mde should be added:
 
  - **react-mde.scss**: The styling of the component itself.
  - **react-mde-command-styles**: This is the styling for the built-in commands. If these commands are not going to be used. This doesn't have to be included.
