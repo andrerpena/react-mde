@@ -63,7 +63,7 @@ class DropdownHeaderItem extends Component {
 
     render() {
         const { icon, commands } = this.props;
-        const { open } = this.state.open;
+        const { open } = this.state;
 
         const items = commands.map((command, index) => {
             return (
