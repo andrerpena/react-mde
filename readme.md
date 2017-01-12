@@ -12,6 +12,17 @@ Checkout the [demo](http://andrerpena.me/react-mde).
 
     npm install --save react-mde
 
+## Dependencies
+
+`React-mde` currently depends on:
+
+- Font Awesome - For the icons (this dependency will be removed soon)
+- Showdown - For rendering the markdown preview
+ 
+So...
+
+    npm install --save showdown font-awesome
+
 ## Using
 
 React-mde is a completely controlled component. Example of usage:
@@ -60,24 +71,19 @@ Props:
 
 The following tyles from React-mde should be added:
 
- - **react-mde.scss**: The styling of the component itself.
- - **react-mde-command-styles**: This is the styling for the built-in commands. If these commands are not going to be used. This doesn't have to be included.
- - **markdown-default-theme.scss**: The markdown theme to be used inside the preview box.
+ - **react-mde/lib/styles/react-mde.scss**: The styling of the component itself.
+ - **react-mde/lib/styles/react-mde-command-styles.scss**: This is the styling for the built-in commands. If these commands are not going to be used. This doesn't have to be included.
+ - **react-mde/lib/styles/markdown-default-theme.scss**: The markdown theme to be used inside the preview box.
 
 Example in importing styles in your `[entry_point].js`:
 
-    import '../node_modules/normalize.css/normalize.css';
-    import '../node_modules/font-awesome/css/font-awesome.css';
-    import '../node_modules/react-mde/styles/react-mde.scss';
-    import '../node_modules/react-mde/styles/react-mde-command-styles.scss';
-    import '../node_modules/react-mde/markdown-default-theme.scss';
+    import 'normalize.css/normalize.css';
+    import 'font-awesome/css/font-awesome.css';
+    import 'react-mde/lib/styles/react-mde.scss';
+    import 'react-mde/lib/styles/react-mde-command-styles.scss';
+    import 'react-mde/lib/styles/markdown-default-theme.scss';
+    import './styles/demo.scss';
 
-## Dependencies
-
-`React-mde` currently depends on:
-
- - Font Awesome - For the icons
- - Showdown - For rendering the markdown preview
 
 ## Commands
 
