@@ -69,7 +69,7 @@ Props:
 
 ## Styling
 
-The following tyles from React-mde should be added:
+The following tyles from React-mde should be added: (Both .scss and .css files are available. No need to use sass-loader if you don't want)
 
  - **react-mde/lib/styles/react-mde.scss**: The styling of the component itself.
  - **react-mde/lib/styles/react-mde-command-styles.scss**: This is the styling for the built-in commands. If these commands are not going to be used. This doesn't have to be included.
@@ -84,6 +84,9 @@ Example in importing styles in your `[entry_point].js`:
     import 'react-mde/lib/styles/markdown-default-theme.scss';
     import './styles/demo.scss';
 
+## Couldn't make this work on your project?
+
+This is the minimum setup app to work with `react-mde`: https://github.com/andrerpena/react-mde-test-app
 
 ## Commands
 
