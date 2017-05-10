@@ -106,7 +106,7 @@ export default {
         execute(text = '', selection) {
             selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
-            if (text.slice(selection[0], selection[1]).indexOf('\n') == -1) {
+            if (text.slice(selection[0], selection[1]).indexOf('\n') === -1) {
                 // when there's no breaking line
                 return makeACommandThatInsertsBeforeAndAfter(text, selection, '`');
             }
@@ -140,10 +140,10 @@ export default {
         icon: 'picture-o',
         tooltip: 'Insert a picture',
         execute(text, selection) {
-            let { textAfterFirstInsertion, insertionLength } = insertText(text, '![', selection[0]);
-            textAfterFirstInsertion = insertText(textAfterFirstInsertion, '](image-url)', selection[1] + insertionLength).textAfterFirstInsertion;
+            const { textAfterFirstInsertion, insertionLength } = insertText(text, '![', selection[0]);
+            const finalText = insertText(textAfterFirstInsertion, '](image-url)', selection[1] + insertionLength).newText;
             return {
-                text: textAfterFirstInsertion,
+                text: finalText,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
             };
         }
