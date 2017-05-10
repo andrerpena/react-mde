@@ -6,6 +6,7 @@
         "import"
     ],
     "rules": {
+        "no-continue": 0,
         "indent": [
             "error",
             4,

@@ -8,6 +8,7 @@
     "start": "cross-env NODE_ENV=development babel-node ./demo/server.js",
     "build": "cross-env NODE_ENV=production gulp build",
     "build-demo": "cross-env NODE_ENV=production gulp build-demo",
+    "lint": "eslint ./src ./test ./demo",
     "lint-fix": "eslint --fix ./src ./test ./demo"
   },
   "repository": {
