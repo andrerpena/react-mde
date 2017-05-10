@@ -25,7 +25,7 @@ export function insertText(text, insertionText, position) {
  */
 export function insertBefore(text, insertionText, selection, includeTheInsertionInTheSelectioStart = true) {
     const textInsertion = insertText(text, insertionText, selection[0]);
-    const newText = textInsertion.newText;
+    const newText = textInsertion.textAfterFirstInsertion;
     const insertionLength = textInsertion.insertionLength;
     let newSelection;
 
@@ -51,7 +51,7 @@ export function insertBefore(text, insertionText, selection, includeTheInsertion
  */
 export function insertAfter(text, insertionText, selection) {
     const textInsertion = insertText(text, insertionText, selection[1]);
-    const newText = textInsertion.newText;
+    const newText = textInsertion.textAfterFirstInsertion;
     const insertionLength = textInsertion.insertionLength;
     const newSelection = [selection[0], selection[1] + insertionLength];
 
@@ -131,7 +131,7 @@ export function insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection)
     // if line-breaks have to be added before
     if (insertionBefore) {
         const textInsertion = insertText(text, insertionBefore, selection[0]);
-        newText = textInsertion.newText;
+        newText = textInsertion.textAfterFirstInsertion;
         newSelection = selection.map(s => s + textInsertion.insertionLength);
     }
 
@@ -156,7 +156,7 @@ export function insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection) {
     // if line-breaks have to be added before
     if (insertionAfter) {
         const textInsertion = insertText(text, insertionAfter, selection[1]);
-        newText = textInsertion.newText;
+        newText = textInsertion.textAfterFirstInsertion;
         newSelection = selection.map(s => s + textInsertion.insertionLength);
     }
 

@@ -5,14 +5,10 @@ import {
     insertText,
     insertBefore,
     insertAfter,
-    insertBeforeEachLine,
     insertBreaksBeforeSoThatTheresAnEmptyLineBefore,
     insertBreaksAfterSoThatTheresAnEmptyLineAfter,
     // others
-    selectCurrentWorkIfCarretIsInsideOne,
-    getSurroundingWord,
-    getBreaksNeededForEmptyLineBefore,
-    getBreaksNeededForEmptyLineAfter
+    selectCurrentWorkIfCarretIsInsideOne
 } from './ReactMdeTextHelper';
 
 import {
@@ -68,10 +64,10 @@ export default {
         icon: 'link',
         tooltip: 'Insert a link',
         execute(text, selection) {
-            let { newText, insertionLength } = insertText(text, '[', selection[0]);
-            newText = insertText(newText, '](url)', selection[1] + insertionLength).newText;
+            const { textAfterFirstInsertion, insertionLength } = insertText(text, '[', selection[0]);
+            const finalText = insertText(textAfterFirstInsertion, '](url)', selection[1] + insertionLength).textAfterFirstInsertion;
             return {
-                text: newText,
+                text: finalText,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
             };
         }
@@ -144,10 +140,10 @@ export default {
         icon: 'picture-o',
         tooltip: 'Insert a picture',
         execute(text, selection) {
-            let { newText, insertionLength } = insertText(text, '![', selection[0]);
-            newText = insertText(newText, '](image-url)', selection[1] + insertionLength).newText;
+            let { textAfterFirstInsertion, insertionLength } = insertText(text, '![', selection[0]);
+            textAfterFirstInsertion = insertText(textAfterFirstInsertion, '](image-url)', selection[1] + insertionLength).textAfterFirstInsertion;
             return {
-                text: newText,
+                text: textAfterFirstInsertion,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
             };
         }

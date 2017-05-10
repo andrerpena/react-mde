@@ -3,9 +3,7 @@ import {
     insertBefore,
     insertBeforeEachLine,
     insertBreaksBeforeSoThatTheresAnEmptyLineBefore,
-    insertBreaksAfterSoThatTheresAnEmptyLineAfter,
-    getBreaksNeededForEmptyLineBefore,
-    getBreaksNeededForEmptyLineAfter
+    insertBreaksAfterSoThatTheresAnEmptyLineAfter
 } from './ReactMdeTextHelper';
 
 import {
@@ -22,8 +20,6 @@ import {
  */
 export function makeList(text, selection, insertionBeforeEachLine) {
     let textInsertion;
-    const insertionBefore = '';
-    const insertionAfter = '';
 
     selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
@@ -70,10 +66,10 @@ export function makeHeader(text, selection, insertionBefore) {
 export function makeACommandThatInsertsBeforeAndAfter(text, selection, insertion) {
     selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
     // the user is selecting a word section
-    let { newText, insertionLength } = insertText(text, insertion, selection[0]);
-    newText = insertText(newText, insertion, selection[1] + insertionLength).newText;
+    const { textAfterFirstInsertion, insertionLength } = insertText(text, insertion, selection[0]);
+    const finalText = insertText(textAfterFirstInsertion, insertion, selection[1] + insertionLength).newText;
     return {
-        text: newText,
+        text: finalText,
         selection: [selection[0] + insertionLength, selection[1] + insertionLength]
     };
 }
