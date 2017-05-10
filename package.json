@@ -7,7 +7,8 @@
     "test": "mocha --timeout 15000 --compilers js:babel-register ./test/*Spec.js",
     "start": "cross-env NODE_ENV=development babel-node ./demo/server.js",
     "build": "cross-env NODE_ENV=production gulp build",
-    "build-demo": "cross-env NODE_ENV=production gulp build-demo"
+    "build-demo": "cross-env NODE_ENV=production gulp build-demo",
+    "lint-fix": "eslint --fix ./src ./test ./demo"
   },
   "repository": {
     "type": "git",
@@ -54,7 +55,12 @@
     "style-loader": "^0.13.1",
     "webpack": "^1.13.3",
     "webpack-dev-middleware": "^1.8.4",
-    "webpack-hot-middleware": "^2.13.2"
+    "webpack-hot-middleware": "^2.13.2",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3"
   },
   "homepage": "https://github.com/andrerpena/react-mde.git#readme",
   "dependencies": {

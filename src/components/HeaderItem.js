@@ -12,7 +12,7 @@ const propTypes = {
 
 const HeaderItem = ({ icon, onClick, tooltip }) => {
     // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
-    const iconElement = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"></i>;
+    const iconElement = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true" />;
 
     let buttonProps = {};
 
@@ -20,7 +20,7 @@ const HeaderItem = ({ icon, onClick, tooltip }) => {
         buttonProps = {
             'aria-label': tooltip,
             className: 'tooltipped'
-        }
+        };
     }
 
     return (

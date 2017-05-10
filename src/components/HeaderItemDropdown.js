@@ -65,13 +65,11 @@ class DropdownHeaderItem extends Component {
         const { icon, commands } = this.props;
         const { open } = this.state;
 
-        const items = commands.map((command, index) => {
-            return (
-                <HeaderItemDropdownItem key={index} onClick={(e) => this.handleOnClickCommand(e, command)}>
-                    {command.content}
-                </HeaderItemDropdownItem>
-            );
-        });
+        const items = commands.map((command, index) => (
+            <HeaderItemDropdownItem key={index} onClick={e => this.handleOnClickCommand(e, command)}>
+                {command.content}
+            </HeaderItemDropdownItem>
+            ));
 
         const dropdown = open
             ? <ul className="react-mde-dropdown" ref={ref => this.dropdown = ref}>{items}</ul>
@@ -80,7 +78,7 @@ class DropdownHeaderItem extends Component {
         return (
             <li className="mde-header-item">
                 <button type="button" ref={ref => this.dropdownOpener = ref} onClick={this.handleOpenDropdown}>
-                    <i className={`fa fa-${icon}`} aria-hidden="true"></i>
+                    <i className={`fa fa-${icon}`} aria-hidden="true" />
                 </button>
                 {dropdown}
             </li>

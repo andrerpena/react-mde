@@ -6,14 +6,14 @@ import {
     insertBreaksAfterSoThatTheresAnEmptyLineAfter,
     getBreaksNeededForEmptyLineBefore,
     getBreaksNeededForEmptyLineAfter
-} from './ReactMdeTextHelper'
+} from './ReactMdeTextHelper';
 
 import {
     selectCurrentWorkIfCarretIsInsideOne
-} from './ReactMdeTextHelper'
+} from './ReactMdeTextHelper';
 
 /**
- * Helper for creating commands that make lists 
+ * Helper for creating commands that make lists
  * @export
  * @param {any} text
  * @param {any} selection
@@ -21,10 +21,9 @@ import {
  * @returns
  */
 export function makeList(text, selection, insertionBeforeEachLine) {
-
     let textInsertion;
-    var insertionBefore = '';
-    var insertionAfter = '';
+    const insertionBefore = '';
+    const insertionAfter = '';
 
     selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
@@ -44,9 +43,9 @@ export function makeList(text, selection, insertionBeforeEachLine) {
     selection = textInsertion.newSelection;
 
     return {
-        text: text,
-        selection: selection
-    }
+        text,
+        selection
+    };
 }
 
 /**
@@ -59,22 +58,22 @@ export function makeList(text, selection, insertionBeforeEachLine) {
 export function makeHeader(text, selection, insertionBefore) {
     selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
     // the user is selecting a word section
-    let insertionText = insertBefore(text, insertionBefore, selection, false);
-    let newText = insertionText.newText;
-    let newSelection = insertionText.newSelection;
+    const insertionText = insertBefore(text, insertionBefore, selection, false);
+    const newText = insertionText.newText;
+    const newSelection = insertionText.newSelection;
     return {
         text: newText,
         selection: newSelection
-    }
+    };
 }
 
 export function makeACommandThatInsertsBeforeAndAfter(text, selection, insertion) {
     selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
     // the user is selecting a word section
-    var {newText, insertionLength} = insertText(text, insertion, selection[0]);
+    let { newText, insertionLength } = insertText(text, insertion, selection[0]);
     newText = insertText(newText, insertion, selection[1] + insertionLength).newText;
     return {
         text: newText,
         selection: [selection[0] + insertionLength, selection[1] + insertionLength]
-    }
+    };
 }

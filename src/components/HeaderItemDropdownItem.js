@@ -5,15 +5,13 @@ const propTypes = {
     children: PropTypes.node.isRequired
 };
 
-const HeaderItemDropdownItem = ({ children, onClick }) => {
-    return (
-        <li className="mde-dropdown-header-item">
-            <button type="button" onClick={onClick}>
-                {children}
-            </button>
-        </li>
+const HeaderItemDropdownItem = ({ children, onClick }) => (
+    <li className="mde-dropdown-header-item">
+        <button type="button" onClick={onClick}>
+            {children}
+        </button>
+    </li>
     );
-};
 
 HeaderItemDropdownItem.propTypes = propTypes;
 

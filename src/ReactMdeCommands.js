@@ -29,19 +29,19 @@ export default {
         subCommands: [
             {
                 content: <p className="header-1">Header</p>,
-                execute: function (text, selection) {
+                execute(text, selection) {
                     return makeHeader(text, selection, '# ');
                 }
             },
             {
                 content: <p className="header-2">Header</p>,
-                execute: function (text, selection) {
+                execute(text, selection) {
                     return makeHeader(text, selection, '## ');
                 }
             },
             {
                 content: <p className="header-3">Header</p>,
-                execute: function (text, selection) {
+                execute(text, selection) {
                     return makeHeader(text, selection, '### ');
                 }
             }
@@ -51,7 +51,7 @@ export default {
     makeBold: {
         icon: 'bold',
         tooltip: 'Add bold text',
-        execute: function (text, selection) {
+        execute(text, selection) {
             return makeACommandThatInsertsBeforeAndAfter(text, selection, '**');
         }
     },
@@ -59,7 +59,7 @@ export default {
     makeItalic: {
         icon: 'italic',
         tooltip: 'Add italic text',
-        execute: function (text, selection) {
+        execute(text, selection) {
             return makeACommandThatInsertsBeforeAndAfter(text, selection, '_');
         }
     },
@@ -67,20 +67,20 @@ export default {
     makeLink: {
         icon: 'link',
         tooltip: 'Insert a link',
-        execute: function (text, selection) {
-            var {newText, insertionLength} = insertText(text, '[', selection[0]);
+        execute(text, selection) {
+            let { newText, insertionLength } = insertText(text, '[', selection[0]);
             newText = insertText(newText, '](url)', selection[1] + insertionLength).newText;
             return {
                 text: newText,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
-            }
+            };
         }
     },
 
     makeQuote: {
         icon: 'quote-right',
         tooltip: 'Insert a quote',
-        execute: function (text, selection) {
+        execute(text, selection) {
             selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
             let textInsertion;
@@ -98,67 +98,65 @@ export default {
             selection = textInsertion.newSelection;
 
             return {
-                text: text,
-                selection: selection
-            }
+                text,
+                selection
+            };
         }
     },
 
     makeCode: {
         icon: 'code',
         tooltip: 'Insert code',
-        execute: function (text = "", selection) {
+        execute(text = '', selection) {
             selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
 
             if (text.slice(selection[0], selection[1]).indexOf('\n') == -1) {
                 // when there's no breaking line
                 return makeACommandThatInsertsBeforeAndAfter(text, selection, '`');
             }
-            else {
-                let textInsertion;
+            let textInsertion;
 
                 // insert breaks before, if needed
-                textInsertion = insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection);
-                text = textInsertion.newText;
-                selection = textInsertion.newSelection;
+            textInsertion = insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection);
+            text = textInsertion.newText;
+            selection = textInsertion.newSelection;
 
                 // inserts ```\n before
-                textInsertion = insertBefore(text, '```\n', selection, false);
-                text = textInsertion.newText;
-                selection = textInsertion.newSelection;
+            textInsertion = insertBefore(text, '```\n', selection, false);
+            text = textInsertion.newText;
+            selection = textInsertion.newSelection;
 
                 // inserts ```\n after
-                textInsertion = insertAfter(text, '\n```', selection, false);
-                text = textInsertion.newText;
-                selection = textInsertion.newSelection;
+            textInsertion = insertAfter(text, '\n```', selection, false);
+            text = textInsertion.newText;
+            selection = textInsertion.newSelection;
 
                 // insert breaks after, if needed
-                textInsertion = insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection);
-                text = textInsertion.newText;
-                selection = textInsertion.newSelection;
+            textInsertion = insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection);
+            text = textInsertion.newText;
+            selection = textInsertion.newSelection;
 
-                return { text, selection }
-            }
+            return { text, selection };
         }
     },
 
     makeImage: {
         icon: 'picture-o',
         tooltip: 'Insert a picture',
-        execute: function (text, selection) {
-            var {newText, insertionLength} = insertText(text, '![', selection[0]);
+        execute(text, selection) {
+            let { newText, insertionLength } = insertText(text, '![', selection[0]);
             newText = insertText(newText, '](image-url)', selection[1] + insertionLength).newText;
             return {
                 text: newText,
                 selection: [selection[0] + insertionLength, selection[1] + insertionLength]
-            }
+            };
         }
     },
 
     makeUnorderedList: {
         icon: 'list-ul',
         tooltip: 'Add a bulleted list',
-        execute: function (text, selection) {
+        execute(text, selection) {
             return makeList(text, selection, '- ');
         }
     },
@@ -166,17 +164,17 @@ export default {
     makeOrderedList: {
         icon: 'list-ol',
         tooltip: 'Add a numbered list',
-        execute: function (text, selection) {
+        execute(text, selection) {
             return makeList(text, selection, (item, index) => `${index + 1}. `);
         }
     },
 
-    getDefaultCommands: function () {
+    getDefaultCommands() {
         return [
             [this.makeHeader, this.makeBold, this.makeItalic],
             [this.makeLink, this.makeQuote, this.makeCode, this.makeImage],
             [this.makeUnorderedList, this.makeOrderedList]
-        ]
+        ];
     }
 
-}
+};
