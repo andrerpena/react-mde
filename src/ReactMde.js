@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import ReactMdeCommands from './ReactMdeCommands';
+import React, { PropTypes, Component } from 'react';
 import showdown from 'showdown';
 import HeaderGroup from './components/HeaderGroup';
 import HeaderItem from './components/HeaderItem';
 import HeaderItemDropdown from './components/HeaderItemDropdown';
-import HeaderItemDropdownItem from './components/HeaderItemDropdownItem';
 import MarkdownHelp from './components/MarkdownHelp';
 
 import {
@@ -13,10 +11,6 @@ import {
 } from './ReactMdeSelectionHelper';
 
 class ReactMde extends Component {
-
-    static propTypes = {
-        commands: React.PropTypes.array
-    }
 
     constructor() {
         super();
@@ -46,9 +40,8 @@ class ReactMde extends Component {
             value: { text, selection },
             onChange
         } = this.props;
-        let textarea = this.refs.textarea;
 
-        var newValue = command.execute(text, getSelection(textarea));
+        const newValue = command.execute(text, getSelection(this.textarea));
 
         // let's select EVERYTHING and replace with the result of the command.
         // This will cause an 'inconvenience' which is: Ctrl + Z will select the whole
@@ -56,11 +49,11 @@ class ReactMde extends Component {
         // with it. I've tried everything in my reach, including reimplementing the textarea
         // history. That caused more problems than it solved.
 
-        this.refs.textarea.focus();
-        setSelection(this.refs.textarea, 0, this.refs.textarea.value.length);
-        document.execCommand("insertText", false, newValue.text);
+        this.textarea.focus();
+        setSelection(this.textarea, 0, this.textarea.value.length);
+        document.execCommand('insertText', false, newValue.text);
 
-        setSelection(this.refs.textarea, newValue.selection[0], newValue.selection[1]);
+        setSelection(this.textarea, newValue.selection[0], newValue.selection[1]);
     }
 
     /**
@@ -104,7 +97,7 @@ class ReactMde extends Component {
             <div className="react-mde">
                 {header}
                 <div className="mde-text">
-                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref="textarea" id={textareaId} name={textareaId}/>
+                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref={(c) => { this.textarea = c; }} id={textareaId} name={textareaId} />
                 </div>
                 <div className="mde-preview" dangerouslySetInnerHTML={{ __html: html }}>
                 </div>
@@ -114,6 +107,17 @@ class ReactMde extends Component {
             </div>
         );
     }
+}
+
+ReactMde.propTypes = {
+    commands: PropTypes.array,
+    value: PropTypes.string,
+    onChange: PropTypes.func
+};
+
+ReactMde.defaultProps = {
+    commands: [],
+    value: ''
 }
 
 export default ReactMde;
