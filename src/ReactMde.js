@@ -112,19 +112,17 @@ class ReactMde extends Component {
 
 ReactMde.propTypes = {
     commands: PropTypes.array,
-    value: PropTypes.string,
-    onChange: PropTypes.func,
+    value: PropTypes.shape({
+        text: PropTypes.string.isRequired,
+        selection: PropTypes.arrayOf(PropTypes.number)
+    }).isRequired,
+    onChange: PropTypes.func.isRequired,
     textareaId: PropTypes.string.isRequired,
     textareaName: PropTypes.string.isRequired
 };
 
 ReactMde.defaultProps = {
-    commands: [],
-    value: PropTypes.shape({
-        selection: PropTypes.arrayOf(PropTypes.number).isRequired,
-        text: PropTypes.string.isRequired
-    }).isRequired,
-    onChange: () => { }
+    commands: undefined
 };
 
 export default ReactMde;
