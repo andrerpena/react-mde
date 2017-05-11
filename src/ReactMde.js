@@ -15,6 +15,7 @@ class ReactMde extends Component {
     constructor() {
         super();
         this.converter = new showdown.Converter();
+        this.handleValueChange = this.handleValueChange.bind(this);
     }
 
     /**
@@ -23,10 +24,7 @@ class ReactMde extends Component {
      * @memberOf ReactMde
      */
     handleValueChange(e) {
-        let {
-            value: { text, selection },
-            onChange
-        } = this.props;
+        const { onChange } = this.props;
         onChange({ text: e.target.value, selection: null });
     }
 
@@ -36,10 +34,7 @@ class ReactMde extends Component {
      * @memberOf ReactMde
      */
     executeCommand(command) {
-        let {
-            value: { text, selection },
-            onChange
-        } = this.props;
+        const { value: { text } } = this.props;
 
         const newValue = command.execute(text, getSelection(this.textarea));
 
@@ -62,45 +57,38 @@ class ReactMde extends Component {
      * @memberOf ReactMde
      */
     render() {
-
-        let {
-            value: { text, selection },
-            onChange,
+        const {
+            value: { text },
             commands,
             textareaId,
-            textareaName,
+            textareaName
         } = this.props;
 
-        let html = this.converter.makeHtml(text) || '<p>&nbsp</p>';
+        const html = this.converter.makeHtml(text) || '<p>&nbsp</p>';
 
         let header = null;
         if (commands) {
-            header = <div className="mde-header">
+            header = (<div className="mde-header">
                 {
-                    commands.map((cg, i) => {
-                        return <HeaderGroup key={i}>
-                            {
-                                cg.map((c, j) => {
-                                    if (c.type == 'dropdown')
-                                        return <HeaderItemDropdown key={j} icon={c.icon} commands={c.subCommands} onCommand={c => this.executeCommand(c)} />
-                                    else
-                                        return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip} onClick={() => this.executeCommand(c)} />
-                                })
-                            }
-                        </HeaderGroup>
-                    })
+                    commands.map((cg, i) => <HeaderGroup key={i}>
+                        {
+                            cg.map((c, j) => {
+                                if (c.type === 'dropdown') { return <HeaderItemDropdown key={j} icon={c.icon} commands={c.subCommands} onCommand={cmd => this.executeCommand(cmd)} />; }
+                                return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip} onClick={() => this.executeCommand(c)} />;
+                            })
+                        }
+                    </HeaderGroup>)
                 }
-            </div>
+            </div>);
         }
 
         return (
             <div className="react-mde">
                 {header}
                 <div className="mde-text">
-                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref={(c) => { this.textarea = c; }} id={textareaId} name={textareaId} />
+                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref={(c) => { this.textarea = c; }} id={textareaId} name={textareaName} />
                 </div>
-                <div className="mde-preview" dangerouslySetInnerHTML={{ __html: html }}>
-                </div>
+                <div className="mde-preview" dangerouslySetInnerHTML={{ __html: html }} />
                 <div className="mde-help">
                     <MarkdownHelp />
                 </div>
@@ -112,12 +100,18 @@ class ReactMde extends Component {
 ReactMde.propTypes = {
     commands: PropTypes.array,
     value: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    textareaId: PropTypes.string.isRequired,
+    textareaName: PropTypes.string.isRequired
 };
 
 ReactMde.defaultProps = {
     commands: [],
-    value: ''
-}
+    value: PropTypes.shape({
+        selection: PropTypes.arrayOf(PropTypes.number).isRequired,
+        text: PropTypes.string.isRequired
+    }).isRequired,
+    onChange: () => { }
+};
 
 export default ReactMde;

@@ -2,12 +2,9 @@ import {
     insertText,
     insertBefore,
     insertBeforeEachLine,
+    selectCurrentWorkIfCarretIsInsideOne,
     insertBreaksBeforeSoThatTheresAnEmptyLineBefore,
     insertBreaksAfterSoThatTheresAnEmptyLineAfter
-} from './ReactMdeTextHelper';
-
-import {
-    selectCurrentWorkIfCarretIsInsideOne
 } from './ReactMdeTextHelper';
 
 /**

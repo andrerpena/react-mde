@@ -43,6 +43,7 @@
             "error",
             4
         ],
+        "react/no-danger": 0,
         "react/prop-types": [
             1,
             {
