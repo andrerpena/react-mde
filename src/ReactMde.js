@@ -73,7 +73,14 @@ class ReactMde extends Component {
                     commands.map((cg, i) => <HeaderGroup key={i}>
                         {
                             cg.map((c, j) => {
-                                if (c.type === 'dropdown') { return <HeaderItemDropdown key={j} icon={c.icon} commands={c.subCommands} onCommand={cmd => this.executeCommand(cmd)} />; }
+                                if (c.type === 'dropdown') {
+                                    return (<HeaderItemDropdown
+                                        key={j}
+                                        icon={c.icon}
+                                        commands={c.subCommands}
+                                        onCommand={cmd => this.executeCommand(cmd)}
+                                    />);
+                                }
                                 return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip} onClick={() => this.executeCommand(c)} />;
                             })
                         }
@@ -86,7 +93,13 @@ class ReactMde extends Component {
             <div className="react-mde">
                 {header}
                 <div className="mde-text">
-                    <textarea onChange={this.handleValueChange.bind(this)} value={text} ref={(c) => { this.textarea = c; }} id={textareaId} name={textareaName} />
+                    <textarea
+                        onChange={this.handleValueChange}
+                        value={text}
+                        ref={(c) => { this.textarea = c; }}
+                        id={textareaId}
+                        name={textareaName}
+                    />
                 </div>
                 <div className="mde-preview" dangerouslySetInnerHTML={{ __html: html }} />
                 <div className="mde-help">

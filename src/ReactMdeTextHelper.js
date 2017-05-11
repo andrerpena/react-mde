@@ -202,8 +202,10 @@ export function getSurroundingWord(text, position) {
 
     const isWordDelimiter = c => c === ' ' || c.charCodeAt(0) === 10;
 
-    let leftIndex = 0; // leftIndex is initialized to 0 because if position is 0, it won't even enter the iteration
-    let rightIndex = text.length; // rightIndex is initialized to text.length because if position is equal to text.length it won't even enter the interation
+    // leftIndex is initialized to 0 because if position is 0, it won't even enter the iteration
+    let leftIndex = 0;
+    // rightIndex is initialized to text.length because if position is equal to text.length it won't even enter the interation
+    let rightIndex = text.length;
 
     // iterate to the left
     for (let i = position; i - 1 > -1; i--) {
