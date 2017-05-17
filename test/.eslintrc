@@ -1,0 +1,10 @@
+{
+    "env": {
+        "node": true,
+        "mocha": true
+    },
+    "rules": {
+        "no-restricted-syntax": "off",
+        "no-prototype-builtins": "off"
+    }
+}

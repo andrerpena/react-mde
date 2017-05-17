@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from 'react-dom';
+import { render } from 'react-dom';
 import App from './App';
 
 
@@ -12,7 +12,6 @@ import './styles/demo.scss';
 import '../src/styles/markdown-default-theme.scss';
 
 render(
-    <App>
-    </App>,
+    <App />,
     document.getElementById('#app_container')
 );
