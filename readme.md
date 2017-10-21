@@ -1,5 +1,5 @@
 
-> Good news! This project has been abandoned for a while but I'm back and working on a new version, now written in TypeScript but, of course, is going to be published and compiled to ES5 :). Check out the `typescript` branch. I plan to continue to move this project forward!
+> Good news! This project has been abandoned for a while but I'm back and working on a new version, now written in TypeScript but, of course, it is going to be compiled and published to ES5 :). Check out the `typescript` branch. I plan to continue to move this project forward!
 
 
 # react-mde
