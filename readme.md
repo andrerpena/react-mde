@@ -1,3 +1,7 @@
+
+> Good news! This project has been abandoned for a while but I'm back and working on a new version, now written in TypeScript but, of course, is going to be published and compiled to ES5 :). Check out the `typescript` branch. I plan to continue to move this project forward!
+
+
 # react-mde
 
 A simple yet powerful and extensible Markdown Editor editor for React, inspired by GitHub.
