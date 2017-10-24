@@ -42,7 +42,7 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.0",
     "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
+    "gulp-babel": "^7.0.0",
     "gulp-cli": "^1.2.2",
     "gulp-rename": "^1.2.2",
     "gulp-webpack": "^1.5.0",
