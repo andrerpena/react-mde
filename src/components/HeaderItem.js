@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const HeaderItem = ({ icon, onClick, tooltip }) => {
     // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
