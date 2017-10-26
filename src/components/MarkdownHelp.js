@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const MarkdownHelp = ({ helpText, markdownReferenceUrl }) => (
     <a className="markdown-help" href={markdownReferenceUrl} target="_blank" rel="noopener noreferrer">
