@@ -1,43 +1,38 @@
 // TEXT INSERTION HELPERS
 
+import { TextSelection } from './types/TextSelection';
+import { TextInsertionResult } from './types/TextInsertionResult';
+
 /**
- * Inserts text in the given position
+ * Inserts "textToBeInserted" in "text" at the "insertionPosition"
  *
  * @param {any} text
- * @param {any} insertionText
- * @param {any} position
+ * @param {any} textToInsert
+ * @param {any} insertionPosition
  * @returns
  */
-export function insertText(text, insertionText, position) {
-    const newText = [text.slice(0, position), insertionText, text.slice(position)].join('');
-    return { newText, insertionLength: insertionText.length };
+export function insertText(text: string, textToInsert: string, insertionPosition: number): TextInsertionResult {
+    const newText = [text.slice(0, insertionPosition), textToInsert, text.slice(insertionPosition)].join('');
+    return {newText, insertionLength: textToInsert.length};
 }
-
 
 /**
  * Inserts the given text before. The selection is moved ahead so the
  *
  * @export
  * @param {any} text
- * @param {any} insertionText
+ * @param {any} textToInsert
  * @param {any} selection
+ * @param selectInsertion
  * @returns
  */
-export function insertBefore(text, insertionText, selection, includeTheInsertionInTheSelectioStart = true) {
-    const textInsertion = insertText(text, insertionText, selection[0]);
-    const newText = textInsertion.textAfterFirstInsertion;
-    const insertionLength = textInsertion.insertionLength;
-    let newSelection;
-
-    if (includeTheInsertionInTheSelectioStart) {
-        // in this case, the text inserted before will be part of the resulting selection
-        newSelection = [selection[0], selection[1] + insertionLength];
-    } else {
-        // in this case, the inserted before will NOT be part of the resulting selection
-        newSelection = selection.map(s => s + textInsertion.insertionLength);
-    }
-
-    return { newText, newSelection };
+export function insertBefore(text: string, textToInsert: string, selection: TextSelection, selectInsertion: boolean = true): TextInsertionResult {
+    const textInsertion = insertText(text, textToInsert, selection.start);
+    let newSelection: TextSelection = {
+        start: selectInsertion ? selection.start : selection.start + textInsertion.insertionLength,
+        end: selection.end + textInsertion.insertionLength,
+    };
+    return { ...textInsertion, newSelection };
 }
 
 /**
@@ -49,13 +44,13 @@ export function insertBefore(text, insertionText, selection, includeTheInsertion
  * @param {any} selection
  * @returns
  */
-export function insertAfter(text, insertionText, selection) {
-    const textInsertion = insertText(text, insertionText, selection[1]);
+export function insertAfter(text: string, insertionText: string, selection: TextSelection) {
+    const textInsertion = insertText(text, insertionText, selection.end);
     const newText = textInsertion.textAfterFirstInsertion;
     const insertionLength = textInsertion.insertionLength;
     const newSelection = [selection[0], selection[1] + insertionLength];
 
-    return { newText, newSelection };
+    return {newText, newSelection};
 }
 
 /**
@@ -73,13 +68,15 @@ export function getBreaksNeededForEmptyLineBefore(text = '', startPosition) {
     let isInFirstLine = true;
     for (let i = startPosition - 1; i >= 0 && (neededBreaks >= 0); i--) {
         switch (text.charCodeAt(i)) {
-            case 32: continue;
+            case 32:
+                continue;
             case 10: {
                 neededBreaks--;
                 isInFirstLine = false;
                 break;
             }
-            default: return neededBreaks;
+            default:
+                return neededBreaks;
         }
     }
     return isInFirstLine ? 0 : neededBreaks;
@@ -101,13 +98,15 @@ export function getBreaksNeededForEmptyLineAfter(text, startPosition) {
     let isInLastLine = true;
     for (let i = startPosition; i < text.length && (neededBreaks >= 0); i++) {
         switch (text.charCodeAt(i)) {
-            case 32: continue;
+            case 32:
+                continue;
             case 10: {
                 neededBreaks--;
                 isInLastLine = false;
                 break;
             }
-            default: return neededBreaks;
+            default:
+                return neededBreaks;
         }
     }
     return isInLastLine ? 0 : neededBreaks;
@@ -135,7 +134,7 @@ export function insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection)
         newSelection = selection.map(s => s + textInsertion.insertionLength);
     }
 
-    return { newText, newSelection };
+    return {newText, newSelection};
 }
 
 /**
@@ -160,7 +159,7 @@ export function insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection) {
         newSelection = selection.map(s => s + textInsertion.insertionLength);
     }
 
-    return { newText, newSelection };
+    return {newText, newSelection};
 }
 
 
@@ -185,7 +184,7 @@ export function insertBeforeEachLine(text, insertion, selection) {
     }).join('\n');
 
     const newText = text.slice(0, selection[0]) + modifiedText + text.slice(selection[1]);
-    return { newText, newSelection: [selection[0], selection[1] + insertionLength] };
+    return {newText, newSelection: [selection[0], selection[1] + insertionLength]};
 }
 
 // MISC
@@ -225,7 +224,7 @@ export function getSurroundingWord(text, position) {
 
     return {
         word: text.slice(leftIndex, rightIndex),
-        position: [leftIndex, rightIndex]
+        position: [leftIndex, rightIndex],
     };
 }
 
