@@ -5,10 +5,10 @@ import {
     insertText,
     insertBefore,
     insertAfter,
-    insertBreaksBeforeSoThatTheresAnEmptyLineBefore,
-    insertBreaksAfterSoThatTheresAnEmptyLineAfter,
+    insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
+    insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
     // others
-    selectCurrentWorkIfCarretIsInsideOne
+    selectCurrentWordIfCaretIsInsideOne
 } from './ReactMdeTextHelper';
 
 import {
@@ -77,11 +77,11 @@ export default {
         icon: 'quote-right',
         tooltip: 'Insert a quote',
         execute(text, selection) {
-            selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
+            selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
 
             let textInsertion;
 
-            textInsertion = insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection);
+            textInsertion = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
@@ -89,7 +89,7 @@ export default {
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
-            textInsertion = insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection);
+            textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
@@ -104,7 +104,7 @@ export default {
         icon: 'code',
         tooltip: 'Insert code',
         execute(text = '', selection) {
-            selection = selectCurrentWorkIfCarretIsInsideOne(text, selection);
+            selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
 
             if (text.slice(selection[0], selection[1]).indexOf('\n') === -1) {
                 // when there's no breaking line
@@ -113,7 +113,7 @@ export default {
             let textInsertion;
 
                 // insert breaks before, if needed
-            textInsertion = insertBreaksBeforeSoThatTheresAnEmptyLineBefore(text, selection);
+            textInsertion = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
@@ -128,7 +128,7 @@ export default {
             selection = textInsertion.newSelection;
 
                 // insert breaks after, if needed
-            textInsertion = insertBreaksAfterSoThatTheresAnEmptyLineAfter(text, selection);
+            textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
