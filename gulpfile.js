@@ -34,7 +34,7 @@
 // });
 //
 // gulp.task('build-demo', ['copy-index'], function () {
-//     return gulp.src("./demo/client.js")
+//     return gulp.src("./demo/client.tsx")
 //         .pipe(webpack(webpackConfig))
 //         .pipe(gulp.dest('./docs'));
 // });

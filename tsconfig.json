@@ -5,11 +5,10 @@
         "noImplicitAny": true,
         "module": "commonjs",
         "jsx": "react",
-        "target": "es2015",
+        "target": "es5",
         "allowJs": true,
         "typeRoots": [
-            "./node_modules/@types",
-            "./src/typings"
+            "./node_modules/@types"
         ],
         "lib": [
             "dom",
@@ -22,6 +21,7 @@
     "include": [
         "./src/**/*.ts",
         "./src/**/*.tsx",
-        "./test/**/*.ts"
+        "./test/**/*.ts",
+        "./demo/**/*.ts"
     ]
 }

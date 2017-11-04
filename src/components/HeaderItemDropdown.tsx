@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Command } from '../types/Command';
 import { HeaderItemDropdownItem } from './HeaderItemDropdownItem';
+import { SubCommand } from '../types/SubCommand';
 
 interface HeaderItemDropdownProps {
     icon: string;
-    commands: Command[];
-    onCommand: (command: Command) => void;
+    commands: SubCommand[];
+    onCommand: (command: SubCommand) => void;
 }
 
 interface HeaderItemDropdownState {
@@ -59,7 +59,7 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
             && !this.dropdownOpener.contains(target);
     }
 
-    handleOnClickCommand(e: React.SyntheticEvent<any>, command: Command) {
+    handleOnClickCommand(e: React.SyntheticEvent<any>, command: SubCommand) {
         const {onCommand} = this.props;
         onCommand(command);
         this.closeDropdown();

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 interface MarkdownHelpProps {
-    helpText: string;
-    markdownReferenceUrl: string;
+    helpText?: string;
+    markdownReferenceUrl?: string;
 }
 
 export const MarkdownHelp: React.SFC<MarkdownHelpProps> = (props) => {

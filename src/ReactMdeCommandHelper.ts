@@ -6,6 +6,8 @@ import {
     insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
     insertBreaksAfterSoThatThereIsAnEmptyLineAfter
 } from './ReactMdeTextHelper';
+import { TextSelection } from './types/TextSelection';
+import { CommandResult } from './types/CommandResult';
 
 /**
  * Helper for creating commands that make lists
@@ -15,7 +17,7 @@ import {
  * @param {any} insertionBeforeEachLine
  * @returns
  */
-export function makeList(text, selection, insertionBeforeEachLine) {
+export function makeList(text: string, selection: TextSelection, insertionBeforeEachLine: string | Function): CommandResult {
     let textInsertion;
 
     selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
@@ -48,7 +50,7 @@ export function makeList(text, selection, insertionBeforeEachLine) {
  * @param {any} insertionBefore
  * @returns
  */
-export function makeHeader(text, selection, insertionBefore) {
+export function makeHeader(text: string, selection: TextSelection, insertionBefore: string): CommandResult {
     selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
     // the user is selecting a word section
     const insertionText = insertBefore(text, insertionBefore, selection, false);
@@ -60,13 +62,16 @@ export function makeHeader(text, selection, insertionBefore) {
     };
 }
 
-export function makeACommandThatInsertsBeforeAndAfter(text, selection, insertion) {
+export function makeACommandThatInsertsBeforeAndAfter(text: string, selection: TextSelection, insertion: string): CommandResult {
     selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
     // the user is selecting a word section
-    const { textAfterFirstInsertion, insertionLength } = insertText(text, insertion, selection[0]);
-    const finalText = insertText(textAfterFirstInsertion, insertion, selection[1] + insertionLength).newText;
+    const { newText, insertionLength } = insertText(text, insertion, selection.start);
+    const finalText = insertText(newText, insertion, selection.end + insertionLength).newText;
     return {
         text: finalText,
-        selection: [selection[0] + insertionLength, selection[1] + insertionLength]
+        selection: {
+            start: selection.start + insertionLength,
+            end: selection.end + insertionLength,
+        }
     };
 }
