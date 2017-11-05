@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { ReactMde, ReactMdeCommands, ReactMdeValue } from '../src/index';
+import { Value } from '../src/types/Value';
+import { ReactMde } from '../src/ReactMde';
+import { defaultCommands } from '../src/ReactMdeCommands';
 
 interface AppProps {
 }
 
 interface AppState {
-    reactMdeValue: ReactMdeValue;
+    reactMdeValue: Value;
 }
 
 export class App extends React.Component<AppProps, AppState> {
@@ -32,7 +34,7 @@ export class App extends React.Component<AppProps, AppState> {
                     }}
                     value={this.state.reactMdeValue}
                     onChange={this.handleValueChange}
-                    commands={ReactMdeCommands}
+                    commands={defaultCommands}
                 />
             </div>
         );

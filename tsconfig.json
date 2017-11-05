@@ -1,9 +1,8 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
+        "outDir": "./ts-out/",
         "sourceMap": true,
-        "noImplicitAny": true,
-        "module": "commonjs",
+        "noImplicitAny": false,
         "jsx": "react",
         "target": "es5",
         "allowJs": true,

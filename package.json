@@ -8,9 +8,10 @@
     "start": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
     "build": "cross-env NODE_ENV=production gulp build",
     "build-demo": "cross-env NODE_ENV=production gulp build-demo",
-    "lint": "ts-lint ./src ./test ./demo",
-    "lint-fix": "ts-lint --fix ./src ./test ./demo",
-    "tsc": "tsc"
+    "lint": "ts-lint",
+    "lint-fix": "ts-lint --fix",
+    "tsc": "tsc",
+    "webpack": "webpack --config webpack.config.demo.dev.js"
   },
   "repository": {
     "type": "git",
@@ -34,37 +35,38 @@
     "@types/showdown": "^1.7.1",
     "@types/webpack-dev-middleware": "^1.9.3",
     "@types/webpack-hot-middleware": "^2.16.0",
-    "awesome-typescript-loader": "^3.2.3",
+    "awesome-typescript-loader": "^3.3.0",
     "chai": "^4.1.2",
     "colors": "^1.1.2",
-    "cross-env": "^5.1.0",
+    "cross-env": "^5.1.1",
     "css-loader": "^0.28.7",
-    "express": "^4.14.0",
+    "express": "^4.16.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.5",
     "gulp": "^3.9.1",
-    "gulp-cli": "^1.2.2",
+    "gulp-cli": "^1.4.0",
     "gulp-rename": "^1.2.2",
     "gulp-webpack": "^1.5.0",
     "mocha": "^4.0.1",
-    "node-sass": "^4.1.1",
+    "node-sass": "^4.6.0",
     "normalize.css": "^7.0.0",
-    "react-hot-loader": "^3.0.0-beta.6",
-    "sass-loader": "^6.0.1",
+    "react-hot-loader": "^3.1.1",
+    "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
     "tslint-react": "^3.2.0",
     "typescript": "^2.6.1",
     "webpack": "^3.8.1",
-    "webpack-dev-middleware": "^1.8.4",
-    "webpack-hot-middleware": "^2.13.2"
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-hot-middleware": "^2.20.0"
   },
   "homepage": "https://github.com/andrerpena/react-mde.git#readme",
   "dependencies": {
     "font-awesome": "^4.7.0",
+    "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "showdown": "^1.8.0"
+    "showdown": "^1.8.1"
   }
 }
