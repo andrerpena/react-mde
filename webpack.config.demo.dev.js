@@ -8,7 +8,7 @@ module.exports = {
 
     output: {
         filename: 'bundle.js',
-        path: '/wp-out',
+        path: '/',
         publicPath: '/'
     },
 
@@ -35,8 +35,8 @@ module.exports = {
                     loader: 'sass-loader', options: {sourceMap: true}
                 }]
             },
-            { test: /\.jpe?g$|\.gif$|\.png$|\.ico$/, use: 'file-loader' },
-            { test: /\.eot|\.ttf|\.svg|\.woff2?/, use: 'file-loader' },
+            { test: /\.jpe?g$|\.gif$|\.png$|\.ico$/, use: 'file-loader?name=[name].[ext]' },
+            { test: /\.eot|\.ttf|\.svg|\.woff2?/, use: 'file-loader?name=[name].[ext]' },
         ]
     },
 

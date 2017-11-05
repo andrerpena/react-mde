@@ -11,7 +11,8 @@
     "lint": "ts-lint",
     "lint-fix": "ts-lint --fix",
     "tsc": "tsc",
-    "webpack": "webpack --config webpack.config.demo.dev.js"
+    "webpack": "webpack --config webpack.config.demo.dev.js",
+    "webpack-prod": "webpack --config webpack.config.demo.prod.js"
   },
   "repository": {
     "type": "git",
@@ -64,6 +65,7 @@
   "homepage": "https://github.com/andrerpena/react-mde.git#readme",
   "dependencies": {
     "font-awesome": "^4.7.0",
+    "gulp-typescript": "^3.2.3",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
