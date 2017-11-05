@@ -12,12 +12,10 @@ module.exports = {
         publicPath: '/'
     },
 
-    externals: undefined,
-
     devtool: 'source-map',
 
     resolve: {
-        extensions: ['.ts', '.tsx']
+        extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
 
     module: {

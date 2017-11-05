@@ -1,11 +1,13 @@
 @import "variables";
 
 .react-mde {
-    button:focus {outline:0;}
+    button:focus {
+        outline: 0;
+    }
     .mde-header {
         padding: 6px 0;
         ul.mde-header-group {
-            display:inline-block;
+            display: inline-block;
             margin: 0;
             margin-right: 1rem;
             padding: 0;
@@ -26,10 +28,10 @@
                     }
                     @keyframes tooltip-appear {
                         from {
-                        opacity: 0;
+                            opacity: 0;
                         }
                         to {
-                        opacity: 1;
+                            opacity: 1;
                         }
                     }
                     @mixin tooltip-animation {
@@ -75,48 +77,48 @@
                             white-space: nowrap;
                         }
                     }
-                    
+
                 }
                 .react-mde-dropdown {
-                        position: absolute;
-                        right: 50%;
-                        transform: translateX(50%);
-                        background-color: white;
-                        border: 1px solid $mde-border-color;
-                        padding: 5px;
-                        top: 30px;
-                        li {
+                    position: absolute;
+                    right: 50%;
+                    transform: translateX(50%);
+                    background-color: white;
+                    border: 1px solid $mde-border-color;
+                    padding: 5px;
+                    top: 30px;
+                    li {
+                        margin: 0;
+                        white-space: nowrap;
+                        list-style: none;
+                        p {
                             margin: 0;
-                            white-space: nowrap;
-                            list-style: none;
-                            p {
-                                margin: 0;
-                                padding: 0;
-                            }
-                        }
-                        &::before {
-                            position: absolute;
-                            content: "";
-                            width: 0;
-                            height: 0;
-                            border: 8px solid transparent;
-                            border-bottom-color: rgba(0,0,0,0.15);
-                            top: -16px;
-                            right: 50%;
-                            transform: translateX(50%);
-                        }
-                        &::after {
-                            position: absolute;
-                            content: "";
-                            width: 0;
-                            height: 0;
-                            border: 7px solid transparent;
-                            border-bottom-color: white;
-                            top: -14px;
-                            right: 50%;
-                            transform: translateX(50%);
+                            padding: 0;
                         }
                     }
+                    &::before {
+                        position: absolute;
+                        content: "";
+                        width: 0;
+                        height: 0;
+                        border: 8px solid transparent;
+                        border-bottom-color: rgba(0, 0, 0, 0.15);
+                        top: -16px;
+                        right: 50%;
+                        transform: translateX(50%);
+                    }
+                    &::after {
+                        position: absolute;
+                        content: "";
+                        width: 0;
+                        height: 0;
+                        border: 7px solid transparent;
+                        border-bottom-color: white;
+                        top: -14px;
+                        right: 50%;
+                        transform: translateX(50%);
+                    }
+                }
             }
 
         }

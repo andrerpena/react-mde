@@ -27,10 +27,10 @@
         padding: 0 1em;
         color: #777;
         border-left: 0.25em solid #ddd;
-        &>:first-child {
+        & > :first-child {
             margin-top: 0;
         }
-        &>:last-child {
+        & > :last-child {
             margin-bottom: 0;
         }
     }
@@ -41,7 +41,7 @@
         padding-bottom: 0.2em;
         margin: 0;
         font-size: 90%;
-        background-color: rgba(0,0,0,0.04);
+        background-color: rgba(0, 0, 0, 0.04);
         border-radius: 3px;
         &::before, &::after {
             letter-spacing: -0.2em;
@@ -90,10 +90,10 @@
             text-decoration: underline;
         }
     }
-    &>*:first-child {
+    & > *:first-child {
         margin-top: 0 !important;
     }
-    &>*:last-child {
+    & > *:last-child {
         margin-bottom: 0 !important;
     }
     &::after {
