@@ -1,10 +1,11 @@
 const gulp = require('gulp');
 const rename = require('gulp-rename');
-const babel = require("gulp-babel");
 const webpack = require('gulp-webpack');
 const ts = require('gulp-typescript');
-const webpackConfig = require('./webpack.config.demo.prod.js');
 const sass = require('gulp-sass');
+const merge = require('merge2');
+const webpackConfig = require('./webpack.config.demo.prod.js');
+const tsProject = ts.createProject('./tsconfig.json');
 
 gulp.task('build_styles', function () {
     return gulp.src('./src/styles/*.scss')
@@ -18,13 +19,15 @@ gulp.task('copy_styles', function () {
         .pipe(gulp.dest('./lib/styles'));
 });
 
-gulp.task('build', ['copy_styles', 'build_styles'], function () {
-    return gulp.src('src/**/*.ts')
-        .pipe(ts({
-            noImplicitAny: true,
-            outFile: 'reactMde.js'
-        }))
-        .pipe(gulp.dest('./lib'));
+gulp.task('build', function () {
+    const tsResult = gulp.src('src/**/*.{ts,tsx}')
+        .pipe(tsProject({
+            declaration: true
+        }));
+    return merge([
+        tsResult.dts.pipe(gulp.dest('lib/definitions')),
+        tsResult.js.pipe(gulp.dest('lib'))
+    ]);
 });
 
 // demo

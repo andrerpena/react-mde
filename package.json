@@ -47,7 +47,10 @@
     "gulp": "^3.9.1",
     "gulp-cli": "^1.4.0",
     "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-typescript": "^3.2.3",
     "gulp-webpack": "^1.5.0",
+    "merge2": "^1.2.0",
     "mocha": "^4.0.1",
     "node-sass": "^4.6.0",
     "normalize.css": "^7.0.0",
@@ -65,7 +68,6 @@
   "homepage": "https://github.com/andrerpena/react-mde.git#readme",
   "dependencies": {
     "font-awesome": "^4.7.0",
-    "gulp-typescript": "^3.2.3",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
