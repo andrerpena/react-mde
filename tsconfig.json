@@ -1,11 +1,10 @@
 {
     "compilerOptions": {
-        "outDir": "./ts-out/",
         "sourceMap": true,
         "noImplicitAny": false,
         "jsx": "react",
         "target": "es5",
-        "allowJs": true,
+        "declaration": true,
         "typeRoots": [
             "./node_modules/@types"
         ],

@@ -8,25 +8,25 @@ const webpackConfig = require('./webpack.config.demo.prod.js');
 const tsProject = ts.createProject('./tsconfig.json');
 
 gulp.task('build_styles', function () {
-    return gulp.src('./src/styles/*.scss')
+    return gulp.src('./src/styles/**/*.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./lib/styles'));
+        .pipe(gulp.dest('./lib/styles/css'));
 });
 
 // library
 gulp.task('copy_styles', function () {
-    return gulp.src('./src/styles/!**!/!*')
-        .pipe(gulp.dest('./lib/styles'));
+    return gulp.src('./src/styles/**/*.scss')
+        .pipe(gulp.dest('./lib/styles/scss'));
 });
 
-gulp.task('build', function () {
+gulp.task('build', ['copy_styles', 'build_styles'], function () {
     const tsResult = gulp.src('src/**/*.{ts,tsx}')
         .pipe(tsProject({
             declaration: true
         }));
     return merge([
         tsResult.dts.pipe(gulp.dest('lib/definitions')),
-        tsResult.js.pipe(gulp.dest('lib'))
+        tsResult.js.pipe(gulp.dest('lib/js'))
     ]);
 });
 
