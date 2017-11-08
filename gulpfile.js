@@ -4,7 +4,7 @@ const ts = require('gulp-typescript');
 const sass = require('gulp-sass');
 const merge = require('merge2');
 const webpack = require('webpack-stream');
-const tsProject = ts.createProject('./tsconfig.json');
+const tsProject = ts.createProject('./tsconfig.build.json');
 
 gulp.task('build_styles', function () {
     return gulp.src('./src/styles/**/*.scss')

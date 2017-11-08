@@ -5,6 +5,7 @@
         "noImplicitAny": false,
         "jsx": "react",
         "target": "es5",
+        "declaration": true,
         "module": "commonjs",
         "typeRoots": [
             "./node_modules/@types"
