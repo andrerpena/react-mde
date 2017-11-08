@@ -1238,8 +1238,8 @@ module.exports = __webpack_require__(17);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var react_dom_2 = __webpack_require__(20);
-var App_2 = __webpack_require__(34);
+var react_dom_1 = __webpack_require__(20);
+var App_1 = __webpack_require__(34);
 // stylings
 __webpack_require__(46);
 __webpack_require__(47);
@@ -1247,7 +1247,7 @@ __webpack_require__(48);
 __webpack_require__(49);
 __webpack_require__(50);
 __webpack_require__(51);
-react_dom_2.render(React.createElement(App_2.App, null), document.getElementById('#app_container'));
+react_dom_1.render(React.createElement(App_1.App, null), document.getElementById('#app_container'));
 
 
 /***/ }),
@@ -21469,7 +21469,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var src_2 = __webpack_require__(35);
+var src_1 = __webpack_require__(35);
 var App = (function (_super) {
     __extends(App, _super);
     function App() {
@@ -21484,10 +21484,10 @@ var App = (function (_super) {
         this.setState({ reactMdeValue: value });
     };
     App.prototype.render = function () {
-        return (React.createElement("div", { className: "container" }, React.createElement(src_2.default, { textAreaProps: {
+        return (React.createElement("div", { className: "container" }, React.createElement(src_1.default, { textAreaProps: {
                 id: 'ta1',
                 name: 'ta1',
-            }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_2.ReactMdeCommands })));
+            }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands })));
     };
     return App;
 }(React.Component));

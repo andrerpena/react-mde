@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-interface MarkdownHelpProps {
+export interface MarkdownHelpProps {
     helpText?: string;
     markdownReferenceUrl?: string;
 }

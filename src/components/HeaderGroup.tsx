@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-interface HeaderGroupProps {
+export interface HeaderGroupProps {
 }
 
 export const HeaderGroup: React.SFC<HeaderGroupProps> = (props) => {

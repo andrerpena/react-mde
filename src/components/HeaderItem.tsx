@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-interface HeaderItemProps {
+export interface HeaderItemProps {
     tooltip: string;
     onClick: React.MouseEventHandler<any>;
     icon: React.ReactNode;

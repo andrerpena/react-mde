@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-interface HeaderItemDropdownItemProps {
+export interface HeaderItemDropdownItemProps {
     onClick: React.MouseEventHandler<any>;
 }
 
