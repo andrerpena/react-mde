@@ -1,10 +1,9 @@
 const gulp = require('gulp');
 const rename = require('gulp-rename');
-const webpack = require('gulp-webpack');
 const ts = require('gulp-typescript');
 const sass = require('gulp-sass');
 const merge = require('merge2');
-const webpackConfig = require('./webpack.config.demo.prod.js');
+const webpack = require('webpack-stream');
 const tsProject = ts.createProject('./tsconfig.json');
 
 gulp.task('build_styles', function () {
@@ -32,7 +31,6 @@ gulp.task('build', ['copy_styles', 'build_styles'], function () {
 
 // demo
 // removes the output configuration from the webpack.config.js file, otherwise it doesn't work.
-webpackConfig.output.path = null;
 
 gulp.task('copy-index', function () {
     return gulp.src('./demo/index.prod.html')
@@ -41,7 +39,7 @@ gulp.task('copy-index', function () {
 });
 
 gulp.task('build-demo', ['copy-index'], function () {
-    return gulp.src("./demo/client.tsx")
-        .pipe(webpack(webpackConfig))
-        .pipe(gulp.dest('./docs'));
+    return gulp.src('demo/client.ts')
+        .pipe(webpack(require('./webpack.config.demo.prod.js')))
+        .pipe(gulp.dest('docs/'));
 });
