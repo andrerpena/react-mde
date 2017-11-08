@@ -3,10 +3,11 @@ webpack
 .npmignore
 .idea
 demo
-.vscode
 assets
 npm-debug.*
-.babelrc
 .debug.log
 webpack.*
 gulpfile.ts
+webpack*
+tsconfig*
+*.lock
