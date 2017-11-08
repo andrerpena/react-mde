@@ -7,7 +7,7 @@
   "scripts": {
     "test": "mocha --timeout 15000 --compilers js:babel-register ./test/*Spec.js",
     "start": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
-    "build": "cross-env NODE_ENV=production gulp build",
+    "build-lib": "cross-env NODE_ENV=production gulp build",
     "build-demo": "cross-env NODE_ENV=production gulp build-demo",
     "lint": "ts-lint",
     "lint-fix": "ts-lint --fix",

@@ -21458,9 +21458,7 @@ module.exports = function() {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b)
-            if (b.hasOwnProperty(p))
-                d[p] = b[p]; };
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -21470,7 +21468,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var src_1 = __webpack_require__(35);
-var App = (function (_super) {
+var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App() {
         var _this = _super.call(this) || this;
@@ -21484,10 +21482,11 @@ var App = (function (_super) {
         this.setState({ reactMdeValue: value });
     };
     App.prototype.render = function () {
-        return (React.createElement("div", { className: "container" }, React.createElement(src_1.default, { textAreaProps: {
-                id: 'ta1',
-                name: 'ta1',
-            }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands })));
+        return (React.createElement("div", { className: "container" },
+            React.createElement(src_1.default, { textAreaProps: {
+                    id: 'ta1',
+                    name: 'ta1',
+                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands })));
     };
     return App;
 }(React.Component));
@@ -21595,9 +21594,7 @@ var makeCodeCommand = {
     icon: 'code',
     tooltip: 'Insert code',
     execute: function (text, selection) {
-        if (text === void 0) {
-            text = '';
-        }
+        if (text === void 0) { text = ''; }
         selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
         if (text.slice(selection.start, selection.end).indexOf('\n') === -1) {
             // when there's no breaking line
@@ -21666,7 +21663,7 @@ exports.defaultCommands = [
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ReactMdeTextHelper_2 = __webpack_require__(15);
+var ReactMdeTextHelper_1 = __webpack_require__(15);
 /**
  * Helper for creating commands that make lists
  * @export
@@ -21677,17 +21674,17 @@ var ReactMdeTextHelper_2 = __webpack_require__(15);
  */
 function makeList(text, selection, insertionBeforeEachLine) {
     var textInsertion;
-    selection = ReactMdeTextHelper_2.selectCurrentWordIfCaretIsInsideOne(text, selection);
+    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
     // insert breaks before, if needed
-    textInsertion = ReactMdeTextHelper_2.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
+    textInsertion = ReactMdeTextHelper_1.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
     // inserts 'insertionBeforeEachLine' before each line
-    textInsertion = ReactMdeTextHelper_2.insertBeforeEachLine(text, insertionBeforeEachLine, selection);
+    textInsertion = ReactMdeTextHelper_1.insertBeforeEachLine(text, insertionBeforeEachLine, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
     // insert breaks after, if needed
-    textInsertion = ReactMdeTextHelper_2.insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
+    textInsertion = ReactMdeTextHelper_1.insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
     return {
@@ -21704,9 +21701,9 @@ exports.makeList = makeList;
  * @returns
  */
 function makeHeader(text, selection, insertionBefore) {
-    selection = ReactMdeTextHelper_2.selectCurrentWordIfCaretIsInsideOne(text, selection);
+    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
     // the user is selecting a word section
-    var insertionText = ReactMdeTextHelper_2.insertBefore(text, insertionBefore, selection, false);
+    var insertionText = ReactMdeTextHelper_1.insertBefore(text, insertionBefore, selection, false);
     var newText = insertionText.newText;
     var newSelection = insertionText.newSelection;
     return {
@@ -21716,10 +21713,10 @@ function makeHeader(text, selection, insertionBefore) {
 }
 exports.makeHeader = makeHeader;
 function makeACommandThatInsertsBeforeAndAfter(text, selection, insertion) {
-    selection = ReactMdeTextHelper_2.selectCurrentWordIfCaretIsInsideOne(text, selection);
+    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
     // the user is selecting a word section
-    var _a = ReactMdeTextHelper_2.insertText(text, insertion, selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
-    var finalText = ReactMdeTextHelper_2.insertText(newText, insertion, selection.end + insertionLength).newText;
+    var _a = ReactMdeTextHelper_1.insertText(text, insertion, selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
+    var finalText = ReactMdeTextHelper_1.insertText(newText, insertion, selection.end + insertionLength).newText;
     return {
         text: finalText,
         selection: {
@@ -21740,21 +21737,18 @@ exports.makeACommandThatInsertsBeforeAndAfter = makeACommandThatInsertsBeforeAnd
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b)
-            if (b.hasOwnProperty(p))
-                d[p] = b[p]; };
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || Object.assign || function (t) {
+var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
-        for (var p in s)
-            if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
     }
     return t;
 };
@@ -21766,7 +21760,7 @@ var HeaderGroup_1 = __webpack_require__(41);
 var HeaderItemDropdown_1 = __webpack_require__(42);
 var HeaderItem_1 = __webpack_require__(44);
 var MarkdownHelp_1 = __webpack_require__(45);
-var ReactMde = (function (_super) {
+var ReactMde = /** @class */ (function (_super) {
     __extends(ReactMde, _super);
     function ReactMde() {
         var _this = _super.call(this) || this;
@@ -21811,18 +21805,22 @@ var ReactMde = (function (_super) {
         var html = this.converter.makeHtml(text) || '<p>&nbsp</p>';
         var header = null;
         if (commands) {
-            header = (React.createElement("div", { className: "mde-header" }, commands.map(function (cg, i) {
-                return React.createElement(HeaderGroup_1.HeaderGroup, { key: i }, cg.map(function (c, j) {
-                    if (c.type === 'dropdown') {
-                        return (React.createElement(HeaderItemDropdown_1.HeaderItemDropdown, { key: j, icon: c.icon, commands: c.subCommands, onCommand: function (cmd) { return _this.executeCommand(cmd); } }));
-                    }
-                    return React.createElement(HeaderItem_1.HeaderItem, { key: j, icon: c.icon, tooltip: c.tooltip, onClick: function () { return _this.executeCommand(c); } });
-                }));
-            })));
+            header = (React.createElement("div", { className: "mde-header" }, commands.map(function (cg, i) { return React.createElement(HeaderGroup_1.HeaderGroup, { key: i }, cg.map(function (c, j) {
+                if (c.type === 'dropdown') {
+                    return (React.createElement(HeaderItemDropdown_1.HeaderItemDropdown, { key: j, icon: c.icon, commands: c.subCommands, onCommand: function (cmd) { return _this.executeCommand(cmd); } }));
+                }
+                return React.createElement(HeaderItem_1.HeaderItem, { key: j, icon: c.icon, tooltip: c.tooltip, onClick: function () { return _this.executeCommand(c); } });
+            })); })));
         }
-        return (React.createElement("div", { className: "react-mde" }, header, React.createElement("div", { className: "mde-text" }, React.createElement("textarea", __assign({ onChange: this.handleValueChange, value: text, ref: function (c) {
-                _this.textArea = c;
-            } }, textAreaProps))), React.createElement("div", { className: "mde-preview", dangerouslySetInnerHTML: { __html: html } }), React.createElement("div", { className: "mde-help" }, React.createElement(MarkdownHelp_1.MarkdownHelp, null))));
+        return (React.createElement("div", { className: "react-mde" },
+            header,
+            React.createElement("div", { className: "mde-text" },
+                React.createElement("textarea", __assign({ onChange: this.handleValueChange, value: text, ref: function (c) {
+                        _this.textArea = c;
+                    } }, textAreaProps))),
+            React.createElement("div", { className: "mde-preview", dangerouslySetInnerHTML: { __html: html } }),
+            React.createElement("div", { className: "mde-help" },
+                React.createElement(MarkdownHelp_1.MarkdownHelp, null))));
     };
     return ReactMde;
 }(React.Component));
@@ -26206,9 +26204,7 @@ exports.HeaderGroup = function (props) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b)
-            if (b.hasOwnProperty(p))
-                d[p] = b[p]; };
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -26218,7 +26214,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var HeaderItemDropdownItem_1 = __webpack_require__(43);
-var HeaderItemDropdown = (function (_super) {
+var HeaderItemDropdown = /** @class */ (function (_super) {
     __extends(HeaderItemDropdown, _super);
     function HeaderItemDropdown(props) {
         var _this = _super.call(this, props) || this;
@@ -26274,9 +26270,12 @@ var HeaderItemDropdown = (function (_super) {
                     _this.dropdown = ref;
                 } }, items)
             : null;
-        return (React.createElement("li", { className: "mde-header-item" }, React.createElement("button", { type: "button", ref: function (ref) {
-                _this.dropdownOpener = ref;
-            }, onClick: this.handleOpenDropdown }, React.createElement("i", { className: "fa fa-" + icon, "aria-hidden": "true" })), dropdown));
+        return (React.createElement("li", { className: "mde-header-item" },
+            React.createElement("button", { type: "button", ref: function (ref) {
+                    _this.dropdownOpener = ref;
+                }, onClick: this.handleOpenDropdown },
+                React.createElement("i", { className: "fa fa-" + icon, "aria-hidden": "true" })),
+            dropdown));
     };
     return HeaderItemDropdown;
 }(React.Component));
@@ -26293,7 +26292,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 exports.HeaderItemDropdownItem = function (props) {
     var onClick = props.onClick, children = props.children;
-    return (React.createElement("li", { className: "mde-dropdown-header-item" }, React.createElement("button", { type: "button", onClick: onClick }, children)));
+    return (React.createElement("li", { className: "mde-dropdown-header-item" },
+        React.createElement("button", { type: "button", onClick: onClick }, children)));
 };
 
 
@@ -26303,12 +26303,11 @@ exports.HeaderItemDropdownItem = function (props) {
 
 "use strict";
 
-var __assign = (this && this.__assign) || Object.assign || function (t) {
+var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
-        for (var p in s)
-            if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
     }
     return t;
 };
@@ -26325,7 +26324,8 @@ exports.HeaderItem = function (props) {
             className: 'tooltipped',
         };
     }
-    return (React.createElement("li", { className: "mde-header-item" }, React.createElement("button", __assign({ type: "button" }, buttonProps, { onClick: onClick }), iconElement)));
+    return (React.createElement("li", { className: "mde-header-item" },
+        React.createElement("button", __assign({ type: "button" }, buttonProps, { onClick: onClick }), iconElement)));
 };
 
 
@@ -26339,8 +26339,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 exports.MarkdownHelp = function (props) {
     var helpText = props.helpText, markdownReferenceUrl = props.markdownReferenceUrl;
-    return (React.createElement("a", { className: "markdown-help", href: markdownReferenceUrl, target: "_blank", rel: "noopener noreferrer" }, React.createElement("svg", { "aria-hidden": "true", className: "markdown-help-svg", height: "16", version: "1.1", viewBox: "0 0 16 16", width: "16" }, React.createElement("path", { fillRule: "evenodd", d: 'M14.85 3H1.15C.52 3 0 3.52 0 4.15v7.69C0 12.48.52 13 1.15 13h13.69c.64 0 1.15-.52 1.15-1.15v-7.7C16 3.52 15.48 3 ' +
-            '14.85 3zM9 11H7V8L5.5 9.92 4 8v3H2V5h2l1.5 2L7 5h2v6zm2.99.5L9.5 8H11V5h2v3h1.5l-2.51 3.5z' })), React.createElement("span", { className: "markdown-help-text" }, helpText)));
+    return (React.createElement("a", { className: "markdown-help", href: markdownReferenceUrl, target: "_blank", rel: "noopener noreferrer" },
+        React.createElement("svg", { "aria-hidden": "true", className: "markdown-help-svg", height: "16", version: "1.1", viewBox: "0 0 16 16", width: "16" },
+            React.createElement("path", { fillRule: "evenodd", d: 'M14.85 3H1.15C.52 3 0 3.52 0 4.15v7.69C0 12.48.52 13 1.15 13h13.69c.64 0 1.15-.52 1.15-1.15v-7.7C16 3.52 15.48 3 ' +
+                    '14.85 3zM9 11H7V8L5.5 9.92 4 8v3H2V5h2l1.5 2L7 5h2v6zm2.99.5L9.5 8H11V5h2v3h1.5l-2.51 3.5z' })),
+        React.createElement("span", { className: "markdown-help-text" }, helpText)));
 };
 exports.MarkdownHelp.defaultProps = {
     helpText: 'Markdown styling is supported',

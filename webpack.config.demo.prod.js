@@ -19,8 +19,16 @@ module.exports = {
 
     module: {
         rules: [
-            {test: /\.ts/, use: ['awesome-typescript-loader'], exclude: /node_modules/},
-            {test: /\.tsx/, use: ['awesome-typescript-loader'], exclude: /node_modules/},
+            {
+                test: /\.ts(x?)/,
+                use: {
+                    loader: 'awesome-typescript-loader',
+                    options: {
+                        configFileName: "tsconfig.demo.prod.json"
+                    },
+                },
+                exclude: /node_modules/,
+            },
             {test: /\.css/, use: ExtractTextPlugin.extract({use: "css-loader"})},
             {
                 test: /\.scss/,
