@@ -3,9 +3,7 @@ const webpack = require('webpack');
 module.exports = {
 
     entry: [
-        'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
-        'babel-polyfill',
-        './demo/client.js'
+        './demo/client.tsx'
     ],
 
     output: {
@@ -14,37 +12,32 @@ module.exports = {
         publicPath: '/'
     },
 
-    externals: undefined,
-
     devtool: 'source-map',
 
     resolve: {
-        extensions: ['', '.js', '.json']
+        extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
 
     module: {
-        loaders: [
-            { test: /\.js/, loaders: ['babel'], exclude: /node_modules/ },
-            { test: /\.jsx/, loaders: ['babel'], exclude: /node_modules/ },
-            { test: /\.css/, loader: 'style-loader!css-loader' },
-            { test: /\.scss$/, loader: 'style!css!sass'},
-            { test: /\.json$/, loader: 'json' },
-            { test: /\.jpe?g$|\.gif$|\.png$|\.ico$/, loader: 'file?name=[name].[ext]' },
-            { test: /\.eot|\.ttf|\.svg|\.woff2?/, loader: 'file?name=[name].[ext]' },
-            { test: /\.txt/, loader: 'raw' }
+        rules: [
+            { test: /\.ts(x?)/, use: ['awesome-typescript-loader'], exclude: /node_modules/ },
+            {test: /\.css/, use: ['style-loader', 'css-loader']},
+            {
+                test: /\.scss$/, use: [
+                {
+                    loader: 'style-loader'
+                },
+                {
+                    loader: 'css-loader', options: {sourceMap: true}
+                },
+                {
+                    loader: 'sass-loader', options: {sourceMap: true}
+                }]
+            },
+            { test: /\.jpe?g$|\.gif$|\.png$|\.ico$/, use: 'file-loader?name=[name].[ext]' },
+            { test: /\.eot|\.ttf|\.svg|\.woff2?/, use: 'file-loader?name=[name].[ext]' },
         ]
     },
-
-    plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin(),
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('development'),
-                APP_ENV: JSON.stringify('browser')
-            }
-        })
-    ],
 
     stats: {
         colors: true
