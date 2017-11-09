@@ -12,13 +12,12 @@ export class App extends React.Component<AppProps, AppState> {
 
     constructor() {
         super();
-        this.handleValueChange = this.handleValueChange.bind(this);
         this.state = {
             reactMdeValue: {text: '', selection: null},
         };
     }
 
-    handleValueChange(value) {
+    handleValueChange = (value) => {
         this.setState({reactMdeValue: value});
     }
 
