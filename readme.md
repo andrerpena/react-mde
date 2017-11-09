@@ -100,24 +100,23 @@ will display a dropdown when you click them.
 
 You don't have to create your own commands at all, but if you want, this is how a command looks like:
 
-    {
-        type: 'button', // this is optional as this is the default 
-        icon: 'bold',
-        tooltip: 'Add bold text',
-        execute: function (text, selection) {
-            if (text && text.length && selection[0] == selection[1]) {
-                // the user is pointing to a word
-                selection = getSurroundingWord(text, selection[0]).position;
-            }
-            // the user is selecting a word section
-            var {newText, insertionLength} = insertText(text, '**', selection[0]);
-            newText = insertText(newText, '**', selection[1] + insertionLength).newText;
-            return {
-                text: newText,
-                selection: [selection[0] + insertionLength, selection[1] + insertionLength]
-            }
-        }
-    }
+    const makeLinkCommand = {
+        icon: 'link',
+        tooltip:
+            'Insert a link',
+        execute:
+            (text: string, selection: TextSelection) => {
+                const {newText, insertionLength} = insertText(text, '[', selection.start);
+                const finalText = insertText(newText, '](url)', selection.end + insertionLength).newText;
+                return {
+                    text: finalText,
+                    selection: {
+                        start: selection.start + insertionLength,
+                        end: selection.end + insertionLength,
+                    },
+                };
+            },
+    };
 
 
 **props:**
