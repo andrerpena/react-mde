@@ -10,7 +10,7 @@ module.exports = {
     output: {
         filename: 'bundle-prod.js',
         path: path.resolve(__dirname, 'docs'),
-        publicPath: ''
+        publicPath: '/react-mde/'
     },
 
     resolve: {
