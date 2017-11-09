@@ -1,7 +1,3 @@
-
-> Good news! This project has been abandoned for a while but I'm back and working on a new version, now written in TypeScript but, of course, it is going to be compiled and published to ES5 :). Check out the `typescript` branch. I plan to continue to move this project forward!
-
-
 # react-mde
 
 A simple yet powerful and extensible Markdown Editor editor for React, inspired by GitHub.
@@ -32,42 +28,43 @@ So...
 React-mde is a completely controlled component. Example of usage:
 
     import React, { Component } from 'react';
-    import { ReactMde, ReactMdeCommands } from 'react-mde';
-
-    class App extends Component {
-
-        state = {
-            mdeValue: {text: "", selection: null}
+    import ReactMde, { ReactMdeCommands } from 'react-mde';
+    
+    export default class App extends Component {
+    
+        constructor() {
+            super();
+            this.state = {
+                reactMdeValue: {text: '', selection: null},
+            };
         }
-
-        handleValueChange(value) {
-            this.setState({mdeValue: value});
+    
+        handleValueChange = (value) => {
+            this.setState({reactMdeValue: value});
         }
-
+    
         render() {
-            // get the default commands, you can pick individual commands if you like, or add your own
-            let commands = ReactMdeCommands.getDefaultCommands()
             return (
                 <div className="container">
                     <ReactMde
-                        textareaId="ta1"
-                        textareaName="ta1"
-                        value={this.state.mdeValue}
-                        onChange={this.handleValueChange.bind(this)}
-                        commands={commands} />
+                        textAreaProps={{
+                            id: 'ta1',
+                            name: 'ta1',
+                        }}
+                        value={this.state.reactMdeValue}
+                        onChange={this.handleValueChange}
+                        commands={ReactMdeCommands}
+                    />
                 </div>
             );
         }
     }
 
-    export default App;
-
 Props:
 
-- **textareaId**: The id of the textarea.
-- **textareaName**: The name of the textarea.
-- **value**: The current value. This property should look like `{text: "", selection: [2, 3]}` where `text` is the text and `selection` is an array with
- the beggining and the end of the selection. Passing null to `selection` is perfectly fine.
+- **textAreaProps**: Whatever you want to pass to the `textarea` component.
+- **value**: The current value. This property should look like `{text: "", selection: {start:0, end:2}` where `text` is the text and `selection` is
+an object containint `start` and `end` representing what should be selected. Passing null to `selection` is perfectly fine.
 - **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
 - **commands**: An array or array of command objects. The first array represents groups, the second array represents commands inside that group. Take a look of how to create a custom command below.
 
@@ -81,16 +78,15 @@ The following tyles from React-mde should be added: (Both .scss and .css files a
 
 Example in importing styles in your `[entry_point].js`:
 
-    import 'normalize.css/normalize.css';
-    import 'font-awesome/css/font-awesome.css';
-    import 'react-mde/lib/styles/react-mde.scss';
-    import 'react-mde/lib/styles/react-mde-command-styles.scss';
-    import 'react-mde/lib/styles/markdown-default-theme.scss';
-    import './styles/demo.scss';
+    import '../node_modules/normalize.css/normalize.css';
+    import '../node_modules/font-awesome/css/font-awesome.css';
+    import 'react-mde/lib/styles/css/react-mde.css';
+    import 'react-mde/lib/styles/css/react-mde-command-styles.css';
+    import 'react-mde/lib/styles/css/markdown-default-theme.css';
 
 ## Couldn't make this work on your project?
 
-This is the minimum setup app to work with `react-mde`: https://github.com/andrerpena/react-mde-test-app
+This is the minimum setup app to work with `react-mde`: https://github.com/andrerpena/react-mde-js-demo
 
 ## Commands
 
@@ -101,6 +97,8 @@ There are two types of commands, the `button` commands (default if you don't say
 will display a dropdown when you click them.
 
 ### Anatomy of a button command
+
+You don't have to create your own commands at all, but if you want, this is how a command looks like:
 
     {
         type: 'button', // this is optional as this is the default 
@@ -180,7 +178,6 @@ will display a dropdown when you click them.
   - Add support for optionally server-rendering the markdown preview (like GitHub does)
 
 ## Licence
-
 
 React-mde is MIT licensed
 

@@ -126,13 +126,13 @@
 
     .mde-text {
         textarea {
+            display:block;
+            box-sizing: border-box;
             width: 100%;
             min-height: $mde-textarea-min-height;
             padding: $mde-textarea-padding;
-            border-width: 1px;
-            border-style: solid;
-            border-color: $mde-border-color;
-            border-radius: $mde-textarea-border-radious;
+            border: 1px solid $mde-border-color;
+            border-radius: $mde-textarea-border-radius;
         }
     }
 
@@ -142,7 +142,7 @@
         border-width: 1px;
         border-style: dotted;
         border-color: $mde-border-color;
-        border-radius: $mde-textarea-border-radious;
+        border-radius: $mde-textarea-border-radius;
     }
 
     .mde-help {

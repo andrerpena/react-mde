@@ -21472,15 +21472,14 @@ var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App() {
         var _this = _super.call(this) || this;
-        _this.handleValueChange = _this.handleValueChange.bind(_this);
+        _this.handleValueChange = function (value) {
+            _this.setState({ reactMdeValue: value });
+        };
         _this.state = {
             reactMdeValue: { text: '', selection: null },
         };
         return _this;
     }
-    App.prototype.handleValueChange = function (value) {
-        this.setState({ reactMdeValue: value });
-    };
     App.prototype.render = function () {
         return (React.createElement("div", { className: "container" },
             React.createElement(src_1.default, { textAreaProps: {
