@@ -1,5 +1,4 @@
 src
-webpack
 .npmignore
 .idea
 demo
@@ -11,3 +10,8 @@ gulpfile.ts
 webpack*
 tsconfig*
 *.lock
+docs
+test
+gulpfile.js
+readme.md
+tslint.json
