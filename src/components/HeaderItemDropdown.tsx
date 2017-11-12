@@ -38,11 +38,11 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
         }
     };
 
-    openDropdown() {
+    openDropdown = () => {
         this.setState({
             open: true,
         });
-    }
+    };
 
     closeDropdown() {
         this.setState({
@@ -50,24 +50,24 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
         });
     }
 
-    clickedOutside(e: Event) {
-        const { target } = e;
+    clickedOutside = (e: Event) => {
+        const {target} = e;
         return this.state.open
             && this.dropdown
             && this.dropdownOpener
             && !this.dropdown.contains(target)
             && !this.dropdownOpener.contains(target);
-    }
+    };
 
-    handleOnClickCommand(e: React.SyntheticEvent<any>, command: SubCommand) {
+    handleOnClickCommand = (e: React.SyntheticEvent<any>, command: SubCommand) => {
         const {onCommand} = this.props;
         onCommand(command);
         this.closeDropdown();
-    }
+    };
 
-    handleOpenDropdown() {
+    handleOpenDropdown = () => {
         this.openDropdown();
-    }
+    };
 
     render() {
         const {icon, commands} = this.props;
