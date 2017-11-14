@@ -9,8 +9,8 @@
     "start": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
     "build-lib": "cross-env NODE_ENV=production gulp build",
     "build-demo": "cross-env NODE_ENV=production gulp build-demo",
-    "lint": "ts-lint",
-    "lint-fix": "ts-lint --fix",
+    "tslint": "tslint --project \".\"",
+    "tslint-fix": "tslint --project \".\" --fix",
     "tsc": "tsc",
     "webpack": "webpack --config webpack.config.demo.dev.js",
     "webpack-prod": "webpack --config webpack.config.demo.prod.js"
