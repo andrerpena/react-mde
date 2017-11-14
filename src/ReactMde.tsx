@@ -74,25 +74,31 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
         let header = null;
         if (commands) {
-            header = (<div className="mde-header">
-                {
-                    commands.map((cg: Array<Command | CommandSet>, i: number) => <HeaderGroup key={i}>
-                        {
-                            cg.map((c: Command | CommandSet, j) => {
-                                if (c.type === 'dropdown') {
-                                    return (<HeaderItemDropdown
+            header = (
+                <div className="mde-header">
+                    {
+                        commands.map((cg: Array<Command | CommandSet>, i: number) => <HeaderGroup key={i}>
+                            {
+                                cg.map((c: Command | CommandSet, j) => {
+                                    if (c.type === 'dropdown') {
+                                        return (<HeaderItemDropdown
+                                            key={j}
+                                            icon={c.icon}
+                                            commands={(c as CommandSet).subCommands}
+                                            onCommand={(cmd) => this.executeCommand(cmd)}
+                                        />);
+                                    }
+                                    return <HeaderItem
                                         key={j}
                                         icon={c.icon}
-                                        commands={(c as CommandSet).subCommands}
-                                        onCommand={(cmd) => this.executeCommand(cmd)}
-                                    />);
-                                }
-                                return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip}
-                                                   onClick={() => this.executeCommand(c as Command)}/>;
-                            })
-                        }
-                    </HeaderGroup>)}
-            </div>);
+                                        tooltip={c.tooltip}
+                                        onClick={() => this.executeCommand(c as Command)}
+                                    />;
+                                })
+                            }
+                        </HeaderGroup>)}
+                </div>
+            );
         }
 
         return (

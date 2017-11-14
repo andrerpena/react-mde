@@ -3,6 +3,7 @@
 import { TextSelection } from './types/TextSelection';
 import { TextInsertionResult } from './types/TextInsertionResult';
 import { Word } from './types/Word';
+import { AlterLineFunction } from './types/FunctionTypes';
 
 /**
  * Inserts "textToBeInserted" in "text" at the "insertionPosition"
@@ -179,7 +180,7 @@ export function insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text: string, sel
 /**
  * Inserts insertionString before each line
  */
-export function insertBeforeEachLine(text: string, insertion: string | Function, selection: TextSelection): TextInsertionResult {
+export function insertBeforeEachLine(text: string, insertion: string | AlterLineFunction, selection: TextSelection): TextInsertionResult {
     const substring = text.slice(selection.start, selection.end);
     const lines = substring.split(/\n/);
 

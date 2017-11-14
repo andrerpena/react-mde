@@ -80,16 +80,27 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
         ));
 
         const dropdown = open
-            ? <ul className="react-mde-dropdown" ref={(ref) => {
-                this.dropdown = ref;
-            }}>{items}</ul>
+            ? (
+                <ul
+                    className="react-mde-dropdown"
+                    ref={(ref) => {
+                        this.dropdown = ref;
+                    }}
+                >
+                    {items}
+                </ul>
+            )
             : null;
 
         return (
             <li className="mde-header-item">
-                <button type="button" ref={(ref) => {
-                    this.dropdownOpener = ref;
-                }} onClick={this.handleOpenDropdown}>
+                <button
+                    type="button"
+                    ref={(ref) => {
+                        this.dropdownOpener = ref;
+                    }}
+                    onClick={this.handleOpenDropdown}
+                >
                     <i className={`fa fa-${icon}`} aria-hidden="true"/>
                 </button>
                 {dropdown}

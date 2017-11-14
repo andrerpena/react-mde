@@ -7,7 +7,8 @@ import {
     insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
 } from './ReactMdeTextHelper';
 import { TextSelection } from './types/TextSelection';
-import { CommandResult } from './types/CommandResult';
+import { Value } from './types/Value';
+import { AlterLineFunction } from './types/FunctionTypes';
 
 /**
  * Helper for creating commands that make lists
@@ -17,7 +18,7 @@ import { CommandResult } from './types/CommandResult';
  * @param {any} insertionBeforeEachLine
  * @returns
  */
-export function makeList(text: string, selection: TextSelection, insertionBeforeEachLine: string | Function): CommandResult {
+export function makeList(text: string, selection: TextSelection, insertionBeforeEachLine: string | AlterLineFunction): Value {
     let textInsertion;
 
     selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
@@ -50,7 +51,7 @@ export function makeList(text: string, selection: TextSelection, insertionBefore
  * @param {any} insertionBefore
  * @returns
  */
-export function makeHeader(text: string, selection: TextSelection, insertionBefore: string): CommandResult {
+export function makeHeader(text: string, selection: TextSelection, insertionBefore: string): Value {
     selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
     // the user is selecting a word section
     const insertionText = insertBefore(text, insertionBefore, selection, false);
@@ -62,7 +63,7 @@ export function makeHeader(text: string, selection: TextSelection, insertionBefo
     };
 }
 
-export function makeACommandThatInsertsBeforeAndAfter(text: string, selection: TextSelection, insertion: string): CommandResult {
+export function makeACommandThatInsertsBeforeAndAfter(text: string, selection: TextSelection, insertion: string): Value {
     selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
     // the user is selecting a word section
     const { newText, insertionLength } = insertText(text, insertion, selection.start);

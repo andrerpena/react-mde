@@ -18,7 +18,7 @@ export const HeaderItem: React.SFC<HeaderItemProps> = (props) => {
     if (tooltip) {
         buttonProps = {
             'aria-label': tooltip,
-            "className": 'tooltipped',
+            'className': 'tooltipped',
         };
     }
 
