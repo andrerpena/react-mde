@@ -4,6 +4,5 @@ logs
 .idea
 /lib/
 node_modules
-.idea
-lab.js
 /.vscode/
+ts-build/
