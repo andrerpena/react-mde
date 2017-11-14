@@ -18727,7 +18727,7 @@ function makeList(text, selection, insertionBeforeEachLine) {
     selection = textInsertion.newSelection;
     return {
         text: text,
-        selection: selection
+        selection: selection,
     };
 }
 exports.makeList = makeList;
@@ -18746,7 +18746,7 @@ function makeHeader(text, selection, insertionBefore) {
     var newSelection = insertionText.newSelection;
     return {
         text: newText,
-        selection: newSelection
+        selection: newSelection,
     };
 }
 exports.makeHeader = makeHeader;
@@ -18760,7 +18760,7 @@ function makeACommandThatInsertsBeforeAndAfter(text, selection, insertion) {
         selection: {
             start: selection.start + insertionLength,
             end: selection.end + insertionLength,
-        }
+        },
     };
 }
 exports.makeACommandThatInsertsBeforeAndAfter = makeACommandThatInsertsBeforeAndAfter;
@@ -18817,21 +18817,19 @@ var ReactMde = /** @class */ (function (_super) {
          * @memberOf ReactMde
          */
         _this.executeCommand = function (command) {
-            var text = _this.props.value.text;
+            var _a = _this.props, text = _a.value.text, onChange = _a.onChange;
             var newValue = command.execute(text, ReactMdeSelectionHelper_1.getSelection(_this.textArea));
-            // let's select EVERYTHING and replace with the result of the command.
-            // This will cause an 'inconvenience' which is: Ctrl + Z will select the whole
-            // text. But this is the LEAST possible inconvenience. We can pretty much live
-            // with it. I've tried everything in my reach, including reimplementing the textArea
-            // history. That caused more problems than it solved.
-            _this.textArea.focus();
-            ReactMdeSelectionHelper_1.setSelection(_this.textArea, 0, _this.textArea.value.length);
-            document.execCommand('insertText', false, newValue.text);
-            ReactMdeSelectionHelper_1.setSelection(_this.textArea, newValue.selection.start, newValue.selection.end);
+            onChange(newValue);
         };
         _this.converter = new Showdown.Converter();
         return _this;
     }
+    ReactMde.prototype.componentDidUpdate = function () {
+        var selection = this.props.value.selection;
+        if (selection) {
+            ReactMdeSelectionHelper_1.setSelection(this.textArea, selection.start, selection.end);
+        }
+    };
     /**
      * Renders react-mde
      * @returns
@@ -18855,7 +18853,7 @@ var ReactMde = /** @class */ (function (_super) {
             React.createElement("div", { className: "mde-text" },
                 React.createElement("textarea", __assign({ onChange: this.handleValueChange, value: text, ref: function (c) {
                         _this.textArea = c;
-                    } }, textAreaProps))),
+                    }, contenteditable: "true" }, textAreaProps))),
             React.createElement("div", { className: "mde-preview", dangerouslySetInnerHTML: { __html: html } }),
             React.createElement("div", { className: "mde-help" },
                 React.createElement(MarkdownHelp_1.MarkdownHelp, null))));
@@ -23306,9 +23304,9 @@ var HeaderItemDropdown = /** @class */ (function (_super) {
         var open = this.state.open;
         var items = commands.map(function (command, index) { return (React.createElement(HeaderItemDropdownItem_1.HeaderItemDropdownItem, { key: index, onClick: function (e) { return _this.handleOnClickCommand(e, command); } }, command.content)); });
         var dropdown = open
-            ? React.createElement("ul", { className: "react-mde-dropdown", ref: function (ref) {
+            ? (React.createElement("ul", { className: "react-mde-dropdown", ref: function (ref) {
                     _this.dropdown = ref;
-                } }, items)
+                } }, items))
             : null;
         return (React.createElement("li", { className: "mde-header-item" },
             React.createElement("button", { type: "button", ref: function (ref) {
@@ -23361,7 +23359,7 @@ exports.HeaderItem = function (props) {
     if (tooltip) {
         buttonProps = {
             'aria-label': tooltip,
-            className: 'tooltipped',
+            'className': 'tooltipped',
         };
     }
     return (React.createElement("li", { className: "mde-header-item" },
@@ -23387,7 +23385,7 @@ exports.MarkdownHelp = function (props) {
 };
 exports.MarkdownHelp.defaultProps = {
     helpText: 'Markdown styling is supported',
-    markdownReferenceUrl: 'http://commonmark.org/help/'
+    markdownReferenceUrl: 'http://commonmark.org/help/',
 };
 
 
