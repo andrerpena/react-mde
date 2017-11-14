@@ -38,7 +38,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
     handleValueChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
         const {onChange} = this.props;
         onChange({text: e.currentTarget.value, selection: null});
-    };
+    }
 
     /**
      * Executes a command
@@ -46,22 +46,17 @@ export class ReactMde extends React.Component<ReactMdeProps> {
      * @memberOf ReactMde
      */
     executeCommand = (command: Command) => {
-        const {value: {text}} = this.props;
-
+        const {value: {text}, onChange} = this.props;
         const newValue = command.execute(text, getSelection(this.textArea));
+        onChange(newValue);
+    }
 
-        // let's select EVERYTHING and replace with the result of the command.
-        // This will cause an 'inconvenience' which is: Ctrl + Z will select the whole
-        // text. But this is the LEAST possible inconvenience. We can pretty much live
-        // with it. I've tried everything in my reach, including reimplementing the textArea
-        // history. That caused more problems than it solved.
-
-        this.textArea.focus();
-        setSelection(this.textArea, 0, this.textArea.value.length);
-        document.execCommand('insertText', false, newValue.text);
-
-        setSelection(this.textArea, newValue.selection.start, newValue.selection.end);
-    };
+    componentDidUpdate() {
+        const {value: {selection}} = this.props;
+        if (selection) {
+            setSelection(this.textArea, selection.start, selection.end);
+        }
+    }
 
     /**
      * Renders react-mde
@@ -89,15 +84,14 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                                         key={j}
                                         icon={c.icon}
                                         commands={(c as CommandSet).subCommands}
-                                        onCommand={cmd => this.executeCommand(cmd)}
+                                        onCommand={(cmd) => this.executeCommand(cmd)}
                                     />);
                                 }
                                 return <HeaderItem key={j} icon={c.icon} tooltip={c.tooltip}
                                                    onClick={() => this.executeCommand(c as Command)}/>;
                             })
                         }
-                    </HeaderGroup>)
-                }
+                    </HeaderGroup>)}
             </div>);
         }
 
@@ -111,6 +105,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                         ref={(c) => {
                             this.textArea = c;
                         }}
+                        contenteditable="true"
                         {...textAreaProps}
                     />
                 </div>
