@@ -170,11 +170,21 @@ You don't have to create your own commands at all, but if you want, this is how 
  - **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
  Your function should return the current `text` (after your command) and the current `selection` (after your command).
 
-## Roadmap
+## Migrating from the 0.* versions
 
-  - Add support for undoing a command by clicking it twice
-  - Add support for @mentions and #hashtags with dropdown and autocomplete.
-  - Add support for optionally server-rendering the markdown preview (like GitHub does)
+The 3 major differences are:
+
+- Instead of using the `getDefaultCommands` function, now the default commands are exported directly.
+- The `textAreaId` and `textareaName` props were replaced by `textAreaProps` that allows you to pass whatever you want to the `textarea` component.
+- The paths of the CSS and SCSS have changed.
+
+## Roadmap (in no particular order)
+
+  - Improve mobile support.
+  - Improve history support (Ctrl + Z).
+  - Add support for undoing a command by clicking it twice.
+  - Add support for @mentions and #hashtags with dropdown and auto-complete.
+  - Add support for optionally server-rendering the markdown preview (like GitHub does).
 
 ## Licence
 
