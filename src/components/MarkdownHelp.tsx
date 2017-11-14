@@ -25,5 +25,5 @@ export const MarkdownHelp: React.SFC<MarkdownHelpProps> = (props) => {
 
 MarkdownHelp.defaultProps = {
     helpText: 'Markdown styling is supported',
-    markdownReferenceUrl: 'http://commonmark.org/help/'
+    markdownReferenceUrl: 'http://commonmark.org/help/',
 };

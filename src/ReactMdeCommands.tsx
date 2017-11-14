@@ -20,7 +20,6 @@ import { TextSelection } from './types/TextSelection';
 import { Command } from './types/Command';
 import { CommandSet } from './types/CommandSet';
 
-
 const makeHeaderCommand: CommandSet = {
     type: 'dropdown',
     icon: 'header',

@@ -29,7 +29,7 @@ export function insertText(originalText: string, textToInsert: string, insertion
  */
 export function insertBefore(originalText: string, textToInsert: string, selection: TextSelection, selectInsertion: boolean = true): TextInsertionResult {
     const textInsertion = insertText(originalText, textToInsert, selection.start);
-    let newSelection: TextSelection = {
+    const newSelection: TextSelection = {
         start: selectInsertion ? selection.start : selection.start + textInsertion.insertionLength,
         end: selection.end + textInsertion.insertionLength,
     };
@@ -47,7 +47,7 @@ export function insertBefore(originalText: string, textToInsert: string, selecti
  */
 export function insertAfter(originalText: string, textToInsert: string, selection: TextSelection): TextInsertionResult {
     const textInsertion = insertText(originalText, textToInsert, selection.end);
-    let newSelection: TextSelection = {
+    const newSelection: TextSelection = {
         start: selection.start,
         end: selection.end + textInsertion.insertionLength,
     };
@@ -126,9 +126,9 @@ export function insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text: string, s
     const breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection.start);
     const insertionBefore = Array(breaksNeededBefore + 1).join('\n');
 
-    let newText = text;
+    const newText = text;
     let newSelection = selection;
-    let insertionLength = 0;
+    const insertionLength = 0;
 
     // if line-breaks have to be added before
     if (insertionBefore) {
@@ -157,9 +157,9 @@ export function insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text: string, sel
     const breaksNeededBefore = getBreaksNeededForEmptyLineAfter(text, selection.end);
     const insertionAfter = Array(breaksNeededBefore + 1).join('\n');
 
-    let newText = text;
+    const newText = text;
     let newSelection = selection;
-    let insertionLength = 0;
+    const insertionLength = 0;
 
     // if line-breaks have to be added before
     if (insertionAfter) {
@@ -175,7 +175,6 @@ export function insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text: string, sel
         newSelection,
     };
 }
-
 
 /**
  * Inserts insertionString before each line

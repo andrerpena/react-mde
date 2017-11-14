@@ -4,7 +4,7 @@ import {
     insertBeforeEachLine,
     selectCurrentWordIfCaretIsInsideOne,
     insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
-    insertBreaksAfterSoThatThereIsAnEmptyLineAfter
+    insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
 } from './ReactMdeTextHelper';
 import { TextSelection } from './types/TextSelection';
 import { CommandResult } from './types/CommandResult';
@@ -39,7 +39,7 @@ export function makeList(text: string, selection: TextSelection, insertionBefore
 
     return {
         text,
-        selection
+        selection,
     };
 }
 
@@ -58,7 +58,7 @@ export function makeHeader(text: string, selection: TextSelection, insertionBefo
     const newSelection = insertionText.newSelection;
     return {
         text: newText,
-        selection: newSelection
+        selection: newSelection,
     };
 }
 
@@ -72,6 +72,6 @@ export function makeACommandThatInsertsBeforeAndAfter(text: string, selection: T
         selection: {
             start: selection.start + insertionLength,
             end: selection.end + insertionLength,
-        }
+        },
     };
 }

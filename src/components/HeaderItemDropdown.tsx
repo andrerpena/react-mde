@@ -21,7 +21,7 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
         super(props);
         this.state = {
             open: false,
-        }
+        };
     }
 
     componentDidMount() {
@@ -36,13 +36,13 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
         if (this.clickedOutside(e)) {
             this.closeDropdown();
         }
-    };
+    }
 
     openDropdown = () => {
         this.setState({
             open: true,
         });
-    };
+    }
 
     closeDropdown() {
         this.setState({
@@ -57,24 +57,24 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
             && this.dropdownOpener
             && !this.dropdown.contains(target)
             && !this.dropdownOpener.contains(target);
-    };
+    }
 
     handleOnClickCommand = (e: React.SyntheticEvent<any>, command: SubCommand) => {
         const {onCommand} = this.props;
         onCommand(command);
         this.closeDropdown();
-    };
+    }
 
     handleOpenDropdown = () => {
         this.openDropdown();
-    };
+    }
 
     render() {
         const {icon, commands} = this.props;
         const {open} = this.state;
 
         const items = commands.map((command, index) => (
-            <HeaderItemDropdownItem key={index} onClick={e => this.handleOnClickCommand(e, command)}>
+            <HeaderItemDropdownItem key={index} onClick={(e) => this.handleOnClickCommand(e, command)}>
                 {command.content}
             </HeaderItemDropdownItem>
         ));
