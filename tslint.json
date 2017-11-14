@@ -6,22 +6,19 @@
     "rules": {
         "quotemark": [
             true,
-            "'"
+            "single",
+            "jsx-double"
         ],
         "max-line-length": [
             false
         ],
         "interface-name": [
-            false
+            true,
+            "never-prefix"
         ],
         "curly": false,
-        "arrow-parens": [
-            false
-        ],
         "object-literal-sort-keys": false,
-        "member-ordering": [
-            false
-        ],
+        "member-ordering": false,
         "jsx-no-lambda": [
             false
         ],
@@ -31,15 +28,10 @@
         "max-classes-per-file": [
             false
         ],
+        "member-access": false,
         "no-var-requires": false,
-        "ordered-imports": [
-            false
-        ],
-        "space-before-function-paren": [
-            false
-        ],
-        "no-empty-interface": [
-            false
-        ]
+        "ordered-imports": false,
+        "space-before-function-paren": false,
+        "no-empty-interface": false
     }
 }
