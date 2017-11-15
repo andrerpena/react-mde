@@ -24,6 +24,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
     converter: Showdown.Converter;
     textArea: HTMLTextAreaElement;
+    preview: HTMLDivElement;
 
     constructor() {
         super();
@@ -114,7 +115,10 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                         {...textAreaProps}
                     />
                 </div>
-                <div className="mde-preview" dangerouslySetInnerHTML={{__html: html}}/>
+                <div className="mde-preview" dangerouslySetInnerHTML={{__html: html}}
+                     ref={(p) => {
+                            this.preview = p;
+                        }} />
                 <div className="mde-help">
                     <MarkdownHelp/>
                 </div>
