@@ -111,7 +111,6 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                         ref={(c) => {
                             this.textArea = c;
                         }}
-                        contenteditable="true"
                         {...textAreaProps}
                     />
                 </div>
