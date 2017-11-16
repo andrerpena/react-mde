@@ -115,10 +115,13 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                         {...textAreaProps}
                     />
                 </div>
-                <div className="mde-preview" dangerouslySetInnerHTML={{__html: html}}
-                     ref={(p) => {
-                            this.preview = p;
-                        }} />
+                <div
+                    className="mde-preview"
+                    dangerouslySetInnerHTML={{__html: html}}
+                    ref={(p) => {
+                        this.preview = p;
+                    }}
+                />
                 <div className="mde-help">
                     <MarkdownHelp/>
                 </div>
