@@ -18853,8 +18853,10 @@ var ReactMde = /** @class */ (function (_super) {
             React.createElement("div", { className: "mde-text" },
                 React.createElement("textarea", __assign({ onChange: this.handleValueChange, value: text, ref: function (c) {
                         _this.textArea = c;
-                    }, contenteditable: "true" }, textAreaProps))),
-            React.createElement("div", { className: "mde-preview", dangerouslySetInnerHTML: { __html: html } }),
+                    } }, textAreaProps))),
+            React.createElement("div", { className: "mde-preview", dangerouslySetInnerHTML: { __html: html }, ref: function (p) {
+                    _this.preview = p;
+                } }),
             React.createElement("div", { className: "mde-help" },
                 React.createElement(MarkdownHelp_1.MarkdownHelp, null))));
     };
