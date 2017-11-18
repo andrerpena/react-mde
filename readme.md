@@ -6,11 +6,11 @@ A simple yet powerful and extensible Markdown Editor editor for React, inspired 
 
 ## Demo
 
-Live [demo](http://andrerpena.me/react-mde).
+**Live** [demo](http://andrerpena.me/react-mde).
 
-JavaScript demo project: https://github.com/andrerpena/react-mde-js-demo
+**JavaScript** demo project: https://github.com/andrerpena/react-mde-js-demo
 
-TypeScript demo project: https://github.com/andrerpena/react-mde-ts-demo
+**TypeScript** demo project: https://github.com/andrerpena/react-mde-ts-demo
 
 ## Installing
 
