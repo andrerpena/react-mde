@@ -1,9 +1,9 @@
 {
   "name": "react-mde",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "A react markdown-editor like Stackoverflow and Github",
   "main": "./lib/js/index.js",
-  "types": "./lib/definitions/main.d.ts",
+  "types": "./lib/definitions/index.d.ts",
   "scripts": {
     "test": "mocha --timeout 15000 --compilers js:babel-register ./test/*Spec.js",
     "start": "cross-env NODE_ENV=development ts-node ./demo/server.ts",

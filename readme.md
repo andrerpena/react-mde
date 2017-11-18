@@ -6,7 +6,11 @@ A simple yet powerful and extensible Markdown Editor editor for React, inspired 
 
 ## Demo
 
-Checkout the [demo](http://andrerpena.me/react-mde).
+Live [demo](http://andrerpena.me/react-mde).
+JavaScript demo project: https://github.com/andrerpena/react-mde-js-demo
+TypeScript demo project: https://github.com/andrerpena/react-mde-ts-demo
+
+https://github.com/andrerpena/react-mde-ts-demo
 
 ## Installing
 
@@ -83,10 +87,6 @@ Example in importing styles in your `[entry_point].js`:
     import 'react-mde/lib/styles/css/react-mde.css';
     import 'react-mde/lib/styles/css/react-mde-command-styles.css';
     import 'react-mde/lib/styles/css/markdown-default-theme.css';
-
-## Couldn't make this work on your project?
-
-This is the minimum setup app to work with `react-mde`: https://github.com/andrerpena/react-mde-js-demo
 
 ## Commands
 

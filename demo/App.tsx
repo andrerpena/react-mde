@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactMde, { ReactMdeCommands, ReactMdeValue, ReactMdeTextSelection } from '../src';
+import ReactMde, { ReactMdeCommands, ReactMdeValue } from '../src';
 
 interface AppProps {
 }
@@ -10,14 +10,14 @@ interface AppState {
 
 export class App extends React.Component<AppProps, AppState> {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            reactMdeValue: {text: '', selection: null},
+            reactMdeValue: {text: ''},
         };
     }
 
-    handleValueChange = (value) => {
+    handleValueChange = (value: ReactMdeValue) => {
         this.setState({reactMdeValue: value});
     }
 
