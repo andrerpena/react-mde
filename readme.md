@@ -82,8 +82,8 @@ The following tyles from React-mde should be added: (Both .scss and .css files a
 
 Example in importing styles in your `[entry_point].js`:
 
-    import '../node_modules/normalize.css/normalize.css';
-    import '../node_modules/font-awesome/css/font-awesome.css';
+    import 'normalize.css/normalize.css';
+    import 'font-awesome/css/font-awesome.css';
     import 'react-mde/lib/styles/css/react-mde.css';
     import 'react-mde/lib/styles/css/react-mde-command-styles.css';
     import 'react-mde/lib/styles/css/markdown-default-theme.css';
