@@ -20,7 +20,7 @@ import { TextSelection } from './types/TextSelection';
 import { Command } from './types/Command';
 import { CommandSet } from './types/CommandSet';
 
-const makeHeaderCommand: CommandSet = {
+export const makeHeaderCommand: CommandSet = {
     type: 'dropdown',
     icon: 'header',
     subCommands: [
@@ -45,7 +45,7 @@ const makeHeaderCommand: CommandSet = {
     ],
 };
 
-const makeBoldCommand: Command = {
+export const makeBoldCommand: Command = {
     icon: 'bold',
     tooltip:
         'Add bold text',
@@ -55,7 +55,7 @@ const makeBoldCommand: Command = {
         },
 };
 
-const makeItalicCommand: Command = {
+export const makeItalicCommand: Command = {
     icon: 'italic',
     tooltip:
         'Add italic text',
@@ -65,7 +65,7 @@ const makeItalicCommand: Command = {
         },
 };
 
-const makeLinkCommand = {
+export const makeLinkCommand = {
     icon: 'link',
     tooltip:
         'Insert a link',
@@ -83,7 +83,7 @@ const makeLinkCommand = {
         },
 };
 
-const makeQuoteCommand = {
+export const makeQuoteCommand = {
     icon: 'quote-right',
     tooltip: 'Insert a quote',
     execute:
@@ -111,7 +111,7 @@ const makeQuoteCommand = {
         },
 };
 
-const makeCodeCommand: Command = {
+export const makeCodeCommand: Command = {
     icon: 'code',
     tooltip: 'Insert code',
     execute:
@@ -148,7 +148,7 @@ const makeCodeCommand: Command = {
         },
 };
 
-const makeImageCommand: Command = {
+export const makeImageCommand: Command = {
     icon: 'picture-o',
     tooltip: 'Insert a picture',
     execute:
@@ -165,7 +165,7 @@ const makeImageCommand: Command = {
         },
 };
 
-const makeUnorderedListCommand: Command = {
+export const makeUnorderedListCommand: Command = {
     icon: 'list-ul',
     tooltip: 'Add a bulleted list',
     execute:
@@ -174,7 +174,7 @@ const makeUnorderedListCommand: Command = {
         },
 };
 
-const makeOrderedListCommand: Command = {
+export const makeOrderedListCommand: Command = {
     icon: 'list-ol',
     tooltip: 'Add a numbered list',
     execute:
@@ -183,7 +183,7 @@ const makeOrderedListCommand: Command = {
         },
 };
 
-export const defaultCommands = [
+export const getDefaultCommands = () => [
     [makeHeaderCommand, makeBoldCommand, makeItalicCommand],
     [makeLinkCommand, makeQuoteCommand, makeCodeCommand, makeImageCommand],
     [makeUnorderedListCommand, makeOrderedListCommand],

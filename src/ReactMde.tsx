@@ -13,6 +13,7 @@ import { HeaderItemDropdown } from './components/HeaderItemDropdown';
 import { HeaderItem } from './components/HeaderItem';
 import { MarkdownHelp } from './components/MarkdownHelp';
 
+
 export interface ReactMdeProps {
     commands: Array<Array<Command | CommandSet>>;
     value: Value;

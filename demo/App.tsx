@@ -1,11 +1,12 @@
-import * as React from 'react';
-import ReactMde, { ReactMdeCommands, ReactMdeValue } from '../src';
+import * as React from "react";
+import ReactMde, { ReactMdeCommands, ReactMdeTypes } from "../src";
+
 
 interface AppProps {
 }
 
 interface AppState {
-    reactMdeValue: ReactMdeValue;
+    reactMdeValue: ReactMdeTypes.Value;
 }
 
 export class App extends React.Component<AppProps, AppState> {
@@ -13,11 +14,11 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props) {
         super(props);
         this.state = {
-            reactMdeValue: {text: ''},
+            reactMdeValue: {text: ""},
         };
     }
 
-    handleValueChange = (value: ReactMdeValue) => {
+    handleValueChange = (value: ReactMdeTypes.Value) => {
         this.setState({reactMdeValue: value});
     }
 
@@ -26,12 +27,12 @@ export class App extends React.Component<AppProps, AppState> {
             <div className="container">
                 <ReactMde
                     textAreaProps={{
-                        id: 'ta1',
-                        name: 'ta1',
+                        id: "ta1",
+                        name: "ta1",
                     }}
                     value={this.state.reactMdeValue}
                     onChange={this.handleValueChange}
-                    commands={ReactMdeCommands}
+                    commands={ReactMdeCommands.getDefaultCommands()}
                 />
             </div>
         );
