@@ -230,6 +230,7 @@ You can import `react-mde` directly or import each of the sub-components and hav
 - Each sub-component now has its own CSS/SCSS file and we're now including a `react-mde-all.css`, or the SCSS alternative, for simplicity.
 - We realized that on version 1.*, it was difficult to select which components you wanted to use. So now...
 
+
     import * as ReactMde from 'react-mde';
     ReactMde.ReactMdeComponents // contains all components and you can select your own components
     ReactMde.getDefaultComponents() // will return an array with all components
