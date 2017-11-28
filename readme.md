@@ -250,11 +250,7 @@ Major differences:
 
 ## Roadmap (in no particular order)
 
-  - Improve mobile support.
-  - Improve history support (Ctrl + Z).
-  - Add support for undoing a command by clicking it twice.
-  - Add support for @mentions and #hashtags with dropdown and auto-complete.
-  - Add support for optionally server-rendering the markdown preview (like GitHub does).
+Check the project here: https://github.com/andrerpena/react-mde/projects/1
 
 ## Licence
 
