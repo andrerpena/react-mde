@@ -235,6 +235,7 @@ You can import `react-mde` directly or import each of the sub-components and hav
     ReactMde.ReactMdeComponents // contains all components and you can select your own components
     ReactMde.getDefaultComponents() // will return an array with all components
     
+    
 How to upgrade an existing 1.* JavaScript project: https://github.com/andrerpena/react-mde-js-demo/commit/e62af170fa258f7f17f29d41f395f24e9eaf3b72
 
 How to upgrade an existing 1.* TypeScript project: https://github.com/andrerpena/react-mde-ts-demo/commit/d6718305c0132649cabca432e1e9415ea06cd643
