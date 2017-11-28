@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 export interface HeaderItemProps {
     tooltip: string;
@@ -17,8 +17,8 @@ export const HeaderItem: React.SFC<HeaderItemProps> = (props) => {
 
     if (tooltip) {
         buttonProps = {
-            'aria-label': tooltip,
-            'className': 'tooltipped',
+            "aria-label": tooltip,
+            "className": "tooltipped",
         };
     }
 

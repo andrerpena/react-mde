@@ -1,9 +1,9 @@
 // TEXT INSERTION HELPERS
 
-import { TextSelection } from './types/TextSelection';
-import { TextInsertionResult } from './types/TextInsertionResult';
-import { Word } from './types/Word';
-import { AlterLineFunction } from './types/FunctionTypes';
+import { TextSelection } from "../types/TextSelection";
+import { TextInsertionResult } from "../types/TextInsertionResult";
+import { Word } from "../types/Word";
+import { AlterLineFunction } from "../types/FunctionTypes";
 
 /**
  * Inserts "textToBeInserted" in "text" at the "insertionPosition"
@@ -14,7 +14,7 @@ import { AlterLineFunction } from './types/FunctionTypes';
  * @returns
  */
 export function insertText(originalText: string, textToInsert: string, insertionPosition: number): TextInsertionResult {
-    const newText = [originalText.slice(0, insertionPosition), textToInsert, originalText.slice(insertionPosition)].join('');
+    const newText = [originalText.slice(0, insertionPosition), textToInsert, originalText.slice(insertionPosition)].join("");
     return {newText, insertionLength: textToInsert.length};
 }
 
@@ -59,7 +59,7 @@ export function insertAfter(originalText: string, textToInsert: string, selectio
  *  Gets the number of line-breaks that would have to be inserted before the given 'startPosition'
  *  to make sure there's an empty line between 'startPosition' and the previous text
  */
-export function getBreaksNeededForEmptyLineBefore(text = '', startPosition: number): number {
+export function getBreaksNeededForEmptyLineBefore(text = "", startPosition: number): number {
     if (startPosition === 0) return 0;
 
     // rules:
@@ -89,7 +89,7 @@ export function getBreaksNeededForEmptyLineBefore(text = '', startPosition: numb
  *  to make sure there's an empty line between 'startPosition' and the next text
  */
 export function getBreaksNeededForEmptyLineAfter(text: string, startPosition: number): number {
-    if (!text) throw Error('Argument \'text\' should be truthy');
+    if (!text) throw Error("Argument 'text' should be truthy");
     if (startPosition === text.length - 1) return 0;
 
     // rules:
@@ -125,7 +125,7 @@ export function getBreaksNeededForEmptyLineAfter(text: string, startPosition: nu
  */
 export function insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text: string, selection: TextSelection): TextInsertionResult {
     const breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection.start);
-    const insertionBefore = Array(breaksNeededBefore + 1).join('\n');
+    const insertionBefore = Array(breaksNeededBefore + 1).join("\n");
 
     const newText = text;
     let newSelection = selection;
@@ -156,7 +156,7 @@ export function insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text: string, s
  */
 export function insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text: string, selection: TextSelection): TextInsertionResult {
     const breaksNeededBefore = getBreaksNeededForEmptyLineAfter(text, selection.end);
-    const insertionAfter = Array(breaksNeededBefore + 1).join('\n');
+    const insertionAfter = Array(breaksNeededBefore + 1).join("\n");
 
     const newText = text;
     let newSelection = selection;
@@ -186,16 +186,16 @@ export function insertBeforeEachLine(text: string, insertion: string | AlterLine
 
     let insertionLength = 0;
     const modifiedText = lines.map((item, index) => {
-        if (typeof insertion === 'string') {
+        if (typeof insertion === "string") {
             insertionLength += insertion.length;
             return insertion + item;
-        } else if (typeof insertion === 'function') {
+        } else if (typeof insertion === "function") {
             const insertionResult = insertion(item, index);
             insertionLength += insertionResult.length;
             return insertion(item, index) + item;
         }
-        throw Error('insertion is expected to be either a string or a function');
-    }).join('\n');
+        throw Error("insertion is expected to be either a string or a function");
+    }).join("\n");
 
     const newText = text.slice(0, selection.start) + modifiedText + text.slice(selection.end);
     return {
@@ -218,9 +218,9 @@ export function insertBeforeEachLine(text: string, insertion: string | AlterLine
  * @param {any} position
  */
 export function getSurroundingWord(text: string, position: number): Word {
-    if (!text) throw Error('Argument \'text\' should be truthy');
+    if (!text) throw Error("Argument 'text' should be truthy");
 
-    const isWordDelimiter = (c: string) => c === ' ' || c.charCodeAt(0) === 10;
+    const isWordDelimiter = (c: string) => c === " " || c.charCodeAt(0) === 10;
 
     // leftIndex is initialized to 0 because if position is 0, it won't even enter the iteration
     let leftIndex = 0;

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 import {
     // text insertion
@@ -9,70 +9,68 @@ import {
     insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
     // others
     selectCurrentWordIfCaretIsInsideOne,
-} from './ReactMdeTextHelper';
+} from "./helpers/ReactMdeTextHelper";
 
 import {
     makeList,
     makeHeader,
     makeACommandThatInsertsBeforeAndAfter,
-} from './ReactMdeCommandHelper';
-import { TextSelection } from './types/TextSelection';
-import { Command } from './types/Command';
-import { CommandSet } from './types/CommandSet';
+} from "./helpers/ReactMdeCommandHelper";
+import { Command, CommandSet, TextSelection } from "./types/";
 
 export const makeHeaderCommand: CommandSet = {
-    type: 'dropdown',
-    icon: 'header',
+    type: "dropdown",
+    icon: "header",
     subCommands: [
         {
             content: <p className="header-1">Header</p>,
             execute: (text: string, selection: TextSelection) => {
-                return makeHeader(text, selection, '# ');
+                return makeHeader(text, selection, "# ");
             },
         },
         {
             content: <p className="header-2">Header</p>,
             execute(text: string, selection: TextSelection) {
-                return makeHeader(text, selection, '## ');
+                return makeHeader(text, selection, "## ");
             },
         },
         {
             content: <p className="header-3">Header</p>,
             execute(text: string, selection: TextSelection) {
-                return makeHeader(text, selection, '### ');
+                return makeHeader(text, selection, "### ");
             },
         },
     ],
 };
 
 export const makeBoldCommand: Command = {
-    icon: 'bold',
+    icon: "bold",
     tooltip:
-        'Add bold text',
+        "Add bold text",
     execute:
         (text: string, selection: TextSelection) => {
-            return makeACommandThatInsertsBeforeAndAfter(text, selection, '**');
+            return makeACommandThatInsertsBeforeAndAfter(text, selection, "**");
         },
 };
 
 export const makeItalicCommand: Command = {
-    icon: 'italic',
+    icon: "italic",
     tooltip:
-        'Add italic text',
+        "Add italic text",
     execute:
         (text: string, selection: TextSelection) => {
-            return makeACommandThatInsertsBeforeAndAfter(text, selection, '_');
+            return makeACommandThatInsertsBeforeAndAfter(text, selection, "_");
         },
 };
 
 export const makeLinkCommand = {
-    icon: 'link',
+    icon: "link",
     tooltip:
-        'Insert a link',
+        "Insert a link",
     execute:
         (text: string, selection: TextSelection) => {
-            const {newText, insertionLength} = insertText(text, '[', selection.start);
-            const finalText = insertText(newText, '](url)', selection.end + insertionLength).newText;
+            const {newText, insertionLength} = insertText(text, "[", selection.start);
+            const finalText = insertText(newText, "](url)", selection.end + insertionLength).newText;
             return {
                 text: finalText,
                 selection: {
@@ -84,8 +82,8 @@ export const makeLinkCommand = {
 };
 
 export const makeQuoteCommand = {
-    icon: 'quote-right',
-    tooltip: 'Insert a quote',
+    icon: "quote-right",
+    tooltip: "Insert a quote",
     execute:
         (text: string, selection: TextSelection) => {
             selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
@@ -96,7 +94,7 @@ export const makeQuoteCommand = {
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
-            textInsertion = insertBefore(text, '> ', selection);
+            textInsertion = insertBefore(text, "> ", selection);
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
@@ -112,15 +110,15 @@ export const makeQuoteCommand = {
 };
 
 export const makeCodeCommand: Command = {
-    icon: 'code',
-    tooltip: 'Insert code',
+    icon: "code",
+    tooltip: "Insert code",
     execute:
-        (text = '', selection: TextSelection) => {
+        (text = "", selection: TextSelection) => {
             selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
 
-            if (text.slice(selection.start, selection.end).indexOf('\n') === -1) {
+            if (text.slice(selection.start, selection.end).indexOf("\n") === -1) {
                 // when there's no breaking line
-                return makeACommandThatInsertsBeforeAndAfter(text, selection, '`');
+                return makeACommandThatInsertsBeforeAndAfter(text, selection, "`");
             }
             let textInsertion;
 
@@ -130,12 +128,12 @@ export const makeCodeCommand: Command = {
             selection = textInsertion.newSelection;
 
             // inserts ```\n before
-            textInsertion = insertBefore(text, '```\n', selection, false);
+            textInsertion = insertBefore(text, "```\n", selection, false);
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
             // inserts ```\n after
-            textInsertion = insertAfter(text, '\n```', selection);
+            textInsertion = insertAfter(text, "\n```", selection);
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
@@ -149,12 +147,12 @@ export const makeCodeCommand: Command = {
 };
 
 export const makeImageCommand: Command = {
-    icon: 'picture-o',
-    tooltip: 'Insert a picture',
+    icon: "picture-o",
+    tooltip: "Insert a picture",
     execute:
         (text: string, selection: TextSelection) => {
-            const {newText, insertionLength} = insertText(text, '![', selection.start);
-            const finalText = insertText(newText, '](image-url)', selection.end + insertionLength).newText;
+            const {newText, insertionLength} = insertText(text, "![", selection.start);
+            const finalText = insertText(newText, "](image-url)", selection.end + insertionLength).newText;
             return {
                 text: finalText,
                 selection: {
@@ -166,17 +164,17 @@ export const makeImageCommand: Command = {
 };
 
 export const makeUnorderedListCommand: Command = {
-    icon: 'list-ul',
-    tooltip: 'Add a bulleted list',
+    icon: "list-ul",
+    tooltip: "Add a bulleted list",
     execute:
         (text: string, selection: TextSelection) => {
-            return makeList(text, selection, '- ');
+            return makeList(text, selection, "- ");
         },
 };
 
 export const makeOrderedListCommand: Command = {
-    icon: 'list-ol',
-    tooltip: 'Add a numbered list',
+    icon: "list-ol",
+    tooltip: "Add a numbered list",
     execute:
         (text: string, selection: TextSelection) => {
             return makeList(text, selection, (item: string, index: number) => `${index + 1}. `);

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { TextSelection } from './TextSelection';
-import { Value } from './Value';
+import * as React from "react";
+import { TextSelection } from "./TextSelection";
+import { Value } from "./Value";
 
 export interface SubCommand {
     content: React.ReactNode;

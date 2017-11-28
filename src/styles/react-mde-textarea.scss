@@ -1,0 +1,13 @@
+@import "variables";
+
+.mde-text {
+    textarea {
+        display:block;
+        box-sizing: border-box;
+        width: 100%;
+        min-height: $mde-textarea-min-height;
+        padding: $mde-textarea-padding;
+        border: 1px solid $mde-border-color;
+        border-radius: $mde-textarea-border-radius;
+    }
+}

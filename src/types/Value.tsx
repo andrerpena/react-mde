@@ -1,4 +1,4 @@
-import { TextSelection } from './TextSelection';
+import { TextSelection } from "./TextSelection";
 
 export interface Value {
     text: string;

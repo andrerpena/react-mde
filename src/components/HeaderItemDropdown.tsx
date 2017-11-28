@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { HeaderItemDropdownItem } from './HeaderItemDropdownItem';
-import { SubCommand } from '../types/SubCommand';
+import * as React from "react";
+import { HeaderItemDropdownItem } from "./HeaderItemDropdownItem";
+import { SubCommand } from "../types/SubCommand";
 
 interface HeaderItemDropdownProps {
     icon: string;
@@ -25,11 +25,11 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
     }
 
     componentDidMount() {
-        document.addEventListener('click', this.handleGlobalClick, false);
+        document.addEventListener("click", this.handleGlobalClick, false);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('click', this.handleGlobalClick, false);
+        document.removeEventListener("click", this.handleGlobalClick, false);
     }
 
     handleGlobalClick: EventListenerOrEventListenerObject = (e: Event) => {

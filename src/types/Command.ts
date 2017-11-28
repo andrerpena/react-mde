@@ -1,5 +1,5 @@
-import { TextSelection } from './TextSelection';
-import { Value } from './Value';
+import { TextSelection } from "./TextSelection";
+import { Value } from "./Value";
 
 export interface Command {
     type?: string;

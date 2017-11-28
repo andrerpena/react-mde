@@ -1,18 +1,12 @@
-import * as React from 'react';
-import * as Showdown from 'showdown';
+import * as React from "react";
 
 import {
     getSelection,
-    setSelection,
-} from './ReactMdeSelectionHelper';
-import { Command } from './types/Command';
-import { CommandSet } from './types/CommandSet';
-import { Value } from './types/Value';
-import { HeaderGroup } from './components/HeaderGroup';
-import { HeaderItemDropdown } from './components/HeaderItemDropdown';
-import { HeaderItem } from './components/HeaderItem';
-import { MarkdownHelp } from './components/MarkdownHelp';
-
+} from "./helpers/ReactMdeSelectionHelper";
+import { Command, CommandSet, Value } from "./types";
+import { ReactMdeToolbar } from "./ReactMdeToolbar";
+import { ReactMdeTextArea } from "./ReactMdeTextArea";
+import { ReactMdePreview } from "./ReactMdePreview";
 
 export interface ReactMdeProps {
     commands: Array<Array<Command | CommandSet>>;
@@ -23,41 +17,26 @@ export interface ReactMdeProps {
 
 export class ReactMde extends React.Component<ReactMdeProps> {
 
-    converter: Showdown.Converter;
     textArea: HTMLTextAreaElement;
     preview: HTMLDivElement;
 
-    constructor() {
-        super();
-        this.converter = new Showdown.Converter();
-    }
-
     /**
      * Handler for the textArea value change
-     * @param {any} e
      * @memberOf ReactMde
      */
-    handleValueChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    handleValueChange = (value) => {
         const {onChange} = this.props;
-        onChange({text: e.currentTarget.value, selection: null});
+        onChange(value);
     }
 
     /**
      * Executes a command
-     * @param {function} command
      * @memberOf ReactMde
      */
-    executeCommand = (command: Command) => {
+    handleCommand = (command: Command) => {
         const {value: {text}, onChange} = this.props;
         const newValue = command.execute(text, getSelection(this.textArea));
         onChange(newValue);
-    }
-
-    componentDidUpdate() {
-        const {value: {selection}} = this.props;
-        if (selection) {
-            setSelection(this.textArea, selection.start, selection.end);
-        }
     }
 
     /**
@@ -67,65 +46,27 @@ export class ReactMde extends React.Component<ReactMdeProps> {
      */
     render() {
         const {
-            value: {text},
+            value,
             commands,
             textAreaProps,
         } = this.props;
 
-        const html = this.converter.makeHtml(text) || '<p>&nbsp</p>';
-
-        let header = null;
-        if (commands) {
-            header = (
-                <div className="mde-header">
-                    {
-                        commands.map((cg: Array<Command | CommandSet>, i: number) => <HeaderGroup key={i}>
-                            {
-                                cg.map((c: Command | CommandSet, j) => {
-                                    if (c.type === 'dropdown') {
-                                        return (<HeaderItemDropdown
-                                            key={j}
-                                            icon={c.icon}
-                                            commands={(c as CommandSet).subCommands}
-                                            onCommand={(cmd) => this.executeCommand(cmd)}
-                                        />);
-                                    }
-                                    return <HeaderItem
-                                        key={j}
-                                        icon={c.icon}
-                                        tooltip={c.tooltip}
-                                        onClick={() => this.executeCommand(c as Command)}
-                                    />;
-                                })
-                            }
-                        </HeaderGroup>)}
-                </div>
-            );
-        }
-
         return (
             <div className="react-mde">
-                {header}
-                <div className="mde-text">
-                    <textarea
-                        onChange={this.handleValueChange}
-                        value={text}
-                        ref={(c) => {
-                            this.textArea = c;
-                        }}
-                        {...textAreaProps}
-                    />
-                </div>
-                <div
-                    className="mde-preview"
-                    dangerouslySetInnerHTML={{__html: html}}
-                    ref={(p) => {
-                        this.preview = p;
-                    }}
+                <ReactMdeToolbar
+                    commands={commands}
+                    onCommand={this.handleCommand}
                 />
-                <div className="mde-help">
-                    <MarkdownHelp/>
-                </div>
+                <ReactMdeTextArea
+                    onChange={this.handleValueChange}
+                    value={value}
+                    textAreaProps={textAreaProps}
+                    textAreaRef={(c) => this.textArea = c}
+                />
+                <ReactMdePreview
+                    markdown={value ? value.text : ""}
+                    previewRef={(c) => this.preview = c}
+                />
             </div>
         );
     }

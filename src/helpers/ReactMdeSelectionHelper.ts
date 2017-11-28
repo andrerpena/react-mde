@@ -1,4 +1,4 @@
-import { TextSelection } from './types/TextSelection';
+import { TextSelection } from "../types/TextSelection";
 
 /**
  * Gets the selection of the given element
@@ -7,7 +7,7 @@ import { TextSelection } from './types/TextSelection';
  * @returns
  */
 export function getSelection(element: HTMLTextAreaElement): TextSelection {
-    if (!element) throw Error('Argument \'element\' should be truthy');
+    if (!element) throw Error("Argument 'element' should be truthy");
     return {
         start: element.selectionStart,
         end: element.selectionEnd,
@@ -22,11 +22,11 @@ export function getSelection(element: HTMLTextAreaElement): TextSelection {
  * @param {any} end
  */
 export function setSelection(element: HTMLTextAreaElement, start: number, end: number): void {
-    if (!element) throw Error('Argument \'element\' should be truthy');
+    if (!element) throw Error("Argument 'element' should be truthy");
 
     element.focus();
     if (!element.setSelectionRange) {
-        throw Error('Incompatible browser. element.setSelectionRange is not defined');
+        throw Error("Incompatible browser. element.setSelectionRange is not defined");
     }
     element.setSelectionRange(start, end);
 }

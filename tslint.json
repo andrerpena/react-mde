@@ -6,7 +6,7 @@
     "rules": {
         "quotemark": [
             true,
-            "single",
+            "double",
             "jsx-double"
         ],
         "max-line-length": [

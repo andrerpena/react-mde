@@ -1,7 +1,6 @@
 import * as React from "react";
 import ReactMde, { ReactMdeCommands, ReactMdeTypes } from "../src";
 
-
 interface AppProps {
 }
 

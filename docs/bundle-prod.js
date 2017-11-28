@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/react-mde/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,9 +71,9 @@
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(17);
+  module.exports = __webpack_require__(22);
 } else {
-  module.exports = __webpack_require__(18);
+  module.exports = __webpack_require__(23);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -565,6 +565,318 @@ module.exports = warning;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+// TEXT INSERTION HELPERS
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Inserts "textToBeInserted" in "text" at the "insertionPosition"
+ *
+ * @param {any} originalText
+ * @param {any} textToInsert
+ * @param {any} insertionPosition
+ * @returns
+ */
+function insertText(originalText, textToInsert, insertionPosition) {
+    var newText = [originalText.slice(0, insertionPosition), textToInsert, originalText.slice(insertionPosition)].join("");
+    return { newText: newText, insertionLength: textToInsert.length };
+}
+exports.insertText = insertText;
+/**
+ * Inserts the given text before. The selection is moved ahead so the
+ *
+ * @export
+ * @param {any} originalText
+ * @param {any} textToInsert
+ * @param {any} selection
+ * @param selectInsertion {boolean} Whether or not the inserted text should be selected
+ * @returns
+ */
+function insertBefore(originalText, textToInsert, selection, selectInsertion) {
+    if (selectInsertion === void 0) { selectInsertion = true; }
+    var textInsertion = insertText(originalText, textToInsert, selection.start);
+    var newSelection = {
+        start: selectInsertion ? selection.start : selection.start + textInsertion.insertionLength,
+        end: selection.end + textInsertion.insertionLength,
+    };
+    return __assign({}, textInsertion, { newSelection: newSelection });
+}
+exports.insertBefore = insertBefore;
+/**
+ * Inserts the given text after. The selection will change to encompass the new text
+ *
+ * @export
+ * @param {any} originalText
+ * @param {any} textToInsert
+ * @param {any} selection
+ * @returns
+ */
+function insertAfter(originalText, textToInsert, selection) {
+    var textInsertion = insertText(originalText, textToInsert, selection.end);
+    var newSelection = {
+        start: selection.start,
+        end: selection.end + textInsertion.insertionLength,
+    };
+    return __assign({}, textInsertion, { newSelection: newSelection });
+}
+exports.insertAfter = insertAfter;
+/**
+ *  Gets the number of line-breaks that would have to be inserted before the given 'startPosition'
+ *  to make sure there's an empty line between 'startPosition' and the previous text
+ */
+function getBreaksNeededForEmptyLineBefore(text, startPosition) {
+    if (text === void 0) { text = ""; }
+    if (startPosition === 0)
+        return 0;
+    // rules:
+    // - If we're in the first line, no breaks are needed
+    // - Otherwise there must be 2 breaks before the previous character. Depending on how many breaks exist already, we
+    //      may need to insert 0, 1 or 2 breaks
+    var neededBreaks = 2;
+    var isInFirstLine = true;
+    for (var i = startPosition - 1; i >= 0 && (neededBreaks >= 0); i--) {
+        switch (text.charCodeAt(i)) {
+            case 32:// blank space
+                continue;
+            case 10:// line break
+                neededBreaks--;
+                isInFirstLine = false;
+                break;
+            default:
+                return neededBreaks;
+        }
+    }
+    return isInFirstLine ? 0 : neededBreaks;
+}
+exports.getBreaksNeededForEmptyLineBefore = getBreaksNeededForEmptyLineBefore;
+/**
+ *  Gets the number of line-breaks that would have to be inserted after the given 'startPosition'
+ *  to make sure there's an empty line between 'startPosition' and the next text
+ */
+function getBreaksNeededForEmptyLineAfter(text, startPosition) {
+    if (!text)
+        throw Error("Argument 'text' should be truthy");
+    if (startPosition === text.length - 1)
+        return 0;
+    // rules:
+    // - If we're in the first line, no breaks are needed
+    // - Otherwise there must be 2 breaks before the previous character. Depending on how many breaks exist already, we
+    //      may need to insert 0, 1 or 2 breaks
+    var neededBreaks = 2;
+    var isInLastLine = true;
+    for (var i = startPosition; i < text.length && (neededBreaks >= 0); i++) {
+        switch (text.charCodeAt(i)) {
+            case 32:
+                continue;
+            case 10: {
+                neededBreaks--;
+                isInLastLine = false;
+                break;
+            }
+            default:
+                return neededBreaks;
+        }
+    }
+    return isInLastLine ? 0 : neededBreaks;
+}
+exports.getBreaksNeededForEmptyLineAfter = getBreaksNeededForEmptyLineAfter;
+/**
+ * Inserts breaks before, only if needed. The returned selection will not include this breaks
+ *
+ * @export
+ * @param {any} text
+ * @param {any} selection
+ * @returns
+ */
+function insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection) {
+    var breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection.start);
+    var insertionBefore = Array(breaksNeededBefore + 1).join("\n");
+    var newText = text;
+    var newSelection = selection;
+    var insertionLength = 0;
+    // if line-breaks have to be added before
+    if (insertionBefore) {
+        var textInsertion = insertText(text, insertionBefore, selection.start);
+        newSelection = {
+            start: selection.start + textInsertion.insertionLength,
+            end: selection.end + textInsertion.insertionLength,
+        };
+    }
+    return {
+        newText: newText,
+        insertionLength: insertionLength,
+        newSelection: newSelection,
+    };
+}
+exports.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore;
+/**
+ * Inserts breaks after, only if needed. The returned selection will not include this breaks
+ *
+ * @export
+ * @param {any} text
+ * @param {any} selection
+ * @returns
+ */
+function insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection) {
+    var breaksNeededBefore = getBreaksNeededForEmptyLineAfter(text, selection.end);
+    var insertionAfter = Array(breaksNeededBefore + 1).join("\n");
+    var newText = text;
+    var newSelection = selection;
+    var insertionLength = 0;
+    // if line-breaks have to be added before
+    if (insertionAfter) {
+        var textInsertion = insertText(text, insertionAfter, selection.end);
+        newSelection = {
+            start: selection.start + textInsertion.insertionLength,
+            end: selection.end + textInsertion.insertionLength,
+        };
+    }
+    return {
+        newText: newText,
+        insertionLength: insertionLength,
+        newSelection: newSelection,
+    };
+}
+exports.insertBreaksAfterSoThatThereIsAnEmptyLineAfter = insertBreaksAfterSoThatThereIsAnEmptyLineAfter;
+/**
+ * Inserts insertionString before each line
+ */
+function insertBeforeEachLine(text, insertion, selection) {
+    var substring = text.slice(selection.start, selection.end);
+    var lines = substring.split(/\n/);
+    var insertionLength = 0;
+    var modifiedText = lines.map(function (item, index) {
+        if (typeof insertion === "string") {
+            insertionLength += insertion.length;
+            return insertion + item;
+        }
+        else if (typeof insertion === "function") {
+            var insertionResult = insertion(item, index);
+            insertionLength += insertionResult.length;
+            return insertion(item, index) + item;
+        }
+        throw Error("insertion is expected to be either a string or a function");
+    }).join("\n");
+    var newText = text.slice(0, selection.start) + modifiedText + text.slice(selection.end);
+    return {
+        newText: newText,
+        insertionLength: insertionLength,
+        newSelection: {
+            start: selection.start,
+            end: selection.end + insertionLength,
+        },
+    };
+}
+exports.insertBeforeEachLine = insertBeforeEachLine;
+// MISC
+/**
+ * Gets the word surrounding the given position. Word delimiters are spaces and line-breaks
+ *
+ * @export
+ * @param {any} text
+ * @param {any} position
+ */
+function getSurroundingWord(text, position) {
+    if (!text)
+        throw Error("Argument 'text' should be truthy");
+    var isWordDelimiter = function (c) { return c === " " || c.charCodeAt(0) === 10; };
+    // leftIndex is initialized to 0 because if position is 0, it won't even enter the iteration
+    var leftIndex = 0;
+    // rightIndex is initialized to text.length because if position is equal to text.length it won't even enter the interation
+    var rightIndex = text.length;
+    // iterate to the left
+    for (var i = position; i - 1 > -1; i--) {
+        if (isWordDelimiter(text[i - 1])) {
+            leftIndex = i;
+            break;
+        }
+    }
+    // iterate to the right
+    for (var i = position; i < text.length; i++) {
+        if (isWordDelimiter(text[i])) {
+            rightIndex = i;
+            break;
+        }
+    }
+    return {
+        word: text.slice(leftIndex, rightIndex),
+        position: {
+            start: leftIndex,
+            end: rightIndex,
+        },
+    };
+}
+exports.getSurroundingWord = getSurroundingWord;
+/**
+ * Returns the selection of the current work if selection[0] is equal to selection[1] and carret is inside a word
+ *
+ * @export
+ * @param {any} text
+ * @param {any} selection
+ */
+function selectCurrentWordIfCaretIsInsideOne(text, selection) {
+    if (text && text.length && selection.start === selection.end) {
+        // the user is pointing to a word
+        return getSurroundingWord(text, selection.start).position;
+    }
+    return selection;
+}
+exports.selectCurrentWordIfCaretIsInsideOne = selectCurrentWordIfCaretIsInsideOne;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Gets the selection of the given element
+ *
+ * @param {any} element
+ * @returns
+ */
+function getSelection(element) {
+    if (!element)
+        throw Error("Argument 'element' should be truthy");
+    return {
+        start: element.selectionStart,
+        end: element.selectionEnd,
+    };
+}
+exports.getSelection = getSelection;
+/**
+ * Sets the selection of the given element
+ *
+ * @param {any} element
+ * @param {any} start
+ * @param {any} end
+ */
+function setSelection(element, start, end) {
+    if (!element)
+        throw Error("Argument 'element' should be truthy");
+    element.focus();
+    if (!element.setSelectionRange) {
+        throw Error("Incompatible browser. element.setSelectionRange is not defined");
+    }
+    element.setSelectionRange(start, end);
+}
+exports.setSelection = setSelection;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -577,7 +889,7 @@ module.exports = warning;
 if (process.env.NODE_ENV !== 'production') {
   var invariant = __webpack_require__(5);
   var warning = __webpack_require__(6);
-  var ReactPropTypesSecret = __webpack_require__(19);
+  var ReactPropTypesSecret = __webpack_require__(24);
   var loggedTypeFailures = {};
 }
 
@@ -628,7 +940,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -667,7 +979,7 @@ var ExecutionEnvironment = {
 module.exports = ExecutionEnvironment;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -748,7 +1060,7 @@ module.exports = EventListener;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -790,7 +1102,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -861,7 +1173,7 @@ function shallowEqual(objA, objB) {
 module.exports = shallowEqual;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -876,7 +1188,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(22);
+var isTextNode = __webpack_require__(27);
 
 /*eslint-disable no-bitwise */
 
@@ -904,7 +1216,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -934,12 +1246,141 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-// TEXT INSERTION HELPERS
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeTextHelper_1 = __webpack_require__(7);
+/**
+ * Helper for creating commands that make lists
+ * @export
+ * @param {any} text
+ * @param {any} selection
+ * @param {any} insertionBeforeEachLine
+ * @returns
+ */
+function makeList(text, selection, insertionBeforeEachLine) {
+    var textInsertion;
+    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
+    // insert breaks before, if needed
+    textInsertion = ReactMdeTextHelper_1.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
+    // inserts 'insertionBeforeEachLine' before each line
+    textInsertion = ReactMdeTextHelper_1.insertBeforeEachLine(text, insertionBeforeEachLine, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
+    // insert breaks after, if needed
+    textInsertion = ReactMdeTextHelper_1.insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
+    return {
+        text: text,
+        selection: selection,
+    };
+}
+exports.makeList = makeList;
+/**
+ * Helper for creating a command that makes a header
+ * @param {any} text
+ * @param {any} selection
+ * @param {any} insertionBefore
+ * @returns
+ */
+function makeHeader(text, selection, insertionBefore) {
+    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
+    // the user is selecting a word section
+    var insertionText = ReactMdeTextHelper_1.insertBefore(text, insertionBefore, selection, false);
+    var newText = insertionText.newText;
+    var newSelection = insertionText.newSelection;
+    return {
+        text: newText,
+        selection: newSelection,
+    };
+}
+exports.makeHeader = makeHeader;
+function makeACommandThatInsertsBeforeAndAfter(text, selection, insertion) {
+    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
+    // the user is selecting a word section
+    var _a = ReactMdeTextHelper_1.insertText(text, insertion, selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
+    var finalText = ReactMdeTextHelper_1.insertText(newText, insertion, selection.end + insertionLength).newText;
+    return {
+        text: finalText,
+        selection: {
+            start: selection.start + insertionLength,
+            end: selection.end + insertionLength,
+        },
+    };
+}
+exports.makeACommandThatInsertsBeforeAndAfter = makeACommandThatInsertsBeforeAndAfter;
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var MarkdownHelp_1 = __webpack_require__(38);
+var Showdown = __webpack_require__(39);
+var ReactMdePreview = /** @class */ (function (_super) {
+    __extends(ReactMdePreview, _super);
+    function ReactMdePreview() {
+        var _this = _super.call(this) || this;
+        _this.converter = new Showdown.Converter();
+        return _this;
+    }
+    ReactMdePreview.prototype.render = function () {
+        var _this = this;
+        var _a = this.props, markdown = _a.markdown, previewRef = _a.previewRef;
+        var html = this.converter.makeHtml(markdown) || "<p>&nbsp</p>";
+        return (React.createElement("div", { className: "mde-preview" },
+            React.createElement("div", { className: "mde-preview-content", dangerouslySetInnerHTML: { __html: html }, ref: function (p) {
+                    _this.preview = p;
+                    previewRef(p);
+                } }),
+            React.createElement("div", { className: "mde-help" },
+                React.createElement(MarkdownHelp_1.MarkdownHelp, null))));
+    };
+    ReactMdePreview.defaultProps = {
+        previewRef: (function () {
+        }),
+    };
+    return ReactMdePreview;
+}(React.Component));
+exports.ReactMdePreview = ReactMdePreview;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -949,290 +1390,99 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Inserts "textToBeInserted" in "text" at the "insertionPosition"
- *
- * @param {any} originalText
- * @param {any} textToInsert
- * @param {any} insertionPosition
- * @returns
- */
-function insertText(originalText, textToInsert, insertionPosition) {
-    var newText = [originalText.slice(0, insertionPosition), textToInsert, originalText.slice(insertionPosition)].join('');
-    return { newText: newText, insertionLength: textToInsert.length };
-}
-exports.insertText = insertText;
-/**
- * Inserts the given text before. The selection is moved ahead so the
- *
- * @export
- * @param {any} originalText
- * @param {any} textToInsert
- * @param {any} selection
- * @param selectInsertion {boolean} Whether or not the inserted text should be selected
- * @returns
- */
-function insertBefore(originalText, textToInsert, selection, selectInsertion) {
-    if (selectInsertion === void 0) { selectInsertion = true; }
-    var textInsertion = insertText(originalText, textToInsert, selection.start);
-    var newSelection = {
-        start: selectInsertion ? selection.start : selection.start + textInsertion.insertionLength,
-        end: selection.end + textInsertion.insertionLength,
-    };
-    return __assign({}, textInsertion, { newSelection: newSelection });
-}
-exports.insertBefore = insertBefore;
-/**
- * Inserts the given text after. The selection will change to encompass the new text
- *
- * @export
- * @param {any} originalText
- * @param {any} textToInsert
- * @param {any} selection
- * @returns
- */
-function insertAfter(originalText, textToInsert, selection) {
-    var textInsertion = insertText(originalText, textToInsert, selection.end);
-    var newSelection = {
-        start: selection.start,
-        end: selection.end + textInsertion.insertionLength,
-    };
-    return __assign({}, textInsertion, { newSelection: newSelection });
-}
-exports.insertAfter = insertAfter;
-/**
- *  Gets the number of line-breaks that would have to be inserted before the given 'startPosition'
- *  to make sure there's an empty line between 'startPosition' and the previous text
- */
-function getBreaksNeededForEmptyLineBefore(text, startPosition) {
-    if (text === void 0) { text = ''; }
-    if (startPosition === 0)
-        return 0;
-    // rules:
-    // - If we're in the first line, no breaks are needed
-    // - Otherwise there must be 2 breaks before the previous character. Depending on how many breaks exist already, we
-    //      may need to insert 0, 1 or 2 breaks
-    var neededBreaks = 2;
-    var isInFirstLine = true;
-    for (var i = startPosition - 1; i >= 0 && (neededBreaks >= 0); i--) {
-        switch (text.charCodeAt(i)) {
-            case 32:// blank space
-                continue;
-            case 10:// line break
-                neededBreaks--;
-                isInFirstLine = false;
-                break;
-            default:
-                return neededBreaks;
-        }
-    }
-    return isInFirstLine ? 0 : neededBreaks;
-}
-exports.getBreaksNeededForEmptyLineBefore = getBreaksNeededForEmptyLineBefore;
-/**
- *  Gets the number of line-breaks that would have to be inserted after the given 'startPosition'
- *  to make sure there's an empty line between 'startPosition' and the next text
- */
-function getBreaksNeededForEmptyLineAfter(text, startPosition) {
-    if (!text)
-        throw Error('Argument \'text\' should be truthy');
-    if (startPosition === text.length - 1)
-        return 0;
-    // rules:
-    // - If we're in the first line, no breaks are needed
-    // - Otherwise there must be 2 breaks before the previous character. Depending on how many breaks exist already, we
-    //      may need to insert 0, 1 or 2 breaks
-    var neededBreaks = 2;
-    var isInLastLine = true;
-    for (var i = startPosition; i < text.length && (neededBreaks >= 0); i++) {
-        switch (text.charCodeAt(i)) {
-            case 32:
-                continue;
-            case 10: {
-                neededBreaks--;
-                isInLastLine = false;
-                break;
-            }
-            default:
-                return neededBreaks;
-        }
-    }
-    return isInLastLine ? 0 : neededBreaks;
-}
-exports.getBreaksNeededForEmptyLineAfter = getBreaksNeededForEmptyLineAfter;
-/**
- * Inserts breaks before, only if needed. The returned selection will not include this breaks
- *
- * @export
- * @param {any} text
- * @param {any} selection
- * @returns
- */
-function insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection) {
-    var breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection.start);
-    var insertionBefore = Array(breaksNeededBefore + 1).join('\n');
-    var newText = text;
-    var newSelection = selection;
-    var insertionLength = 0;
-    // if line-breaks have to be added before
-    if (insertionBefore) {
-        var textInsertion = insertText(text, insertionBefore, selection.start);
-        newSelection = {
-            start: selection.start + textInsertion.insertionLength,
-            end: selection.end + textInsertion.insertionLength,
+var React = __webpack_require__(0);
+var ReactMdeSelectionHelper_1 = __webpack_require__(8);
+var ReactMdeTextArea = /** @class */ (function (_super) {
+    __extends(ReactMdeTextArea, _super);
+    function ReactMdeTextArea() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * Handler for the textArea value change
+         * @param {any} e
+         * @memberOf ReactMde
+         */
+        _this.handleValueChange = function (e) {
+            var onChange = _this.props.onChange;
+            onChange({ text: e.currentTarget.value, selection: null });
         };
+        return _this;
     }
-    return {
-        newText: newText,
-        insertionLength: insertionLength,
-        newSelection: newSelection,
-    };
-}
-exports.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore;
-/**
- * Inserts breaks after, only if needed. The returned selection will not include this breaks
- *
- * @export
- * @param {any} text
- * @param {any} selection
- * @returns
- */
-function insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection) {
-    var breaksNeededBefore = getBreaksNeededForEmptyLineAfter(text, selection.end);
-    var insertionAfter = Array(breaksNeededBefore + 1).join('\n');
-    var newText = text;
-    var newSelection = selection;
-    var insertionLength = 0;
-    // if line-breaks have to be added before
-    if (insertionAfter) {
-        var textInsertion = insertText(text, insertionAfter, selection.end);
-        newSelection = {
-            start: selection.start + textInsertion.insertionLength,
-            end: selection.end + textInsertion.insertionLength,
-        };
-    }
-    return {
-        newText: newText,
-        insertionLength: insertionLength,
-        newSelection: newSelection,
-    };
-}
-exports.insertBreaksAfterSoThatThereIsAnEmptyLineAfter = insertBreaksAfterSoThatThereIsAnEmptyLineAfter;
-/**
- * Inserts insertionString before each line
- */
-function insertBeforeEachLine(text, insertion, selection) {
-    var substring = text.slice(selection.start, selection.end);
-    var lines = substring.split(/\n/);
-    var insertionLength = 0;
-    var modifiedText = lines.map(function (item, index) {
-        if (typeof insertion === 'string') {
-            insertionLength += insertion.length;
-            return insertion + item;
+    ReactMdeTextArea.prototype.componentDidUpdate = function () {
+        var selection = this.props.value.selection;
+        if (selection) {
+            ReactMdeSelectionHelper_1.setSelection(this.textArea, selection.start, selection.end);
         }
-        else if (typeof insertion === 'function') {
-            var insertionResult = insertion(item, index);
-            insertionLength += insertionResult.length;
-            return insertion(item, index) + item;
-        }
-        throw Error('insertion is expected to be either a string or a function');
-    }).join('\n');
-    var newText = text.slice(0, selection.start) + modifiedText + text.slice(selection.end);
-    return {
-        newText: newText,
-        insertionLength: insertionLength,
-        newSelection: {
-            start: selection.start,
-            end: selection.end + insertionLength,
-        },
     };
-}
-exports.insertBeforeEachLine = insertBeforeEachLine;
-// MISC
-/**
- * Gets the word surrounding the given position. Word delimiters are spaces and line-breaks
- *
- * @export
- * @param {any} text
- * @param {any} position
- */
-function getSurroundingWord(text, position) {
-    if (!text)
-        throw Error('Argument \'text\' should be truthy');
-    var isWordDelimiter = function (c) { return c === ' ' || c.charCodeAt(0) === 10; };
-    // leftIndex is initialized to 0 because if position is 0, it won't even enter the iteration
-    var leftIndex = 0;
-    // rightIndex is initialized to text.length because if position is equal to text.length it won't even enter the interation
-    var rightIndex = text.length;
-    // iterate to the left
-    for (var i = position; i - 1 > -1; i--) {
-        if (isWordDelimiter(text[i - 1])) {
-            leftIndex = i;
-            break;
-        }
-    }
-    // iterate to the right
-    for (var i = position; i < text.length; i++) {
-        if (isWordDelimiter(text[i])) {
-            rightIndex = i;
-            break;
-        }
-    }
-    return {
-        word: text.slice(leftIndex, rightIndex),
-        position: {
-            start: leftIndex,
-            end: rightIndex,
-        },
+    ReactMdeTextArea.prototype.render = function () {
+        var _this = this;
+        var _a = this.props, text = _a.value.text, textAreaProps = _a.textAreaProps, textAreaRef = _a.textAreaRef;
+        return (React.createElement("div", { className: "mde-text" },
+            React.createElement("textarea", __assign({ onChange: this.handleValueChange, value: text, ref: function (c) {
+                    _this.textArea = c;
+                    textAreaRef(c);
+                } }, textAreaProps))));
     };
-}
-exports.getSurroundingWord = getSurroundingWord;
-/**
- * Returns the selection of the current work if selection[0] is equal to selection[1] and carret is inside a word
- *
- * @export
- * @param {any} text
- * @param {any} selection
- */
-function selectCurrentWordIfCaretIsInsideOne(text, selection) {
-    if (text && text.length && selection.start === selection.end) {
-        // the user is pointing to a word
-        return getSurroundingWord(text, selection.start).position;
-    }
-    return selection;
-}
-exports.selectCurrentWordIfCaretIsInsideOne = selectCurrentWordIfCaretIsInsideOne;
+    ReactMdeTextArea.defaultProps = {
+        textAreaRef: function () { },
+        textAreaProps: {},
+    };
+    return ReactMdeTextArea;
+}(React.Component));
+exports.ReactMdeTextArea = ReactMdeTextArea;
 
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(16);
-
-
-/***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var react_dom_1 = __webpack_require__(20);
-var App_1 = __webpack_require__(29);
-// stylings
-__webpack_require__(41);
-__webpack_require__(42);
-__webpack_require__(43);
-__webpack_require__(44);
-__webpack_require__(45);
-__webpack_require__(46);
-react_dom_1.render(React.createElement(App_1.App, null), document.getElementById('#app_container'));
+var HeaderGroup_1 = __webpack_require__(40);
+var HeaderItemDropdown_1 = __webpack_require__(41);
+var HeaderItem_1 = __webpack_require__(43);
+exports.ReactMdeToolbar = function (_a) {
+    var commands = _a.commands, onCommand = _a.onCommand;
+    if (!commands || commands.length === 0) {
+        return null;
+    }
+    return (React.createElement("div", { className: "mde-header" }, commands.map(function (cg, i) { return (React.createElement(HeaderGroup_1.HeaderGroup, { key: i }, cg.map(function (c, j) {
+        if (c.type === "dropdown") {
+            return (React.createElement(HeaderItemDropdown_1.HeaderItemDropdown, { key: j, icon: c.icon, commands: c.subCommands, onCommand: function (cmd) { return onCommand(cmd); } }));
+        }
+        return React.createElement(HeaderItem_1.HeaderItem, { key: j, icon: c.icon, tooltip: c.tooltip, onClick: function () { return onCommand(c); } });
+    }))); })));
+};
 
 
 /***/ }),
-/* 17 */
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(21);
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var react_dom_1 = __webpack_require__(25);
+var App_1 = __webpack_require__(34);
+// stylings
+__webpack_require__(45);
+__webpack_require__(46);
+__webpack_require__(47);
+__webpack_require__(48);
+react_dom_1.render(React.createElement(App_1.App, null), document.getElementById("#app_container"));
+
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1261,7 +1511,7 @@ version:"16.1.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurren
 
 
 /***/ }),
-/* 18 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1285,7 +1535,7 @@ var invariant = __webpack_require__(5);
 var emptyObject = __webpack_require__(4);
 var warning = __webpack_require__(6);
 var emptyFunction = __webpack_require__(2);
-var checkPropTypes = __webpack_require__(7);
+var checkPropTypes = __webpack_require__(9);
 
 // TODO: this is special because it gets imported during build.
 
@@ -2612,7 +2862,7 @@ module.exports = react;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 19 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2631,7 +2881,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 20 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2669,15 +2919,15 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(21);
+  module.exports = __webpack_require__(26);
 } else {
-  module.exports = __webpack_require__(24);
+  module.exports = __webpack_require__(29);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 21 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2692,7 +2942,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(0),m=__webpack_require__(8),A=__webpack_require__(3),B=__webpack_require__(2),ca=__webpack_require__(9),da=__webpack_require__(10),ea=__webpack_require__(11),ha=__webpack_require__(12),ia=__webpack_require__(13),C=__webpack_require__(4);
+var aa=__webpack_require__(0),m=__webpack_require__(10),A=__webpack_require__(3),B=__webpack_require__(2),ca=__webpack_require__(11),da=__webpack_require__(12),ea=__webpack_require__(13),ha=__webpack_require__(14),ia=__webpack_require__(15),C=__webpack_require__(4);
 function D(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:D("227");
 var la={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function qa(a,b){return(a&b)===b}
 var ra={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ra,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){sa.hasOwnProperty(f)?D("48",f):void 0;var g=f.toLowerCase(),k=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:qa(k,b.MUST_USE_PROPERTY),
@@ -2911,7 +3161,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.1.0",r
 
 
 /***/ }),
-/* 22 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2926,7 +3176,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.1.0",r
  * @typechecks
  */
 
-var isNode = __webpack_require__(23);
+var isNode = __webpack_require__(28);
 
 /**
  * @param {*} object The object to check.
@@ -2939,7 +3189,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 23 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2967,7 +3217,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 24 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2989,18 +3239,18 @@ if (process.env.NODE_ENV !== "production") {
 var React = __webpack_require__(0);
 var invariant = __webpack_require__(5);
 var warning = __webpack_require__(6);
-var ExecutionEnvironment = __webpack_require__(8);
+var ExecutionEnvironment = __webpack_require__(10);
 var _assign = __webpack_require__(3);
 var emptyFunction$1 = __webpack_require__(2);
-var EventListener = __webpack_require__(9);
-var getActiveElement = __webpack_require__(10);
-var shallowEqual = __webpack_require__(11);
-var containsNode = __webpack_require__(12);
-var focusNode = __webpack_require__(13);
+var EventListener = __webpack_require__(11);
+var getActiveElement = __webpack_require__(12);
+var shallowEqual = __webpack_require__(13);
+var containsNode = __webpack_require__(14);
+var focusNode = __webpack_require__(15);
 var emptyObject = __webpack_require__(4);
-var checkPropTypes = __webpack_require__(7);
-var hyphenateStyleName = __webpack_require__(25);
-var camelizeStyleName = __webpack_require__(27);
+var checkPropTypes = __webpack_require__(9);
+var hyphenateStyleName = __webpack_require__(30);
+var camelizeStyleName = __webpack_require__(32);
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -18333,7 +18583,7 @@ module.exports = reactDom;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 25 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18348,7 +18598,7 @@ module.exports = reactDom;
 
 
 
-var hyphenate = __webpack_require__(26);
+var hyphenate = __webpack_require__(31);
 
 var msPattern = /^ms-/;
 
@@ -18375,7 +18625,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 26 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18411,7 +18661,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 27 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18426,7 +18676,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(28);
+var camelize = __webpack_require__(33);
 
 var msPattern = /^-ms-/;
 
@@ -18454,7 +18704,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 28 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18489,7 +18739,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 29 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18506,25 +18756,25 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var src_1 = __webpack_require__(30);
+var src_1 = __webpack_require__(35);
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
-    function App() {
-        var _this = _super.call(this) || this;
+    function App(props) {
+        var _this = _super.call(this, props) || this;
         _this.handleValueChange = function (value) {
             _this.setState({ reactMdeValue: value });
         };
         _this.state = {
-            reactMdeValue: { text: '', selection: null },
+            reactMdeValue: { text: "" },
         };
         return _this;
     }
     App.prototype.render = function () {
         return (React.createElement("div", { className: "container" },
             React.createElement(src_1.default, { textAreaProps: {
-                    id: 'ta1',
-                    name: 'ta1',
-                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands })));
+                    id: "ta1",
+                    name: "ta1",
+                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands.getDefaultCommands() })));
     };
     return App;
 }(React.Component));
@@ -18532,72 +18782,86 @@ exports.App = App;
 
 
 /***/ }),
-/* 30 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ReactMdeCommands_1 = __webpack_require__(31);
-exports.ReactMdeCommands = ReactMdeCommands_1.defaultCommands;
-var ReactMde_1 = __webpack_require__(33);
+var ReactMdeCommands = __webpack_require__(36);
+exports.ReactMdeCommands = ReactMdeCommands;
+var ReactMdeCommandHelper = __webpack_require__(16);
+exports.ReactMdeCommandHelper = ReactMdeCommandHelper;
+var ReactMdeSelectionHelper = __webpack_require__(8);
+exports.ReactMdeSelectionHelper = ReactMdeSelectionHelper;
+var ReactMdeTextHelper = __webpack_require__(7);
+exports.ReactMdeTextHelper = ReactMdeTextHelper;
+var ReactMdeTypes = __webpack_require__(37);
+exports.ReactMdeTypes = ReactMdeTypes;
+var ReactMdePreview_1 = __webpack_require__(17);
+exports.ReactMdePreview = ReactMdePreview_1.ReactMdePreview;
+var ReactMdeTextArea_1 = __webpack_require__(18);
+exports.ReactMdeTextArea = ReactMdeTextArea_1.ReactMdeTextArea;
+var ReactMdeToolbar_1 = __webpack_require__(19);
+exports.ReactMdeToolbar = ReactMdeToolbar_1.ReactMdeToolbar;
+var ReactMde_1 = __webpack_require__(44);
 exports.default = ReactMde_1.ReactMde;
 
 
 /***/ }),
-/* 31 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var ReactMdeTextHelper_1 = __webpack_require__(14);
-var ReactMdeCommandHelper_1 = __webpack_require__(32);
-var makeHeaderCommand = {
-    type: 'dropdown',
-    icon: 'header',
+var ReactMdeTextHelper_1 = __webpack_require__(7);
+var ReactMdeCommandHelper_1 = __webpack_require__(16);
+exports.makeHeaderCommand = {
+    type: "dropdown",
+    icon: "header",
     subCommands: [
         {
             content: React.createElement("p", { className: "header-1" }, "Header"),
             execute: function (text, selection) {
-                return ReactMdeCommandHelper_1.makeHeader(text, selection, '# ');
+                return ReactMdeCommandHelper_1.makeHeader(text, selection, "# ");
             },
         },
         {
             content: React.createElement("p", { className: "header-2" }, "Header"),
             execute: function (text, selection) {
-                return ReactMdeCommandHelper_1.makeHeader(text, selection, '## ');
+                return ReactMdeCommandHelper_1.makeHeader(text, selection, "## ");
             },
         },
         {
             content: React.createElement("p", { className: "header-3" }, "Header"),
             execute: function (text, selection) {
-                return ReactMdeCommandHelper_1.makeHeader(text, selection, '### ');
+                return ReactMdeCommandHelper_1.makeHeader(text, selection, "### ");
             },
         },
     ],
 };
-var makeBoldCommand = {
-    icon: 'bold',
-    tooltip: 'Add bold text',
+exports.makeBoldCommand = {
+    icon: "bold",
+    tooltip: "Add bold text",
     execute: function (text, selection) {
-        return ReactMdeCommandHelper_1.makeACommandThatInsertsBeforeAndAfter(text, selection, '**');
+        return ReactMdeCommandHelper_1.makeACommandThatInsertsBeforeAndAfter(text, selection, "**");
     },
 };
-var makeItalicCommand = {
-    icon: 'italic',
-    tooltip: 'Add italic text',
+exports.makeItalicCommand = {
+    icon: "italic",
+    tooltip: "Add italic text",
     execute: function (text, selection) {
-        return ReactMdeCommandHelper_1.makeACommandThatInsertsBeforeAndAfter(text, selection, '_');
+        return ReactMdeCommandHelper_1.makeACommandThatInsertsBeforeAndAfter(text, selection, "_");
     },
 };
-var makeLinkCommand = {
-    icon: 'link',
-    tooltip: 'Insert a link',
+exports.makeLinkCommand = {
+    icon: "link",
+    tooltip: "Insert a link",
     execute: function (text, selection) {
-        var _a = ReactMdeTextHelper_1.insertText(text, '[', selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
-        var finalText = ReactMdeTextHelper_1.insertText(newText, '](url)', selection.end + insertionLength).newText;
+        var _a = ReactMdeTextHelper_1.insertText(text, "[", selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
+        var finalText = ReactMdeTextHelper_1.insertText(newText, "](url)", selection.end + insertionLength).newText;
         return {
             text: finalText,
             selection: {
@@ -18607,16 +18871,16 @@ var makeLinkCommand = {
         };
     },
 };
-var makeQuoteCommand = {
-    icon: 'quote-right',
-    tooltip: 'Insert a quote',
+exports.makeQuoteCommand = {
+    icon: "quote-right",
+    tooltip: "Insert a quote",
     execute: function (text, selection) {
         selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
         var textInsertion;
         textInsertion = ReactMdeTextHelper_1.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
         text = textInsertion.newText;
         selection = textInsertion.newSelection;
-        textInsertion = ReactMdeTextHelper_1.insertBefore(text, '> ', selection);
+        textInsertion = ReactMdeTextHelper_1.insertBefore(text, "> ", selection);
         text = textInsertion.newText;
         selection = textInsertion.newSelection;
         textInsertion = ReactMdeTextHelper_1.insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
@@ -18628,15 +18892,15 @@ var makeQuoteCommand = {
         };
     },
 };
-var makeCodeCommand = {
-    icon: 'code',
-    tooltip: 'Insert code',
+exports.makeCodeCommand = {
+    icon: "code",
+    tooltip: "Insert code",
     execute: function (text, selection) {
-        if (text === void 0) { text = ''; }
+        if (text === void 0) { text = ""; }
         selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
-        if (text.slice(selection.start, selection.end).indexOf('\n') === -1) {
+        if (text.slice(selection.start, selection.end).indexOf("\n") === -1) {
             // when there's no breaking line
-            return ReactMdeCommandHelper_1.makeACommandThatInsertsBeforeAndAfter(text, selection, '`');
+            return ReactMdeCommandHelper_1.makeACommandThatInsertsBeforeAndAfter(text, selection, "`");
         }
         var textInsertion;
         // insert breaks before, if needed
@@ -18644,11 +18908,11 @@ var makeCodeCommand = {
         text = textInsertion.newText;
         selection = textInsertion.newSelection;
         // inserts ```\n before
-        textInsertion = ReactMdeTextHelper_1.insertBefore(text, '```\n', selection, false);
+        textInsertion = ReactMdeTextHelper_1.insertBefore(text, "```\n", selection, false);
         text = textInsertion.newText;
         selection = textInsertion.newSelection;
         // inserts ```\n after
-        textInsertion = ReactMdeTextHelper_1.insertAfter(text, '\n```', selection);
+        textInsertion = ReactMdeTextHelper_1.insertAfter(text, "\n```", selection);
         text = textInsertion.newText;
         selection = textInsertion.newSelection;
         // insert breaks after, if needed
@@ -18658,12 +18922,12 @@ var makeCodeCommand = {
         return { text: text, selection: selection };
     },
 };
-var makeImageCommand = {
-    icon: 'picture-o',
-    tooltip: 'Insert a picture',
+exports.makeImageCommand = {
+    icon: "picture-o",
+    tooltip: "Insert a picture",
     execute: function (text, selection) {
-        var _a = ReactMdeTextHelper_1.insertText(text, '![', selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
-        var finalText = ReactMdeTextHelper_1.insertText(newText, '](image-url)', selection.end + insertionLength).newText;
+        var _a = ReactMdeTextHelper_1.insertText(text, "![", selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
+        var finalText = ReactMdeTextHelper_1.insertText(newText, "](image-url)", selection.end + insertionLength).newText;
         return {
             text: finalText,
             selection: {
@@ -18673,200 +18937,60 @@ var makeImageCommand = {
         };
     },
 };
-var makeUnorderedListCommand = {
-    icon: 'list-ul',
-    tooltip: 'Add a bulleted list',
+exports.makeUnorderedListCommand = {
+    icon: "list-ul",
+    tooltip: "Add a bulleted list",
     execute: function (text, selection) {
-        return ReactMdeCommandHelper_1.makeList(text, selection, '- ');
+        return ReactMdeCommandHelper_1.makeList(text, selection, "- ");
     },
 };
-var makeOrderedListCommand = {
-    icon: 'list-ol',
-    tooltip: 'Add a numbered list',
+exports.makeOrderedListCommand = {
+    icon: "list-ol",
+    tooltip: "Add a numbered list",
     execute: function (text, selection) {
         return ReactMdeCommandHelper_1.makeList(text, selection, function (item, index) { return index + 1 + ". "; });
     },
 };
-exports.defaultCommands = [
-    [makeHeaderCommand, makeBoldCommand, makeItalicCommand],
-    [makeLinkCommand, makeQuoteCommand, makeCodeCommand, makeImageCommand],
-    [makeUnorderedListCommand, makeOrderedListCommand],
-];
+exports.getDefaultCommands = function () { return [
+    [exports.makeHeaderCommand, exports.makeBoldCommand, exports.makeItalicCommand],
+    [exports.makeLinkCommand, exports.makeQuoteCommand, exports.makeCodeCommand, exports.makeImageCommand],
+    [exports.makeUnorderedListCommand, exports.makeOrderedListCommand],
+]; };
 
 
 /***/ }),
-/* 32 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ReactMdeTextHelper_1 = __webpack_require__(14);
-/**
- * Helper for creating commands that make lists
- * @export
- * @param {any} text
- * @param {any} selection
- * @param {any} insertionBeforeEachLine
- * @returns
- */
-function makeList(text, selection, insertionBeforeEachLine) {
-    var textInsertion;
-    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
-    // insert breaks before, if needed
-    textInsertion = ReactMdeTextHelper_1.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
-    text = textInsertion.newText;
-    selection = textInsertion.newSelection;
-    // inserts 'insertionBeforeEachLine' before each line
-    textInsertion = ReactMdeTextHelper_1.insertBeforeEachLine(text, insertionBeforeEachLine, selection);
-    text = textInsertion.newText;
-    selection = textInsertion.newSelection;
-    // insert breaks after, if needed
-    textInsertion = ReactMdeTextHelper_1.insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
-    text = textInsertion.newText;
-    selection = textInsertion.newSelection;
-    return {
-        text: text,
-        selection: selection,
-    };
-}
-exports.makeList = makeList;
-/**
- * Helper for creating a command that makes a header
- * @param {any} text
- * @param {any} selection
- * @param {any} insertionBefore
- * @returns
- */
-function makeHeader(text, selection, insertionBefore) {
-    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
-    // the user is selecting a word section
-    var insertionText = ReactMdeTextHelper_1.insertBefore(text, insertionBefore, selection, false);
-    var newText = insertionText.newText;
-    var newSelection = insertionText.newSelection;
-    return {
-        text: newText,
-        selection: newSelection,
-    };
-}
-exports.makeHeader = makeHeader;
-function makeACommandThatInsertsBeforeAndAfter(text, selection, insertion) {
-    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
-    // the user is selecting a word section
-    var _a = ReactMdeTextHelper_1.insertText(text, insertion, selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
-    var finalText = ReactMdeTextHelper_1.insertText(newText, insertion, selection.end + insertionLength).newText;
-    return {
-        text: finalText,
-        selection: {
-            start: selection.start + insertionLength,
-            end: selection.end + insertionLength,
-        },
-    };
-}
-exports.makeACommandThatInsertsBeforeAndAfter = makeACommandThatInsertsBeforeAndAfter;
 
 
 /***/ }),
-/* 33 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Showdown = __webpack_require__(34);
-var ReactMdeSelectionHelper_1 = __webpack_require__(35);
-var HeaderGroup_1 = __webpack_require__(36);
-var HeaderItemDropdown_1 = __webpack_require__(37);
-var HeaderItem_1 = __webpack_require__(39);
-var MarkdownHelp_1 = __webpack_require__(40);
-var ReactMde = /** @class */ (function (_super) {
-    __extends(ReactMde, _super);
-    function ReactMde() {
-        var _this = _super.call(this) || this;
-        /**
-         * Handler for the textArea value change
-         * @param {any} e
-         * @memberOf ReactMde
-         */
-        _this.handleValueChange = function (e) {
-            var onChange = _this.props.onChange;
-            onChange({ text: e.currentTarget.value, selection: null });
-        };
-        /**
-         * Executes a command
-         * @param {function} command
-         * @memberOf ReactMde
-         */
-        _this.executeCommand = function (command) {
-            var _a = _this.props, text = _a.value.text, onChange = _a.onChange;
-            var newValue = command.execute(text, ReactMdeSelectionHelper_1.getSelection(_this.textArea));
-            onChange(newValue);
-        };
-        _this.converter = new Showdown.Converter();
-        return _this;
-    }
-    ReactMde.prototype.componentDidUpdate = function () {
-        var selection = this.props.value.selection;
-        if (selection) {
-            ReactMdeSelectionHelper_1.setSelection(this.textArea, selection.start, selection.end);
-        }
-    };
-    /**
-     * Renders react-mde
-     * @returns
-     * @memberOf ReactMde
-     */
-    ReactMde.prototype.render = function () {
-        var _this = this;
-        var _a = this.props, text = _a.value.text, commands = _a.commands, textAreaProps = _a.textAreaProps;
-        var html = this.converter.makeHtml(text) || '<p>&nbsp</p>';
-        var header = null;
-        if (commands) {
-            header = (React.createElement("div", { className: "mde-header" }, commands.map(function (cg, i) { return React.createElement(HeaderGroup_1.HeaderGroup, { key: i }, cg.map(function (c, j) {
-                if (c.type === 'dropdown') {
-                    return (React.createElement(HeaderItemDropdown_1.HeaderItemDropdown, { key: j, icon: c.icon, commands: c.subCommands, onCommand: function (cmd) { return _this.executeCommand(cmd); } }));
-                }
-                return React.createElement(HeaderItem_1.HeaderItem, { key: j, icon: c.icon, tooltip: c.tooltip, onClick: function () { return _this.executeCommand(c); } });
-            })); })));
-        }
-        return (React.createElement("div", { className: "react-mde" },
-            header,
-            React.createElement("div", { className: "mde-text" },
-                React.createElement("textarea", __assign({ onChange: this.handleValueChange, value: text, ref: function (c) {
-                        _this.textArea = c;
-                    } }, textAreaProps))),
-            React.createElement("div", { className: "mde-preview", dangerouslySetInnerHTML: { __html: html }, ref: function (p) {
-                    _this.preview = p;
-                } }),
-            React.createElement("div", { className: "mde-help" },
-                React.createElement(MarkdownHelp_1.MarkdownHelp, null))));
-    };
-    return ReactMde;
-}(React.Component));
-exports.ReactMde = ReactMde;
+exports.MarkdownHelp = function (props) {
+    var helpText = props.helpText, markdownReferenceUrl = props.markdownReferenceUrl;
+    return (React.createElement("a", { className: "markdown-help", href: markdownReferenceUrl, target: "_blank", rel: "noopener noreferrer" },
+        React.createElement("svg", { "aria-hidden": "true", className: "markdown-help-svg", height: "16", version: "1.1", viewBox: "0 0 16 16", width: "16" },
+            React.createElement("path", { fillRule: "evenodd", d: "M14.85 3H1.15C.52 3 0 3.52 0 4.15v7.69C0 12.48.52 13 1.15 13h13.69c.64 0 1.15-.52 1.15-1.15v-7.7C16 3.52 15.48 3 " +
+                    "14.85 3zM9 11H7V8L5.5 9.92 4 8v3H2V5h2l1.5 2L7 5h2v6zm2.99.5L9.5 8H11V5h2v3h1.5l-2.51 3.5z" })),
+        React.createElement("span", { className: "markdown-help-text" }, helpText)));
+};
+exports.MarkdownHelp.defaultProps = {
+    helpText: "Markdown styling is supported",
+    markdownReferenceUrl: "http://commonmark.org/help/",
+};
 
 
 /***/ }),
-/* 34 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;;/*! showdown v 1.8.2 - 11-11-2017 */
@@ -23182,48 +23306,7 @@ if (true) {
 
 
 /***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Gets the selection of the given element
- *
- * @param {any} element
- * @returns
- */
-function getSelection(element) {
-    if (!element)
-        throw Error('Argument \'element\' should be truthy');
-    return {
-        start: element.selectionStart,
-        end: element.selectionEnd,
-    };
-}
-exports.getSelection = getSelection;
-/**
- * Sets the selection of the given element
- *
- * @param {any} element
- * @param {any} start
- * @param {any} end
- */
-function setSelection(element, start, end) {
-    if (!element)
-        throw Error('Argument \'element\' should be truthy');
-    element.focus();
-    if (!element.setSelectionRange) {
-        throw Error('Incompatible browser. element.setSelectionRange is not defined');
-    }
-    element.setSelectionRange(start, end);
-}
-exports.setSelection = setSelection;
-
-
-/***/ }),
-/* 36 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23236,7 +23319,7 @@ exports.HeaderGroup = function (props) {
 
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23253,7 +23336,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var HeaderItemDropdownItem_1 = __webpack_require__(38);
+var HeaderItemDropdownItem_1 = __webpack_require__(42);
 var HeaderItemDropdown = /** @class */ (function (_super) {
     __extends(HeaderItemDropdown, _super);
     function HeaderItemDropdown(props) {
@@ -23290,10 +23373,10 @@ var HeaderItemDropdown = /** @class */ (function (_super) {
         return _this;
     }
     HeaderItemDropdown.prototype.componentDidMount = function () {
-        document.addEventListener('click', this.handleGlobalClick, false);
+        document.addEventListener("click", this.handleGlobalClick, false);
     };
     HeaderItemDropdown.prototype.componentWillUnmount = function () {
-        document.removeEventListener('click', this.handleGlobalClick, false);
+        document.removeEventListener("click", this.handleGlobalClick, false);
     };
     HeaderItemDropdown.prototype.closeDropdown = function () {
         this.setState({
@@ -23323,7 +23406,7 @@ exports.HeaderItemDropdown = HeaderItemDropdown;
 
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23338,7 +23421,7 @@ exports.HeaderItemDropdownItem = function (props) {
 
 
 /***/ }),
-/* 39 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23360,8 +23443,8 @@ exports.HeaderItem = function (props) {
     var buttonProps = {};
     if (tooltip) {
         buttonProps = {
-            'aria-label': tooltip,
-            'className': 'tooltipped',
+            "aria-label": tooltip,
+            "className": "tooltipped",
         };
     }
     return (React.createElement("li", { className: "mde-header-item" },
@@ -23370,50 +23453,67 @@ exports.HeaderItem = function (props) {
 
 
 /***/ }),
-/* 40 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-exports.MarkdownHelp = function (props) {
-    var helpText = props.helpText, markdownReferenceUrl = props.markdownReferenceUrl;
-    return (React.createElement("a", { className: "markdown-help", href: markdownReferenceUrl, target: "_blank", rel: "noopener noreferrer" },
-        React.createElement("svg", { "aria-hidden": "true", className: "markdown-help-svg", height: "16", version: "1.1", viewBox: "0 0 16 16", width: "16" },
-            React.createElement("path", { fillRule: "evenodd", d: 'M14.85 3H1.15C.52 3 0 3.52 0 4.15v7.69C0 12.48.52 13 1.15 13h13.69c.64 0 1.15-.52 1.15-1.15v-7.7C16 3.52 15.48 3 ' +
-                    '14.85 3zM9 11H7V8L5.5 9.92 4 8v3H2V5h2l1.5 2L7 5h2v6zm2.99.5L9.5 8H11V5h2v3h1.5l-2.51 3.5z' })),
-        React.createElement("span", { className: "markdown-help-text" }, helpText)));
-};
-exports.MarkdownHelp.defaultProps = {
-    helpText: 'Markdown styling is supported',
-    markdownReferenceUrl: 'http://commonmark.org/help/',
-};
+var ReactMdeSelectionHelper_1 = __webpack_require__(8);
+var ReactMdeToolbar_1 = __webpack_require__(19);
+var ReactMdeTextArea_1 = __webpack_require__(18);
+var ReactMdePreview_1 = __webpack_require__(17);
+var ReactMde = /** @class */ (function (_super) {
+    __extends(ReactMde, _super);
+    function ReactMde() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * Handler for the textArea value change
+         * @memberOf ReactMde
+         */
+        _this.handleValueChange = function (value) {
+            var onChange = _this.props.onChange;
+            onChange(value);
+        };
+        /**
+         * Executes a command
+         * @memberOf ReactMde
+         */
+        _this.handleCommand = function (command) {
+            var _a = _this.props, text = _a.value.text, onChange = _a.onChange;
+            var newValue = command.execute(text, ReactMdeSelectionHelper_1.getSelection(_this.textArea));
+            onChange(newValue);
+        };
+        return _this;
+    }
+    /**
+     * Renders react-mde
+     * @returns
+     * @memberOf ReactMde
+     */
+    ReactMde.prototype.render = function () {
+        var _this = this;
+        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps;
+        return (React.createElement("div", { className: "react-mde" },
+            React.createElement(ReactMdeToolbar_1.ReactMdeToolbar, { commands: commands, onCommand: this.handleCommand }),
+            React.createElement(ReactMdeTextArea_1.ReactMdeTextArea, { onChange: this.handleValueChange, value: value, textAreaProps: textAreaProps, textAreaRef: function (c) { return _this.textArea = c; } }),
+            React.createElement(ReactMdePreview_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; } })));
+    };
+    return ReactMde;
+}(React.Component));
+exports.ReactMde = ReactMde;
 
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 45 */
@@ -23423,6 +23523,18 @@ exports.MarkdownHelp.defaultProps = {
 
 /***/ }),
 /* 46 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 48 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
