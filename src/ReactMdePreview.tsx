@@ -7,7 +7,7 @@ export interface ReactMdePreviewProps {
     markdown: string;
 }
 
-interface ReactMdePreviewState {
+export interface ReactMdePreviewState {
 }
 
 export class ReactMdePreview extends React.Component<ReactMdePreviewProps, ReactMdePreviewState> {
