@@ -1,12 +1,13 @@
 {
   "name": "react-mde",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A react markdown-editor like Stackoverflow and Github",
   "main": "./lib/js/index.js",
   "types": "./lib/definitions/index.d.ts",
   "scripts": {
     "test": "mocha --timeout 15000 --compilers js:babel-register ./test/*Spec.js",
     "start": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
+    "build:ts": "tsc --project ./tsconfig.build.json",
     "build:lib": "cross-env NODE_ENV=production gulp build",
     "build:demo": "cross-env NODE_ENV=production gulp build-demo",
     "tslint": "tslint --project \".\"",

@@ -2,7 +2,7 @@ import * as React from "react";
 import { MarkdownHelp } from "./components/MarkdownHelp";
 import * as Showdown from "showdown";
 
-interface ReactMdePreviewProps {
+export interface ReactMdePreviewProps {
     previewRef?: (ref: HTMLDivElement) => void;
     markdown: string;
 }

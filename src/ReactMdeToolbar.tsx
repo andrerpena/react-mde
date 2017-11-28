@@ -4,7 +4,7 @@ import { HeaderGroup } from "./components/HeaderGroup";
 import { HeaderItemDropdown } from "./components/HeaderItemDropdown";
 import { HeaderItem } from "./components/HeaderItem";
 
-interface ReactMdeToolbarProps {
+export interface ReactMdeToolbarProps {
     commands: Array<Array<Command | CommandSet>>;
     onCommand: (command: Command) => void;
 }
