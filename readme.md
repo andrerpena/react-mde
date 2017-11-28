@@ -248,7 +248,7 @@ Major differences:
 - The `textAreaId` and `textareaName` props were replaced by `textAreaProps` that allows you to pass whatever you want to the `textarea` component.
 - The paths of the CSS and SCSS have changed.
 
-## Roadmap'
+## Roadmap
 
 Check the project here: https://github.com/andrerpena/react-mde/projects/1
 
