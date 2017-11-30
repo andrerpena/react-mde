@@ -230,7 +230,7 @@ I've decided to make the `ReactMde` component, itself, just a thin layout wrappe
 
 If you want to create your own layout, please take a look at the source code of the `ReactMde` component:
 https://github.com/andrerpena/react-mde/blob/master/src/ReactMde.tsx. It's easy to simply create your own, only
-leveraging the internal components. These internal components are accessible like this:
+leveraging the internal components you'd like or laying them out in the way you prefer
 
     import * as ReactMde from 'react-mde';
     // Now you have (among other utility modules):
@@ -238,8 +238,7 @@ leveraging the internal components. These internal components are accessible lik
     // The ReactMde.ReactMdeTextArea component
     // The ReactMde.ReactMdePreview component
 
-Again, just take a look at ReactMde's [source code](https://github.com/andrerpena/react-mde/blob/master/src/ReactMde.tsx)
- and create your own with the layout you prefer.
+Again, just take a look at ReactMde's [source code](https://github.com/andrerpena/react-mde/blob/master/src/ReactMde.tsx).
 
 ## Migrating from 1.* to 2.*
 
