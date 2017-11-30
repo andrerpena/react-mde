@@ -68,6 +68,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                 <ReactMdePreview
                     markdown={value ? value.text : ""}
                     previewRef={(c) => this.preview = c}
+                    showdownOptions={showdownOptions}
                 />
             </div>
         );
