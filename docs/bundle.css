@@ -2987,6 +2987,17 @@ template {
     display: table;
     clear: both;
     content: ""; }
+  .mde-preview .mde-preview-content table {
+    font-size: 14px;
+    display: block;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse; }
+    .mde-preview .mde-preview-content table thead th {
+      font-weight: bold; }
+    .mde-preview .mde-preview-content table th, .mde-preview .mde-preview-content table td {
+      padding: 6px 13px;
+      border: 1px solid rgba(0, 0, 0, 0.15); }
 
 .mde-preview .mde-help {
   color: rgba(0, 0, 0, 0.15);

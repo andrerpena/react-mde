@@ -32,6 +32,7 @@ export class App extends React.Component<AppProps, AppState> {
                     value={this.state.reactMdeValue}
                     onChange={this.handleValueChange}
                     commands={ReactMdeCommands.getDefaultCommands()}
+                    showdownOptions={{tables: true}}
                 />
             </div>
         );

@@ -60,6 +60,7 @@ React-mde is a completely controlled component.
                         value={this.state.reactMdeValue}
                         onChange={this.handleValueChange}
                         commands={ReactMdeCommands.getDefaultCommands()}
+                        
                     />
                 </div>
             );
@@ -111,11 +112,13 @@ React-mde is a completely controlled component.
 
 Props:
 
-- **textAreaProps**: Whatever you want to pass to the `textarea` component.
 - **value**: The current value. This property should look like `{text: "", selection: {start:0, end:2}` where `text` is the text and `selection` is
 an object containint `start` and `end` representing what should be selected. Passing null to `selection` is perfectly fine.
 - **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
 - **commands**: An array or array of command objects. The first array represents groups, the second array represents commands inside that group. Take a look of how to create a custom command below.
+- **textAreaProps**: Whatever you want to pass to the `textarea` component.
+- **showdownOptions**: An object with whatever options you want to pass to Showdown. Please refer to [ShowdownOptions](https://github.com/showdownjs/showdown#valid-options) to a list of available options.
+Notice that tables, for example, are disabled by default in Showdown. So, in order to enable tables, you'd pass something like `showdownOptions={{tables: true}}` to `ReactMde`.
 
 ## Styling
 

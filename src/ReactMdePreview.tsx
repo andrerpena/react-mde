@@ -4,6 +4,7 @@ import * as Showdown from "showdown";
 
 export interface ReactMdePreviewProps {
     previewRef?: (ref: HTMLDivElement) => void;
+    showdownOptions?: any;
     markdown: string;
 }
 
@@ -19,9 +20,10 @@ export class ReactMdePreview extends React.Component<ReactMdePreviewProps, React
         }),
     }
 
-    constructor() {
-        super();
-        this.converter = new Showdown.Converter();
+    constructor(props) {
+        super(props);
+        const {showdownOptions} = props;
+        this.converter = new Showdown.Converter(showdownOptions ? showdownOptions : undefined);
     }
 
     render() {

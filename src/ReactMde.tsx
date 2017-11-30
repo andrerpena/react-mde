@@ -12,7 +12,8 @@ export interface ReactMdeProps {
     commands: Array<Array<Command | CommandSet>>;
     value: Value;
     onChange: (value: Value) => void;
-    textAreaProps: any;
+    textAreaProps?: any;
+    showdownOptions?: any;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
@@ -49,6 +50,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             value,
             commands,
             textAreaProps,
+            showdownOptions,
         } = this.props;
 
         return (

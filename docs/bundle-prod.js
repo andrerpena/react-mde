@@ -1339,9 +1339,10 @@ var MarkdownHelp_1 = __webpack_require__(38);
 var Showdown = __webpack_require__(39);
 var ReactMdePreview = /** @class */ (function (_super) {
     __extends(ReactMdePreview, _super);
-    function ReactMdePreview() {
-        var _this = _super.call(this) || this;
-        _this.converter = new Showdown.Converter();
+    function ReactMdePreview(props) {
+        var _this = _super.call(this, props) || this;
+        var showdownOptions = props.showdownOptions;
+        _this.converter = new Showdown.Converter(showdownOptions ? showdownOptions : undefined);
         return _this;
     }
     ReactMdePreview.prototype.render = function () {
@@ -18774,7 +18775,7 @@ var App = /** @class */ (function (_super) {
             React.createElement(src_1.default, { textAreaProps: {
                     id: "ta1",
                     name: "ta1",
-                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands.getDefaultCommands() })));
+                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands.getDefaultCommands(), showdownOptions: { tables: true } })));
     };
     return App;
 }(React.Component));
@@ -23504,7 +23505,7 @@ var ReactMde = /** @class */ (function (_super) {
      */
     ReactMde.prototype.render = function () {
         var _this = this;
-        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps;
+        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps, showdownOptions = _a.showdownOptions;
         return (React.createElement("div", { className: "react-mde" },
             React.createElement(ReactMdeToolbar_1.ReactMdeToolbar, { commands: commands, onCommand: this.handleCommand }),
             React.createElement(ReactMdeTextArea_1.ReactMdeTextArea, { onChange: this.handleValueChange, value: value, textAreaProps: textAreaProps, textAreaRef: function (c) { return _this.textArea = c; } }),
