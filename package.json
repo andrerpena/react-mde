@@ -1,6 +1,6 @@
 {
   "name": "react-mde",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A react markdown-editor like Stackoverflow and Github",
   "main": "./lib/js/index.js",
   "types": "./lib/definitions/index.d.ts",

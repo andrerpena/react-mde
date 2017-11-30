@@ -222,6 +222,25 @@ You don't have to create your own commands at all, but if you want, this is how 
  - **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
  Your function should return the current `text` (after your command) and the current `selection` (after your command).
 
+## Composition and custom layouts
+
+`ReactMde` is designed to make it easy for users to customize the layout, or to make any of it sub-components invisible,
+like the Preview, for instance. In order to do so, instead of cluttering `ReactMde` with options like `previewVisible`, 
+I've decided to make the `ReactMde` component, itself, just a thin layout wrapper for its 3 internal components.
+
+If you want to create your own layout, please take a look at the source code of the `ReactMde` component:
+https://github.com/andrerpena/react-mde/blob/master/src/ReactMde.tsx. It's easy to simply create your own, only
+leveraging the internal components. These internal components are accessible like this:
+
+    import * as ReactMde from 'react-mde';
+    // Now you have (among other utility modules):
+    // The ReactMde.ReactMdeToolbar component
+    // The ReactMde.ReactMdeTextArea component
+    // The ReactMde.ReactMdePreview component
+
+Again, just take a look at ReactMde's [source code](https://github.com/andrerpena/react-mde/blob/master/src/ReactMde.tsx)
+ and create your own with the layout you prefer.
+
 ## Migrating from 1.* to 2.*
 
 2.* is a major refactoring of the code to improve composability
