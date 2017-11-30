@@ -23509,7 +23509,7 @@ var ReactMde = /** @class */ (function (_super) {
         return (React.createElement("div", { className: "react-mde" },
             React.createElement(ReactMdeToolbar_1.ReactMdeToolbar, { commands: commands, onCommand: this.handleCommand }),
             React.createElement(ReactMdeTextArea_1.ReactMdeTextArea, { onChange: this.handleValueChange, value: value, textAreaProps: textAreaProps, textAreaRef: function (c) { return _this.textArea = c; } }),
-            React.createElement(ReactMdePreview_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; } })));
+            React.createElement(ReactMdePreview_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; }, showdownOptions: showdownOptions })));
     };
     return ReactMde;
 }(React.Component));
