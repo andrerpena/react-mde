@@ -37,7 +37,11 @@ export class ReactMde extends React.Component<ReactMdeProps> {
     handleCommand = (command: Command) => {
         const {value: {text}, onChange} = this.props;
         const newValue = command.execute(text, getSelection(this.textArea));
-        onChange(newValue);
+        if (newValue instanceof Promise) {
+            newValue.then((v) => onChange(v));
+        } else {
+            onChange(newValue);
+        }
     }
 
     /**
