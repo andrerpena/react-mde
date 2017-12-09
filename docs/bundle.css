@@ -3020,11 +3020,10 @@ body {
   font-family: sans-serif; }
 
 .container {
-  width: 600px;
+  max-width: 600px;
   border: 1px solid rgba(0, 0, 0, 0.125);
   padding: 8px;
-  margin: 10px auto; }
-
-@media screen and (min-width: 768px) {
-  .container {
-    margin: 50px auto; } }
+  margin: 10px; }
+  @media screen and (min-width: 768px) {
+    .container {
+      margin: 50px auto; } }
