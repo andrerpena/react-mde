@@ -15,11 +15,6 @@ export class ReactMdePreview extends React.Component<ReactMdePreviewProps, React
     converter: Showdown.Converter;
     preview: HTMLDivElement;
 
-    static defaultProps: Partial<ReactMdePreviewProps> = {
-        previewRef: (() => {
-        }),
-    }
-
     constructor(props) {
         super(props);
         const {showdownOptions} = props;
@@ -30,14 +25,15 @@ export class ReactMdePreview extends React.Component<ReactMdePreviewProps, React
         const {markdown, previewRef} = this.props;
         const html = this.converter.makeHtml(markdown) || "<p>&nbsp</p>";
         return (
-            <div className="mde-preview"
-            >
+            <div className="mde-preview">
                 <div
                     className="mde-preview-content"
                     dangerouslySetInnerHTML={{__html: html}}
                     ref={(p) => {
                         this.preview = p;
-                        previewRef(p);
+                        if (previewRef) {
+                            previewRef(p);
+                        }
                     }}
                 />
                 <div className="mde-help">
@@ -47,4 +43,3 @@ export class ReactMdePreview extends React.Component<ReactMdePreviewProps, React
         );
     }
 }
-

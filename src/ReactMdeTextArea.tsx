@@ -16,10 +16,9 @@ export interface ReactMdeTextAreaState {
 export class ReactMdeTextArea extends React.Component<ReactMdeTextAreaProps, ReactMdeTextAreaState> {
     textArea: HTMLTextAreaElement;
 
-    static defaultProps:Partial<ReactMdeTextAreaProps> = {
-        textAreaRef: () => {},
+    static defaultProps: Partial<ReactMdeTextAreaProps> = {
         textAreaProps: {},
-    }
+    };
 
     /**
      * Handler for the textArea value change
@@ -47,7 +46,9 @@ export class ReactMdeTextArea extends React.Component<ReactMdeTextAreaProps, Rea
                         value={text}
                         ref={(c) => {
                             this.textArea = c;
-                            textAreaRef(c);
+                            if (textAreaRef) {
+                                textAreaRef(c);
+                            }
                         }}
                         {...textAreaProps}
                     />
@@ -55,4 +56,3 @@ export class ReactMdeTextArea extends React.Component<ReactMdeTextAreaProps, Rea
         );
     }
 }
-

@@ -1,37 +1,41 @@
 {
-    "extends": [
-        "tslint:latest",
-        "tslint-react"
+  "extends": [
+    "tslint:latest",
+    "tslint-react"
+  ],
+  "rules": {
+    "quotemark": [
+      true,
+      "double",
+      "jsx-double"
     ],
-    "rules": {
-        "quotemark": [
-            true,
-            "double",
-            "jsx-double"
-        ],
-        "max-line-length": [
-            false
-        ],
-        "interface-name": [
-            true,
-            "never-prefix"
-        ],
-        "curly": false,
-        "object-literal-sort-keys": false,
-        "member-ordering": false,
-        "jsx-no-lambda": [
-            false
-        ],
-        "jsx-no-multiline-js": [
-            false
-        ],
-        "max-classes-per-file": [
-            false
-        ],
-        "member-access": false,
-        "no-var-requires": false,
-        "ordered-imports": false,
-        "space-before-function-paren": false,
-        "no-empty-interface": false
-    }
+    "max-line-length": [
+      false
+    ],
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
+    "curly": false,
+    "object-literal-sort-keys": false,
+    "member-ordering": false,
+    "jsx-no-lambda": [
+      false
+    ],
+    "jsx-no-multiline-js": [
+      false
+    ],
+    "max-classes-per-file": [
+      false
+    ],
+    "member-access": false,
+    "no-var-requires": false,
+    "ordered-imports": false,
+    "space-before-function-paren": false,
+    "no-empty-interface": false,
+    "no-implicit-dependencies": [
+      true,
+      "dev"
+    ]
+  }
 }
