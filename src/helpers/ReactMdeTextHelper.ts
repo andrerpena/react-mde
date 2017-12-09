@@ -88,8 +88,7 @@ export function getBreaksNeededForEmptyLineBefore(text = "", startPosition: numb
  *  Gets the number of line-breaks that would have to be inserted after the given 'startPosition'
  *  to make sure there's an empty line between 'startPosition' and the next text
  */
-export function getBreaksNeededForEmptyLineAfter(text: string, startPosition: number): number {
-    if (!text) throw Error("Argument 'text' should be truthy");
+export function getBreaksNeededForEmptyLineAfter(text = "", startPosition: number): number {
     if (startPosition === text.length - 1) return 0;
 
     // rules:
@@ -127,13 +126,15 @@ export function insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text: string, s
     const breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection.start);
     const insertionBefore = Array(breaksNeededBefore + 1).join("\n");
 
-    const newText = text;
+    let newText = text;
     let newSelection = selection;
-    const insertionLength = 0;
+    let insertionLength = 0;
 
     // if line-breaks have to be added before
     if (insertionBefore) {
         const textInsertion = insertText(text, insertionBefore, selection.start);
+        newText = textInsertion.newText;
+        insertionLength = textInsertion.insertionLength;
         newSelection = {
             start: selection.start + textInsertion.insertionLength,
             end: selection.end + textInsertion.insertionLength,
@@ -158,22 +159,19 @@ export function insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text: string, sel
     const breaksNeededBefore = getBreaksNeededForEmptyLineAfter(text, selection.end);
     const insertionAfter = Array(breaksNeededBefore + 1).join("\n");
 
-    const newText = text;
-    let newSelection = selection;
-    const insertionLength = 0;
+    let newText = text;
+    let insertionLength = 0;
 
     // if line-breaks have to be added before
     if (insertionAfter) {
         const textInsertion = insertText(text, insertionAfter, selection.end);
-        newSelection = {
-            start: selection.start + textInsertion.insertionLength,
-            end: selection.end + textInsertion.insertionLength,
-        };
+        newText = textInsertion.newText;
+        insertionLength = textInsertion.insertionLength;
     }
     return {
         newText,
         insertionLength,
-        newSelection,
+        newSelection: selection,
     };
 }
 
@@ -202,7 +200,7 @@ export function insertBeforeEachLine(text: string, insertion: string | AlterLine
         newText,
         insertionLength,
         newSelection: {
-            start: selection.start,
+            start: lines.length > 1 ? selection.start : selection.start + insertionLength,
             end: selection.end + insertionLength,
         },
     };

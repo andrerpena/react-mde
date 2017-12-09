@@ -28,13 +28,13 @@ export function makeList(text: string, selection: TextSelection, insertionBefore
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
 
-    // inserts 'insertionBeforeEachLine' before each line
-    textInsertion = insertBeforeEachLine(text, insertionBeforeEachLine, selection);
+    // insert breaks after, if needed
+    textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
 
-    // insert breaks after, if needed
-    textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
+    // inserts 'insertionBeforeEachLine' before each line
+    textInsertion = insertBeforeEachLine(text, insertionBeforeEachLine, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
 
