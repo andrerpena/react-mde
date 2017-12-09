@@ -119,10 +119,12 @@ an object containint `start` and `end` representing what should be selected. Pas
 - **textAreaProps**: Whatever you want to pass to the `textarea` component.
 - **showdownOptions**: An object with whatever options you want to pass to Showdown. Please refer to [ShowdownOptions](https://github.com/showdownjs/showdown#valid-options) to a list of available options.
 Notice that tables, for example, are disabled by default in Showdown. So, in order to enable tables, you'd pass something like `showdownOptions={{tables: true}}` to `ReactMde`.
+- **visibility**: Determines which sub-components are visible. `visibility` is an object optionally containing these booleans:
+`toolbar`, `textarea`, `preview` and `previewHelp`. For example, in order to hide the preview, you can pass `visibility:{{preview:false}}`
 
 ## Styling
 
-The following tyles from React-mde should be added: (Both .scss and .css files are available. No need to use sass-loader if you don't want)
+The following styles from React-mde should be added: (Both .scss and .css files are available. No need to use sass-loader if you don't want)
 
 Easiest way: import `react-mde-all.css`:
 
@@ -134,12 +136,15 @@ If you want to have a more granular control over the styles, you can import each
     import 'react-mde/lib/styles/css/react-mde-toolbar.css';
     import 'react-mde/lib/styles/css/react-mde-textarea.css';
     import 'react-mde/lib/styles/css/react-mde-preview.css';
+    
+If you're using SASS, you can override these variables: https://github.com/andrerpena/react-mde/blob/master/src/styles/variables.scss
 
 You still have to import `font-awesome` while we don't embed the icons for the toolbar commands, `normalize` is optional:
 
     import '../node_modules/normalize.css/normalize.css';
     import '../node_modules/font-awesome/css/font-awesome.css';
-
+    
+    
 ## Commands
 
 React-mde allows you to use the build-in commands, implement your own commands, or both.
@@ -177,7 +182,9 @@ You don't have to create your own commands at all, but if you want, this is how 
 - **icon**: If this is a text, it will print a `font-awesome` `<i/>` element with the classes `fa fa-${icon}`. Passing `bold` will print `<i className="fa fa-bold"></i>`.
  If the passing value is a React element, it will print the react element.
 - **tooltip**: If any, it will print a tooltip with the passed text.
-- **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection. Your function should return the current `text` (after your command) and the current `selection` (after your command).
+- **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`,
+ which is the textarea text before the command, and `selection`, an objection containing `start` and `end`. 
+ Your function should return the new `text` and the new `selection` (after your command).
 
 
 ### Anatomy of a dropdown command
@@ -225,20 +232,18 @@ You don't have to create your own commands at all, but if you want, this is how 
 ## Composition and custom layouts
 
 `ReactMde` is designed to make it easy for users to customize the layout, or to make any of it sub-components invisible,
-like the Preview, for instance. In order to do so, instead of cluttering `ReactMde` with options like `previewVisible`, 
-I've decided to make the `ReactMde` component, itself, just a thin layout wrapper for its 3 internal components.
+like the Preview, for instance. The `ReactMde` component, itself, just a thin layout wrapper for its 3 internal components
+with visibility options.
 
 If you want to create your own layout, please take a look at the source code of the `ReactMde` component:
 https://github.com/andrerpena/react-mde/blob/master/src/ReactMde.tsx. It's easy to simply create your own, only
-leveraging the internal components you'd like or laying them out in the way you prefer
+leveraging the internal components you'd like and laying them out in the way you prefer
 
     import * as ReactMde from 'react-mde';
     // Now you have (among other utility modules):
     // The ReactMde.ReactMdeToolbar component
     // The ReactMde.ReactMdeTextArea component
     // The ReactMde.ReactMdePreview component
-
-Again, just take a look at ReactMde's [source code](https://github.com/andrerpena/react-mde/blob/master/src/ReactMde.tsx).
 
 ## Migrating from 1.* to 2.*
 

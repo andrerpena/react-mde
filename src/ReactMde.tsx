@@ -8,18 +8,35 @@ import { ReactMdeToolbar } from "./ReactMdeToolbar";
 import { ReactMdeTextArea } from "./ReactMdeTextArea";
 import { ReactMdePreview } from "./ReactMdePreview";
 
+export interface ReactMdeVisibility {
+    toolbar?: boolean;
+    textarea?: boolean;
+    preview?: boolean;
+    previewHelp?: boolean;
+}
+
 export interface ReactMdeProps {
     commands: Array<Array<Command | CommandSet>>;
     value: Value;
     onChange: (value: Value) => void;
     textAreaProps?: any;
     showdownOptions?: any;
+    visibility?: ReactMdeVisibility;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
 
     textArea: HTMLTextAreaElement;
     preview: HTMLDivElement;
+
+    static defaultProps: Partial<ReactMdeProps> = {
+        visibility: {
+            toolbar: true,
+            textarea: true,
+            preview: true,
+            previewHelp: true,
+        },
+    };
 
     /**
      * Handler for the textArea value change
@@ -55,25 +72,29 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             commands,
             textAreaProps,
             showdownOptions,
+            visibility,
         } = this.props;
+
+        const mergedVisibility = {...ReactMde.defaultProps.visibility, ...visibility};
 
         return (
             <div className="react-mde">
-                <ReactMdeToolbar
+                {mergedVisibility.toolbar && <ReactMdeToolbar
                     commands={commands}
                     onCommand={this.handleCommand}
-                />
-                <ReactMdeTextArea
+                />}
+                {mergedVisibility.textarea && <ReactMdeTextArea
                     onChange={this.handleValueChange}
                     value={value}
                     textAreaProps={textAreaProps}
                     textAreaRef={(c) => this.textArea = c}
-                />
-                <ReactMdePreview
+                />}
+                {mergedVisibility.preview && <ReactMdePreview
                     markdown={value ? value.text : ""}
                     previewRef={(c) => this.preview = c}
                     showdownOptions={showdownOptions}
-                />
+                    helpVisible={mergedVisibility.previewHelp}
+                />}
             </div>
         );
     }

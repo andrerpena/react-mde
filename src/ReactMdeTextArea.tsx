@@ -9,7 +9,7 @@ export interface ReactMdeTextAreaProps {
     textAreaProps?: any;
 }
 
-export interface ReactMdeTextAreaState {
+interface ReactMdeTextAreaState {
 
 }
 
