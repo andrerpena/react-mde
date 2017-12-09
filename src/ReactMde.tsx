@@ -51,14 +51,15 @@ export class ReactMde extends React.Component<ReactMdeProps> {
      * Executes a command
      * @memberOf ReactMde
      */
-    handleCommand = (command: Command) => {
+    handleCommand = async (command: Command) => {
         const {value: {text}, onChange} = this.props;
-        const newValue = command.execute(text, getSelection(this.textArea));
+        let newValue = command.execute(text, getSelection(this.textArea));
         if (newValue instanceof Promise) {
-            newValue.then((v) => onChange(v));
-        } else {
-            onChange(newValue);
+            newValue = await newValue;
         }
+        // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
+        newValue.textareaScrollTop = this.textArea.scrollTop;
+        onChange(newValue);
     }
 
     /**

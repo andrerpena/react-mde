@@ -27,13 +27,17 @@ export class ReactMdeTextArea extends React.Component<ReactMdeTextAreaProps, Rea
      */
     handleValueChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
         const {onChange} = this.props;
-        onChange({text: e.currentTarget.value, selection: null});
+        onChange({text: e.currentTarget.value});
     }
 
     componentDidUpdate() {
-        const {value: {selection}} = this.props;
+        const {value: {selection, textareaScrollTop}} = this.props;
         if (selection) {
             setSelection(this.textArea, selection.start, selection.end);
+        }
+        if (textareaScrollTop !== null && textareaScrollTop !== undefined) {
+            // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
+            this.textArea.scrollTop = textareaScrollTop;
         }
     }
 
