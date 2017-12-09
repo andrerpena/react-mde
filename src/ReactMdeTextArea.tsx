@@ -31,13 +31,13 @@ export class ReactMdeTextArea extends React.Component<ReactMdeTextAreaProps, Rea
     }
 
     componentDidUpdate() {
-        const {value: {selection, textareaScrollTop}} = this.props;
+        const {value: {selection, scrollTop}} = this.props;
         if (selection) {
             setSelection(this.textArea, selection.start, selection.end);
         }
-        if (textareaScrollTop !== null && textareaScrollTop !== undefined) {
+        if (scrollTop !== null && scrollTop !== undefined) {
             // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
-            this.textArea.scrollTop = textareaScrollTop;
+            this.textArea.scrollTop = scrollTop;
         }
     }
 

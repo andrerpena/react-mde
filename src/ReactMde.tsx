@@ -58,7 +58,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             newValue = await newValue;
         }
         // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
-        newValue.textareaScrollTop = this.textArea.scrollTop;
+        newValue.scrollTop = this.textArea.scrollTop;
         onChange(newValue);
     }
 
