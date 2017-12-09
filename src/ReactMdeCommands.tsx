@@ -166,19 +166,13 @@ export const makeImageCommand: Command = {
 export const makeUnorderedListCommand: Command = {
     icon: "list-ul",
     tooltip: "Add a bulleted list",
-    execute:
-        (text: string, selection: TextSelection) => {
-            return makeList(text, selection, "- ");
-        },
+    execute: (text: string, selection: TextSelection) => makeList(text, selection, "- "),
 };
 
 export const makeOrderedListCommand: Command = {
     icon: "list-ol",
     tooltip: "Add a numbered list",
-    execute:
-        (text: string, selection: TextSelection) => {
-            return makeList(text, selection, (item: string, index: number) => `${index + 1}. `);
-        },
+    execute: (text: string, selection: TextSelection) => makeList(text, selection, (item: string, index: number) => `${index + 1}. `),
 };
 
 export const getDefaultCommands = () => [
