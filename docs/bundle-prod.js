@@ -1433,13 +1433,13 @@ var ReactMdeTextArea = /** @class */ (function (_super) {
         return _this;
     }
     ReactMdeTextArea.prototype.componentDidUpdate = function () {
-        var _a = this.props.value, selection = _a.selection, textareaScrollTop = _a.textareaScrollTop;
+        var _a = this.props.value, selection = _a.selection, scrollTop = _a.scrollTop;
         if (selection) {
             ReactMdeSelectionHelper_1.setSelection(this.textArea, selection.start, selection.end);
         }
-        if (textareaScrollTop !== null && textareaScrollTop !== undefined) {
+        if (scrollTop !== null && scrollTop !== undefined) {
             // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
-            this.textArea.scrollTop = textareaScrollTop;
+            this.textArea.scrollTop = scrollTop;
         }
     };
     ReactMdeTextArea.prototype.render = function () {
@@ -23592,7 +23592,7 @@ var ReactMde = /** @class */ (function (_super) {
                         _b.label = 2;
                     case 2:
                         // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
-                        newValue.textareaScrollTop = this.textArea.scrollTop;
+                        newValue.scrollTop = this.textArea.scrollTop;
                         onChange(newValue);
                         return [2 /*return*/];
                 }
