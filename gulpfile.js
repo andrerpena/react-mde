@@ -18,7 +18,7 @@ gulp.task('copy_styles', function () {
         .pipe(gulp.dest('./lib/styles/scss'));
 });
 
-gulp.task('build', ['copy_styles', 'build_styles'], function () {
+gulp.task('build-lib', ['copy_styles', 'build_styles'], function () {
     const tsResult = gulp.src('src/**/*.{ts,tsx}')
         .pipe(tsProject({
             declaration: true
@@ -43,3 +43,6 @@ gulp.task('build-demo', ['copy-index'], function () {
         .pipe(webpack(require('./webpack.config.demo.prod.js')))
         .pipe(gulp.dest('docs/'));
 });
+
+// all
+gulp.task('build', ['build-demo', 'build-lib']);
