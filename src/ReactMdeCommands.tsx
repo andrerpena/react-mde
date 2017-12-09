@@ -94,7 +94,7 @@ export const makeQuoteCommand = {
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
-            textInsertion = insertBefore(text, "> ", selection);
+            textInsertion = insertBefore(text, "> ", selection, false);
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
