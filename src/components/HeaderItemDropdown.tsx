@@ -1,14 +1,14 @@
 import * as React from "react";
 import { HeaderItemDropdownItem } from "./HeaderItemDropdownItem";
-import { SubCommand } from "../types/SubCommand";
+import { SubCommand } from "../types";
 
-interface HeaderItemDropdownProps {
+export interface HeaderItemDropdownProps {
     icon: string;
     commands: SubCommand[];
     onCommand: (command: SubCommand) => void;
 }
 
-interface HeaderItemDropdownState {
+export interface HeaderItemDropdownState {
     open: boolean;
 }
 
