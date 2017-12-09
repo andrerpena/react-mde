@@ -661,8 +661,7 @@ exports.getBreaksNeededForEmptyLineBefore = getBreaksNeededForEmptyLineBefore;
  *  to make sure there's an empty line between 'startPosition' and the next text
  */
 function getBreaksNeededForEmptyLineAfter(text, startPosition) {
-    if (!text)
-        throw Error("Argument 'text' should be truthy");
+    if (text === void 0) { text = ""; }
     if (startPosition === text.length - 1)
         return 0;
     // rules:
@@ -704,6 +703,8 @@ function insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection) {
     // if line-breaks have to be added before
     if (insertionBefore) {
         var textInsertion = insertText(text, insertionBefore, selection.start);
+        newText = textInsertion.newText;
+        insertionLength = textInsertion.insertionLength;
         newSelection = {
             start: selection.start + textInsertion.insertionLength,
             end: selection.end + textInsertion.insertionLength,
@@ -728,20 +729,17 @@ function insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection) {
     var breaksNeededBefore = getBreaksNeededForEmptyLineAfter(text, selection.end);
     var insertionAfter = Array(breaksNeededBefore + 1).join("\n");
     var newText = text;
-    var newSelection = selection;
     var insertionLength = 0;
     // if line-breaks have to be added before
     if (insertionAfter) {
         var textInsertion = insertText(text, insertionAfter, selection.end);
-        newSelection = {
-            start: selection.start + textInsertion.insertionLength,
-            end: selection.end + textInsertion.insertionLength,
-        };
+        newText = textInsertion.newText;
+        insertionLength = textInsertion.insertionLength;
     }
     return {
         newText: newText,
         insertionLength: insertionLength,
-        newSelection: newSelection,
+        newSelection: selection,
     };
 }
 exports.insertBreaksAfterSoThatThereIsAnEmptyLineAfter = insertBreaksAfterSoThatThereIsAnEmptyLineAfter;
@@ -769,7 +767,7 @@ function insertBeforeEachLine(text, insertion, selection) {
         newText: newText,
         insertionLength: insertionLength,
         newSelection: {
-            start: selection.start,
+            start: lines.length > 1 ? selection.start : selection.start + insertionLength,
             end: selection.end + insertionLength,
         },
     };
@@ -1268,12 +1266,12 @@ function makeList(text, selection, insertionBeforeEachLine) {
     textInsertion = ReactMdeTextHelper_1.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
-    // inserts 'insertionBeforeEachLine' before each line
-    textInsertion = ReactMdeTextHelper_1.insertBeforeEachLine(text, insertionBeforeEachLine, selection);
-    text = textInsertion.newText;
-    selection = textInsertion.newSelection;
     // insert breaks after, if needed
     textInsertion = ReactMdeTextHelper_1.insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
+    // inserts 'insertionBeforeEachLine' before each line
+    textInsertion = ReactMdeTextHelper_1.insertBeforeEachLine(text, insertionBeforeEachLine, selection);
     text = textInsertion.newText;
     selection = textInsertion.newSelection;
     return {
