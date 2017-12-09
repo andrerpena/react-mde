@@ -6,14 +6,11 @@ body {
 }
 
 .container {
-    width: 600px;
+    max-width: 600px;
     border: 1px solid $default-border-color;
     padding: 8px;
-    margin: 10px auto;
-}
-
-@media screen and (min-width: 768px) {
-    .container {
+    margin: 10px;
+    @media screen and (min-width: 768px) {
         margin: 50px auto;
     }
 }
