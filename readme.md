@@ -115,7 +115,8 @@ Props:
 - **value**: The current value. This property should look like `{text: "", selection: {start:0, end:2}` where `text` is the text and `selection` is
 an object containint `start` and `end` representing what should be selected. Passing null to `selection` is perfectly fine.
 - **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
-- **commands**: An array or array of command objects. The first array represents groups, the second array represents commands inside that group. Take a look of how to create a custom command below.
+- **commands**: An array of array of command objects (`[[cmd1, cmd2],[cmd3, cmd4]]`). The first array represents groups,
+ the second represents commands inside that group. For an example, refer to how the `getDefaultCommands()` [is implemented](https://github.com/andrerpena/react-mde/blob/master/src/ReactMdeCommands.tsx#L178). How to create custom commands is explained below.
 - **textAreaProps**: Whatever you want to pass to the `textarea` component.
 - **showdownOptions**: An object with whatever options you want to pass to Showdown. Please refer to [ShowdownOptions](https://github.com/showdownjs/showdown#valid-options) to a list of available options.
 Notice that tables, for example, are disabled by default in Showdown. So, in order to enable tables, you'd pass something like `showdownOptions={{tables: true}}` to `ReactMde`.
@@ -183,7 +184,7 @@ You don't have to create your own commands at all, but if you want, this is how 
  If the passing value is a React element, it will print the react element.
 - **tooltip**: If any, it will print a tooltip with the passed text.
 - **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`,
- which is the textarea text before the command, and `selection`, an objection containing `start` and `end`. 
+ which is the textarea text before the command, and `selection`, an object containing `start` and `end`. 
  Your function should return the new `text` and the new `selection` (after your command).
 
 
@@ -266,7 +267,7 @@ How to upgrade an existing 1.* JavaScript project: https://github.com/andrerpena
 
 How to upgrade an existing 1.* TypeScript project: https://github.com/andrerpena/react-mde-ts-demo/commit/d6718305c0132649cabca432e1e9415ea06cd643
 
-## Migrating from the 0.* versions to 1.*
+## Migrating from 0.* to 1.*
 
 Major differences:
 
