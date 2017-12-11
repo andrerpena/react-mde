@@ -31,84 +31,9 @@ So...
 
 React-mde is a completely controlled component. 
 
-**Example in JavaScript:**
-
-    import React, { Component } from 'react';
-    import ReactMde, { ReactMdeCommands } from 'react-mde';
+**Example of usage in JavaScript:**: https://github.com/andrerpena/react-mde-js-demo/blob/master/src/App.js
     
-    export default class App extends Component {
-    
-        constructor() {
-            super();
-            this.state = {
-                reactMdeValue: {text: '', selection: null},
-            };
-        }
-    
-        handleValueChange = (value) => {
-            this.setState({reactMdeValue: value});
-        }
-    
-        render() {
-            return (
-                <div className="container">
-                    <ReactMde
-                        textAreaProps={{
-                            id: 'ta1',
-                            name: 'ta1',
-                        }}
-                        value={this.state.reactMdeValue}
-                        onChange={this.handleValueChange}
-                        commands={ReactMdeCommands.getDefaultCommands()}
-                        
-                    />
-                </div>
-            );
-        }
-    }
-    
-**Example in TypeScript**:
-
-    import * as React from 'react';
-    import ReactMde, { ReactMdeCommands, ReactMdeTypes } from 'react-mde';
-    
-    interface AppProps {
-    }
-    
-    interface AppState {
-        reactMdeValue: ReactMdeTypes.Value;
-    }
-    
-    export class App extends React.Component<AppProps, AppState> {
-    
-        constructor(props: AppProps) {
-            super(props);
-            this.state = {
-                reactMdeValue: {text: ''},
-            };
-        }
-    
-        handleValueChange = (value: ReactMdeTypes.Value) => {
-            this.setState({reactMdeValue: value});
-        }
-    
-        render() {
-            return (
-                <div className="container">
-                    <ReactMde
-                        textAreaProps={{
-                            id: 'ta1',
-                            name: 'ta1',
-                        }}
-                        value={this.state.reactMdeValue}
-                        onChange={this.handleValueChange}
-                        commands={ReactMdeCommands.getDefaultCommands()}
-                    />
-                </div>
-            );
-        }
-    }
-   
+**Example of usage in TypeScript**: https://github.com/andrerpena/react-mde-ts-demo/blob/master/src/App.tsx
 
 Props:
 
