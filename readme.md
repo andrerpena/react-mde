@@ -1,6 +1,6 @@
 # react-mde
 
-A simple yet powerful and extensible Markdown Editor editor for React, inspired by GitHub.
+A simple yet powerful and extensible Markdown Editor editor for React, inspired by GitHub. This is the editor used by http://aboutdevs.com.
 
 ![image](https://github.com/andrerpena/react-mde/blob/master/assets/react-mde.png)
 
