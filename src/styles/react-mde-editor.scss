@@ -1,0 +1,8 @@
+@import "react-mde-toolbar";
+@import "react-mde-textarea";
+
+.column {
+    .react-mde-editor {
+        width: 50%;
+    }
+}

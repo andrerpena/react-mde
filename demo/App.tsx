@@ -29,6 +29,7 @@ export class App extends React.Component<AppProps, AppState> {
                         id: "ta1",
                         name: "ta1",
                     }}
+                    className="column"
                     value={this.state.reactMdeValue}
                     onChange={this.handleValueChange}
                     commands={ReactMdeCommands.getDefaultCommands()}

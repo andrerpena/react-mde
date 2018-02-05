@@ -1,12 +1,14 @@
 import * as React from "react";
 import { Value } from "./types";
 import { setSelection } from "./helpers/ReactMdeSelectionHelper";
+import { MarkdownHelp } from "./components/MarkdownHelp";
 
 export interface ReactMdeTextAreaProps {
     onChange: (value: Value) => void;
     textAreaRef?: (ref: HTMLTextAreaElement) => void;
     value: Value;
     textAreaProps?: any;
+    helpVisible: boolean;
 }
 
 export interface ReactMdeTextAreaState {
@@ -18,6 +20,7 @@ export class ReactMdeTextArea extends React.Component<ReactMdeTextAreaProps, Rea
 
     static defaultProps: Partial<ReactMdeTextAreaProps> = {
         textAreaProps: {},
+        helpVisible: true
     };
 
     /**
@@ -42,20 +45,25 @@ export class ReactMdeTextArea extends React.Component<ReactMdeTextAreaProps, Rea
     }
 
     render() {
-        const {value: {text}, textAreaProps, textAreaRef} = this.props;
+        const {value: {text}, textAreaProps, textAreaRef, helpVisible} = this.props;
         return (
             <div className="mde-text">
-                    <textarea
-                        onChange={this.handleValueChange}
-                        value={text}
-                        ref={(c) => {
-                            this.textArea = c;
-                            if (textAreaRef) {
-                                textAreaRef(c);
-                            }
-                        }}
-                        {...textAreaProps}
-                    />
+                <textarea
+                    onChange={this.handleValueChange}
+                    value={text}
+                    ref={(c) => {
+                        this.textArea = c;
+                        if (textAreaRef) {
+                            textAreaRef(c);
+                        }
+                    }}
+                    {...textAreaProps}
+                />
+
+                {helpVisible && <div className="mde-help">
+                    <MarkdownHelp/>
+                </div>}
+
             </div>
         );
     }
