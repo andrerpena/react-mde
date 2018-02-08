@@ -1,5 +1,7 @@
 @import "variables";
 
 .react-mde {
-
+  &.column {
+    display: flex;
+  }
 }
