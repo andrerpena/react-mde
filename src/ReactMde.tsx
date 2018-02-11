@@ -7,6 +7,7 @@ import { Command, CommandSet, Value } from "./types";
 import { ReactMdeToolbar } from "./ReactMdeToolbar";
 import { ReactMdeTextArea } from "./ReactMdeTextArea";
 import { ReactMdePreview } from "./ReactMdePreview";
+import { ShowdownFlavor } from "./types/ShowdownFlavor";
 
 export interface ReactMdeVisibility {
     toolbar?: boolean;
@@ -20,8 +21,10 @@ export interface ReactMdeProps {
     value: Value;
     onChange: (value: Value) => void;
     textAreaProps?: any;
+    showdownFlavor?: ShowdownFlavor;
     showdownOptions?: any;
     visibility?: ReactMdeVisibility;
+    className?: string;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
@@ -73,13 +76,15 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             commands,
             textAreaProps,
             showdownOptions,
+            showdownFlavor,
             visibility,
+            className,
         } = this.props;
 
         const mergedVisibility = {...ReactMde.defaultProps.visibility, ...visibility};
 
         return (
-            <div className="react-mde">
+            <div className={`react-mde ${className}`}>
                 {mergedVisibility.toolbar && <ReactMdeToolbar
                     commands={commands}
                     onCommand={this.handleCommand}
@@ -93,6 +98,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                 {mergedVisibility.preview && <ReactMdePreview
                     markdown={value ? value.text : ""}
                     previewRef={(c) => this.preview = c}
+                    showdownFlavor={showdownFlavor}
                     showdownOptions={showdownOptions}
                     helpVisible={mergedVisibility.previewHelp}
                 />}

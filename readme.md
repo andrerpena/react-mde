@@ -38,15 +38,17 @@ React-mde is a completely controlled component.
 Props:
 
 - **value**: The current value. This property should look like `{text: "", selection: {start:0, end:2}` where `text` is the text and `selection` is
-an object containint `start` and `end` representing what should be selected. Passing null to `selection` is perfectly fine.
+an object containing `start` and `end` representing what should be selected. Passing null to `selection` is perfectly fine.
 - **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
 - **commands**: An array of array of command objects (`[[cmd1, cmd2],[cmd3, cmd4]]`). The first array represents groups,
  the second represents commands inside that group. For an example, refer to how the `getDefaultCommands()` [is implemented](https://github.com/andrerpena/react-mde/blob/master/src/ReactMdeCommands.tsx#L178). How to create custom commands is explained below.
 - **textAreaProps**: Whatever you want to pass to the `textarea` component.
-- **showdownOptions**: An object with whatever options you want to pass to Showdown. Please refer to [ShowdownOptions](https://github.com/showdownjs/showdown#valid-options) to a list of available options.
+- **showdownFlavor**: The Markdown flavor to use. This defaults to `original`, the [original specs by John Gruber](https://daringfireball.net/projects/markdown/). Please refer to the [Showdown documentation](https://github.com/showdownjs/showdown#flavors) for the complete list of supported flavors.
+- **showdownOptions**: An object with options to be passed to Showdown. Please refer to the [Showdown documentation](https://github.com/showdownjs/showdown#valid-options) for the complete list of options. Note that, unlike what happens by default with Showdown, the options passed here will **override** the defined flavor.
 Notice that tables, for example, are disabled by default in Showdown. So, in order to enable tables, you'd pass something like `showdownOptions={{tables: true}}` to `ReactMde`.
 - **visibility**: Determines which sub-components are visible. `visibility` is an object optionally containing these booleans:
-`toolbar`, `textarea`, `preview` and `previewHelp`. For example, in order to hide the preview, you can pass `visibility:{{preview:false}}`
+`toolbar`, `textarea`, `preview` and `previewHelp`. For example, in order to hide the preview, you can pass `visibility:{{preview:false}}`.
+- **className**: Custom className.
 
 ## Styling
 
@@ -210,4 +212,4 @@ React-mde is MIT licensed
 
 ## About the author
 
-Made with :heart: by André Pena. Check out my website: http://andrerpena.me
+Made with :heart: by André Pena. Check out my website: https://aboutdevs.com/andrerpena

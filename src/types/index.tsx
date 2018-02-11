@@ -6,3 +6,4 @@ export * from "./TextInsertionResult";
 export * from "./TextSelection";
 export * from "./Value";
 export * from "./Word";
+export * from "./ShowdownFlavor";
