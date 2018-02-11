@@ -22,7 +22,6 @@ export interface ReactMdeProps {
     textAreaProps?: any;
     showdownOptions?: any;
     visibility?: ReactMdeVisibility;
-    className?: string;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
@@ -37,7 +36,6 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             preview: true,
             previewHelp: true,
         },
-        className: ""
     };
 
     /**
@@ -76,34 +74,28 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             textAreaProps,
             showdownOptions,
             visibility,
-            className
         } = this.props;
 
         const mergedVisibility = {...ReactMde.defaultProps.visibility, ...visibility};
 
         return (
-            <div className={`react-mde ${className}`}>
-                <div className="react-mde-editor">
-                    {mergedVisibility.toolbar && <ReactMdeToolbar
-                        commands={commands}
-                        onCommand={this.handleCommand}
-                    />}
-                    {mergedVisibility.textarea && <ReactMdeTextArea
-                        onChange={this.handleValueChange}
-                        value={value}
-                        textAreaProps={textAreaProps}
-                        textAreaRef={(c) => this.textArea = c}
-                        helpVisible={mergedVisibility.previewHelp}
-                    />}
-
-                </div>
-                <div className="react-mde-preview">
-                    {mergedVisibility.preview && <ReactMdePreview
-                        markdown={value ? value.text : ""}
-                        previewRef={(c) => this.preview = c}
-                        showdownOptions={showdownOptions}
-                    />}
-                </div>
+            <div className="react-mde">
+                {mergedVisibility.toolbar && <ReactMdeToolbar
+                    commands={commands}
+                    onCommand={this.handleCommand}
+                />}
+                {mergedVisibility.textarea && <ReactMdeTextArea
+                    onChange={this.handleValueChange}
+                    value={value}
+                    textAreaProps={textAreaProps}
+                    textAreaRef={(c) => this.textArea = c}
+                />}
+                {mergedVisibility.preview && <ReactMdePreview
+                    markdown={value ? value.text : ""}
+                    previewRef={(c) => this.preview = c}
+                    showdownOptions={showdownOptions}
+                    helpVisible={mergedVisibility.previewHelp}
+                />}
             </div>
         );
     }

@@ -47,7 +47,6 @@ an object containint `start` and `end` representing what should be selected. Pas
 Notice that tables, for example, are disabled by default in Showdown. So, in order to enable tables, you'd pass something like `showdownOptions={{tables: true}}` to `ReactMde`.
 - **visibility**: Determines which sub-components are visible. `visibility` is an object optionally containing these booleans:
 `toolbar`, `textarea`, `preview` and `previewHelp`. For example, in order to hide the preview, you can pass `visibility:{{preview:false}}`
-- **className**: You can pass a custom className or "column" to show the preview on the side.
 
 ## Styling
 
