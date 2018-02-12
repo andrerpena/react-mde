@@ -3,7 +3,7 @@ import { HeaderItemDropdownItem } from "./HeaderItemDropdownItem";
 import { SubCommand } from "../types";
 
 export interface HeaderItemDropdownProps {
-    icon: string;
+    icon: React.ReactNode;
     commands: SubCommand[];
     onCommand: (command: SubCommand) => void;
 }
@@ -73,6 +73,9 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
         const {icon, commands} = this.props;
         const {open} = this.state;
 
+        // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
+        const iconElement = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"/>;
+
         const items = commands.map((command, index) => (
             <HeaderItemDropdownItem key={index} onClick={(e) => this.handleOnClickCommand(e, command)}>
                 {command.content}
@@ -101,7 +104,7 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
                     }}
                     onClick={this.handleOpenDropdown}
                 >
-                    <i className={`fa fa-${icon}`} aria-hidden="true"/>
+                    {iconElement}
                 </button>
                 {dropdown}
             </li>

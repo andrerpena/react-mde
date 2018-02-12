@@ -1,9 +1,9 @@
 import * as React from "react";
 
 export interface HeaderItemProps {
+    icon: React.ReactNode;
     tooltip: string;
     onClick: React.MouseEventHandler<any>;
-    icon: React.ReactNode;
 }
 
 export const HeaderItem: React.SFC<HeaderItemProps> = (props) => {
