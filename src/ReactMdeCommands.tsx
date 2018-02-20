@@ -20,7 +20,7 @@ import { Command, CommandSet, TextSelection } from "./types/";
 
 export const makeHeaderCommand: CommandSet = {
     type: "dropdown",
-    icon: "header",
+    icon: "heading",
     subCommands: [
         {
             content: <p className="header-1">Header</p>,
@@ -147,7 +147,7 @@ export const makeCodeCommand: Command = {
 };
 
 export const makeImageCommand: Command = {
-    icon: "picture-o",
+    icon: "image",
     tooltip: "Insert a picture",
     execute:
         (text: string, selection: TextSelection) => {
