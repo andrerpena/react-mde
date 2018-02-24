@@ -1364,8 +1364,18 @@ var ReactMdePreview = /** @class */ (function (_super) {
     __extends(ReactMdePreview, _super);
     function ReactMdePreview(props) {
         var _this = _super.call(this, props) || this;
-        var showdownOptions = props.showdownOptions;
-        _this.converter = new Showdown.Converter(showdownOptions ? showdownOptions : undefined);
+        var showdownFlavor = props.showdownFlavor, showdownOptions = props.showdownOptions;
+        _this.converter = new Showdown.Converter();
+        if (showdownFlavor) {
+            _this.converter.setFlavor(showdownFlavor);
+        }
+        if (showdownOptions) {
+            for (var option in showdownOptions) {
+                if (showdownOptions.hasOwnProperty(option)) {
+                    _this.converter.setOption(option, showdownOptions[option]);
+                }
+            }
+        }
         return _this;
     }
     ReactMdePreview.prototype.render = function () {
@@ -1482,7 +1492,6 @@ var App_1 = __webpack_require__(34);
 __webpack_require__(45);
 __webpack_require__(46);
 __webpack_require__(47);
-__webpack_require__(48);
 react_dom_1.render(React.createElement(App_1.App, null), document.getElementById("#app_container"));
 
 
@@ -18830,7 +18839,7 @@ var App = /** @class */ (function (_super) {
             React.createElement(src_1.default, { textAreaProps: {
                     id: "ta1",
                     name: "ta1",
-                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands.getDefaultCommands(), showdownOptions: { tables: true } })));
+                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands.getDefaultCommands(), showdownOptions: { tables: true, simplifiedAutoLink: true } })));
     };
     return App;
 }(React.Component));
@@ -18877,7 +18886,7 @@ var ReactMdeTextHelper_1 = __webpack_require__(7);
 var ReactMdeCommandHelper_1 = __webpack_require__(16);
 exports.makeHeaderCommand = {
     type: "dropdown",
-    icon: "header",
+    icon: "heading",
     subCommands: [
         {
             content: React.createElement("p", { className: "header-1" }, "Header"),
@@ -18980,7 +18989,7 @@ exports.makeCodeCommand = {
     },
 };
 exports.makeImageCommand = {
-    icon: "picture-o",
+    icon: "image",
     tooltip: "Insert a picture",
     execute: function (text, selection) {
         var _a = ReactMdeTextHelper_1.insertText(text, "![", selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
@@ -19102,6 +19111,8 @@ var HeaderItemDropdown = /** @class */ (function (_super) {
         var _this = this;
         var _a = this.props, icon = _a.icon, commands = _a.commands;
         var open = this.state.open;
+        // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
+        var iconElement = React.isValidElement(icon) ? icon : React.createElement("i", { className: "fa fa-" + icon, "aria-hidden": "true" });
         var items = commands.map(function (command, index) { return (React.createElement(HeaderItemDropdownItem_1.HeaderItemDropdownItem, { key: index, onClick: function (e) { return _this.handleOnClickCommand(e, command); } }, command.content)); });
         var dropdown = open
             ? (React.createElement("ul", { className: "react-mde-dropdown", ref: function (ref) {
@@ -19111,8 +19122,7 @@ var HeaderItemDropdown = /** @class */ (function (_super) {
         return (React.createElement("li", { className: "mde-header-item" },
             React.createElement("button", { type: "button", ref: function (ref) {
                     _this.dropdownOpener = ref;
-                }, onClick: this.handleOpenDropdown },
-                React.createElement("i", { className: "fa fa-" + icon, "aria-hidden": "true" })),
+                }, onClick: this.handleOpenDropdown }, iconElement),
             dropdown));
     };
     return HeaderItemDropdown;
@@ -19154,7 +19164,7 @@ var React = __webpack_require__(0);
 exports.HeaderItem = function (props) {
     var icon = props.icon, tooltip = props.tooltip, onClick = props.onClick;
     // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
-    var iconElement = React.isValidElement(icon) ? icon : React.createElement("i", { className: "fa fa-" + icon, "aria-hidden": "true" });
+    var iconElement = React.isValidElement(icon) ? icon : React.createElement("i", { className: "fas fa-" + icon, "aria-hidden": "true" });
     var buttonProps = {};
     if (tooltip) {
         buttonProps = {
@@ -19193,7 +19203,7 @@ exports.MarkdownHelp.defaultProps = {
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_RESULT__;;/*! showdown v 1.8.4 - 05-12-2017 */
+var __WEBPACK_AMD_DEFINE_RESULT__;;/*! showdown v 1.8.6 - 22-12-2017 */
 (function(){
 /**
  * Created by Tivie on 13-07-2015.
@@ -19347,6 +19357,21 @@ function getDefaultOpts (simple) {
       defaultValue: false,
       description: 'Enable support for underline. Syntax is double or triple underscores: `__underline word__`. With this option enabled, underscores no longer parses into `<em>` and `<strong>`',
       type: 'boolean'
+    },
+    completeHTMLDocument: {
+      defaultValue: false,
+      description: 'Outputs a complete html document, including `<html>`, `<head>` and `<body>` tags',
+      type: 'boolean'
+    },
+    metadata: {
+      defaultValue: false,
+      description: 'Enable support for document metadata (defined at the top of the document between `«««` and `»»»` or between `---` and `---`).',
+      type: 'boolean'
+    },
+    splitAdjacentBlockquotes: {
+      defaultValue: false,
+      description: 'Split adjacent blockquote blocks',
+      type: 'boolean'
     }
   };
   if (simple === false) {
@@ -19400,7 +19425,8 @@ var showdown = {},
         ghCompatibleHeaderId:                 true,
         ghMentions:                           true,
         backslashEscapesHTMLTags:             true,
-        emoji:                                true
+        emoji:                                true,
+        splitAdjacentBlockquotes:             true
       },
       original: {
         noHeaderId:                           true,
@@ -21362,7 +21388,17 @@ showdown.Converter = function (converterOptions) {
       /**
        * The flavor set in this converter
        */
-      setConvFlavor = setFlavor;
+      setConvFlavor = setFlavor,
+
+    /**
+     * Metadata of the document
+     * @type {{parsed: {}, raw: string, format: string}}
+     */
+      metadata = {
+        parsed: {},
+        raw: '',
+        format: ''
+      };
 
   _constructor();
 
@@ -21574,7 +21610,12 @@ showdown.Converter = function (converterOptions) {
       langExtensions:  langExtensions,
       outputModifiers: outputModifiers,
       converter:       this,
-      ghCodeBlocks:    []
+      ghCodeBlocks:    [],
+      metadata: {
+        parsed: {},
+        raw: '',
+        format: ''
+      }
     };
 
     // This lets us use ¨ trema as an escape char to avoid md5 hashes
@@ -21618,6 +21659,7 @@ showdown.Converter = function (converterOptions) {
     });
 
     // run the sub parsers
+    text = showdown.subParser('metadata')(text, options, globals);
     text = showdown.subParser('hashPreCodeTags')(text, options, globals);
     text = showdown.subParser('githubCodeBlocks')(text, options, globals);
     text = showdown.subParser('hashHTMLBlocks')(text, options, globals);
@@ -21633,11 +21675,16 @@ showdown.Converter = function (converterOptions) {
     // attacklab: Restore tremas
     text = text.replace(/¨T/g, '¨');
 
+    // render a complete html document instead of a partial if the option is enabled
+    text = showdown.subParser('completeHTMLDocument')(text, options, globals);
+
     // Run output modifiers
     showdown.helper.forEach(outputModifiers, function (ext) {
       text = showdown.subParser('runExtension')(ext, text, options, globals);
     });
 
+    // update metadata
+    metadata = globals.metadata;
     return text;
   };
 
@@ -21744,6 +21791,52 @@ showdown.Converter = function (converterOptions) {
       language: langExtensions,
       output: outputModifiers
     };
+  };
+
+  /**
+   * Get the metadata of the previously parsed document
+   * @param raw
+   * @returns {string|{}}
+   */
+  this.getMetadata = function (raw) {
+    if (raw) {
+      return metadata.raw;
+    } else {
+      return metadata.parsed;
+    }
+  };
+
+  /**
+   * Get the metadata format of the previously parsed document
+   * @returns {string}
+   */
+  this.getMetadataFormat = function () {
+    return metadata.format;
+  };
+
+  /**
+   * Private: set a single key, value metadata pair
+   * @param {string} key
+   * @param {string} value
+   */
+  this._setMetadataPair = function (key, value) {
+    metadata.parsed[key] = value;
+  };
+
+  /**
+   * Private: set metadata format
+   * @param {string} format
+   */
+  this._setMetadataFormat = function (format) {
+    metadata.format = format;
+  };
+
+  /**
+   * Private: set metadata raw text
+   * @param {string} raw
+   */
+  this._setMetadataRaw = function (raw) {
+    metadata.raw = raw;
   };
 };
 
@@ -21964,12 +22057,19 @@ showdown.subParser('blockQuotes', function (text, options, globals) {
 
   text = globals.converter._dispatch('blockQuotes.before', text, options, globals);
 
-  text = text.replace(/((^ {0,3}>[ \t]?.+\n(.+\n)*\n*)+)/gm, function (wholeMatch, m1) {
-    var bq = m1;
+  // add a couple extra lines after the text and endtext mark
+  text = text + '\n\n';
 
+  var rgx = /(^ {0,3}>[ \t]?.+\n(.+\n)*\n*)+/gm;
+
+  if (options.splitAdjacentBlockquotes) {
+    rgx = /^ {0,3}>[\s\S]*?(?:\n\n)/gm;
+  }
+
+  text = text.replace(rgx, function (bq) {
     // attacklab: hack around Konqueror 3.5.4 bug:
     // "----------bug".replace(/^-/g,"") == "bug"
-    bq = bq.replace(/^[ \t]*>[ \t]?/gm, '¨0'); // trim one level of quoting
+    bq = bq.replace(/^[ \t]*>[ \t]?/gm, ''); // trim one level of quoting
 
     // attacklab: clean up hack
     bq = bq.replace(/¨0/g, '');
@@ -22080,6 +22180,69 @@ showdown.subParser('codeSpans', function (text, options, globals) {
   );
 
   text = globals.converter._dispatch('codeSpans.after', text, options, globals);
+  return text;
+});
+
+/**
+ * Turn Markdown link shortcuts into XHTML <a> tags.
+ */
+showdown.subParser('completeHTMLDocument', function (text, options, globals) {
+  'use strict';
+
+  if (!options.completeHTMLDocument) {
+    return text;
+  }
+
+  text = globals.converter._dispatch('completeHTMLDocument.before', text, options, globals);
+
+  var doctype = 'html',
+      doctypeParsed = '<!DOCTYPE HTML>\n',
+      title = '',
+      charset = '<meta charset="utf-8">\n',
+      lang = '',
+      metadata = '';
+
+  if (typeof globals.metadata.parsed.doctype !== 'undefined') {
+    doctypeParsed = '<!DOCTYPE ' +  globals.metadata.parsed.doctype + '>\n';
+    doctype = globals.metadata.parsed.doctype.toString().toLowerCase();
+    if (doctype === 'html' || doctype === 'html5') {
+      charset = '<meta charset="utf-8">';
+    }
+  }
+
+  for (var meta in globals.metadata.parsed) {
+    if (globals.metadata.parsed.hasOwnProperty(meta)) {
+      switch (meta.toLowerCase()) {
+        case 'doctype':
+          break;
+
+        case 'title':
+          title = '<title>' +  globals.metadata.parsed.title + '</title>\n';
+          break;
+
+        case 'charset':
+          if (doctype === 'html' || doctype === 'html5') {
+            charset = '<meta charset="' + globals.metadata.parsed.charset + '">\n';
+          } else {
+            charset = '<meta name="charset" content="' + globals.metadata.parsed.charset + '">\n';
+          }
+          break;
+
+        case 'language':
+        case 'lang':
+          lang = ' lang="' + globals.metadata.parsed[meta] + '"';
+          metadata += '<meta name="' + meta + '" content="' + globals.metadata.parsed[meta] + '">\n';
+          break;
+
+        default:
+          metadata += '<meta name="' + meta + '" content="' + globals.metadata.parsed[meta] + '">\n';
+      }
+    }
+  }
+
+  text = doctypeParsed + '<html' + lang + '>\n<head>\n' + title + charset + metadata + '</head>\n<body>\n' + text.trim() + '\n</body>\n</html>';
+
+  text = globals.converter._dispatch('completeHTMLDocument.after', text, options, globals);
   return text;
 });
 
@@ -23056,6 +23219,56 @@ showdown.subParser('lists', function (text, options, globals) {
 });
 
 /**
+ * Parse metadata at the top of the document
+ */
+showdown.subParser('metadata', function (text, options, globals) {
+  'use strict';
+
+  if (!options.metadata) {
+    return text;
+  }
+
+  text = globals.converter._dispatch('metadata.before', text, options, globals);
+
+  function parseMetadataContents (content) {
+    // raw is raw so it's not changed in any way
+    globals.metadata.raw = content;
+
+    // escape chars forbidden in html attributes
+    // double quotes
+    content = content
+      // ampersand first
+      .replace(/&/g, '&amp;')
+      // double quotes
+      .replace(/"/g, '&quot;');
+
+    content = content.replace(/\n {4}/g, ' ');
+    content.replace(/^([\S ]+): +([\s\S]+?)$/gm, function (wm, key, value) {
+      globals.metadata.parsed[key] = value;
+      return '';
+    });
+  }
+
+  text = text.replace(/^\s*«««+(\S*?)\n([\s\S]+?)\n»»»+\n/, function (wholematch, format, content) {
+    parseMetadataContents(content);
+    return '¨M';
+  });
+
+  text = text.replace(/^\s*---+(\S*?)\n([\s\S]+?)\n---+\n/, function (wholematch, format, content) {
+    if (format) {
+      globals.metadata.format = format;
+    }
+    parseMetadataContents(content);
+    return '¨M';
+  });
+
+  text = text.replace(/¨M/g, '');
+
+  text = globals.converter._dispatch('metadata.after', text, options, globals);
+  return text;
+});
+
+/**
  * Remove one level of line-leading tabs or spaces
  */
 showdown.subParser('outdent', function (text, options, globals) {
@@ -23607,12 +23820,12 @@ var ReactMde = /** @class */ (function (_super) {
      */
     ReactMde.prototype.render = function () {
         var _this = this;
-        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps, showdownOptions = _a.showdownOptions, visibility = _a.visibility;
+        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps, showdownOptions = _a.showdownOptions, showdownFlavor = _a.showdownFlavor, visibility = _a.visibility, className = _a.className;
         var mergedVisibility = __assign({}, ReactMde.defaultProps.visibility, visibility);
-        return (React.createElement("div", { className: "react-mde" },
+        return (React.createElement("div", { className: "react-mde " + className },
             mergedVisibility.toolbar && React.createElement(ReactMdeToolbar_1.ReactMdeToolbar, { commands: commands, onCommand: this.handleCommand }),
             mergedVisibility.textarea && React.createElement(ReactMdeTextArea_1.ReactMdeTextArea, { onChange: this.handleValueChange, value: value, textAreaProps: textAreaProps, textAreaRef: function (c) { return _this.textArea = c; } }),
-            mergedVisibility.preview && React.createElement(ReactMdePreview_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; }, showdownOptions: showdownOptions, helpVisible: mergedVisibility.previewHelp })));
+            mergedVisibility.preview && React.createElement(ReactMdePreview_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; }, showdownFlavor: showdownFlavor, showdownOptions: showdownOptions, helpVisible: mergedVisibility.previewHelp })));
     };
     ReactMde.defaultProps = {
         visibility: {
@@ -23641,12 +23854,6 @@ exports.ReactMde = ReactMde;
 
 /***/ }),
 /* 47 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 48 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
