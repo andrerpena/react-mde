@@ -1,7 +1,7 @@
 import * as React from "react";
-import { MarkdownHelp } from "./components/MarkdownHelp";
+import {MarkdownHelp} from "./components/MarkdownHelp";
 import * as Showdown from "showdown";
-import { ShowdownFlavor } from "./types/ShowdownFlavor";
+import {ShowdownFlavor} from "./types";
 
 export interface ReactMdePreviewProps {
     previewRef?: (ref: HTMLDivElement) => void;
@@ -9,6 +9,7 @@ export interface ReactMdePreviewProps {
     showdownOptions?: any;
     markdown: string;
     helpVisible: boolean;
+    processHtml?: (html: string) => string;
 }
 
 export interface ReactMdePreviewState {
@@ -39,13 +40,15 @@ export class ReactMdePreview extends React.Component<ReactMdePreviewProps, React
     }
 
     render() {
-        const {markdown, previewRef, helpVisible} = this.props;
+        const {markdown, previewRef, helpVisible, processHtml} = this.props;
         const html = this.converter.makeHtml(markdown) || "<p>&nbsp</p>";
+        const processedHtml = processHtml ? processHtml(html) : html;
+
         return (
             <div className="mde-preview">
                 <div
                     className="mde-preview-content"
-                    dangerouslySetInnerHTML={{__html: html}}
+                    dangerouslySetInnerHTML={{__html: processedHtml}}
                     ref={(p) => {
                         this.preview = p;
                         if (previewRef) {

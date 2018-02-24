@@ -1380,10 +1380,11 @@ var ReactMdePreview = /** @class */ (function (_super) {
     }
     ReactMdePreview.prototype.render = function () {
         var _this = this;
-        var _a = this.props, markdown = _a.markdown, previewRef = _a.previewRef, helpVisible = _a.helpVisible;
+        var _a = this.props, markdown = _a.markdown, previewRef = _a.previewRef, helpVisible = _a.helpVisible, processHtml = _a.processHtml;
         var html = this.converter.makeHtml(markdown) || "<p>&nbsp</p>";
+        var processedHtml = processHtml ? processHtml(html) : html;
         return (React.createElement("div", { className: "mde-preview" },
-            React.createElement("div", { className: "mde-preview-content", dangerouslySetInnerHTML: { __html: html }, ref: function (p) {
+            React.createElement("div", { className: "mde-preview-content", dangerouslySetInnerHTML: { __html: processedHtml }, ref: function (p) {
                     _this.preview = p;
                     if (previewRef) {
                         previewRef(p);
@@ -23820,12 +23821,12 @@ var ReactMde = /** @class */ (function (_super) {
      */
     ReactMde.prototype.render = function () {
         var _this = this;
-        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps, showdownOptions = _a.showdownOptions, showdownFlavor = _a.showdownFlavor, visibility = _a.visibility, className = _a.className;
+        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps, showdownOptions = _a.showdownOptions, showdownFlavor = _a.showdownFlavor, visibility = _a.visibility, className = _a.className, processHtml = _a.processHtml;
         var mergedVisibility = __assign({}, ReactMde.defaultProps.visibility, visibility);
         return (React.createElement("div", { className: "react-mde " + className },
             mergedVisibility.toolbar && React.createElement(ReactMdeToolbar_1.ReactMdeToolbar, { commands: commands, onCommand: this.handleCommand }),
             mergedVisibility.textarea && React.createElement(ReactMdeTextArea_1.ReactMdeTextArea, { onChange: this.handleValueChange, value: value, textAreaProps: textAreaProps, textAreaRef: function (c) { return _this.textArea = c; } }),
-            mergedVisibility.preview && React.createElement(ReactMdePreview_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; }, showdownFlavor: showdownFlavor, showdownOptions: showdownOptions, helpVisible: mergedVisibility.previewHelp })));
+            mergedVisibility.preview && React.createElement(ReactMdePreview_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; }, showdownFlavor: showdownFlavor, showdownOptions: showdownOptions, helpVisible: mergedVisibility.previewHelp, processHtml: processHtml })));
     };
     ReactMde.defaultProps = {
         visibility: {

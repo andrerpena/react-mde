@@ -24,6 +24,7 @@ export interface ReactMdeProps {
     showdownOptions?: any;
     visibility?: ReactMdeVisibility;
     className?: string;
+    processHtml?: (html: string) => string;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
@@ -78,6 +79,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             showdownFlavor,
             visibility,
             className,
+            processHtml,
         } = this.props;
 
         const mergedVisibility = {...ReactMde.defaultProps.visibility, ...visibility};
@@ -100,6 +102,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                     showdownFlavor={showdownFlavor}
                     showdownOptions={showdownOptions}
                     helpVisible={mergedVisibility.previewHelp}
+                    processHtml={processHtml}
                 />}
             </div>
         );
