@@ -24,7 +24,7 @@ A simple yet powerful and extensible Markdown Editor editor for React, inspired 
 - Showdown - For rendering the markdown preview
 
 `React-mde` used Font Awesome 4.7.* as an NPM dependency before 3.*. Now Font Awesome needs
-to be installed separately using your preferred method. The easiest is just add this to `<head/>`:
+to be installed separately [using your preferred method](https://fontawesome.com/how-to-use/svg-with-js). The easiest is just add this to `<head/>`:
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
  
