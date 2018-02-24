@@ -3,11 +3,10 @@ import * as React from "react";
 import {
     getSelection,
 } from "./helpers/ReactMdeSelectionHelper";
-import { Command, CommandSet, Value } from "./types";
+import { Command, CommandSet, Value, ShowdownFlavor } from "./types";
 import { ReactMdeToolbar } from "./ReactMdeToolbar";
 import { ReactMdeTextArea } from "./ReactMdeTextArea";
 import { ReactMdePreview } from "./ReactMdePreview";
-import { ShowdownFlavor } from "./types/ShowdownFlavor";
 
 export interface ReactMdeVisibility {
     toolbar?: boolean;

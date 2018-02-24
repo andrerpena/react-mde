@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import * as express from "express";
-import * as colors from "colors";
 import * as webpackMiddleware from "webpack-dev-middleware";
 import * as webpackHotMiddleware from "webpack-hot-middleware";
 import * as webpack from "webpack";
@@ -24,6 +23,6 @@ app.use((req, res) => res.status(200).send(require("./index.html")));
 app.listen(port, "0.0.0.0", () => {
     const demoUrl = `http://localhost:${port}/`;
     // tslint:disable-next-line
-    console.log(colors.green(`${packageJson.name} at ${demoUrl}`));
+    console.log(`${packageJson.name} at ${demoUrl}`);
     opn(demoUrl);
 });

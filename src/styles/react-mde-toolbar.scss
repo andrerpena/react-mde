@@ -21,9 +21,7 @@
                 margin: 0;
                 border: none;
                 background: none;
-                .fa {
-                    color: $mde-button-color;
-                }
+                color: $mde-button-color;
                 @keyframes tooltip-appear {
                     from {
                         opacity: 0;

@@ -11,7 +11,7 @@ export const HeaderItem: React.SFC<HeaderItemProps> = (props) => {
     const {icon, tooltip, onClick} = props;
 
     // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
-    const iconElement = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"/>;
+    const iconElement = React.isValidElement(icon) ? icon : <i className={`fas fa-${icon}`} aria-hidden="true"/>;
 
     let buttonProps = {};
 
