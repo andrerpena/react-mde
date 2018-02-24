@@ -20,11 +20,24 @@ A simple yet powerful and extensible Markdown Editor editor for React, inspired 
 
 `React-mde` currently depends on:
 
-- Font Awesome - For the icons (this dependency will be removed soon)
+- Font Awesome - For the icons
 - Showdown - For rendering the markdown preview
- 
-So...
 
+`React-mde` used Font Awesome 4.7.* as an NPM dependency before 3.*. Now Font Awesome needs
+to be installed separately using your preferred method. The easiest is just add this to `<head/>`:
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+ 
+You also need NPM packages.
+
+
+
+For `React-mde` 3.*:
+
+    npm install --save showdown
+    
+For `React-mde` 2.*: (this will install Font Awesome 4.7.*)
+    
     npm install --save showdown font-awesome
 
 ## Using
@@ -67,10 +80,20 @@ If you want to have a more granular control over the styles, you can import each
     
 If you're using SASS, you can override these variables: https://github.com/andrerpena/react-mde/blob/master/src/styles/variables.scss
 
-You still have to import `font-awesome` while we don't embed the icons for the toolbar commands, `normalize` is optional:
+You also need Font Awesome for the toolbar icons. `React-mde` 3.* uses Font Awesome 5.*. `React-mde` 2.* uses Font Awesome 4.*.
 
-    import '../node_modules/normalize.css/normalize.css';
+Font Awesome 5 [can be installed in different ways](https://fontawesome.com/how-to-use/svg-with-js), but the easiest is just adding this to the `<head/>`:
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+If you're using `React-mde` 2.*, Font Awesome 4.* is required. After installing the NPM, 
+import it in your JavaScript or TypeScript like this:
+
     import '../node_modules/font-awesome/css/font-awesome.css';
+    
+Normalize is optional but it's used in the Demo.
+    
+    import '../node_modules/normalize.css/normalize.css';
     
     
 ## Commands
@@ -172,8 +195,18 @@ leveraging the internal components you'd like and laying them out in the way you
     // The ReactMde.ReactMdeToolbar component
     // The ReactMde.ReactMdeTextArea component
     // The ReactMde.ReactMdePreview component
+    
+    
+# Migrating
 
-## Migrating from 1.* to 2.*
+## From 2.* to 3.*
+
+Font Awesome 5 is now used, and it's not a NPM peer dependency anymore. 
+It's up to you how to install it, it [can be installed in different ways](https://fontawesome.com/how-to-use/svg-with-js), but the easiest is just adding this to the `<head/>`:
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+## From 1.* to 2.*
 
 2.* is a major refactoring of the code to improve composability
 
@@ -194,7 +227,7 @@ How to upgrade an existing 1.* JavaScript project: https://github.com/andrerpena
 
 How to upgrade an existing 1.* TypeScript project: https://github.com/andrerpena/react-mde-ts-demo/commit/d6718305c0132649cabca432e1e9415ea06cd643
 
-## Migrating from 0.* to 1.*
+## From 0.* to 1.*
 
 Major differences:
 
