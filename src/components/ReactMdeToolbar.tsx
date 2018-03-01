@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Command, CommandSet } from "./types";
-import { HeaderGroup } from "./components/HeaderGroup";
-import { HeaderItemDropdown } from "./components/HeaderItemDropdown";
-import { HeaderItem } from "./components/HeaderItem";
+import { Command, CommandSet } from "../types/index";
+import { HeaderGroup } from "./HeaderGroup";
+import { HeaderItemDropdown } from "./HeaderItemDropdown";
+import { HeaderItem } from "./HeaderItem";
 
 export interface ReactMdeToolbarProps {
     commands: Array<Array<Command | CommandSet>>;

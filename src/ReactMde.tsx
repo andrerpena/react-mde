@@ -4,9 +4,9 @@ import {
     getSelection,
 } from "./helpers/ReactMdeSelectionHelper";
 import { Command, CommandSet, Value, ShowdownFlavor } from "./types";
-import { ReactMdeToolbar } from "./ReactMdeToolbar";
-import { ReactMdeTextArea } from "./ReactMdeTextArea";
-import { ReactMdePreview } from "./ReactMdePreview";
+import { ReactMdeToolbar } from "./components/ReactMdeToolbar";
+import { ReactMdeTextArea } from "./components/ReactMdeTextArea";
+import { ReactMdePreview } from "./components/ReactMdePreview";
 
 export interface ReactMdeVisibility {
     toolbar?: boolean;

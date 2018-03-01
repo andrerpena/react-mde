@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Value } from "./types";
-import { setSelection } from "./helpers/ReactMdeSelectionHelper";
+import { Value } from "../types/index";
+import { setSelection } from "../helpers/ReactMdeSelectionHelper";
 
 export interface ReactMdeTextAreaProps {
     onChange: (value: Value) => void;

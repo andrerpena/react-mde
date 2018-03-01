@@ -16,7 +16,7 @@ import {
     makeHeader,
     makeACommandThatInsertsBeforeAndAfter,
 } from "./helpers/ReactMdeCommandHelper";
-import { Command, CommandSet, TextSelection } from "./types/";
+import { Command, CommandSet, TextSelection } from "./types/index";
 
 export const makeHeaderCommand: CommandSet = {
     type: "dropdown",
