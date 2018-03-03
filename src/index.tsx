@@ -1,13 +1,9 @@
-import * as ReactMdeCommands from "./ReactMdeCommands";
+import * as ReactMdeComponents from "./components";
+import * as ReactMdeCommands from "./commands";
 import * as ReactMdeCommandHelper from "./helpers/ReactMdeCommandHelper";
 import * as ReactMdeSelectionHelper from "./helpers/ReactMdeSelectionHelper";
 import * as ReactMdeTextHelper from "./helpers/ReactMdeTextHelper";
 import * as ReactMdeTypes from "./types";
-
-import { ReactMdeToolbar, ReactMdeToolbarProps } from "./components/ReactMdeToolbar";
-import { ReactMdePreview, ReactMdePreviewProps } from "./components/ReactMdePreview";
-import { ReactMdeTextArea, ReactMdeTextAreaProps } from "./components/ReactMdeTextArea";
-
 import { ReactMde, ReactMdeProps, ReactMdeVisibility } from "./ReactMde";
 
 export {
@@ -16,15 +12,7 @@ export {
     ReactMdeSelectionHelper,
     ReactMdeTextHelper,
     ReactMdeTypes,
-    // Toolbar
-    ReactMdeToolbarProps,
-    ReactMdeToolbar,
-    // TextArea
-    ReactMdeTextArea,
-    ReactMdeTextAreaProps,
-    // Preview
-    ReactMdePreview,
-    ReactMdePreviewProps,
+    ReactMdeComponents,
     // ReactMde
     ReactMde,
     ReactMdeProps,

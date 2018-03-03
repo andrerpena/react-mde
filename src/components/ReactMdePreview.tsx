@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MarkdownHelp} from "./MarkdownHelp";
 import * as Showdown from "showdown";
-import {ShowdownFlavor} from "../types/index";
+import {ShowdownFlavor} from "../types";
 
 export interface ReactMdePreviewProps {
     previewRef?: (ref: HTMLDivElement) => void;
