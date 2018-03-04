@@ -27,7 +27,14 @@ export class ReactMdeTextArea extends React.Component<ReactMdeTextAreaProps, Rea
      */
     handleValueChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
         const {onChange} = this.props;
-        onChange({text: e.currentTarget.value});
+        onChange({
+            text: e.currentTarget.value,
+            scrollTop: e.currentTarget.scrollTop,
+            selection: { 
+                start: e.currentTarget.selectionStart, 
+                end: e.currentTarget.selectionEnd 
+            }
+        });
     }
 
     componentDidUpdate() {

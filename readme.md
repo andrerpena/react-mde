@@ -4,13 +4,13 @@ A simple yet powerful and extensible Markdown Editor editor for React, inspired 
 
 ![image](https://github.com/andrerpena/react-mde/blob/master/assets/react-mde.png)
 
-## Demo
+## Demos
 
-**Live** [demo](http://andrerpena.me/react-mde).
+Demos are provided through https://codesandbox.io. Feel free to fork and play with different options :smile:.
 
-**JavaScript** demo project: https://github.com/andrerpena/react-mde-js-demo
+[React-mde 3.* - JavaScript - Basic Demo](https://codesandbox.io/s/mz1945q5my)
 
-**TypeScript** demo project: https://github.com/andrerpena/react-mde-ts-demo
+[React-mde 3.* - TypeScript - Basic Demo](https://codesandbox.io/s/z1zv6py3)
 
 ## Installing
 
@@ -42,16 +42,14 @@ For `React-mde` 2.*: (this will install Font Awesome 4.7.*)
 
 ## Using
 
-React-mde is a completely controlled component. 
+React-mde is a completely controlled component. You can experiment with the props below
+forking the [Codesandbox demos](https://github.com/andrerpena/react-mde#demos)
 
-**Example of usage in JavaScript:**: https://github.com/andrerpena/react-mde-js-demo/blob/master/src/App.js
-    
-**Example of usage in TypeScript**: https://github.com/andrerpena/react-mde-ts-demo/blob/master/src/App.tsx
+**Props**:
 
-Props:
-
-- **value**: The current value. This property should look like `{text: "", selection: {start:0, end:2}` where `text` is the text and `selection` is
-an object containing `start` and `end` representing what should be selected. Passing null to `selection` is perfectly fine.
+- **value**: The current value. An object with this structure `{text: "", selection?: {start:0, end:2}, scrollTop?: number }` 
+where `text` is the text and `selection` is an object containing `start` and `end` representing what should be selected.
+Passing null to `selection` is perfectly fine.
 - **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
 - **commands**: An array of array of command objects (`[[cmd1, cmd2],[cmd3, cmd4]]`). The first array represents groups,
  the second represents commands inside that group. For an example, refer to how the `getDefaultCommands()` [is implemented](https://github.com/andrerpena/react-mde/blob/master/src/ReactMdeCommands.tsx#L178). How to create custom commands is explained below.
@@ -82,13 +80,13 @@ If you want to have a more granular control over the styles, you can import each
     
 If you're using SASS, you can override these variables: https://github.com/andrerpena/react-mde/blob/master/src/styles/variables.scss
 
-You also need Font Awesome for the toolbar icons. `React-mde` 3.* uses Font Awesome 5.*. `React-mde` 2.* uses Font Awesome 4.*.
+You also need Font Awesome for the toolbar icons. `React-mde` 3.* uses Font Awesome 5.\*. `React-mde` 2.\* uses Font Awesome 4.*.
 
 Font Awesome 5 [can be installed in different ways](https://fontawesome.com/how-to-use/svg-with-js), but the easiest is just adding this to the `<head/>`:
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
-If you're using `React-mde` 2.*, Font Awesome 4.* is required. After installing the NPM, 
+If you're using `React-mde` 2.\*, Font Awesome 4.\* is required. After installing the NPM, 
 import it in your JavaScript or TypeScript like this:
 
     import '../node_modules/font-awesome/css/font-awesome.css';
