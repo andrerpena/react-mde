@@ -4,6 +4,7 @@ import { SubCommand } from "../types";
 
 export interface HeaderItemDropdownProps {
     icon: React.ReactNode;
+    tooltip?: string;
     commands: SubCommand[];
     onCommand: (command: SubCommand) => void;
 }
@@ -70,7 +71,7 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
     }
 
     render() {
-        const {icon, commands} = this.props;
+        const {icon, commands, tooltip} = this.props;
         const {open} = this.state;
 
         // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
@@ -95,10 +96,19 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
             )
             : null;
 
+        let buttonProps = {};
+        if (tooltip) {
+            buttonProps = {
+                "aria-label": tooltip,
+                "className": "tooltipped",
+            };
+        }
+
         return (
             <li className="mde-header-item">
                 <button
                     type="button"
+                    {...buttonProps} 
                     ref={(ref) => {
                         this.dropdownOpener = ref;
                     }}

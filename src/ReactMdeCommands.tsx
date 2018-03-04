@@ -20,6 +20,8 @@ import { Command, CommandSet, TextSelection } from "./types/";
 
 export const makeHeaderCommand: CommandSet = {
     type: "dropdown",
+    tooltip:
+        "Add header",
     icon: "heading",
     subCommands: [
         {
