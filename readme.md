@@ -8,9 +8,9 @@ A simple yet powerful and extensible Markdown Editor editor for React, inspired 
 
 Demos are provided through https://codesandbox.io. Feel free to fork and play with different options :smile:.
 
-(React-mde 3.* - JavaScript - Basic Demo)[https://codesandbox.io/s/mz1945q5my]
+[React-mde 3.* - JavaScript - Basic Demo](https://codesandbox.io/s/mz1945q5my)
 
-(React-mde 3.* - JavaScript - Basic Demo)[https://codesandbox.io/s/z1zv6py3]
+[React-mde 3.* - TypeScript - Basic Demo](https://codesandbox.io/s/z1zv6py3)
 
 ## Installing
 
