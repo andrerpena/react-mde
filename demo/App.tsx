@@ -30,7 +30,6 @@ export class App extends React.Component<{}, AppState> {
                     value={this.state.reactMdeValue}
                     onChange={this.handleValueChange}
                     showdownOptions={{tables: true, simplifiedAutoLink: true}}
-
                 />
             </div>
         );

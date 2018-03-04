@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/react-mde/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 20);
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,9 +71,9 @@
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(22);
+  module.exports = __webpack_require__(25);
 } else {
-  module.exports = __webpack_require__(23);
+  module.exports = __webpack_require__(26);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -274,6 +274,78 @@ process.umask = function() { return 0; };
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeTextHelper_1 = __webpack_require__(4);
+/**
+ * Helper for creating commands that make lists
+ * @export
+ * @param {any} text
+ * @param {any} selection
+ * @param {any} insertionBeforeEachLine
+ * @returns
+ */
+function makeList(text, selection, insertionBeforeEachLine) {
+    var textInsertion;
+    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
+    // insert breaks before, if needed
+    textInsertion = ReactMdeTextHelper_1.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
+    // insert breaks after, if needed
+    textInsertion = ReactMdeTextHelper_1.insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
+    // inserts 'insertionBeforeEachLine' before each line
+    textInsertion = ReactMdeTextHelper_1.insertBeforeEachLine(text, insertionBeforeEachLine, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
+    return {
+        text: text,
+        selection: selection,
+    };
+}
+exports.makeList = makeList;
+/**
+ * Helper for creating a command that makes a header
+ * @param {any} text
+ * @param {any} selection
+ * @param {any} insertionBefore
+ * @returns
+ */
+function makeHeader(text, selection, insertionBefore) {
+    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
+    // the user is selecting a word section
+    var insertionText = ReactMdeTextHelper_1.insertBefore(text, insertionBefore, selection, false);
+    var newText = insertionText.newText;
+    var newSelection = insertionText.newSelection;
+    return {
+        text: newText,
+        selection: newSelection,
+    };
+}
+exports.makeHeader = makeHeader;
+function makeACommandThatInsertsBeforeAndAfter(text, selection, insertion) {
+    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
+    // the user is selecting a word section
+    var _a = ReactMdeTextHelper_1.insertText(text, insertion, selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
+    var finalText = ReactMdeTextHelper_1.insertText(newText, insertion, selection.end + insertionLength).newText;
+    return {
+        text: finalText,
+        selection: {
+            start: selection.start + insertionLength,
+            end: selection.end + insertionLength,
+        },
+    };
+}
+exports.makeACommandThatInsertsBeforeAndAfter = makeACommandThatInsertsBeforeAndAfter;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -311,257 +383,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
-
-/* eslint-disable no-unused-vars */
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-function shouldUseNative() {
-	try {
-		if (!Object.assign) {
-			return false;
-		}
-
-		// Detect buggy property enumeration order in older V8 versions.
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-		test1[5] = 'de';
-		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test2 = {};
-		for (var i = 0; i < 10; i++) {
-			test2['_' + String.fromCharCode(i)] = i;
-		}
-		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-			return test2[n];
-		});
-		if (order2.join('') !== '0123456789') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test3 = {};
-		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-			test3[letter] = letter;
-		});
-		if (Object.keys(Object.assign({}, test3)).join('') !==
-				'abcdefghijklmnopqrst') {
-			return false;
-		}
-
-		return true;
-	} catch (err) {
-		// We don't expect any of the above to throw, but better to be safe.
-		return false;
-	}
-}
-
-module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-	var from;
-	var to = toObject(target);
-	var symbols;
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = Object(arguments[s]);
-
-		for (var key in from) {
-			if (hasOwnProperty.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
-
-		if (getOwnPropertySymbols) {
-			symbols = getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
-				if (propIsEnumerable.call(from, symbols[i])) {
-					to[symbols[i]] = from[symbols[i]];
-				}
-			}
-		}
-	}
-
-	return to;
-};
-
-
-/***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var emptyObject = {};
-
-if (process.env.NODE_ENV !== 'production') {
-  Object.freeze(emptyObject);
-}
-
-module.exports = emptyObject;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var validateFormat = function validateFormat(format) {};
-
-if (process.env.NODE_ENV !== 'production') {
-  validateFormat = function validateFormat(format) {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  };
-}
-
-function invariant(condition, format, a, b, c, d, e, f) {
-  validateFormat(format);
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-}
-
-module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var emptyFunction = __webpack_require__(2);
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var warning = emptyFunction;
-
-if (process.env.NODE_ENV !== 'production') {
-  var printWarning = function printWarning(format) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    var argIndex = 0;
-    var message = 'Warning: ' + format.replace(/%s/g, function () {
-      return args[argIndex++];
-    });
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-
-  warning = function warning(condition, format) {
-    if (format === undefined) {
-      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-    }
-
-    if (format.indexOf('Failed Composite propType: ') === 0) {
-      return; // Ignore CompositeComponent proptype check.
-    }
-
-    if (!condition) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        args[_key2 - 2] = arguments[_key2];
-      }
-
-      printWarning.apply(undefined, [format].concat(args));
-    }
-  };
-}
-
-module.exports = warning;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -830,7 +652,257 @@ exports.selectCurrentWordIfCaretIsInsideOne = selectCurrentWordIfCaretIsInsideOn
 
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var emptyObject = {};
+
+if (process.env.NODE_ENV !== 'production') {
+  Object.freeze(emptyObject);
+}
+
+module.exports = emptyObject;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var validateFormat = function validateFormat(format) {};
+
+if (process.env.NODE_ENV !== 'production') {
+  validateFormat = function validateFormat(format) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  };
+}
+
+function invariant(condition, format, a, b, c, d, e, f) {
+  validateFormat(format);
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(format.replace(/%s/g, function () {
+        return args[argIndex++];
+      }));
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+}
+
+module.exports = invariant;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
 /* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var emptyFunction = __webpack_require__(3);
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var warning = emptyFunction;
+
+if (process.env.NODE_ENV !== 'production') {
+  var printWarning = function printWarning(format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  warning = function warning(condition, format) {
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+
+    if (format.indexOf('Failed Composite propType: ') === 0) {
+      return; // Ignore CompositeComponent proptype check.
+    }
+
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+module.exports = warning;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -871,7 +943,7 @@ exports.setSelection = setSelection;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -885,9 +957,9 @@ exports.setSelection = setSelection;
 
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(5);
-  var warning = __webpack_require__(6);
-  var ReactPropTypesSecret = __webpack_require__(24);
+  var invariant = __webpack_require__(7);
+  var warning = __webpack_require__(8);
+  var ReactPropTypesSecret = __webpack_require__(27);
   var loggedTypeFailures = {};
 }
 
@@ -938,7 +1010,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -977,7 +1049,7 @@ var ExecutionEnvironment = {
 module.exports = ExecutionEnvironment;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -992,7 +1064,7 @@ module.exports = ExecutionEnvironment;
  * @typechecks
  */
 
-var emptyFunction = __webpack_require__(2);
+var emptyFunction = __webpack_require__(3);
 
 /**
  * Upstream version of event listener. Does not take into account specific
@@ -1058,7 +1130,7 @@ module.exports = EventListener;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1100,7 +1172,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1171,7 +1243,7 @@ function shallowEqual(objA, objB) {
 module.exports = shallowEqual;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1186,7 +1258,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(27);
+var isTextNode = __webpack_require__(30);
 
 /*eslint-disable no-bitwise */
 
@@ -1214,7 +1286,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1244,165 +1316,7 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ReactMdeTextHelper_1 = __webpack_require__(7);
-/**
- * Helper for creating commands that make lists
- * @export
- * @param {any} text
- * @param {any} selection
- * @param {any} insertionBeforeEachLine
- * @returns
- */
-function makeList(text, selection, insertionBeforeEachLine) {
-    var textInsertion;
-    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
-    // insert breaks before, if needed
-    textInsertion = ReactMdeTextHelper_1.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
-    text = textInsertion.newText;
-    selection = textInsertion.newSelection;
-    // insert breaks after, if needed
-    textInsertion = ReactMdeTextHelper_1.insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
-    text = textInsertion.newText;
-    selection = textInsertion.newSelection;
-    // inserts 'insertionBeforeEachLine' before each line
-    textInsertion = ReactMdeTextHelper_1.insertBeforeEachLine(text, insertionBeforeEachLine, selection);
-    text = textInsertion.newText;
-    selection = textInsertion.newSelection;
-    return {
-        text: text,
-        selection: selection,
-    };
-}
-exports.makeList = makeList;
-/**
- * Helper for creating a command that makes a header
- * @param {any} text
- * @param {any} selection
- * @param {any} insertionBefore
- * @returns
- */
-function makeHeader(text, selection, insertionBefore) {
-    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
-    // the user is selecting a word section
-    var insertionText = ReactMdeTextHelper_1.insertBefore(text, insertionBefore, selection, false);
-    var newText = insertionText.newText;
-    var newSelection = insertionText.newSelection;
-    return {
-        text: newText,
-        selection: newSelection,
-    };
-}
-exports.makeHeader = makeHeader;
-function makeACommandThatInsertsBeforeAndAfter(text, selection, insertion) {
-    selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
-    // the user is selecting a word section
-    var _a = ReactMdeTextHelper_1.insertText(text, insertion, selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
-    var finalText = ReactMdeTextHelper_1.insertText(newText, insertion, selection.end + insertionLength).newText;
-    return {
-        text: finalText,
-        selection: {
-            start: selection.start + insertionLength,
-            end: selection.end + insertionLength,
-        },
-    };
-}
-exports.makeACommandThatInsertsBeforeAndAfter = makeACommandThatInsertsBeforeAndAfter;
-
-
-/***/ }),
 /* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var HeaderGroup_1 = __webpack_require__(38);
-var HeaderItemDropdown_1 = __webpack_require__(39);
-var HeaderItem_1 = __webpack_require__(41);
-exports.ReactMdeToolbar = function (_a) {
-    var commands = _a.commands, onCommand = _a.onCommand;
-    if (!commands || commands.length === 0) {
-        return null;
-    }
-    return (React.createElement("div", { className: "mde-header" }, commands.map(function (cg, i) { return (React.createElement(HeaderGroup_1.HeaderGroup, { key: i }, cg.map(function (c, j) {
-        if (c.type === "dropdown") {
-            return (React.createElement(HeaderItemDropdown_1.HeaderItemDropdown, { key: j, icon: c.icon, commands: c.subCommands, onCommand: function (cmd) { return onCommand(cmd); } }));
-        }
-        return React.createElement(HeaderItem_1.HeaderItem, { key: j, icon: c.icon, tooltip: c.tooltip, onClick: function () { return onCommand(c); } });
-    }))); })));
-};
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var MarkdownHelp_1 = __webpack_require__(42);
-var Showdown = __webpack_require__(43);
-var ReactMdePreview = /** @class */ (function (_super) {
-    __extends(ReactMdePreview, _super);
-    function ReactMdePreview(props) {
-        var _this = _super.call(this, props) || this;
-        var showdownFlavor = props.showdownFlavor, showdownOptions = props.showdownOptions;
-        _this.converter = new Showdown.Converter();
-        if (showdownFlavor) {
-            _this.converter.setFlavor(showdownFlavor);
-        }
-        if (showdownOptions) {
-            for (var option in showdownOptions) {
-                if (showdownOptions.hasOwnProperty(option)) {
-                    _this.converter.setOption(option, showdownOptions[option]);
-                }
-            }
-        }
-        return _this;
-    }
-    ReactMdePreview.prototype.render = function () {
-        var _this = this;
-        var _a = this.props, markdown = _a.markdown, previewRef = _a.previewRef, helpVisible = _a.helpVisible, processHtml = _a.processHtml;
-        var html = this.converter.makeHtml(markdown) || "<p>&nbsp</p>";
-        var processedHtml = processHtml ? processHtml(html) : html;
-        return (React.createElement("div", { className: "mde-preview" },
-            React.createElement("div", { className: "mde-preview-content", dangerouslySetInnerHTML: { __html: processedHtml }, ref: function (p) {
-                    _this.preview = p;
-                    if (previewRef) {
-                        previewRef(p);
-                    }
-                } }),
-            helpVisible && React.createElement("div", { className: "mde-help" },
-                React.createElement(MarkdownHelp_1.MarkdownHelp, null))));
-    };
-    ReactMdePreview.defaultProps = {
-        helpVisible: true,
-    };
-    return ReactMdePreview;
-}(React.Component));
-exports.ReactMdePreview = ReactMdePreview;
-
-
-/***/ }),
-/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1427,63 +1341,163 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var ReactMdeSelectionHelper_1 = __webpack_require__(8);
-var ReactMdeTextArea = /** @class */ (function (_super) {
-    __extends(ReactMdeTextArea, _super);
-    function ReactMdeTextArea() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        /**
-         * Handler for the textArea value change
-         * @param {any} e
-         * @memberOf ReactMde
-         */
-        _this.handleValueChange = function (e) {
-            var onChange = _this.props.onChange;
-            onChange({
-                text: e.currentTarget.value,
-                scrollTop: e.currentTarget.scrollTop,
-                selection: {
-                    start: e.currentTarget.selectionStart,
-                    end: e.currentTarget.selectionEnd
-                }
-            });
-        };
-        return _this;
+var commands_1 = __webpack_require__(39);
+var LayoutMap_1 = __webpack_require__(49);
+var ReactMde = /** @class */ (function (_super) {
+    __extends(ReactMde, _super);
+    function ReactMde() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    ReactMdeTextArea.prototype.componentDidUpdate = function () {
-        var _a = this.props.value, selection = _a.selection, scrollTop = _a.scrollTop;
-        if (selection) {
-            ReactMdeSelectionHelper_1.setSelection(this.textArea, selection.start, selection.end);
-        }
-        if (scrollTop !== null && scrollTop !== undefined) {
-            // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
-            this.textArea.scrollTop = scrollTop;
-        }
+    ReactMde.prototype.render = function () {
+        var Layout = LayoutMap_1.layoutMap[this.props.layout];
+        return React.createElement(Layout, __assign({}, this.props));
     };
-    ReactMdeTextArea.prototype.render = function () {
-        var _this = this;
-        var _a = this.props, text = _a.value.text, textAreaProps = _a.textAreaProps, textAreaRef = _a.textAreaRef;
-        return (React.createElement("div", { className: "mde-text" },
-            React.createElement("textarea", __assign({ onChange: this.handleValueChange, value: text, ref: function (c) {
-                    _this.textArea = c;
-                    if (textAreaRef) {
-                        textAreaRef(c);
-                    }
-                } }, textAreaProps))));
+    ReactMde.defaultProps = {
+        visibility: {
+            toolbar: true,
+            textarea: true,
+            preview: true,
+            previewHelp: true,
+        },
+        commands: commands_1.getDefaultCommands(),
+        layout: "vertical"
     };
-    ReactMdeTextArea.defaultProps = {
-        textAreaProps: {},
-    };
-    return ReactMdeTextArea;
+    return ReactMde;
 }(React.Component));
-exports.ReactMdeTextArea = ReactMdeTextArea;
+exports.ReactMde = ReactMde;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+exports.HeaderGroup = function (props) {
+    return (React.createElement("ul", { className: "mde-header-group" }, props.children));
+};
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+exports.HeaderItem = function (props) {
+    var icon = props.icon, tooltip = props.tooltip, onClick = props.onClick;
+    // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
+    var iconElement = React.isValidElement(icon) ? icon : React.createElement("i", { className: "fas fa-" + icon, "aria-hidden": "true" });
+    var buttonProps = {};
+    if (tooltip) {
+        buttonProps = {
+            "aria-label": tooltip,
+            "className": "tooltipped",
+        };
+    }
+    return (React.createElement("li", { className: "mde-header-item" },
+        React.createElement("button", __assign({ type: "button" }, buttonProps, { onClick: onClick }), iconElement)));
+};
 
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(21);
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var HeaderItemDropdownItem_1 = __webpack_require__(21);
+var HeaderItemDropdown = /** @class */ (function (_super) {
+    __extends(HeaderItemDropdown, _super);
+    function HeaderItemDropdown(props) {
+        var _this = _super.call(this, props) || this;
+        _this.handleGlobalClick = function (e) {
+            if (_this.clickedOutside(e)) {
+                _this.closeDropdown();
+            }
+        };
+        _this.openDropdown = function () {
+            _this.setState({
+                open: true,
+            });
+        };
+        _this.clickedOutside = function (e) {
+            var target = e.target;
+            return _this.state.open
+                && _this.dropdown
+                && _this.dropdownOpener
+                && !_this.dropdown.contains(target)
+                && !_this.dropdownOpener.contains(target);
+        };
+        _this.handleOnClickCommand = function (e, command) {
+            var onCommand = _this.props.onCommand;
+            onCommand(command);
+            _this.closeDropdown();
+        };
+        _this.handleOpenDropdown = function () {
+            _this.openDropdown();
+        };
+        _this.state = {
+            open: false,
+        };
+        return _this;
+    }
+    HeaderItemDropdown.prototype.componentDidMount = function () {
+        document.addEventListener("click", this.handleGlobalClick, false);
+    };
+    HeaderItemDropdown.prototype.componentWillUnmount = function () {
+        document.removeEventListener("click", this.handleGlobalClick, false);
+    };
+    HeaderItemDropdown.prototype.closeDropdown = function () {
+        this.setState({
+            open: false,
+        });
+    };
+    HeaderItemDropdown.prototype.render = function () {
+        var _this = this;
+        var _a = this.props, icon = _a.icon, commands = _a.commands;
+        var open = this.state.open;
+        // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
+        var iconElement = React.isValidElement(icon) ? icon : React.createElement("i", { className: "fa fa-" + icon, "aria-hidden": "true" });
+        var items = commands.map(function (command, index) { return (React.createElement(HeaderItemDropdownItem_1.HeaderItemDropdownItem, { key: index, onClick: function (e) { return _this.handleOnClickCommand(e, command); } }, command.content)); });
+        var dropdown = open
+            ? (React.createElement("ul", { className: "react-mde-dropdown", ref: function (ref) {
+                    _this.dropdown = ref;
+                } }, items))
+            : null;
+        return (React.createElement("li", { className: "mde-header-item" },
+            React.createElement("button", { type: "button", ref: function (ref) {
+                    _this.dropdownOpener = ref;
+                }, onClick: this.handleOpenDropdown }, iconElement),
+            dropdown));
+    };
+    return HeaderItemDropdown;
+}(React.Component));
+exports.HeaderItemDropdown = HeaderItemDropdown;
 
 
 /***/ }),
@@ -1494,17 +1508,61 @@ module.exports = __webpack_require__(21);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var react_dom_1 = __webpack_require__(25);
-var App_1 = __webpack_require__(34);
-// stylings
-__webpack_require__(45);
-__webpack_require__(46);
-__webpack_require__(47);
-react_dom_1.render(React.createElement(App_1.App, null), document.getElementById("#app_container"));
+exports.HeaderItemDropdownItem = function (props) {
+    var onClick = props.onClick, children = props.children;
+    return (React.createElement("li", { className: "mde-dropdown-header-item" },
+        React.createElement("button", { type: "button", onClick: onClick }, children)));
+};
 
 
 /***/ }),
 /* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+exports.MarkdownHelp = function (props) {
+    var helpText = props.helpText, markdownReferenceUrl = props.markdownReferenceUrl;
+    return (React.createElement("a", { className: "markdown-help", href: markdownReferenceUrl, target: "_blank", rel: "noopener noreferrer" },
+        React.createElement("svg", { "aria-hidden": "true", className: "markdown-help-svg", height: "16", version: "1.1", viewBox: "0 0 16 16", width: "16" },
+            React.createElement("path", { fillRule: "evenodd", d: "M14.85 3H1.15C.52 3 0 3.52 0 4.15v7.69C0 12.48.52 13 1.15 13h13.69c.64 0 1.15-.52 1.15-1.15v-7.7C16 3.52 15.48 3 " +
+                    "14.85 3zM9 11H7V8L5.5 9.92 4 8v3H2V5h2l1.5 2L7 5h2v6zm2.99.5L9.5 8H11V5h2v3h1.5l-2.51 3.5z" })),
+        React.createElement("span", { className: "markdown-help-text" }, helpText)));
+};
+exports.MarkdownHelp.defaultProps = {
+    helpText: "Markdown styling is supported",
+    markdownReferenceUrl: "http://commonmark.org/help/",
+};
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(24);
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var react_dom_1 = __webpack_require__(28);
+var App_1 = __webpack_require__(37);
+// stylings
+__webpack_require__(57);
+__webpack_require__(58);
+__webpack_require__(59);
+react_dom_1.render(React.createElement(App_1.App, null), document.getElementById("#app_container"));
+
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1517,7 +1575,7 @@ react_dom_1.render(React.createElement(App_1.App, null), document.getElementById
  * LICENSE file in the root directory of this source tree.
  */
 
-var m=__webpack_require__(3),n=__webpack_require__(4),p=__webpack_require__(2),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
+var m=__webpack_require__(5),n=__webpack_require__(6),p=__webpack_require__(3),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
 function y(a){for(var b=arguments.length-1,e="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);b=Error(e+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var z={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function A(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}A.prototype.isReactComponent={};A.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?y("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};A.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function B(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}function C(){}C.prototype=A.prototype;var D=B.prototype=new C;D.constructor=B;m(D,A.prototype);D.isPureReactComponent=!0;function E(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}var F=E.prototype=new C;F.constructor=E;m(F,A.prototype);F.unstable_isAsyncReactComponent=!0;F.render=function(){return this.props.children};var G={current:null},H=Object.prototype.hasOwnProperty,I={key:!0,ref:!0,__self:!0,__source:!0};
@@ -1532,7 +1590,7 @@ isValidElement:K,version:"16.2.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_F
 
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1553,12 +1611,12 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(3);
-var emptyObject = __webpack_require__(4);
-var invariant = __webpack_require__(5);
-var warning = __webpack_require__(6);
-var emptyFunction = __webpack_require__(2);
-var checkPropTypes = __webpack_require__(9);
+var _assign = __webpack_require__(5);
+var emptyObject = __webpack_require__(6);
+var invariant = __webpack_require__(7);
+var warning = __webpack_require__(8);
+var emptyFunction = __webpack_require__(3);
+var checkPropTypes = __webpack_require__(10);
 
 // TODO: this is special because it gets imported during build.
 
@@ -2897,7 +2955,7 @@ module.exports = react;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2916,7 +2974,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2954,15 +3012,15 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(26);
-} else {
   module.exports = __webpack_require__(29);
+} else {
+  module.exports = __webpack_require__(32);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2978,7 +3036,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(0),l=__webpack_require__(10),B=__webpack_require__(3),C=__webpack_require__(2),ba=__webpack_require__(11),da=__webpack_require__(12),ea=__webpack_require__(13),fa=__webpack_require__(14),ia=__webpack_require__(15),D=__webpack_require__(4);
+var aa=__webpack_require__(0),l=__webpack_require__(11),B=__webpack_require__(5),C=__webpack_require__(3),ba=__webpack_require__(12),da=__webpack_require__(13),ea=__webpack_require__(14),fa=__webpack_require__(15),ia=__webpack_require__(16),D=__webpack_require__(6);
 function E(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:E("227");
 var oa={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function pa(a,b){return(a&b)===b}
 var ta={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ta,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){ua.hasOwnProperty(f)?E("48",f):void 0;var g=f.toLowerCase(),h=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:pa(h,b.MUST_USE_PROPERTY),
@@ -3198,7 +3256,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
 
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3213,7 +3271,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
  * @typechecks
  */
 
-var isNode = __webpack_require__(28);
+var isNode = __webpack_require__(31);
 
 /**
  * @param {*} object The object to check.
@@ -3226,7 +3284,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3254,7 +3312,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3276,20 +3334,20 @@ if (process.env.NODE_ENV !== "production") {
 'use strict';
 
 var React = __webpack_require__(0);
-var invariant = __webpack_require__(5);
-var warning = __webpack_require__(6);
-var ExecutionEnvironment = __webpack_require__(10);
-var _assign = __webpack_require__(3);
-var emptyFunction = __webpack_require__(2);
-var EventListener = __webpack_require__(11);
-var getActiveElement = __webpack_require__(12);
-var shallowEqual = __webpack_require__(13);
-var containsNode = __webpack_require__(14);
-var focusNode = __webpack_require__(15);
-var emptyObject = __webpack_require__(4);
-var checkPropTypes = __webpack_require__(9);
-var hyphenateStyleName = __webpack_require__(30);
-var camelizeStyleName = __webpack_require__(32);
+var invariant = __webpack_require__(7);
+var warning = __webpack_require__(8);
+var ExecutionEnvironment = __webpack_require__(11);
+var _assign = __webpack_require__(5);
+var emptyFunction = __webpack_require__(3);
+var EventListener = __webpack_require__(12);
+var getActiveElement = __webpack_require__(13);
+var shallowEqual = __webpack_require__(14);
+var containsNode = __webpack_require__(15);
+var focusNode = __webpack_require__(16);
+var emptyObject = __webpack_require__(6);
+var checkPropTypes = __webpack_require__(10);
+var hyphenateStyleName = __webpack_require__(33);
+var camelizeStyleName = __webpack_require__(35);
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -18656,7 +18714,7 @@ module.exports = reactDom;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18671,7 +18729,7 @@ module.exports = reactDom;
 
 
 
-var hyphenate = __webpack_require__(31);
+var hyphenate = __webpack_require__(34);
 
 var msPattern = /^ms-/;
 
@@ -18698,7 +18756,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18734,7 +18792,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18749,7 +18807,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(33);
+var camelize = __webpack_require__(36);
 
 var msPattern = /^-ms-/;
 
@@ -18777,7 +18835,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18812,7 +18870,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18829,7 +18887,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var src_1 = __webpack_require__(35);
+var src_1 = __webpack_require__(38);
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App(props) {
@@ -18847,7 +18905,7 @@ var App = /** @class */ (function (_super) {
             React.createElement(src_1.default, { textAreaProps: {
                     id: "ta1",
                     name: "ta1",
-                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands.getDefaultCommands(), showdownOptions: { tables: true, simplifiedAutoLink: true } })));
+                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, showdownOptions: { tables: true, simplifiedAutoLink: true } })));
     };
     return App;
 }(React.Component));
@@ -18855,118 +18913,83 @@ exports.App = App;
 
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ReactMdeCommands = __webpack_require__(36);
-exports.ReactMdeCommands = ReactMdeCommands;
-var ReactMdeCommandHelper = __webpack_require__(16);
+var ReactMdeCommandHelper = __webpack_require__(2);
 exports.ReactMdeCommandHelper = ReactMdeCommandHelper;
-var ReactMdeSelectionHelper = __webpack_require__(8);
+var ReactMdeSelectionHelper = __webpack_require__(9);
 exports.ReactMdeSelectionHelper = ReactMdeSelectionHelper;
-var ReactMdeTextHelper = __webpack_require__(7);
+var ReactMdeTextHelper = __webpack_require__(4);
 exports.ReactMdeTextHelper = ReactMdeTextHelper;
-var ReactMdeTypes = __webpack_require__(37);
-exports.ReactMdeTypes = ReactMdeTypes;
-var ReactMdeToolbar_1 = __webpack_require__(17);
-exports.ReactMdeToolbar = ReactMdeToolbar_1.ReactMdeToolbar;
-var ReactMdePreview_1 = __webpack_require__(18);
-exports.ReactMdePreview = ReactMdePreview_1.ReactMdePreview;
-var ReactMdeTextArea_1 = __webpack_require__(19);
-exports.ReactMdeTextArea = ReactMdeTextArea_1.ReactMdeTextArea;
-var ReactMde_1 = __webpack_require__(44);
+var ReactMde_1 = __webpack_require__(17);
 exports.ReactMde = ReactMde_1.ReactMde;
 exports.default = ReactMde_1.ReactMde;
 
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var ReactMdeTextHelper_1 = __webpack_require__(7);
-var ReactMdeCommandHelper_1 = __webpack_require__(16);
-exports.makeHeaderCommand = {
-    type: "dropdown",
-    icon: "heading",
-    subCommands: [
-        {
-            content: React.createElement("p", { className: "header-1" }, "Header"),
-            execute: function (text, selection) {
-                return ReactMdeCommandHelper_1.makeHeader(text, selection, "# ");
-            },
-        },
-        {
-            content: React.createElement("p", { className: "header-2" }, "Header"),
-            execute: function (text, selection) {
-                return ReactMdeCommandHelper_1.makeHeader(text, selection, "## ");
-            },
-        },
-        {
-            content: React.createElement("p", { className: "header-3" }, "Header"),
-            execute: function (text, selection) {
-                return ReactMdeCommandHelper_1.makeHeader(text, selection, "### ");
-            },
-        },
-    ],
-};
-exports.makeBoldCommand = {
+var boldCommand_1 = __webpack_require__(40);
+exports.boldCommand = boldCommand_1.boldCommand;
+var codeCommand_1 = __webpack_require__(41);
+exports.codeCommand = codeCommand_1.codeCommand;
+var headerCommand_1 = __webpack_require__(42);
+exports.headerCommand = headerCommand_1.headerCommand;
+var imageCommand_1 = __webpack_require__(43);
+exports.imageCommand = imageCommand_1.imageCommand;
+var italicCommand_1 = __webpack_require__(44);
+exports.italicCommand = italicCommand_1.italicCommand;
+var linkCommand_1 = __webpack_require__(45);
+exports.linkCommand = linkCommand_1.linkCommand;
+var orderedCommand_1 = __webpack_require__(46);
+exports.orderedListCommand = orderedCommand_1.orderedListCommand;
+var quoteCommand_1 = __webpack_require__(47);
+exports.quoteCommand = quoteCommand_1.quoteCommand;
+var unorderedListCommand_1 = __webpack_require__(48);
+exports.unorderedListCommand = unorderedListCommand_1.unorderedListCommand;
+var getDefaultCommands = function () { return [
+    [headerCommand_1.headerCommand, boldCommand_1.boldCommand, italicCommand_1.italicCommand],
+    [linkCommand_1.linkCommand, quoteCommand_1.quoteCommand, codeCommand_1.codeCommand, imageCommand_1.imageCommand],
+    [unorderedListCommand_1.unorderedListCommand, orderedCommand_1.orderedListCommand],
+]; };
+exports.getDefaultCommands = getDefaultCommands;
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeCommandHelper_1 = __webpack_require__(2);
+exports.boldCommand = {
     icon: "bold",
     tooltip: "Add bold text",
     execute: function (text, selection) {
         return ReactMdeCommandHelper_1.makeACommandThatInsertsBeforeAndAfter(text, selection, "**");
     },
 };
-exports.makeItalicCommand = {
-    icon: "italic",
-    tooltip: "Add italic text",
-    execute: function (text, selection) {
-        return ReactMdeCommandHelper_1.makeACommandThatInsertsBeforeAndAfter(text, selection, "_");
-    },
-};
-exports.makeLinkCommand = {
-    icon: "link",
-    tooltip: "Insert a link",
-    execute: function (text, selection) {
-        var _a = ReactMdeTextHelper_1.insertText(text, "[", selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
-        var finalText = ReactMdeTextHelper_1.insertText(newText, "](url)", selection.end + insertionLength).newText;
-        return {
-            text: finalText,
-            selection: {
-                start: selection.start + insertionLength,
-                end: selection.end + insertionLength,
-            },
-        };
-    },
-};
-exports.makeQuoteCommand = {
-    icon: "quote-right",
-    tooltip: "Insert a quote",
-    execute: function (text, selection) {
-        selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
-        var textInsertion;
-        textInsertion = ReactMdeTextHelper_1.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
-        text = textInsertion.newText;
-        selection = textInsertion.newSelection;
-        textInsertion = ReactMdeTextHelper_1.insertBefore(text, "> ", selection, false);
-        text = textInsertion.newText;
-        selection = textInsertion.newSelection;
-        textInsertion = ReactMdeTextHelper_1.insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
-        text = textInsertion.newText;
-        selection = textInsertion.newSelection;
-        return {
-            text: text,
-            selection: selection,
-        };
-    },
-};
-exports.makeCodeCommand = {
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeTextHelper_1 = __webpack_require__(4);
+var ReactMdeCommandHelper_1 = __webpack_require__(2);
+exports.codeCommand = {
     icon: "code",
     tooltip: "Insert code",
     execute: function (text, selection) {
@@ -18996,7 +19019,52 @@ exports.makeCodeCommand = {
         return { text: text, selection: selection };
     },
 };
-exports.makeImageCommand = {
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeCommandHelper_1 = __webpack_require__(2);
+var React = __webpack_require__(0);
+exports.headerCommand = {
+    type: "dropdown",
+    icon: "heading",
+    subCommands: [
+        {
+            content: React.createElement("p", { className: "header-1" }, "Header"),
+            execute: function (text, selection) {
+                return ReactMdeCommandHelper_1.makeHeader(text, selection, "# ");
+            },
+        },
+        {
+            content: React.createElement("p", { className: "header-2" }, "Header"),
+            execute: function (text, selection) {
+                return ReactMdeCommandHelper_1.makeHeader(text, selection, "## ");
+            },
+        },
+        {
+            content: React.createElement("p", { className: "header-3" }, "Header"),
+            execute: function (text, selection) {
+                return ReactMdeCommandHelper_1.makeHeader(text, selection, "### ");
+            },
+        },
+    ],
+};
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeTextHelper_1 = __webpack_require__(4);
+exports.imageCommand = {
     icon: "image",
     tooltip: "Insert a picture",
     execute: function (text, selection) {
@@ -19011,47 +19079,294 @@ exports.makeImageCommand = {
         };
     },
 };
-exports.makeUnorderedListCommand = {
-    icon: "list-ul",
-    tooltip: "Add a bulleted list",
-    execute: function (text, selection) { return ReactMdeCommandHelper_1.makeList(text, selection, "- "); },
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeCommandHelper_1 = __webpack_require__(2);
+exports.italicCommand = {
+    icon: "italic",
+    tooltip: "Add italic text",
+    execute: function (text, selection) {
+        return ReactMdeCommandHelper_1.makeACommandThatInsertsBeforeAndAfter(text, selection, "_");
+    },
 };
-exports.makeOrderedListCommand = {
+
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeTextHelper_1 = __webpack_require__(4);
+exports.linkCommand = {
+    icon: "link",
+    tooltip: "Insert a link",
+    execute: function (text, selection) {
+        var _a = ReactMdeTextHelper_1.insertText(text, "[", selection.start), newText = _a.newText, insertionLength = _a.insertionLength;
+        var finalText = ReactMdeTextHelper_1.insertText(newText, "](url)", selection.end + insertionLength).newText;
+        return {
+            text: finalText,
+            selection: {
+                start: selection.start + insertionLength,
+                end: selection.end + insertionLength,
+            },
+        };
+    },
+};
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeCommandHelper_1 = __webpack_require__(2);
+exports.orderedListCommand = {
     icon: "list-ol",
     tooltip: "Add a numbered list",
     execute: function (text, selection) { return ReactMdeCommandHelper_1.makeList(text, selection, function (item, index) { return index + 1 + ". "; }); },
 };
-exports.getDefaultCommands = function () { return [
-    [exports.makeHeaderCommand, exports.makeBoldCommand, exports.makeItalicCommand],
-    [exports.makeLinkCommand, exports.makeQuoteCommand, exports.makeCodeCommand, exports.makeImageCommand],
-    [exports.makeUnorderedListCommand, exports.makeOrderedListCommand],
-]; };
 
 
 /***/ }),
-/* 37 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-exports.HeaderGroup = function (props) {
-    return (React.createElement("ul", { className: "mde-header-group" }, props.children));
+var ReactMdeTextHelper_1 = __webpack_require__(4);
+exports.quoteCommand = {
+    icon: "quote-right",
+    tooltip: "Insert a quote",
+    execute: function (text, selection) {
+        selection = ReactMdeTextHelper_1.selectCurrentWordIfCaretIsInsideOne(text, selection);
+        var textInsertion;
+        textInsertion = ReactMdeTextHelper_1.insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
+        text = textInsertion.newText;
+        selection = textInsertion.newSelection;
+        textInsertion = ReactMdeTextHelper_1.insertBefore(text, "> ", selection, false);
+        text = textInsertion.newText;
+        selection = textInsertion.newSelection;
+        textInsertion = ReactMdeTextHelper_1.insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
+        text = textInsertion.newText;
+        selection = textInsertion.newSelection;
+        return {
+            text: text,
+            selection: selection,
+        };
+    },
 };
 
 
 /***/ }),
-/* 39 */
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeCommandHelper_1 = __webpack_require__(2);
+exports.unorderedListCommand = {
+    icon: "list-ul",
+    tooltip: "Add a bulleted list",
+    execute: function (text, selection) { return ReactMdeCommandHelper_1.makeList(text, selection, "- "); },
+};
+
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var components_layout_1 = __webpack_require__(50);
+var LayoutMap = /** @class */ (function () {
+    function LayoutMap() {
+        this.vertical = components_layout_1.VerticalLayout;
+    }
+    return LayoutMap;
+}());
+exports.LayoutMap = LayoutMap;
+var layoutMap = new LayoutMap();
+exports.layoutMap = layoutMap;
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(51));
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var ReactMde_1 = __webpack_require__(17);
+var ReactMdeSelectionHelper_1 = __webpack_require__(9);
+var components_1 = __webpack_require__(52);
+var VerticalLayout = /** @class */ (function (_super) {
+    __extends(VerticalLayout, _super);
+    function VerticalLayout() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * Handler for the textArea value change
+         * @memberOf ReactMde
+         */
+        _this.handleValueChange = function (value) {
+            var onChange = _this.props.onChange;
+            onChange(value);
+        };
+        /**
+         * Executes a command
+         * @memberOf ReactMde
+         */
+        _this.handleCommand = function (command) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, text, onChange, newValue;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this.props, text = _a.value.text, onChange = _a.onChange;
+                        newValue = command.execute(text, ReactMdeSelectionHelper_1.getSelection(this.textArea));
+                        if (!(newValue instanceof Promise)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, newValue];
+                    case 1:
+                        newValue = _b.sent();
+                        _b.label = 2;
+                    case 2:
+                        // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
+                        newValue.scrollTop = this.textArea.scrollTop;
+                        onChange(newValue);
+                        return [2 /*return*/];
+                }
+            });
+        }); };
+        return _this;
+    }
+    /**
+     * Renders react-mde
+     * @returns
+     * @memberOf ReactMde
+     */
+    VerticalLayout.prototype.render = function () {
+        var _this = this;
+        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps, showdownOptions = _a.showdownOptions, showdownFlavor = _a.showdownFlavor, visibility = _a.visibility, className = _a.className, processHtml = _a.processHtml;
+        var mergedVisibility = __assign({}, ReactMde_1.ReactMde.defaultProps.visibility, visibility);
+        return (React.createElement("div", { className: "react-mde " + className },
+            mergedVisibility.toolbar && React.createElement(components_1.ReactMdeToolbar, { commands: commands, onCommand: this.handleCommand }),
+            mergedVisibility.textarea && React.createElement(components_1.ReactMdeTextArea, { onChange: this.handleValueChange, value: value, textAreaProps: textAreaProps, textAreaRef: function (c) { return _this.textArea = c; } }),
+            mergedVisibility.preview && React.createElement(components_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; }, showdownFlavor: showdownFlavor, showdownOptions: showdownOptions, helpVisible: mergedVisibility.previewHelp, processHtml: processHtml })));
+    };
+    VerticalLayout.defaultProps = {
+        visibility: {
+            toolbar: true,
+            textarea: true,
+            preview: true,
+            previewHelp: true,
+        },
+    };
+    return VerticalLayout;
+}(React.Component));
+exports.VerticalLayout = VerticalLayout;
+
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(18));
+__export(__webpack_require__(19));
+__export(__webpack_require__(20));
+__export(__webpack_require__(21));
+__export(__webpack_require__(22));
+__export(__webpack_require__(53));
+__export(__webpack_require__(55));
+__export(__webpack_require__(56));
+
+
+/***/ }),
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19068,147 +19383,51 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var HeaderItemDropdownItem_1 = __webpack_require__(40);
-var HeaderItemDropdown = /** @class */ (function (_super) {
-    __extends(HeaderItemDropdown, _super);
-    function HeaderItemDropdown(props) {
+var MarkdownHelp_1 = __webpack_require__(22);
+var Showdown = __webpack_require__(54);
+var ReactMdePreview = /** @class */ (function (_super) {
+    __extends(ReactMdePreview, _super);
+    function ReactMdePreview(props) {
         var _this = _super.call(this, props) || this;
-        _this.handleGlobalClick = function (e) {
-            if (_this.clickedOutside(e)) {
-                _this.closeDropdown();
+        var showdownFlavor = props.showdownFlavor, showdownOptions = props.showdownOptions;
+        _this.converter = new Showdown.Converter();
+        if (showdownFlavor) {
+            _this.converter.setFlavor(showdownFlavor);
+        }
+        if (showdownOptions) {
+            for (var option in showdownOptions) {
+                if (showdownOptions.hasOwnProperty(option)) {
+                    _this.converter.setOption(option, showdownOptions[option]);
+                }
             }
-        };
-        _this.openDropdown = function () {
-            _this.setState({
-                open: true,
-            });
-        };
-        _this.clickedOutside = function (e) {
-            var target = e.target;
-            return _this.state.open
-                && _this.dropdown
-                && _this.dropdownOpener
-                && !_this.dropdown.contains(target)
-                && !_this.dropdownOpener.contains(target);
-        };
-        _this.handleOnClickCommand = function (e, command) {
-            var onCommand = _this.props.onCommand;
-            onCommand(command);
-            _this.closeDropdown();
-        };
-        _this.handleOpenDropdown = function () {
-            _this.openDropdown();
-        };
-        _this.state = {
-            open: false,
-        };
+        }
         return _this;
     }
-    HeaderItemDropdown.prototype.componentDidMount = function () {
-        document.addEventListener("click", this.handleGlobalClick, false);
-    };
-    HeaderItemDropdown.prototype.componentWillUnmount = function () {
-        document.removeEventListener("click", this.handleGlobalClick, false);
-    };
-    HeaderItemDropdown.prototype.closeDropdown = function () {
-        this.setState({
-            open: false,
-        });
-    };
-    HeaderItemDropdown.prototype.render = function () {
+    ReactMdePreview.prototype.render = function () {
         var _this = this;
-        var _a = this.props, icon = _a.icon, commands = _a.commands;
-        var open = this.state.open;
-        // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
-        var iconElement = React.isValidElement(icon) ? icon : React.createElement("i", { className: "fa fa-" + icon, "aria-hidden": "true" });
-        var items = commands.map(function (command, index) { return (React.createElement(HeaderItemDropdownItem_1.HeaderItemDropdownItem, { key: index, onClick: function (e) { return _this.handleOnClickCommand(e, command); } }, command.content)); });
-        var dropdown = open
-            ? (React.createElement("ul", { className: "react-mde-dropdown", ref: function (ref) {
-                    _this.dropdown = ref;
-                } }, items))
-            : null;
-        return (React.createElement("li", { className: "mde-header-item" },
-            React.createElement("button", { type: "button", ref: function (ref) {
-                    _this.dropdownOpener = ref;
-                }, onClick: this.handleOpenDropdown }, iconElement),
-            dropdown));
+        var _a = this.props, markdown = _a.markdown, previewRef = _a.previewRef, helpVisible = _a.helpVisible, processHtml = _a.processHtml;
+        var html = this.converter.makeHtml(markdown) || "<p>&nbsp</p>";
+        var processedHtml = processHtml ? processHtml(html) : html;
+        return (React.createElement("div", { className: "mde-preview" },
+            React.createElement("div", { className: "mde-preview-content", dangerouslySetInnerHTML: { __html: processedHtml }, ref: function (p) {
+                    _this.preview = p;
+                    if (previewRef) {
+                        previewRef(p);
+                    }
+                } }),
+            helpVisible && React.createElement("div", { className: "mde-help" },
+                React.createElement(MarkdownHelp_1.MarkdownHelp, null))));
     };
-    return HeaderItemDropdown;
+    ReactMdePreview.defaultProps = {
+        helpVisible: true,
+    };
+    return ReactMdePreview;
 }(React.Component));
-exports.HeaderItemDropdown = HeaderItemDropdown;
+exports.ReactMdePreview = ReactMdePreview;
 
 
 /***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-exports.HeaderItemDropdownItem = function (props) {
-    var onClick = props.onClick, children = props.children;
-    return (React.createElement("li", { className: "mde-dropdown-header-item" },
-        React.createElement("button", { type: "button", onClick: onClick }, children)));
-};
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-exports.HeaderItem = function (props) {
-    var icon = props.icon, tooltip = props.tooltip, onClick = props.onClick;
-    // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
-    var iconElement = React.isValidElement(icon) ? icon : React.createElement("i", { className: "fas fa-" + icon, "aria-hidden": "true" });
-    var buttonProps = {};
-    if (tooltip) {
-        buttonProps = {
-            "aria-label": tooltip,
-            "className": "tooltipped",
-        };
-    }
-    return (React.createElement("li", { className: "mde-header-item" },
-        React.createElement("button", __assign({ type: "button" }, buttonProps, { onClick: onClick }), iconElement)));
-};
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-exports.MarkdownHelp = function (props) {
-    var helpText = props.helpText, markdownReferenceUrl = props.markdownReferenceUrl;
-    return (React.createElement("a", { className: "markdown-help", href: markdownReferenceUrl, target: "_blank", rel: "noopener noreferrer" },
-        React.createElement("svg", { "aria-hidden": "true", className: "markdown-help-svg", height: "16", version: "1.1", viewBox: "0 0 16 16", width: "16" },
-            React.createElement("path", { fillRule: "evenodd", d: "M14.85 3H1.15C.52 3 0 3.52 0 4.15v7.69C0 12.48.52 13 1.15 13h13.69c.64 0 1.15-.52 1.15-1.15v-7.7C16 3.52 15.48 3 " +
-                    "14.85 3zM9 11H7V8L5.5 9.92 4 8v3H2V5h2l1.5 2L7 5h2v6zm2.99.5L9.5 8H11V5h2v3h1.5l-2.51 3.5z" })),
-        React.createElement("span", { className: "markdown-help-text" }, helpText)));
-};
-exports.MarkdownHelp.defaultProps = {
-    helpText: "Markdown styling is supported",
-    markdownReferenceUrl: "http://commonmark.org/help/",
-};
-
-
-/***/ }),
-/* 43 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;;/*! showdown v 1.8.6 - 22-12-2017 */
@@ -23719,7 +23938,7 @@ if (true) {
 
 
 /***/ }),
-/* 44 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23742,126 +23961,99 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var ReactMdeSelectionHelper_1 = __webpack_require__(8);
-var ReactMdeToolbar_1 = __webpack_require__(17);
-var ReactMdeTextArea_1 = __webpack_require__(19);
-var ReactMdePreview_1 = __webpack_require__(18);
-var ReactMde = /** @class */ (function (_super) {
-    __extends(ReactMde, _super);
-    function ReactMde() {
+var ReactMdeSelectionHelper_1 = __webpack_require__(9);
+var ReactMdeTextArea = /** @class */ (function (_super) {
+    __extends(ReactMdeTextArea, _super);
+    function ReactMdeTextArea() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         /**
          * Handler for the textArea value change
+         * @param {any} e
          * @memberOf ReactMde
          */
-        _this.handleValueChange = function (value) {
+        _this.handleValueChange = function (e) {
             var onChange = _this.props.onChange;
-            onChange(value);
-        };
-        /**
-         * Executes a command
-         * @memberOf ReactMde
-         */
-        _this.handleCommand = function (command) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, text, onChange, newValue;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = this.props, text = _a.value.text, onChange = _a.onChange;
-                        newValue = command.execute(text, ReactMdeSelectionHelper_1.getSelection(this.textArea));
-                        if (!(newValue instanceof Promise)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, newValue];
-                    case 1:
-                        newValue = _b.sent();
-                        _b.label = 2;
-                    case 2:
-                        // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
-                        newValue.scrollTop = this.textArea.scrollTop;
-                        onChange(newValue);
-                        return [2 /*return*/];
+            onChange({
+                text: e.currentTarget.value,
+                scrollTop: e.currentTarget.scrollTop,
+                selection: {
+                    start: e.currentTarget.selectionStart,
+                    end: e.currentTarget.selectionEnd
                 }
             });
-        }); };
+        };
         return _this;
     }
-    /**
-     * Renders react-mde
-     * @returns
-     * @memberOf ReactMde
-     */
-    ReactMde.prototype.render = function () {
+    ReactMdeTextArea.prototype.componentDidUpdate = function () {
+        var _a = this.props.value, selection = _a.selection, scrollTop = _a.scrollTop;
+        if (selection) {
+            ReactMdeSelectionHelper_1.setSelection(this.textArea, selection.start, selection.end);
+        }
+        if (scrollTop !== null && scrollTop !== undefined) {
+            // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
+            this.textArea.scrollTop = scrollTop;
+        }
+    };
+    ReactMdeTextArea.prototype.render = function () {
         var _this = this;
-        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps, showdownOptions = _a.showdownOptions, showdownFlavor = _a.showdownFlavor, visibility = _a.visibility, className = _a.className, processHtml = _a.processHtml;
-        var mergedVisibility = __assign({}, ReactMde.defaultProps.visibility, visibility);
-        return (React.createElement("div", { className: "react-mde " + className },
-            mergedVisibility.toolbar && React.createElement(ReactMdeToolbar_1.ReactMdeToolbar, { commands: commands, onCommand: this.handleCommand }),
-            mergedVisibility.textarea && React.createElement(ReactMdeTextArea_1.ReactMdeTextArea, { onChange: this.handleValueChange, value: value, textAreaProps: textAreaProps, textAreaRef: function (c) { return _this.textArea = c; } }),
-            mergedVisibility.preview && React.createElement(ReactMdePreview_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; }, showdownFlavor: showdownFlavor, showdownOptions: showdownOptions, helpVisible: mergedVisibility.previewHelp, processHtml: processHtml })));
+        var _a = this.props, text = _a.value.text, textAreaProps = _a.textAreaProps, textAreaRef = _a.textAreaRef;
+        return (React.createElement("div", { className: "mde-text" },
+            React.createElement("textarea", __assign({ onChange: this.handleValueChange, value: text, ref: function (c) {
+                    _this.textArea = c;
+                    if (textAreaRef) {
+                        textAreaRef(c);
+                    }
+                } }, textAreaProps))));
     };
-    ReactMde.defaultProps = {
-        visibility: {
-            toolbar: true,
-            textarea: true,
-            preview: true,
-            previewHelp: true,
-        },
+    ReactMdeTextArea.defaultProps = {
+        textAreaProps: {},
     };
-    return ReactMde;
+    return ReactMdeTextArea;
 }(React.Component));
-exports.ReactMde = ReactMde;
+exports.ReactMdeTextArea = ReactMdeTextArea;
 
 
 /***/ }),
-/* 45 */
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var HeaderGroup_1 = __webpack_require__(18);
+var HeaderItemDropdown_1 = __webpack_require__(20);
+var HeaderItem_1 = __webpack_require__(19);
+exports.ReactMdeToolbar = function (_a) {
+    var commands = _a.commands, onCommand = _a.onCommand;
+    if (!commands || commands.length === 0) {
+        return null;
+    }
+    return (React.createElement("div", { className: "mde-header" }, commands.map(function (cg, i) { return (React.createElement(HeaderGroup_1.HeaderGroup, { key: i }, cg.map(function (c, j) {
+        if (c.type === "dropdown") {
+            return (React.createElement(HeaderItemDropdown_1.HeaderItemDropdown, { key: j, icon: c.icon, commands: c.subCommands, onCommand: function (cmd) { return onCommand(cmd); } }));
+        }
+        return React.createElement(HeaderItem_1.HeaderItem, { key: j, icon: c.icon, tooltip: c.tooltip, onClick: function () { return onCommand(c); } });
+    }))); })));
+};
+
+
+/***/ }),
+/* 57 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 46 */
+/* 58 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 47 */
+/* 59 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
