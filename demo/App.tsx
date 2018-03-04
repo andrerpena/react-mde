@@ -1,14 +1,12 @@
 import * as React from "react";
-import ReactMde, { ReactMdeCommands, ReactMdeTypes } from "../src";
-
-interface AppProps {
-}
+import ReactMde from "../src";
+import {Value} from "../src/types";
 
 interface AppState {
-    reactMdeValue: ReactMdeTypes.Value;
+    reactMdeValue: Value;
 }
 
-export class App extends React.Component<AppProps, AppState> {
+export class App extends React.Component<{}, AppState> {
 
     constructor(props) {
         super(props);
@@ -17,7 +15,7 @@ export class App extends React.Component<AppProps, AppState> {
         };
     }
 
-    handleValueChange = (value: ReactMdeTypes.Value) => {
+    handleValueChange = (value: Value) => {
         this.setState({reactMdeValue: value});
     }
 
@@ -32,6 +30,7 @@ export class App extends React.Component<AppProps, AppState> {
                     value={this.state.reactMdeValue}
                     onChange={this.handleValueChange}
                     showdownOptions={{tables: true, simplifiedAutoLink: true}}
+
                 />
             </div>
         );
