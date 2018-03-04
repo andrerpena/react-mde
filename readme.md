@@ -8,6 +8,10 @@ A simple yet powerful and extensible Markdown Editor editor for React, inspired 
 
 Demos are provided through https://codesandbox.io. Feel free to fork and play with different options :smile:.
 
+[React-mde 4.* - JavaScript - Basic Demo](https://codesandbox.io/s/qz116r505w)
+
+[React-mde 4.* - TypeScript - Basic Demo](https://codesandbox.io/s/y0xwwqo88j)
+
 [React-mde 3.* - JavaScript - Basic Demo](https://codesandbox.io/s/mz1945q5my)
 
 [React-mde 3.* - TypeScript - Basic Demo](https://codesandbox.io/s/z1zv6py3)
@@ -32,7 +36,7 @@ You also need NPM packages.
 
 
 
-For `React-mde` 3.*:
+For `React-mde` 3.*+:
 
     npm install --save showdown
     
@@ -52,7 +56,7 @@ where `text` is the text and `selection` is an object containing `start` and `en
 Passing null to `selection` is perfectly fine.
 - **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
 - **commands**: An array of array of command objects (`[[cmd1, cmd2],[cmd3, cmd4]]`). The first array represents groups,
- the second represents commands inside that group. For an example, refer to how the `getDefaultCommands()` [is implemented](https://github.com/andrerpena/react-mde/blob/master/src/ReactMdeCommands.tsx#L178). How to create custom commands is explained below.
+ the second represents commands inside that group. For an example, refer to how the `getDefaultCommands()` [is implemented](https://github.com/andrerpena/react-mde/blob/master/src/commands/index.ts). How to create custom commands is explained below.
 - **textAreaProps**: Whatever you want to pass to the `textarea` component.
 - **showdownFlavor**: The Markdown flavor to use. This defaults to `original`, the [original specs by John Gruber](https://daringfireball.net/projects/markdown/). Please refer to the [Showdown documentation](https://github.com/showdownjs/showdown#flavors) for the complete list of supported flavors.
 - **showdownOptions**: An object with options to be passed to Showdown. Please refer to the [Showdown documentation](https://github.com/showdownjs/showdown#valid-options) for the complete list of options. Note that, unlike what happens by default with Showdown, the options passed here will **override** the defined flavor.
@@ -80,7 +84,7 @@ If you want to have a more granular control over the styles, you can import each
     
 If you're using SASS, you can override these variables: https://github.com/andrerpena/react-mde/blob/master/src/styles/variables.scss
 
-You also need Font Awesome for the toolbar icons. `React-mde` 3.* uses Font Awesome 5.\*. `React-mde` 2.\* uses Font Awesome 4.*.
+You also need Font Awesome for the toolbar icons. `React-mde` 3.\*+ uses Font Awesome 5.\*. `React-mde` 2.\* uses Font Awesome 4.*.
 
 Font Awesome 5 [can be installed in different ways](https://fontawesome.com/how-to-use/svg-with-js), but the easiest is just adding this to the `<head/>`:
 
@@ -213,14 +217,35 @@ leveraging the internal components you'd like and laying them out in the way you
     
 # Migrating
 
-## From 2.* to 3.*
+## From 3.\* to 4.\*
+
+Major differences:
+
+- Passing `commands` to `React-Mde` is now optional. If none is passed, it will automatically
+use the default ones.
+- Now the `React-mde` sub-components cannot be imported directly from the main package.
+This change will not affect you if you don't using sub-components. This will not affect the majority
+of the users.
+
+    // 3.\* and below:
+    import { ReactMarkdownTextArea } from "react-mde"
+    // 4.\* and after:
+    import { ReactMdeComponents } from "react-mde"
+    const { ReactMarkdownTextArea } = ReactMdeComponents
+
+Architectural differences:
+
+- Now the layout is decoupled from `React-Mde` in such a way that now, introducing new layouts, like
+horizontal and tabs, will not require breaking changes. The only layout available now is `Vertical`.
+
+## From 2.* to 3.\*
 
 Font Awesome 5 is now used, and it's not a NPM peer dependency anymore. 
 It's up to you how to install it, it [can be installed in different ways](https://fontawesome.com/how-to-use/svg-with-js), but the easiest is just adding this to the `<head/>`:
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
-## From 1.* to 2.*
+## From 1.\* to 2.\*
 
 2.* is a major refactoring of the code to improve composability
 
