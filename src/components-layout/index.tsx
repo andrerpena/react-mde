@@ -1,1 +1,1 @@
-export * from "./VerticalLayout"
+export * from "./VerticalLayout";

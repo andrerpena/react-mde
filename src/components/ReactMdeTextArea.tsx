@@ -30,10 +30,10 @@ export class ReactMdeTextArea extends React.Component<ReactMdeTextAreaProps, Rea
         onChange({
             text: e.currentTarget.value,
             scrollTop: e.currentTarget.scrollTop,
-            selection: { 
-                start: e.currentTarget.selectionStart, 
-                end: e.currentTarget.selectionEnd 
-            }
+            selection: {
+                start: e.currentTarget.selectionStart,
+                end: e.currentTarget.selectionEnd,
+            },
         });
     }
 

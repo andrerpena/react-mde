@@ -25,6 +25,5 @@ export {
     orderedListCommand,
     quoteCommand,
     unorderedListCommand,
-    getDefaultCommands
-}
-
+    getDefaultCommands,
+};

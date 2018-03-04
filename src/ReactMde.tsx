@@ -33,7 +33,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             previewHelp: true,
         },
         commands: getDefaultCommands(),
-        layout: "vertical"
+        layout: "vertical",
     };
     render() {
         const Layout = layoutMap[this.props.layout];

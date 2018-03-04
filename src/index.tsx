@@ -3,7 +3,6 @@ import * as ReactMdeSelectionHelper from "./helpers/ReactMdeSelectionHelper";
 import * as ReactMdeTextHelper from "./helpers/ReactMdeTextHelper";
 import { ReactMde, ReactMdeProps, ReactMdeVisibility } from "./ReactMde";
 
-
 export {
     ReactMdeCommandHelper,
     ReactMdeSelectionHelper,

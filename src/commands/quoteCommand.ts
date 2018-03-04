@@ -1,6 +1,6 @@
 import {
     insertBefore, insertBreaksAfterSoThatThereIsAnEmptyLineAfter, insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
-    selectCurrentWordIfCaretIsInsideOne
+    selectCurrentWordIfCaretIsInsideOne,
 } from "../helpers/ReactMdeTextHelper";
 import {Command, TextSelection} from "../types";
 

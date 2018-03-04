@@ -1360,7 +1360,7 @@ var ReactMde = /** @class */ (function (_super) {
             previewHelp: true,
         },
         commands: commands_1.getDefaultCommands(),
-        layout: "vertical"
+        layout: "vertical",
     };
     return ReactMde;
 }(React.Component));
@@ -23980,8 +23980,8 @@ var ReactMdeTextArea = /** @class */ (function (_super) {
                 scrollTop: e.currentTarget.scrollTop,
                 selection: {
                     start: e.currentTarget.selectionStart,
-                    end: e.currentTarget.selectionEnd
-                }
+                    end: e.currentTarget.selectionEnd,
+                },
             });
         };
         return _this;

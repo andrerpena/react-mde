@@ -1,1 +1,1 @@
-export type LayoutType = "vertical"
+export type LayoutType = "vertical";

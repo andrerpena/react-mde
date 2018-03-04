@@ -7,4 +7,4 @@ export * from "./TextSelection";
 export * from "./Value";
 export * from "./Word";
 export * from "./ShowdownFlavor";
-export * from "./LayoutType"
+export * from "./LayoutType";
