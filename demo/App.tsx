@@ -1,9 +1,8 @@
 import * as React from "react";
-import ReactMde from "../src";
-import {Value} from "../src/types";
+import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "../src";
 
 interface AppState {
-    reactMdeValue: Value;
+    reactMdeValue: ReactMdeTypes.Value;
 }
 
 export class App extends React.Component<{}, AppState> {
@@ -15,7 +14,7 @@ export class App extends React.Component<{}, AppState> {
         };
     }
 
-    handleValueChange = (value: Value) => {
+    handleValueChange = (value: ReactMdeTypes.Value) => {
         this.setState({reactMdeValue: value});
     }
 
@@ -29,6 +28,7 @@ export class App extends React.Component<{}, AppState> {
                     }}
                     value={this.state.reactMdeValue}
                     onChange={this.handleValueChange}
+                    commands={ReactMdeCommands.getDefaultCommands()}
                     showdownOptions={{tables: true, simplifiedAutoLink: true}}
                 />
             </div>

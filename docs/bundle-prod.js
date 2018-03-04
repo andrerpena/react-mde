@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/react-mde/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 23);
+/******/ 	return __webpack_require__(__webpack_require__.s = 25);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,9 +71,9 @@
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(25);
+  module.exports = __webpack_require__(27);
 } else {
-  module.exports = __webpack_require__(26);
+  module.exports = __webpack_require__(28);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -959,7 +959,7 @@ exports.setSelection = setSelection;
 if (process.env.NODE_ENV !== 'production') {
   var invariant = __webpack_require__(7);
   var warning = __webpack_require__(8);
-  var ReactPropTypesSecret = __webpack_require__(27);
+  var ReactPropTypesSecret = __webpack_require__(29);
   var loggedTypeFailures = {};
 }
 
@@ -1258,7 +1258,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(30);
+var isTextNode = __webpack_require__(32);
 
 /*eslint-disable no-bitwise */
 
@@ -1321,54 +1321,55 @@ module.exports = focusNode;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var commands_1 = __webpack_require__(39);
-var LayoutMap_1 = __webpack_require__(49);
-var ReactMde = /** @class */ (function (_super) {
-    __extends(ReactMde, _super);
-    function ReactMde() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    ReactMde.prototype.render = function () {
-        var Layout = LayoutMap_1.layoutMap[this.props.layout];
-        return React.createElement(Layout, __assign({}, this.props));
-    };
-    ReactMde.defaultProps = {
-        visibility: {
-            toolbar: true,
-            textarea: true,
-            preview: true,
-            previewHelp: true,
-        },
-        commands: commands_1.getDefaultCommands(),
-        layout: "vertical",
-    };
-    return ReactMde;
-}(React.Component));
-exports.ReactMde = ReactMde;
+var boldCommand_1 = __webpack_require__(41);
+exports.boldCommand = boldCommand_1.boldCommand;
+var codeCommand_1 = __webpack_require__(42);
+exports.codeCommand = codeCommand_1.codeCommand;
+var headerCommand_1 = __webpack_require__(43);
+exports.headerCommand = headerCommand_1.headerCommand;
+var imageCommand_1 = __webpack_require__(44);
+exports.imageCommand = imageCommand_1.imageCommand;
+var italicCommand_1 = __webpack_require__(45);
+exports.italicCommand = italicCommand_1.italicCommand;
+var linkCommand_1 = __webpack_require__(46);
+exports.linkCommand = linkCommand_1.linkCommand;
+var orderedCommand_1 = __webpack_require__(47);
+exports.orderedListCommand = orderedCommand_1.orderedListCommand;
+var quoteCommand_1 = __webpack_require__(48);
+exports.quoteCommand = quoteCommand_1.quoteCommand;
+var unorderedListCommand_1 = __webpack_require__(49);
+exports.unorderedListCommand = unorderedListCommand_1.unorderedListCommand;
+var getDefaultCommands = function () { return [
+    [headerCommand_1.headerCommand, boldCommand_1.boldCommand, italicCommand_1.italicCommand],
+    [linkCommand_1.linkCommand, quoteCommand_1.quoteCommand, codeCommand_1.codeCommand, imageCommand_1.imageCommand],
+    [unorderedListCommand_1.unorderedListCommand, orderedCommand_1.orderedListCommand],
+]; };
+exports.getDefaultCommands = getDefaultCommands;
 
 
 /***/ }),
 /* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(19));
+__export(__webpack_require__(20));
+__export(__webpack_require__(21));
+__export(__webpack_require__(22));
+__export(__webpack_require__(23));
+__export(__webpack_require__(51));
+__export(__webpack_require__(53));
+__export(__webpack_require__(54));
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1381,7 +1382,7 @@ exports.HeaderGroup = function (props) {
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1413,7 +1414,7 @@ exports.HeaderItem = function (props) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1430,7 +1431,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var HeaderItemDropdownItem_1 = __webpack_require__(21);
+var HeaderItemDropdownItem_1 = __webpack_require__(22);
 var HeaderItemDropdown = /** @class */ (function (_super) {
     __extends(HeaderItemDropdown, _super);
     function HeaderItemDropdown(props) {
@@ -1501,7 +1502,7 @@ exports.HeaderItemDropdown = HeaderItemDropdown;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1516,7 +1517,7 @@ exports.HeaderItemDropdownItem = function (props) {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1538,31 +1539,83 @@ exports.MarkdownHelp.defaultProps = {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(24);
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var commands_1 = __webpack_require__(17);
+var LayoutMap_1 = __webpack_require__(55);
+var ReactMde = /** @class */ (function (_super) {
+    __extends(ReactMde, _super);
+    function ReactMde() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ReactMde.prototype.render = function () {
+        var Layout = LayoutMap_1.layoutMap[this.props.layout];
+        return React.createElement(Layout, __assign({}, this.props));
+    };
+    ReactMde.defaultProps = {
+        visibility: {
+            toolbar: true,
+            textarea: true,
+            preview: true,
+            previewHelp: true,
+        },
+        commands: commands_1.getDefaultCommands(),
+        layout: "vertical",
+    };
+    return ReactMde;
+}(React.Component));
+exports.ReactMde = ReactMde;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(26);
+
+
+/***/ }),
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var react_dom_1 = __webpack_require__(28);
-var App_1 = __webpack_require__(37);
+var react_dom_1 = __webpack_require__(30);
+var App_1 = __webpack_require__(39);
 // stylings
-__webpack_require__(57);
 __webpack_require__(58);
 __webpack_require__(59);
+__webpack_require__(60);
 react_dom_1.render(React.createElement(App_1.App, null), document.getElementById("#app_container"));
 
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1590,7 +1643,7 @@ isValidElement:K,version:"16.2.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_F
 
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2955,7 +3008,7 @@ module.exports = react;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2974,7 +3027,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3012,15 +3065,15 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(29);
+  module.exports = __webpack_require__(31);
 } else {
-  module.exports = __webpack_require__(32);
+  module.exports = __webpack_require__(34);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3256,7 +3309,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3271,7 +3324,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
  * @typechecks
  */
 
-var isNode = __webpack_require__(31);
+var isNode = __webpack_require__(33);
 
 /**
  * @param {*} object The object to check.
@@ -3284,7 +3337,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3312,7 +3365,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3346,8 +3399,8 @@ var containsNode = __webpack_require__(15);
 var focusNode = __webpack_require__(16);
 var emptyObject = __webpack_require__(6);
 var checkPropTypes = __webpack_require__(10);
-var hyphenateStyleName = __webpack_require__(33);
-var camelizeStyleName = __webpack_require__(35);
+var hyphenateStyleName = __webpack_require__(35);
+var camelizeStyleName = __webpack_require__(37);
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -18714,7 +18767,7 @@ module.exports = reactDom;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18729,7 +18782,7 @@ module.exports = reactDom;
 
 
 
-var hyphenate = __webpack_require__(34);
+var hyphenate = __webpack_require__(36);
 
 var msPattern = /^ms-/;
 
@@ -18756,7 +18809,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18792,7 +18845,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18807,7 +18860,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(36);
+var camelize = __webpack_require__(38);
 
 var msPattern = /^-ms-/;
 
@@ -18835,7 +18888,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18870,7 +18923,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18887,7 +18940,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var src_1 = __webpack_require__(38);
+var src_1 = __webpack_require__(40);
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App(props) {
@@ -18905,7 +18958,7 @@ var App = /** @class */ (function (_super) {
             React.createElement(src_1.default, { textAreaProps: {
                     id: "ta1",
                     name: "ta1",
-                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, showdownOptions: { tables: true, simplifiedAutoLink: true } })));
+                }, value: this.state.reactMdeValue, onChange: this.handleValueChange, commands: src_1.ReactMdeCommands.getDefaultCommands(), showdownOptions: { tables: true, simplifiedAutoLink: true } })));
     };
     return App;
 }(React.Component));
@@ -18913,58 +18966,31 @@ exports.App = App;
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var ReactMdeCommands = __webpack_require__(17);
+exports.ReactMdeCommands = ReactMdeCommands;
+var ReactMdeTypes = __webpack_require__(50);
+exports.ReactMdeTypes = ReactMdeTypes;
+var ReactMdeComponents = __webpack_require__(18);
+exports.ReactMdeComponents = ReactMdeComponents;
 var ReactMdeCommandHelper = __webpack_require__(2);
 exports.ReactMdeCommandHelper = ReactMdeCommandHelper;
 var ReactMdeSelectionHelper = __webpack_require__(9);
 exports.ReactMdeSelectionHelper = ReactMdeSelectionHelper;
 var ReactMdeTextHelper = __webpack_require__(4);
 exports.ReactMdeTextHelper = ReactMdeTextHelper;
-var ReactMde_1 = __webpack_require__(17);
+var ReactMde_1 = __webpack_require__(24);
 exports.ReactMde = ReactMde_1.ReactMde;
 exports.default = ReactMde_1.ReactMde;
 
 
 /***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var boldCommand_1 = __webpack_require__(40);
-exports.boldCommand = boldCommand_1.boldCommand;
-var codeCommand_1 = __webpack_require__(41);
-exports.codeCommand = codeCommand_1.codeCommand;
-var headerCommand_1 = __webpack_require__(42);
-exports.headerCommand = headerCommand_1.headerCommand;
-var imageCommand_1 = __webpack_require__(43);
-exports.imageCommand = imageCommand_1.imageCommand;
-var italicCommand_1 = __webpack_require__(44);
-exports.italicCommand = italicCommand_1.italicCommand;
-var linkCommand_1 = __webpack_require__(45);
-exports.linkCommand = linkCommand_1.linkCommand;
-var orderedCommand_1 = __webpack_require__(46);
-exports.orderedListCommand = orderedCommand_1.orderedListCommand;
-var quoteCommand_1 = __webpack_require__(47);
-exports.quoteCommand = quoteCommand_1.quoteCommand;
-var unorderedListCommand_1 = __webpack_require__(48);
-exports.unorderedListCommand = unorderedListCommand_1.unorderedListCommand;
-var getDefaultCommands = function () { return [
-    [headerCommand_1.headerCommand, boldCommand_1.boldCommand, italicCommand_1.italicCommand],
-    [linkCommand_1.linkCommand, quoteCommand_1.quoteCommand, codeCommand_1.codeCommand, imageCommand_1.imageCommand],
-    [unorderedListCommand_1.unorderedListCommand, orderedCommand_1.orderedListCommand],
-]; };
-exports.getDefaultCommands = getDefaultCommands;
-
-
-/***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18981,7 +19007,7 @@ exports.boldCommand = {
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19022,7 +19048,7 @@ exports.codeCommand = {
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19057,7 +19083,7 @@ exports.headerCommand = {
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19082,7 +19108,7 @@ exports.imageCommand = {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19099,7 +19125,7 @@ exports.italicCommand = {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19124,7 +19150,7 @@ exports.linkCommand = {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19139,7 +19165,7 @@ exports.orderedListCommand = {
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19170,7 +19196,7 @@ exports.quoteCommand = {
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19185,35 +19211,12 @@ exports.unorderedListCommand = {
 
 
 /***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var components_layout_1 = __webpack_require__(50);
-var LayoutMap = /** @class */ (function () {
-    function LayoutMap() {
-        this.vertical = components_layout_1.VerticalLayout;
-    }
-    return LayoutMap;
-}());
-exports.LayoutMap = LayoutMap;
-var layoutMap = new LayoutMap();
-exports.layoutMap = layoutMap;
-
-
-/***/ }),
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(51));
 
 
 /***/ }),
@@ -19232,159 +19235,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var ReactMde_1 = __webpack_require__(17);
-var ReactMdeSelectionHelper_1 = __webpack_require__(9);
-var components_1 = __webpack_require__(52);
-var VerticalLayout = /** @class */ (function (_super) {
-    __extends(VerticalLayout, _super);
-    function VerticalLayout() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        /**
-         * Handler for the textArea value change
-         * @memberOf ReactMde
-         */
-        _this.handleValueChange = function (value) {
-            var onChange = _this.props.onChange;
-            onChange(value);
-        };
-        /**
-         * Executes a command
-         * @memberOf ReactMde
-         */
-        _this.handleCommand = function (command) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, text, onChange, newValue;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = this.props, text = _a.value.text, onChange = _a.onChange;
-                        newValue = command.execute(text, ReactMdeSelectionHelper_1.getSelection(this.textArea));
-                        if (!(newValue instanceof Promise)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, newValue];
-                    case 1:
-                        newValue = _b.sent();
-                        _b.label = 2;
-                    case 2:
-                        // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
-                        newValue.scrollTop = this.textArea.scrollTop;
-                        onChange(newValue);
-                        return [2 /*return*/];
-                }
-            });
-        }); };
-        return _this;
-    }
-    /**
-     * Renders react-mde
-     * @returns
-     * @memberOf ReactMde
-     */
-    VerticalLayout.prototype.render = function () {
-        var _this = this;
-        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps, showdownOptions = _a.showdownOptions, showdownFlavor = _a.showdownFlavor, visibility = _a.visibility, className = _a.className, processHtml = _a.processHtml;
-        var mergedVisibility = __assign({}, ReactMde_1.ReactMde.defaultProps.visibility, visibility);
-        return (React.createElement("div", { className: "react-mde " + className },
-            mergedVisibility.toolbar && React.createElement(components_1.ReactMdeToolbar, { commands: commands, onCommand: this.handleCommand }),
-            mergedVisibility.textarea && React.createElement(components_1.ReactMdeTextArea, { onChange: this.handleValueChange, value: value, textAreaProps: textAreaProps, textAreaRef: function (c) { return _this.textArea = c; } }),
-            mergedVisibility.preview && React.createElement(components_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; }, showdownFlavor: showdownFlavor, showdownOptions: showdownOptions, helpVisible: mergedVisibility.previewHelp, processHtml: processHtml })));
-    };
-    VerticalLayout.defaultProps = {
-        visibility: {
-            toolbar: true,
-            textarea: true,
-            preview: true,
-            previewHelp: true,
-        },
-    };
-    return VerticalLayout;
-}(React.Component));
-exports.VerticalLayout = VerticalLayout;
-
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(18));
-__export(__webpack_require__(19));
-__export(__webpack_require__(20));
-__export(__webpack_require__(21));
-__export(__webpack_require__(22));
-__export(__webpack_require__(53));
-__export(__webpack_require__(55));
-__export(__webpack_require__(56));
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var MarkdownHelp_1 = __webpack_require__(22);
-var Showdown = __webpack_require__(54);
+var MarkdownHelp_1 = __webpack_require__(23);
+var Showdown = __webpack_require__(52);
 var ReactMdePreview = /** @class */ (function (_super) {
     __extends(ReactMdePreview, _super);
     function ReactMdePreview(props) {
@@ -19427,7 +19281,7 @@ exports.ReactMdePreview = ReactMdePreview;
 
 
 /***/ }),
-/* 54 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;;/*! showdown v 1.8.6 - 22-12-2017 */
@@ -23938,7 +23792,7 @@ if (true) {
 
 
 /***/ }),
-/* 55 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24016,16 +23870,16 @@ exports.ReactMdeTextArea = ReactMdeTextArea;
 
 
 /***/ }),
-/* 56 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var HeaderGroup_1 = __webpack_require__(18);
-var HeaderItemDropdown_1 = __webpack_require__(20);
-var HeaderItem_1 = __webpack_require__(19);
+var HeaderGroup_1 = __webpack_require__(19);
+var HeaderItemDropdown_1 = __webpack_require__(21);
+var HeaderItem_1 = __webpack_require__(20);
 exports.ReactMdeToolbar = function (_a) {
     var commands = _a.commands, onCommand = _a.onCommand;
     if (!commands || commands.length === 0) {
@@ -24041,10 +23895,165 @@ exports.ReactMdeToolbar = function (_a) {
 
 
 /***/ }),
-/* 57 */
-/***/ (function(module, exports) {
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var components_layout_1 = __webpack_require__(56);
+var LayoutMap = /** @class */ (function () {
+    function LayoutMap() {
+        this.vertical = components_layout_1.VerticalLayout;
+    }
+    return LayoutMap;
+}());
+exports.LayoutMap = LayoutMap;
+var layoutMap = new LayoutMap();
+exports.layoutMap = layoutMap;
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(57));
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var ReactMde_1 = __webpack_require__(24);
+var ReactMdeSelectionHelper_1 = __webpack_require__(9);
+var components_1 = __webpack_require__(18);
+var VerticalLayout = /** @class */ (function (_super) {
+    __extends(VerticalLayout, _super);
+    function VerticalLayout() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * Handler for the textArea value change
+         * @memberOf ReactMde
+         */
+        _this.handleValueChange = function (value) {
+            var onChange = _this.props.onChange;
+            onChange(value);
+        };
+        /**
+         * Executes a command
+         * @memberOf ReactMde
+         */
+        _this.handleCommand = function (command) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, text, onChange, newValue;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this.props, text = _a.value.text, onChange = _a.onChange;
+                        newValue = command.execute(text, ReactMdeSelectionHelper_1.getSelection(this.textArea));
+                        if (!(newValue instanceof Promise)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, newValue];
+                    case 1:
+                        newValue = _b.sent();
+                        _b.label = 2;
+                    case 2:
+                        // This is necessary because otherwise, when the value is reset, the scroll will jump to the end
+                        newValue.scrollTop = this.textArea.scrollTop;
+                        onChange(newValue);
+                        return [2 /*return*/];
+                }
+            });
+        }); };
+        return _this;
+    }
+    /**
+     * Renders react-mde
+     * @returns
+     * @memberOf ReactMde
+     */
+    VerticalLayout.prototype.render = function () {
+        var _this = this;
+        var _a = this.props, value = _a.value, commands = _a.commands, textAreaProps = _a.textAreaProps, showdownOptions = _a.showdownOptions, showdownFlavor = _a.showdownFlavor, visibility = _a.visibility, className = _a.className, processHtml = _a.processHtml;
+        var mergedVisibility = __assign({}, ReactMde_1.ReactMde.defaultProps.visibility, visibility);
+        return (React.createElement("div", { className: "react-mde " + className },
+            mergedVisibility.toolbar && React.createElement(components_1.ReactMdeToolbar, { commands: commands, onCommand: this.handleCommand }),
+            mergedVisibility.textarea && React.createElement(components_1.ReactMdeTextArea, { onChange: this.handleValueChange, value: value, textAreaProps: textAreaProps, textAreaRef: function (c) { return _this.textArea = c; } }),
+            mergedVisibility.preview && React.createElement(components_1.ReactMdePreview, { markdown: value ? value.text : "", previewRef: function (c) { return _this.preview = c; }, showdownFlavor: showdownFlavor, showdownOptions: showdownOptions, helpVisible: mergedVisibility.previewHelp, processHtml: processHtml })));
+    };
+    VerticalLayout.defaultProps = {
+        visibility: {
+            toolbar: true,
+            textarea: true,
+            preview: true,
+            previewHelp: true,
+        },
+    };
+    return VerticalLayout;
+}(React.Component));
+exports.VerticalLayout = VerticalLayout;
+
 
 /***/ }),
 /* 58 */
@@ -24054,6 +24063,12 @@ exports.ReactMdeToolbar = function (_a) {
 
 /***/ }),
 /* 59 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 60 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
