@@ -1439,7 +1439,14 @@ var ReactMdeTextArea = /** @class */ (function (_super) {
          */
         _this.handleValueChange = function (e) {
             var onChange = _this.props.onChange;
-            onChange({ text: e.currentTarget.value });
+            onChange({
+                text: e.currentTarget.value,
+                scrollTop: e.currentTarget.scrollTop,
+                selection: {
+                    start: e.currentTarget.selectionStart,
+                    end: e.currentTarget.selectionEnd
+                }
+            });
         };
         return _this;
     }
