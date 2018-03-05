@@ -5,6 +5,7 @@ import React = require("react");
 export const headerCommand: CommandSet = {
     type: "dropdown",
     icon: "heading",
+    tooltip: "Add header",
     subCommands: [
         {
             content: <p className="header-1">Header</p>,
