@@ -25,6 +25,7 @@ export const ReactMdeToolbar: React.SFC<ReactMdeToolbarProps> = ({commands, onCo
                                         <HeaderItemDropdown
                                             key={j}
                                             icon={c.icon}
+                                            tooltip={c.tooltip}
                                             commands={(c as CommandSet).subCommands}
                                             onCommand={(cmd) => onCommand(cmd)}
                                         />
