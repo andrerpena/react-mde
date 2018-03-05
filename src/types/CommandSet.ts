@@ -1,3 +1,4 @@
+import * as React from "react";
 import { SubCommand } from "./SubCommand";
 
 export interface CommandSet {

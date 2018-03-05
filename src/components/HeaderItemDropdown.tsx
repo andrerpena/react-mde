@@ -108,7 +108,7 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
             <li className="mde-header-item">
                 <button
                     type="button"
-                    {...buttonProps} 
+                    {...buttonProps}
                     ref={(ref) => {
                         this.dropdownOpener = ref;
                     }}

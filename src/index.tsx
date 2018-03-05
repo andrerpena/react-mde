@@ -1,6 +1,6 @@
 import * as ReactMdeCommands from "./commands";
 import * as ReactMdeTypes from "./types";
-import * as ReactMdeComponents from "./components"
+import * as ReactMdeComponents from "./components";
 import * as ReactMdeCommandHelper from "./helpers/ReactMdeCommandHelper";
 import * as ReactMdeSelectionHelper from "./helpers/ReactMdeSelectionHelper";
 import * as ReactMdeTextHelper from "./helpers/ReactMdeTextHelper";

@@ -6,9 +6,7 @@ import {
     insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
     insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
 } from "./ReactMdeTextHelper";
-import { TextSelection } from "../types/TextSelection";
-import { Value } from "../types/Value";
-import { AlterLineFunction } from "../types/FunctionTypes";
+import { TextSelection, Value, AlterLineFunction } from "../types";
 
 /**
  * Helper for creating commands that make lists

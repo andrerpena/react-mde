@@ -1429,6 +1429,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var HeaderItemDropdownItem_1 = __webpack_require__(22);
@@ -1480,7 +1488,7 @@ var HeaderItemDropdown = /** @class */ (function (_super) {
     };
     HeaderItemDropdown.prototype.render = function () {
         var _this = this;
-        var _a = this.props, icon = _a.icon, commands = _a.commands;
+        var _a = this.props, icon = _a.icon, commands = _a.commands, tooltip = _a.tooltip;
         var open = this.state.open;
         // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
         var iconElement = React.isValidElement(icon) ? icon : React.createElement("i", { className: "fa fa-" + icon, "aria-hidden": "true" });
@@ -1490,10 +1498,17 @@ var HeaderItemDropdown = /** @class */ (function (_super) {
                     _this.dropdown = ref;
                 } }, items))
             : null;
+        var buttonProps = {};
+        if (tooltip) {
+            buttonProps = {
+                "aria-label": tooltip,
+                "className": "tooltipped",
+            };
+        }
         return (React.createElement("li", { className: "mde-header-item" },
-            React.createElement("button", { type: "button", ref: function (ref) {
+            React.createElement("button", __assign({ type: "button" }, buttonProps, { ref: function (ref) {
                     _this.dropdownOpener = ref;
-                }, onClick: this.handleOpenDropdown }, iconElement),
+                }, onClick: this.handleOpenDropdown }), iconElement),
             dropdown));
     };
     return HeaderItemDropdown;
@@ -19059,6 +19074,7 @@ var React = __webpack_require__(0);
 exports.headerCommand = {
     type: "dropdown",
     icon: "heading",
+    tooltip: "Add header",
     subCommands: [
         {
             content: React.createElement("p", { className: "header-1" }, "Header"),
@@ -23887,7 +23903,7 @@ exports.ReactMdeToolbar = function (_a) {
     }
     return (React.createElement("div", { className: "mde-header" }, commands.map(function (cg, i) { return (React.createElement(HeaderGroup_1.HeaderGroup, { key: i }, cg.map(function (c, j) {
         if (c.type === "dropdown") {
-            return (React.createElement(HeaderItemDropdown_1.HeaderItemDropdown, { key: j, icon: c.icon, commands: c.subCommands, onCommand: function (cmd) { return onCommand(cmd); } }));
+            return (React.createElement(HeaderItemDropdown_1.HeaderItemDropdown, { key: j, icon: c.icon, tooltip: c.tooltip, commands: c.subCommands, onCommand: function (cmd) { return onCommand(cmd); } }));
         }
         return React.createElement(HeaderItem_1.HeaderItem, { key: j, icon: c.icon, tooltip: c.tooltip, onClick: function () { return onCommand(c); } });
     }))); })));
