@@ -4,6 +4,8 @@ A simple yet powerful and extensible Markdown Editor editor for React, inspired 
 
 ![image](https://github.com/andrerpena/react-mde/blob/master/assets/react-mde.png)
 
+> Warning: React-mde is not yet stable and ready for production use even though we're working very hard towards it. Its main current problem now is that Ctrl + Z doesn't work 100% (after executing a command, history gets messy). I, @andrerpena, am curretly working to replace the textarea with Facebook's Draft.js, this will solve the history problem and will make it easy to implement mentions and copying files. I'm also working on making the command infrastructure more rebust. Expect a major breaking change (5.\*) coming on the 18th of March. After this, my goal will be to provide a GitHub like layout. React-mde currently supports multiple layouts already, but just a simple vertical one is provided out of the box. I want provide 2 refined layouts: Stackoverflow and GitHub. I'm really sorry for the constant breaking change releases. It was my fault. I should have used minor versions (0.\*) until a final version was reached, but I can't fix that now. I will make sure that 5.* will be a pretty stable version. Thanks for your comprehension and support.  
+
 ## Demos
 
 Demos are provided through https://codesandbox.io. Feel free to fork and play with different options :smile:.
