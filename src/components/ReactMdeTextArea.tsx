@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Value } from "../types";
 import { setSelection } from "../helpers/ReactMdeSelectionHelper";
+import { Editor, EditorState } from 'draft-js';
 
 export interface ReactMdeTextAreaProps {
     onChange: (value: Value) => void;
