@@ -1,12 +1,12 @@
-import {Command, TextSelection} from "../types";
-import {makeACommandThatInsertsBeforeAndAfter} from "../helpers/ReactMdeCommandHelper";
+import {Command} from "../types";
+import {insertBeforeAndAfter} from "../MarkdownUtil";
 
 export const boldCommand: Command = {
     icon: "bold",
     tooltip:
         "Add bold text",
     execute:
-        (text: string, selection: TextSelection) => {
-            return makeACommandThatInsertsBeforeAndAfter(text, selection, "**");
+        (getMarkdownState, setMarkdownState) => {
+            setMarkdownState(insertBeforeAndAfter(getMarkdownState(), "**"));
         },
 };

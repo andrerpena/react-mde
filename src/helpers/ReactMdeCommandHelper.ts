@@ -6,7 +6,7 @@ import {
     insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
     insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
 } from "./ReactMdeTextHelper";
-import { TextSelection, Value, AlterLineFunction } from "../types";
+import { TextSelection, MdeState, AlterLineFunction } from "../types";
 
 /**
  * Helper for creating commands that make lists
@@ -16,7 +16,7 @@ import { TextSelection, Value, AlterLineFunction } from "../types";
  * @param {any} insertionBeforeEachLine
  * @returns
  */
-export function makeList(text: string, selection: TextSelection, insertionBeforeEachLine: string | AlterLineFunction): Value {
+export function makeList(text: string, selection: TextSelection, insertionBeforeEachLine: string | AlterLineFunction): MdeState {
     let textInsertion;
 
     selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
@@ -49,7 +49,7 @@ export function makeList(text: string, selection: TextSelection, insertionBefore
  * @param {any} insertionBefore
  * @returns
  */
-export function makeHeader(text: string, selection: TextSelection, insertionBefore: string): Value {
+export function makeHeader(text: string, selection: TextSelection, insertionBefore: string): MdeState {
     selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
     // the user is selecting a word section
     const insertionText = insertBefore(text, insertionBefore, selection, false);
@@ -61,16 +61,3 @@ export function makeHeader(text: string, selection: TextSelection, insertionBefo
     };
 }
 
-export function makeACommandThatInsertsBeforeAndAfter(text: string, selection: TextSelection, insertion: string): Value {
-    selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
-    // the user is selecting a word section
-    const { newText, insertionLength } = insertText(text, insertion, selection.start);
-    const finalText = insertText(newText, insertion, selection.end + insertionLength).newText;
-    return {
-        text: finalText,
-        selection: {
-            start: selection.start + insertionLength,
-            end: selection.end + insertionLength,
-        },
-    };
-}

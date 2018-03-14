@@ -2,7 +2,7 @@ import * as React from "react";
 import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "../src";
 
 interface AppState {
-    reactMdeValue: ReactMdeTypes.Value;
+    mdeState: ReactMdeTypes.MdeState;
 }
 
 export class App extends React.Component<{}, AppState> {
@@ -10,12 +10,12 @@ export class App extends React.Component<{}, AppState> {
     constructor(props) {
         super(props);
         this.state = {
-            reactMdeValue: {text: ""},
+            mdeState: null,
         };
     }
 
-    handleValueChange = (value: ReactMdeTypes.Value) => {
-        this.setState({reactMdeValue: value});
+    handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
+        this.setState({mdeState: mdeState});
     }
 
     render() {
@@ -26,7 +26,7 @@ export class App extends React.Component<{}, AppState> {
                         id: "ta1",
                         name: "ta1",
                     }}
-                    value={this.state.reactMdeValue}
+                    value={this.state.mdeState}
                     onChange={this.handleValueChange}
                     commands={ReactMdeCommands.getDefaultCommands()}
                     showdownOptions={{tables: true, simplifiedAutoLink: true}}

@@ -1,10 +1,9 @@
 import * as React from "react";
-import { TextSelection } from "./TextSelection";
-import { Value } from "./Value";
+import {MarkdownState} from "./MarkdownState";
 
 export interface Command {
     type?: string;
     icon?: React.ReactNode;
     tooltip?: string;
-    execute: (text: string, selection: TextSelection) => Value | Promise<Value>;
+    execute: (getMarkdownState: () => MarkdownState, setMarkdownState: (state: MarkdownState) => void, lockEditor?: (lock: boolean) => void) => void;
 }
