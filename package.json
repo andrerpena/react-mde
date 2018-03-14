@@ -78,6 +78,5 @@
     "react-dom": "^16.0.0",
     "showdown": "^1.8.1",
     "draft-js": "^0.10.5",
-    "immutable": "^3.8.2"
   }
 }

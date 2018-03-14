@@ -4,7 +4,7 @@ export * from "./FunctionTypes";
 export * from "./SubCommand";
 export * from "./TextInsertionResult";
 export * from "./TextSelection";
-export * from "./Value";
 export * from "./Word";
 export * from "./ShowdownFlavor";
-export * from "./LayoutType";
+export * from "./MdeEditorState"
+export * from "./MdeState";

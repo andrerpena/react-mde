@@ -5,6 +5,6 @@ import { TextSelection } from "./TextSelection";
 
 export interface TextInsertionResult {
     newText: string;
-    insertionLength: number;
     newSelection?: TextSelection;
+    insertionLength: number;
 }

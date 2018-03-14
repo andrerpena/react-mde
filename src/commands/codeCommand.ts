@@ -1,26 +1,29 @@
+import {Command, TextSelection} from "../types";
 import {
     insertAfter,
-    insertBefore, insertBreaksAfterSoThatThereIsAnEmptyLineAfter, insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
-    selectCurrentWordIfCaretIsInsideOne,
-} from "../helpers/ReactMdeTextHelper";
-import {Command, TextSelection} from "../types";
-import {makeACommandThatInsertsBeforeAndAfter} from "../helpers/ReactMdeCommandHelper";
+    insertBefore,
+    insertBeforeAndAfter, insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
+    insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
+    selectWordIfCaretIsInsideOne
+} from "../MarkdownUtil";
 
 export const codeCommand: Command = {
     icon: "code",
     tooltip: "Insert code",
     execute:
-        (text = "", selection: TextSelection) => {
-            selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
+        (getMarkdownState, setMarkdownState) => {
+            let {text, selection} = getMarkdownState();
+            selection = selectWordIfCaretIsInsideOne({text, selection});
 
             if (text.slice(selection.start, selection.end).indexOf("\n") === -1) {
                 // when there's no breaking line
-                return makeACommandThatInsertsBeforeAndAfter(text, selection, "`");
+                setMarkdownState(insertBeforeAndAfter({text, selection}, "`"));
+                return;
             }
             let textInsertion;
 
             // insert breaks before, if needed
-            textInsertion = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
+            textInsertion = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore({text, selection});
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
@@ -39,6 +42,6 @@ export const codeCommand: Command = {
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
-            return {text, selection};
+            setMarkdownState({text, selection});
         },
 };
