@@ -1,9 +1,9 @@
 import * as React from "react";
-import { SubCommand } from "./SubCommand";
+import {Command} from "./Command";
 
 export interface CommandSet {
     type?: string;
     icon?: React.ReactNode;
     tooltip?: string;
-    subCommands?: SubCommand[];
+    commands?: Command[];
 }

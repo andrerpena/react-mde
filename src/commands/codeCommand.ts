@@ -1,10 +1,10 @@
-import {Command, TextSelection} from "../types";
+import {Command} from "../types";
 import {
     insertAfter,
     insertBefore,
     insertBeforeAndAfter, insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
     insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
-    selectWordIfCaretIsInsideOne
+    selectWordIfCaretIsInsideOne,
 } from "../MarkdownUtil";
 
 export const codeCommand: Command = {

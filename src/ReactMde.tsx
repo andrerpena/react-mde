@@ -54,23 +54,26 @@ export class ReactMde extends React.Component<ReactMdeProps> {
     }
 
     onCommand(command: Command) {
-        const { editorState } = this.props;
         command.execute(
-            () => getMarkdownStateFromDraftState(editorState.draftEditorState),
+            () => getMarkdownStateFromDraftState(this.props.editorState.draftEditorState),
             (state: MarkdownState) => this.handleOnChange(getDraftStateFromMarkdownState(state)),
-            (lock) => {}
+            () => this.props.editorState.draftEditorState,
+            (state: EditorState) => this.handleOnChange(state),
+            (lock) => {},
         );
     }
 
     render() {
         const Layout = layoutMap[this.props.layout];
-        const { commands, layoutOptions, editorState } = this.props;
-        return <Layout
-            onChange={this.handleOnChange}
-            onCommand={this.onCommand}
-            commands={commands}
-            layoutOptions={layoutOptions}
-            mdeEditorState={editorState}
-        />
+        const {commands, layoutOptions, editorState} = this.props;
+        return (
+            <Layout
+                onChange={this.handleOnChange}
+                onCommand={this.onCommand}
+                commands={commands}
+                layoutOptions={layoutOptions}
+                mdeEditorState={editorState}
+            />
+        );
     }
 }

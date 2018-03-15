@@ -6,7 +6,7 @@ export const headerCommand: CommandSet = {
     type: "dropdown",
     icon: "heading",
     tooltip: "Add header",
-    subCommands: [
+    commands: [
         {
             content: <p className="header-1">Header</p>,
             execute: (text: string, selection: TextSelection) => {
