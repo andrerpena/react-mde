@@ -1,19 +1,21 @@
+import {Command} from "../types";
 import {
-    insertBefore, insertBreaksAfterSoThatThereIsAnEmptyLineAfter, insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
-    selectCurrentWordIfCaretIsInsideOne,
-} from "../helpers/ReactMdeTextHelper";
-import {Command, TextSelection} from "../types";
+    insertBefore, insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
+    insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
+    selectWordIfCaretIsInsideOne
+} from "../MarkdownUtil";
 
 export const quoteCommand: Command = {
     icon: "quote-right",
     tooltip: "Insert a quote",
     execute:
-        (text: string, selection: TextSelection) => {
-            selection = selectCurrentWordIfCaretIsInsideOne(text, selection);
+        (getMarkdownState, setMarkdownState) => {
+            let {text, selection} = getMarkdownState();
+            selection = selectWordIfCaretIsInsideOne({text, selection});
 
             let textInsertion;
 
-            textInsertion = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text, selection);
+            textInsertion = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore({text, selection});
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
@@ -25,9 +27,9 @@ export const quoteCommand: Command = {
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
-            return {
+            setMarkdownState({
                 text,
                 selection,
-            };
+            });
         },
 };

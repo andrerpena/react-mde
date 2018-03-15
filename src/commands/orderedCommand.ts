@@ -1,8 +1,11 @@
-import {Command, TextSelection} from "../types";
-import {makeList} from "../helpers/ReactMdeCommandHelper";
+import {Command} from "../types";
+import {makeList} from "../MarkdownUtil";
 
 export const orderedListCommand: Command = {
     icon: "list-ol",
     tooltip: "Add a numbered list",
-    execute: (text: string, selection: TextSelection) => makeList(text, selection, (item: string, index: number) => `${index + 1}. `),
+    execute: (getMarkdownState, setMarkdownState) =>
+        setMarkdownState(
+            makeList(getMarkdownState(),
+                (item: string, index: number) => `${index + 1}. `)),
 };

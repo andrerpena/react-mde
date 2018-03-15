@@ -38,7 +38,7 @@ export const codeCommand: Command = {
             selection = textInsertion.newSelection;
 
             // insert breaks after, if needed
-            textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
+            textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter({text, selection});
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 

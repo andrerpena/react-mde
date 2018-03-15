@@ -1,8 +1,8 @@
-import {Command, TextSelection} from "../types";
-import {makeList} from "../helpers/ReactMdeCommandHelper";
+import {Command} from "../types";
+import {makeList} from "../MarkdownUtil";
 
 export const unorderedListCommand: Command = {
     icon: "list-ul",
     tooltip: "Add a bulleted list",
-    execute: (text: string, selection: TextSelection) => makeList(text, selection, "- "),
+    execute: (getMarkdownState, setMarkdownState) => setMarkdownState(makeList(getMarkdownState(), "- ")),
 };

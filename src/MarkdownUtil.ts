@@ -1,8 +1,6 @@
 import {EditorState} from "draft-js";
 import {MarkdownState} from "./types/MarkdownState";
-import {TextInsertionResult, TextSelection, Word} from "./types";
-import {getBreaksNeededForEmptyLineBefore} from "./helpers/ReactMdeTextHelper";
-import {AlterLineFunction} from "./types/FunctionTypes";
+import {TextInsertionResult, TextSelection, Word, AlterLineFunction} from "./types";
 
 const getContentLengthOfAllBlocksBefore = (editorState, key) => {
     let count = 0;
@@ -63,7 +61,6 @@ export function getDraftStateFromMarkdownState(markdownState: MarkdownState): Ed
 
 }
 
-
 export function getSurroundingWord(text: string, position: number): Word {
     if (!text) throw Error("Argument 'text' should be truthy");
 
@@ -99,16 +96,11 @@ export function getSurroundingWord(text: string, position: number): Word {
     };
 }
 
-export function insertText(originalText: string, textToInsert: string, insertionPosition: number): TextInsertionResult {
-    const newText = [originalText.slice(0, insertionPosition), textToInsert, originalText.slice(insertionPosition)].join("");
-    return {newText, insertionLength: textToInsert.length};
-}
-
 export function insertBeforeAndAfter(markdownState: MarkdownState, insertion: string): MarkdownState {
-    let { text, selection } = markdownState;
+    let {text, selection} = markdownState;
     selection = selectWordIfCaretIsInsideOne({text, selection});
     // the user is selecting a word section
-    const { newText, insertionLength } = insertText(text, insertion, selection.start);
+    const {newText, insertionLength} = insertText(text, insertion, selection.start);
     const finalText = insertText(newText, insertion, selection.end + insertionLength).newText;
     return {
         text: finalText,
@@ -276,11 +268,10 @@ export function getBreaksNeededForEmptyLineAfter(text = "", startPosition: numbe
  * Inserts breaks after, only if needed. The returned selection will not include this breaks
  *
  * @export
- * @param {any} text
- * @param {any} selection
  * @returns
+ * @param markdownState
  */
-export function insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text: string, selection: TextSelection): TextInsertionResult {
+export function insertBreaksAfterSoThatThereIsAnEmptyLineAfter({text, selection}: MarkdownState): TextInsertionResult {
     const breaksNeededBefore = getBreaksNeededForEmptyLineAfter(text, selection.end);
     const insertionAfter = Array(breaksNeededBefore + 1).join("\n");
 
@@ -331,4 +322,55 @@ export function insertBeforeEachLine(text: string, insertion: string | AlterLine
     };
 }
 
-// MISC
+
+/**
+ * Helper for creating commands that make lists
+ * @export
+ * @param markdownState
+ * @param {any} insertionBeforeEachLine
+ * @returns
+ */
+export function makeList({text, selection}: MarkdownState, insertionBeforeEachLine: string | AlterLineFunction): MarkdownState {
+    let textInsertion;
+
+    selection = selectWordIfCaretIsInsideOne({text, selection});
+
+    // insert breaks before, if needed
+    textInsertion = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore({text, selection});
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
+
+    // insert breaks after, if needed
+    textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter({text, selection});
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
+
+    // inserts 'insertionBeforeEachLine' before each line
+    textInsertion = insertBeforeEachLine(text, insertionBeforeEachLine, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
+
+    return {
+        text,
+        selection,
+    };
+}
+
+/**
+ * Helper for creating a command that makes a header
+ * @param {any} text
+ * @param {any} selection
+ * @param {any} insertionBefore
+ * @returns
+ */
+export function makeHeader({text, selection}: MarkdownState, insertionBefore: string): MarkdownState {
+    selection = selectWordIfCaretIsInsideOne({text, selection});
+    // the user is selecting a word section
+    const insertionText = insertBefore(text, insertionBefore, selection, false);
+    const newText = insertionText.newText;
+    const newSelection = insertionText.newSelection;
+    return {
+        text: newText,
+        selection: newSelection,
+    };
+}
