@@ -6,7 +6,7 @@ export interface HeaderItemProps {
     onClick: React.MouseEventHandler<any>;
 }
 
-export const HeaderItem: React.SFC<HeaderItemProps> = (props) => {
+export const MdeToolbarButton: React.SFC<HeaderItemProps> = (props) => {
 
     const {icon, tooltip, onClick} = props;
 

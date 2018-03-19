@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Command, CommandSet } from "../types/index";
-import { HeaderGroup } from "./HeaderGroup";
-import { HeaderItemDropdown } from "./HeaderItemDropdown";
-import { HeaderItem } from "./HeaderItem";
+import { Command } from "../types";
+import { MdeToolbarButtonGroup } from "./MdeToolbarButtonGroup";
+import { HeaderItemDropdown } from "./MdeToolbarDropdown";
+import { MdeToolbarButton } from "./MdeToolbarButton";
 
 export interface ReactMdeToolbarProps {
-    commands: Array<Array<Command | CommandSet>>;
+    commands: Array<Array<Command>>;
     onCommand: (command: Command) => void;
 }
 
@@ -16,11 +16,11 @@ export const ReactMdeToolbar: React.SFC<ReactMdeToolbarProps> = ({commands, onCo
     return (
         <div className="mde-header">
             {
-                commands.map((cg: Array<Command | CommandSet>, i: number) => (
-                    <HeaderGroup key={i}>
+                commands.map((cg: Array<Command>, i: number) => (
+                    <MdeToolbarButtonGroup key={i}>
                         {
-                            cg.map((c: Command | CommandSet, j) => {
-                                if (c.type === "dropdown") {
+                            cg.map((c: Command, j) => {
+                                if (c.commands) {
                                     return (
                                         <HeaderItemDropdown
                                             key={j}
@@ -31,7 +31,7 @@ export const ReactMdeToolbar: React.SFC<ReactMdeToolbarProps> = ({commands, onCo
                                         />
                                     );
                                 }
-                                return <HeaderItem
+                                return <MdeToolbarButton
                                     key={j}
                                     icon={c.icon}
                                     tooltip={c.tooltip}
@@ -39,7 +39,7 @@ export const ReactMdeToolbar: React.SFC<ReactMdeToolbarProps> = ({commands, onCo
                                 />;
                             })
                         }
-                    </HeaderGroup>))}
+                    </MdeToolbarButtonGroup>))}
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import {Command} from "../types";
-import {insertText} from "../MarkdownUtil";
+import {insertText} from "../util/MarkdownUtil";
 
 export const imageCommand: Command = {
     icon: "image",

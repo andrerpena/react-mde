@@ -1,6 +1,6 @@
 import * as React from "react";
 import {MdeState} from "../types";
-import {Editor, EditorState} from 'draft-js';
+import {Editor, EditorState} from "draft-js";
 
 export interface MdeEditorProps {
     onChange: (value: EditorState) => void;
@@ -13,7 +13,7 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
 
     handleOnChange(editorState: EditorState) {
         const {onChange} = this.props;
-        onChange(editorState)
+        onChange(editorState);
     }
 
     render() {

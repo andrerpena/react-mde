@@ -1,65 +1,6 @@
-import {EditorState} from "draft-js";
-import {MarkdownState} from "./types/MarkdownState";
-import {TextInsertionResult, TextSelection, Word, AlterLineFunction} from "./types";
-
-const getContentLengthOfAllBlocksBefore = (editorState, key) => {
-    let count = 0;
-    let blockBefore, currentKey = key;
-    while (blockBefore = editorState.getCurrentContent().getBlockBefore(currentKey)) {
-        // we have to add 1 here to account for the \n character
-        count += blockBefore.getText().length + 1;
-        currentKey = blockBefore.getKey();
-    }
-    return count;
-};
-
-const getContentLengthBetween = (editorState, startKey, startOffset, endKey, endOffset) => {
-    if (startKey === endKey) {
-        return endOffset - startOffset;
-    }
-    let count = editorState.getCurrentContent().getBlockForKey(startKey).getText().length - startOffset;
-    let blockAfter, currentKey = startKey;
-    while (blockAfter = editorState.getCurrentContent().getBlockAfter(currentKey)) {
-        if (blockAfter.getKey() === endKey) {
-            break;
-        }
-        // we have to add 1 here to account for the \n character
-        count += (blockAfter.getText().length + 1);
-        currentKey = blockAfter.getKey();
-    }
-    // we have to add 1 here to account for the \n character
-    count += endOffset + 1;
-    return count;
-};
-
-export function getPlainText(editorState: EditorState): string {
-    return editorState.getCurrentContent().getPlainText('\n')
-}
-
-export function getSelection(editorState): TextSelection {
-    const selection = editorState.getSelection();
-
-    const startKey = selection.getStartKey();
-    const startOffset = selection.getStartOffset();
-    const endKey = selection.getEndKey();
-    const endOffset = selection.getEndOffset();
-
-    const editorWiseOffset = getContentLengthOfAllBlocksBefore(editorState, startKey);
-    const offsetBetweenKeys = getContentLengthBetween(editorState, startKey, startOffset, endKey, endOffset);
-    // start and end are on the same block
-    return {start: startOffset + editorWiseOffset, end: startOffset + offsetBetweenKeys + editorWiseOffset}
-}
-
-export function getMarkdownStateFromDraftState(editorState: EditorState): MarkdownState {
-    return {
-        text: getPlainText(editorState),
-        selection: getSelection(editorState)
-    }
-}
-
-export function getDraftStateFromMarkdownState(markdownState: MarkdownState): EditorState {
-
-}
+import {MarkdownState} from "../types/MarkdownState";
+import {TextInsertionResult, TextSelection, Word, AlterLineFunction} from "../types";
+import {getContentLengthBetween, getContentLengthOfAllBlocksBefore} from "./DraftUtil";
 
 export function getSurroundingWord(text: string, position: number): Word {
     if (!text) throw Error("Argument 'text' should be truthy");
@@ -152,7 +93,6 @@ export function insertBreaksBeforeSoThatThereIsAnEmptyLineBefore({text, selectio
     };
 }
 
-
 /**
  * Inserts the given text before. The selection is moved ahead so the
  *
@@ -190,7 +130,6 @@ export function insertAfter(originalText: string, textToInsert: string, selectio
     return {...textInsertion, newSelection};
 }
 
-
 /**
  * Inserts "textToBeInserted" in "text" at the "insertionPosition"
  *
@@ -203,7 +142,6 @@ export function insertText(originalText: string, textToInsert: string, insertion
     const newText = [originalText.slice(0, insertionPosition), textToInsert, originalText.slice(insertionPosition)].join("");
     return {newText, insertionLength: textToInsert.length};
 }
-
 
 /**
  *  Gets the number of line-breaks that would have to be inserted before the given 'startPosition'
@@ -321,7 +259,6 @@ export function insertBeforeEachLine(text: string, insertion: string | AlterLine
         },
     };
 }
-
 
 /**
  * Helper for creating commands that make lists

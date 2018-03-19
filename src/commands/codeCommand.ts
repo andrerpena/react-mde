@@ -5,7 +5,7 @@ import {
     insertBeforeAndAfter, insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
     insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
     selectWordIfCaretIsInsideOne,
-} from "../MarkdownUtil";
+} from "../util/MarkdownUtil";
 
 export const codeCommand: Command = {
     icon: "code",

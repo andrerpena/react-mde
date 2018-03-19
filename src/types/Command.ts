@@ -13,6 +13,5 @@ export interface Command {
         setMarkdownState: (state: MarkdownState) => void,
         getEditorState?: () => EditorState,
         setEditorState?: (state: EditorState) => void,
-        lockEditor?: (lock: boolean) => void,
     ) => void;
 }

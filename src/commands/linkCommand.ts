@@ -1,5 +1,5 @@
 import {Command} from "../types";
-import {insertText} from "../MarkdownUtil";
+import {insertText} from "../util/MarkdownUtil";
 
 export const linkCommand: Command = {
     icon: "link",
@@ -16,6 +16,6 @@ export const linkCommand: Command = {
                     start: selection.start + insertionLength,
                     end: selection.end + insertionLength,
                 },
-            })
+            });
         },
 };

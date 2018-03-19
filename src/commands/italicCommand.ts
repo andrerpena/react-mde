@@ -1,5 +1,5 @@
 import {Command} from "../types";
-import {insertBeforeAndAfter} from "../MarkdownUtil";
+import {insertBeforeAndAfter} from "../util/MarkdownUtil";
 
 export const italicCommand: Command = {
     icon: "italic",

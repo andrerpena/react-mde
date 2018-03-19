@@ -1,5 +1,5 @@
 import {Command} from "../types";
-import {makeList} from "../MarkdownUtil";
+import {makeList} from "../util/MarkdownUtil";
 
 export const orderedListCommand: Command = {
     icon: "list-ol",

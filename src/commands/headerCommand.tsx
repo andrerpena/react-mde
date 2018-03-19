@@ -1,6 +1,6 @@
 import {Command} from "../types";
 import React = require("react");
-import {makeHeader} from "../MarkdownUtil";
+import {makeHeader} from "../util/MarkdownUtil";
 
 export const headerCommand: Command = {
     icon: "heading",
@@ -9,21 +9,21 @@ export const headerCommand: Command = {
         {
             text: <p className="header-1">Header</p>,
             execute: (getMarkdownState, setMarkdownState) => {
-                const {text, selection} = getMarkdownState()
+                const {text, selection} = getMarkdownState();
                 setMarkdownState(makeHeader({text, selection}, "# "));
             },
         },
         {
             text: <p className="header-2">Header</p>,
             execute: (getMarkdownState, setMarkdownState) => {
-                const {text, selection} = getMarkdownState()
+                const {text, selection} = getMarkdownState();
                 setMarkdownState(makeHeader({text, selection}, "## "));
             },
         },
         {
             text: <p className="header-3">Header</p>,
             execute: (getMarkdownState, setMarkdownState) => {
-                const {text, selection} = getMarkdownState()
+                const {text, selection} = getMarkdownState();
                 setMarkdownState(makeHeader({text, selection}, "### "));
             },
         },

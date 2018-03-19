@@ -2,8 +2,8 @@ import {Command} from "../types";
 import {
     insertBefore, insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
     insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
-    selectWordIfCaretIsInsideOne
-} from "../MarkdownUtil";
+    selectWordIfCaretIsInsideOne,
+} from "../util/MarkdownUtil";
 
 export const quoteCommand: Command = {
     icon: "quote-right",

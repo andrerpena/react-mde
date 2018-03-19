@@ -1,19 +1,18 @@
 import * as React from "react";
 
-import {Command, CommandSet, MdeState} from "./types";
+import {Command, MdeState} from "./types";
 import {getDefaultCommands} from "./commands";
 import {layoutMap, LayoutMap} from "./LayoutMap";
 import {MarkdownOptions} from "./types/MarkdownOptions";
 import * as Showdown from "showdown";
 import {EditorState} from "draft-js";
-import * as MarkdownUtil from "./MarkdownUtil";
-import {getDraftStateFromMarkdownState, getMarkdownStateFromDraftState} from "./MarkdownUtil";
 import {MarkdownState} from "./types/MarkdownState";
+import {getDraftStateFromMarkdownState, getMarkdownStateFromDraftState, getPlainText} from "./util/DraftUtil";
 
 export interface ReactMdeProps {
     editorState: MdeState;
     className?: string;
-    commands?: Array<Array<Command | CommandSet>>;
+    commands?: Command[][];
     onChange: (value: MdeState) => void;
     markdownOptions?: MarkdownOptions;
     processHtml?: (html: string) => string;
@@ -47,10 +46,10 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
     handleOnChange(editorState: EditorState) {
         const {onChange, processHtml} = this.props;
-        const markdown = MarkdownUtil.getPlainText(editorState);
+        const markdown = getPlainText(editorState);
         const rawHtml = this.converter.makeHtml(markdown) || "<p>&nbsp</p>";
         const html = processHtml ? processHtml(rawHtml) : rawHtml;
-        onChange({markdown, html, draftEditorState: editorState})
+        onChange({markdown, html, draftEditorState: editorState});
     }
 
     onCommand(command: Command) {
@@ -59,7 +58,6 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             (state: MarkdownState) => this.handleOnChange(getDraftStateFromMarkdownState(state)),
             () => this.props.editorState.draftEditorState,
             (state: EditorState) => this.handleOnChange(state),
-            (lock) => {},
         );
     }
 

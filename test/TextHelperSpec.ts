@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {insertText, getSurroundingWord} from "../src/helpers/ReactMdeTextHelper";
+import {getSurroundingWord, insertText} from "../src/util/MarkdownUtil";
 
 describe("TextHelperSpec.js", () => {
     describe("insertText", () => {
