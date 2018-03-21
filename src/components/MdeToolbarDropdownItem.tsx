@@ -4,7 +4,7 @@ export interface HeaderItemDropdownItemProps {
     onClick: React.MouseEventHandler<any>;
 }
 
-export const HeaderItemDropdownItem: React.SFC<HeaderItemDropdownItemProps> = (props) => {
+export const MdeToolbarDropdownItem: React.SFC<HeaderItemDropdownItemProps> = (props) => {
     const {onClick, children} = props;
     return (
         <li className="mde-dropdown-header-item">

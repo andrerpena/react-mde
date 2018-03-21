@@ -7,7 +7,7 @@ export interface Command {
     text?: React.ReactNode;
     tooltip?: string;
     className?: string;
-    commands?: Command[];
+    children?: Command[];
     execute?: (
         getMarkdownState: () => MarkdownState,
         setMarkdownState: (state: MarkdownState) => void,

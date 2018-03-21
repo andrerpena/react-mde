@@ -1,15 +1,15 @@
 import * as React from "react";
 import { Command } from "../types";
 import { MdeToolbarButtonGroup } from "./MdeToolbarButtonGroup";
-import { HeaderItemDropdown } from "./MdeToolbarDropdown";
+import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
 
-export interface ReactMdeToolbarProps {
+export interface MdeToolbarProps {
     commands: Array<Array<Command>>;
     onCommand: (command: Command) => void;
 }
 
-export const ReactMdeToolbar: React.SFC<ReactMdeToolbarProps> = ({commands, onCommand}) => {
+export const MdeToolbar: React.SFC<MdeToolbarProps> = ({commands, onCommand}) => {
     if (!commands || commands.length === 0) {
         return null;
     }
@@ -20,13 +20,13 @@ export const ReactMdeToolbar: React.SFC<ReactMdeToolbarProps> = ({commands, onCo
                     <MdeToolbarButtonGroup key={i}>
                         {
                             cg.map((c: Command, j) => {
-                                if (c.commands) {
+                                if (c.children) {
                                     return (
-                                        <HeaderItemDropdown
+                                        <MdeToolbarDropdown
                                             key={j}
                                             icon={c.icon}
                                             tooltip={c.tooltip}
-                                            commands={(c as CommandSet).subCommands}
+                                            commands={c.children}
                                             onCommand={(cmd) => onCommand(cmd)}
                                         />
                                     );

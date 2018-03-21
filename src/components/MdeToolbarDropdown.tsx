@@ -1,5 +1,5 @@
 import * as React from "react";
-import { HeaderItemDropdownItem } from "./HeaderItemDropdownItem";
+import { MdeToolbarDropdownItem } from "./MdeToolbarDropdownItem";
 import {Command} from "../types";
 
 export interface HeaderItemDropdownProps {
@@ -13,7 +13,7 @@ export interface HeaderItemDropdownState {
     open: boolean;
 }
 
-export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps, HeaderItemDropdownState> {
+export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps, HeaderItemDropdownState> {
 
     dropdown: any; // TODO: Change this type
     dropdownOpener: any; // TODO: Change this type
@@ -78,9 +78,9 @@ export class HeaderItemDropdown extends React.Component<HeaderItemDropdownProps,
         const iconElement = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"/>;
 
         const items = commands.map((command, index) => (
-            <HeaderItemDropdownItem key={index} onClick={(e) => this.handleOnClickCommand(e, command)}>
+            <MdeToolbarDropdownItem key={index} onClick={(e) => this.handleOnClickCommand(e, command)}>
                 {command.content}
-            </HeaderItemDropdownItem>
+            </MdeToolbarDropdownItem>
         ));
 
         const dropdown = open

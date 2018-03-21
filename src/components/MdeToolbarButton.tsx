@@ -1,12 +1,12 @@
 import * as React from "react";
 
-export interface HeaderItemProps {
+export interface HeaderNdeToolbarButtonProps {
     icon: React.ReactNode;
     tooltip: string;
     onClick: React.MouseEventHandler<any>;
 }
 
-export const MdeToolbarButton: React.SFC<HeaderItemProps> = (props) => {
+export const MdeToolbarButton: React.SFC<HeaderNdeToolbarButtonProps> = (props) => {
 
     const {icon, tooltip, onClick} = props;
 

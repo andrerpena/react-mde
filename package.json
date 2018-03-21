@@ -77,7 +77,6 @@
   "peerDependencies": {
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "showdown": "^1.8.1",
     "draft-js": "^0.10.5"
   }
 }

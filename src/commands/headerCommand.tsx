@@ -5,7 +5,7 @@ import {makeHeader} from "../util/MarkdownUtil";
 export const headerCommand: Command = {
     icon: "heading",
     tooltip: "Add header",
-    commands: [
+    children: [
         {
             text: <p className="header-1">Header</p>,
             execute: (getMarkdownState, setMarkdownState) => {
