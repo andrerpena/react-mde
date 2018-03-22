@@ -1,13 +1,15 @@
+import * as React from "react";
 import {Command} from "../types";
 import {
     insertBefore, insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
     insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
     selectWordIfCaretIsInsideOne,
 } from "../util/MarkdownUtil";
+import {MdeToolbarIcon} from "../components";
 
 export const quoteCommand: Command = {
-    icon: "quote-right",
-    tooltip: "Insert a quote",
+    buttonContent: <MdeToolbarIcon icon="quote-right"/>,
+    buttonProps: { "aria-label": "Insert a quote" },
     execute:
         (getMarkdownState, setMarkdownState) => {
             let {text, selection} = getMarkdownState();
@@ -23,7 +25,7 @@ export const quoteCommand: Command = {
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 
-            textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text, selection);
+            textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter({text, selection});
             text = textInsertion.newText;
             selection = textInsertion.newSelection;
 

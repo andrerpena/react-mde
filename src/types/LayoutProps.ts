@@ -5,7 +5,7 @@ import {EditorState} from "draft-js";
 export interface LayoutProps {
     onChange: (editorState: EditorState) => void;
     onCommand: (command: Command) => void;
-    commands?: Array<Array<Command>>;
+    commands?: Command[][];
     layoutOptions: any;
     mdeEditorState: MdeState;
 }

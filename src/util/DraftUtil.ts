@@ -6,7 +6,11 @@ export function getContentLengthOfAllBlocksBefore(editorState, key) {
     let count = 0;
     let blockBefore;
     let currentKey = key;
-    while (blockBefore = editorState.getCurrentContent().getBlockBefore(currentKey)) {
+    while (true) {
+        blockBefore = editorState.getCurrentContent().getBlockBefore(currentKey);
+        if (blockBefore) {
+            break;
+        }
         // we have to add 1 here to account for the \n character
         count += blockBefore.getText().length + 1;
         currentKey = blockBefore.getKey();
@@ -33,9 +37,11 @@ export function getContentLengthBetween(editorState, startKey, startOffset, endK
         return endOffset - startOffset;
     }
     let count = editorState.getCurrentContent().getBlockForKey(startKey).getText().length - startOffset;
-    let blockAfter, currentKey = startKey;
-    while (blockAfter = editorState.getCurrentContent().getBlockAfter(currentKey)) {
-        if (blockAfter.getKey() === endKey) {
+    let blockAfter;
+    let currentKey = startKey;
+    while (true) {
+        blockAfter = editorState.getCurrentContent().getBlockAfter(currentKey);
+        if (!blockAfter || blockAfter.getKey() === endKey) {
             break;
         }
         // we have to add 1 here to account for the \n character

@@ -1,10 +1,10 @@
 import * as React from "react";
-import { MdeToolbarDropdownItem } from "./MdeToolbarDropdownItem";
 import {Command} from "../types";
+import {MdeToolbarButton} from "./MdeToolbarButton";
 
 export interface HeaderItemDropdownProps {
-    icon: React.ReactNode;
-    tooltip?: string;
+    buttonContent: React.ReactNode;
+    buttonProps: any;
     commands: Command[];
     onCommand: (command: Command) => void;
 }
@@ -71,16 +71,17 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
     }
 
     render() {
-        const {icon, commands, tooltip} = this.props;
+        const {commands} = this.props;
         const {open} = this.state;
 
-        // if icon is a text, print a font-awesome <i/>, otherwise, consider it a React component and print it
-        const iconElement = React.isValidElement(icon) ? icon : <i className={`fa fa-${icon}`} aria-hidden="true"/>;
-
         const items = commands.map((command, index) => (
-            <MdeToolbarDropdownItem key={index} onClick={(e) => this.handleOnClickCommand(e, command)}>
-                {command.content}
-            </MdeToolbarDropdownItem>
+            <li className="mde-dropdown-header-item" key={`header-item${index}`}>
+                <MdeToolbarButton
+                    buttonProps={command.buttonProps}
+                    buttonContent={command.buttonContent}
+                    onClick={(e) => this.handleOnClickCommand(e, command)}
+                />
+            </li>
         ));
 
         const dropdown = open
@@ -96,13 +97,7 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
             )
             : null;
 
-        let buttonProps = {};
-        if (tooltip) {
-            buttonProps = {
-                "aria-label": tooltip,
-                "className": "tooltipped",
-            };
-        }
+        const { buttonContent, buttonProps } = this.props;
 
         return (
             <li className="mde-header-item">
@@ -114,7 +109,7 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
                     }}
                     onClick={this.handleOpenDropdown}
                 >
-                    {iconElement}
+                    {buttonContent}
                 </button>
                 {dropdown}
             </li>

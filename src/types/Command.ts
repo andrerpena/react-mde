@@ -3,10 +3,8 @@ import { MarkdownState } from "./MarkdownState";
 import { EditorState } from "draft-js";
 
 export interface Command {
-    icon?: React.ReactNode;
-    text?: React.ReactNode;
-    tooltip?: string;
-    className?: string;
+    buttonContent: React.ReactNode;
+    buttonProps?: any;
     children?: Command[];
     execute?: (
         getMarkdownState: () => MarkdownState,

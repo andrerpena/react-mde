@@ -1,3 +1,4 @@
+import * as React from "react";
 import {Command} from "../types";
 import {
     insertAfter,
@@ -6,10 +7,11 @@ import {
     insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
     selectWordIfCaretIsInsideOne,
 } from "../util/MarkdownUtil";
+import {MdeToolbarIcon} from "../components";
 
 export const codeCommand: Command = {
-    icon: "code",
-    tooltip: "Insert code",
+    buttonContent: <MdeToolbarIcon icon="code"/>,
+    buttonProps: { "aria-label": "Insert code" },
     execute:
         (getMarkdownState, setMarkdownState) => {
             let {text, selection} = getMarkdownState();

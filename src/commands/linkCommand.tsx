@@ -1,10 +1,11 @@
+import * as React from "react";
 import {Command} from "../types";
 import {insertText} from "../util/MarkdownUtil";
+import {MdeToolbarIcon} from "../components";
 
 export const linkCommand: Command = {
-    icon: "link",
-    tooltip:
-        "Insert a link",
+    buttonContent: <MdeToolbarIcon icon="link"/>,
+    buttonProps: { "aria-label": "Insert a link" },
     execute:
         (getMarkdownState, setMarkdownState) => {
             const {text, selection} = getMarkdownState();

@@ -38,7 +38,8 @@ export function getSurroundingWord(text: string, position: number): Word {
 }
 
 export function insertBeforeAndAfter(markdownState: MarkdownState, insertion: string): MarkdownState {
-    let {text, selection} = markdownState;
+    const {text} = markdownState;
+    let {selection} = markdownState;
     selection = selectWordIfCaretIsInsideOne({text, selection});
     // the user is selecting a word section
     const {newText, insertionLength} = insertText(text, insertion, selection.start);
@@ -268,7 +269,7 @@ export function insertBeforeEachLine(text: string, insertion: string | AlterLine
  * @returns
  */
 export function makeList({text, selection}: MarkdownState, insertionBeforeEachLine: string | AlterLineFunction): MarkdownState {
-    let textInsertion;iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+    let textInsertion;
 
     selection = selectWordIfCaretIsInsideOne({text, selection});
 

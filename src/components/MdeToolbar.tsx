@@ -5,7 +5,7 @@ import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
 
 export interface MdeToolbarProps {
-    commands: Array<Array<Command>>;
+    commands: Command[][];
     onCommand: (command: Command) => void;
 }
 
@@ -16,7 +16,7 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = ({commands, onCommand}) =>
     return (
         <div className="mde-header">
             {
-                commands.map((cg: Array<Command>, i: number) => (
+                commands.map((cg: Command[], i: number) => (
                     <MdeToolbarButtonGroup key={i}>
                         {
                             cg.map((c: Command, j) => {
@@ -24,8 +24,8 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = ({commands, onCommand}) =>
                                     return (
                                         <MdeToolbarDropdown
                                             key={j}
-                                            icon={c.icon}
-                                            tooltip={c.tooltip}
+                                            buttonProps={c.buttonProps}
+                                            buttonContent={c.buttonContent}
                                             commands={c.children}
                                             onCommand={(cmd) => onCommand(cmd)}
                                         />
@@ -33,8 +33,8 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = ({commands, onCommand}) =>
                                 }
                                 return <MdeToolbarButton
                                     key={j}
-                                    icon={c.icon}
-                                    tooltip={c.tooltip}
+                                    buttonContent={c.buttonContent}
+                                    buttonProps={c.buttonProps}
                                     onClick={() => onCommand(c as Command)}
                                 />;
                             })
