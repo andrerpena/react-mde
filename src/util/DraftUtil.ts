@@ -8,7 +8,7 @@ export function getContentLengthOfAllBlocksBefore(editorState, key) {
     let currentKey = key;
     while (true) {
         blockBefore = editorState.getCurrentContent().getBlockBefore(currentKey);
-        if (blockBefore) {
+        if (!blockBefore) {
             break;
         }
         // we have to add 1 here to account for the \n character
@@ -108,7 +108,7 @@ export function getDraftStateFromMarkdownState({text, selection}: MarkdownState)
     const newSelectionState = buildSelectionState(contentState, selection);
     if (newSelectionState) {
         const editorState = EditorState.createWithContent(contentState);
-        return EditorState.forceSelection(editorState, newSelectionState);
+        return EditorState.acceptSelection(editorState, newSelectionState);
     }
     return null;
 }

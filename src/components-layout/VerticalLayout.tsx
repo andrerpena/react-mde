@@ -18,7 +18,7 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
         onChange(value);
     }
 
-    handleCommand(command: Command) {
+    handleCommand = (command: Command) => {
         const { onCommand } = this.props;
         onCommand(command);
     }

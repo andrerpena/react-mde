@@ -32,12 +32,13 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             });
     }
 
-    onCommand(command: Command) {
+    onCommand = (command: Command) => {
+        const pushState = (currentState: EditorState) => EditorState.push(this.props.editorState.draftEditorState, currentState.getCurrentContent(), "insert-characters");
         command.execute(
             () => getMarkdownStateFromDraftState(this.props.editorState.draftEditorState),
-            (state: MarkdownState) => this.handleOnChange(getDraftStateFromMarkdownState(state)),
+            (state: MarkdownState) => this.handleOnChange(pushState(getDraftStateFromMarkdownState(state))),
             () => this.props.editorState.draftEditorState,
-            (state: EditorState) => this.handleOnChange(state),
+            (state: EditorState) => this.handleOnChange(pushState(state)),
         );
     }
 
