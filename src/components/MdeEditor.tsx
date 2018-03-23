@@ -11,7 +11,7 @@ export interface MdeEditorProps {
 export class MdeEditor extends React.Component<MdeEditorProps, {}> {
     editorRef: Editor;
 
-    handleOnChange(editorState: EditorState) {
+    handleOnChange = (editorState: EditorState) => {
         const {onChange} = this.props;
         onChange(editorState);
     }

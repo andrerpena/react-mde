@@ -23,7 +23,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
         layout: "vertical",
     };
 
-    handleOnChange(editorState: EditorState) {
+    handleOnChange = (editorState: EditorState) => {
         const {onChange, generateMarkdownPreview} = this.props;
         const markdown = getPlainText(editorState);
         generateMarkdownPreview(markdown)
@@ -47,7 +47,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
         let {editorState} = this.props;
         if (!editorState) {
             editorState = {
-                html: "<p>&nbsp</p>",
+                html: "",
                 markdown: "",
                 draftEditorState: EditorState.createEmpty(),
             };
