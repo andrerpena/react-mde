@@ -45,7 +45,7 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
                 />
                 <MdePreview
                     previewRef={(c) => this.previewRef = c}
-                    html={mdeEditorState.html}
+                    html={mdeEditorState ? mdeEditorState.html : ""}
                 />
             </div>
         );

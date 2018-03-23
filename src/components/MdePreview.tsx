@@ -10,27 +10,10 @@ export interface MdePreviewState {
 }
 
 export class MdePreview extends React.Component<ReactMdePreviewProps, MdePreviewState> {
-    converter: Showdown.Converter;
     previewRef: HTMLDivElement;
 
-    constructor(props) {
-        super(props);
-        const {showdownFlavor, showdownOptions} = props;
-        this.converter = new Showdown.Converter();
-        if (showdownFlavor) {
-            this.converter.setFlavor(showdownFlavor);
-        }
-        if (showdownOptions) {
-            for (const option in showdownOptions) {
-                if (showdownOptions.hasOwnProperty(option)) {
-                    this.converter.setOption(option, showdownOptions[option]);
-                }
-            }
-        }
-    }
-
     render() {
-        const {html, previewRef} = this.props;
+        const {html} = this.props;
         return (
             <div className="mde-preview">
                 <div
