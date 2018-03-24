@@ -32,8 +32,10 @@ export class ReactMde extends React.Component<ReactMdeProps> {
         const markdown = getPlainText(editorState);
         generateMarkdownPreview(markdown)
             .then((html) => {
+                console.log("console.log");
                 onChange({markdown, html, draftEditorState: editorState});
             });
+
     }
 
     onCommand = (command: Command) => {
@@ -45,15 +47,15 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
                 // handling text change history push
                 const contentState = ContentState.createFromText(text);
-                newDraftEditorState = EditorState.push(draftEditorState, contentState, "insert-characters");
-                this.handleOnChange(newDraftEditorState);
+                newDraftEditorState = EditorState.forceSelection(draftEditorState, draftEditorState.getSelection());
+                newDraftEditorState = EditorState.push(newDraftEditorState, contentState, "insert-characters");
 
                 // handling text selection history push
                 const newSelectionState = buildSelectionState(newDraftEditorState.getCurrentContent(), selection);
                 if (newSelectionState) {
-                    newDraftEditorState = newDraftEditorState.forceSelection(newDraftEditorState, newSelectionState);
-                    this.handleOnChange(newDraftEditorState);
+                    newDraftEditorState = EditorState.forceSelection(newDraftEditorState, newSelectionState);
                 }
+                this.handleOnChange(newDraftEditorState);
             },
             () => this.props.editorState.draftEditorState,
             (state: EditorState) => this.handleOnChange(state),
