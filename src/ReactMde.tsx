@@ -2,9 +2,13 @@ import * as React from "react";
 import {Command, MdeState} from "./types";
 import {getDefaultCommands} from "./commands";
 import {layoutMap, LayoutMap} from "./LayoutMap";
-import {EditorState} from "draft-js";
+import {ContentState, EditorState} from "draft-js";
 import {MarkdownState} from "./types/MarkdownState";
-import {getDraftStateFromMarkdownState, getMarkdownStateFromDraftState, getPlainText} from "./util/DraftUtil";
+import {
+    buildSelectionState,
+    getMarkdownStateFromDraftState,
+    getPlainText,
+} from "./util/DraftUtil";
 
 export interface ReactMdeProps {
     editorState: MdeState;
@@ -33,12 +37,26 @@ export class ReactMde extends React.Component<ReactMdeProps> {
     }
 
     onCommand = (command: Command) => {
-        const pushState = (currentState: EditorState) => EditorState.push(this.props.editorState.draftEditorState, currentState.getCurrentContent(), "insert-characters");
         command.execute(
             () => getMarkdownStateFromDraftState(this.props.editorState.draftEditorState),
-            (state: MarkdownState) => this.handleOnChange(pushState(getDraftStateFromMarkdownState(state))),
+            ({text, selection}: MarkdownState) => {
+                const {editorState: {draftEditorState}} = this.props;
+                let newDraftEditorState;
+
+                // handling text change history push
+                const contentState = ContentState.createFromText(text);
+                newDraftEditorState = EditorState.push(draftEditorState, contentState, "insert-characters");
+
+                this.handleOnChange(newDraftEditorState);
+                // handling text selection history push
+                const newSelectionState = buildSelectionState(newDraftEditorState.getCurrentContent(), selection);
+                if (newSelectionState) {
+                    newDraftEditorState = newDraftEditorState.acceptSelection(newDraftEditorState, newSelectionState);
+                    this.handleOnChange(newDraftEditorState);
+                }
+            },
             () => this.props.editorState.draftEditorState,
-            (state: EditorState) => this.handleOnChange(pushState(state)),
+            (state: EditorState) => this.handleOnChange(state),
         );
     }
 

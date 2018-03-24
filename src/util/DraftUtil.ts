@@ -74,7 +74,7 @@ const findBlockKeyAndOffsetForPosition = (position, block, globalOffset, blockOf
     }
 };
 
-const buildSelectionState = (contentState: ContentState, position: TextSelection) => {
+export function buildSelectionState(contentState: ContentState, position: TextSelection) {
     const firstBlock = contentState.getFirstBlock();
     if (firstBlock === null) {
         return null;
@@ -101,14 +101,4 @@ export function getMarkdownStateFromDraftState(editorState: EditorState): Markdo
         text: getPlainText(editorState),
         selection: getSelection(editorState),
     };
-}
-
-export function getDraftStateFromMarkdownState({text, selection}: MarkdownState): EditorState {
-    const contentState = ContentState.createFromText(text);
-    const newSelectionState = buildSelectionState(contentState, selection);
-    if (newSelectionState) {
-        const editorState = EditorState.createWithContent(contentState);
-        return EditorState.acceptSelection(editorState, newSelectionState);
-    }
-    return null;
 }
