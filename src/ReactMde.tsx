@@ -46,12 +46,12 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                 // handling text change history push
                 const contentState = ContentState.createFromText(text);
                 newDraftEditorState = EditorState.push(draftEditorState, contentState, "insert-characters");
-
                 this.handleOnChange(newDraftEditorState);
+
                 // handling text selection history push
                 const newSelectionState = buildSelectionState(newDraftEditorState.getCurrentContent(), selection);
                 if (newSelectionState) {
-                    newDraftEditorState = newDraftEditorState.acceptSelection(newDraftEditorState, newSelectionState);
+                    newDraftEditorState = newDraftEditorState.forceSelection(newDraftEditorState, newSelectionState);
                     this.handleOnChange(newDraftEditorState);
                 }
             },
