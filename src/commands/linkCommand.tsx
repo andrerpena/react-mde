@@ -8,15 +8,15 @@ export const linkCommand: Command = {
     buttonProps: { "aria-label": "Insert a link" },
     execute:
         (getMarkdownState, setMarkdownState) => {
-            let {text, selection} = getMarkdownState();
-            selection = selectWordIfCaretIsInsideOne({text, selection});
-            const {newText, insertionLength} = insertText(text, "[", selection.start);
-            const finalText = insertText(newText, "](url)", selection.end + insertionLength).newText;
+            const {text, selection} = getMarkdownState();
+            const newSelection = selectWordIfCaretIsInsideOne({text, selection});
+            const {newText, insertionLength} = insertText(text, "[", newSelection.start);
+            const finalText = insertText(newText, "](url)", newSelection.end + insertionLength).newText;
             setMarkdownState({
                 text: finalText,
                 selection: {
-                    start: selection.start + insertionLength,
-                    end: selection.end + insertionLength,
+                    start: newSelection.start + insertionLength,
+                    end: newSelection.end + insertionLength,
                 },
             });
         },
