@@ -3,5 +3,4 @@ export * from "./FunctionTypes";
 export * from "./TextInsertionResult";
 export * from "./TextSelection";
 export * from "./Word";
-export * from "./ShowdownFlavor";
 export * from "./MdeState";

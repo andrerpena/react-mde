@@ -1,6 +1,5 @@
 import {MarkdownState} from "../types/MarkdownState";
 import {TextInsertionResult, TextSelection, Word, AlterLineFunction} from "../types";
-import {getContentLengthBetween, getContentLengthOfAllBlocksBefore} from "./DraftUtil";
 
 export function getSurroundingWord(text: string, position: number): Word {
     if (!text) throw Error("Argument 'text' should be truthy");

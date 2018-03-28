@@ -42,6 +42,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
         command.execute(
             () => getMarkdownStateFromDraftState(this.props.editorState.draftEditorState),
             ({text, selection}: MarkdownState) => {
+                // TODO: Fix the redo. It's no working properly but this is an implementation detail.
                 const {editorState: {draftEditorState}} = this.props;
                 let newDraftEditorState;
 
@@ -52,9 +53,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
                 // handling text selection history push
                 const newSelectionState = buildSelectionState(newDraftEditorState.getCurrentContent(), selection);
-                if (newSelectionState) {
-                    newDraftEditorState = EditorState.forceSelection(newDraftEditorState, newSelectionState);
-                }
+                newDraftEditorState = EditorState.forceSelection(newDraftEditorState, newSelectionState);
                 this.handleOnChange(newDraftEditorState);
             },
             () => this.props.editorState.draftEditorState,
