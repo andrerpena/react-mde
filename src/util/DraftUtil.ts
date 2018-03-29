@@ -74,16 +74,16 @@ const findBlockKeyAndOffsetForPosition = (position, block, globalOffset, blockOf
     }
 };
 
-export function buildSelectionState(contentState: ContentState, position: TextSelection) {
+export function buildSelectionState(contentState: ContentState, selection: TextSelection) {
     const firstBlock = contentState.getFirstBlock();
     if (firstBlock === null) {
         return null;
     }
-    const startBlockData = findBlockKeyAndOffsetForPosition(position.start, firstBlock, 0, 0, contentState);
+    const startBlockData = findBlockKeyAndOffsetForPosition(selection.start, firstBlock, 0, 0, contentState);
     if (startBlockData === null) {
         return null;
     }
-    const endBlockData = findBlockKeyAndOffsetForPosition(position.end, startBlockData.block, startBlockData.globalOffset, startBlockData.blockOffset, contentState);
+    const endBlockData = findBlockKeyAndOffsetForPosition(selection.end, startBlockData.block, startBlockData.globalOffset, startBlockData.blockOffset, contentState);
     if (endBlockData === null) {
         return null;
     }

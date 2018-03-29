@@ -16,14 +16,10 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
         onChange(editorState);
     }
 
-    handleOnClick = (e) => {
-        this.editorRef.focus();
-    }
-
     render() {
         const {editorState: {draftEditorState}} = this.props;
         return (
-            <div className="mde-text" onClick={this.handleOnClick}>
+            <div className="mde-text">
                 <Editor
                     ref={(editor) => this.editorRef = editor}
                     stripPastedStyles={true}

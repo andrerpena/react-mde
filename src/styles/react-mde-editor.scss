@@ -1,13 +1,14 @@
 @import "variables";
 
 .mde-text {
-    cursor: text;
-    .DraftEditor-root {
-        box-sizing: border-box;
-        width: 100%;
-        min-height: $mde-textarea-min-height;
-        padding: $mde-textarea-padding;
-        border: 1px solid $mde-border-color;
-        border-radius: $mde-textarea-border-radius;
-    }
+  border-width: 1px 0 1px 0;
+  border-style: solid;
+  border-color: $mde-border-color;
+  .public-DraftEditor-content {
+    box-sizing: border-box;
+    width: 100%;
+    height: $mde-editor-min-height;
+    padding: $mde-editor-padding;
+    overflow-y: scroll;
+  }
 }

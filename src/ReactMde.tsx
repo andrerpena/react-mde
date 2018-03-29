@@ -32,7 +32,6 @@ export class ReactMde extends React.Component<ReactMdeProps> {
         const markdown = getPlainText(editorState);
         generateMarkdownPreview(markdown)
             .then((html) => {
-                console.log("console.log");
                 onChange({markdown, html, draftEditorState: editorState});
             });
 
@@ -73,13 +72,15 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             };
         }
         return (
-            <Layout
-                onChange={this.handleOnChange}
-                onCommand={this.onCommand}
-                commands={commands}
-                layoutOptions={layoutOptions}
-                mdeEditorState={editorState}
-            />
+            <div className="react-mde">
+                <Layout
+                    onChange={this.handleOnChange}
+                    onCommand={this.onCommand}
+                    commands={commands}
+                    layoutOptions={layoutOptions}
+                    mdeEditorState={editorState}
+                />
+            </div>
         );
     }
 }

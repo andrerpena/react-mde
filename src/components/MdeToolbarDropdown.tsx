@@ -75,13 +75,12 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
         const {open} = this.state;
 
         const items = commands.map((command, index) => (
-            <li className="mde-dropdown-header-item" key={`header-item${index}`}>
-                <MdeToolbarButton
-                    buttonProps={command.buttonProps}
-                    buttonContent={command.buttonContent}
-                    onClick={(e) => this.handleOnClickCommand(e, command)}
-                />
-            </li>
+            <MdeToolbarButton
+                key={`header-item${index}`}
+                buttonProps={command.buttonProps}
+                buttonContent={command.buttonContent}
+                onClick={(e) => this.handleOnClickCommand(e, command)}
+            />
         ));
 
         const dropdown = open
@@ -97,7 +96,7 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
             )
             : null;
 
-        const { buttonContent, buttonProps } = this.props;
+        const {buttonContent, buttonProps} = this.props;
 
         return (
             <li className="mde-header-item">

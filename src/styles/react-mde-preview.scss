@@ -3,10 +3,7 @@
 .mde-preview {
 
     .mde-preview-content {
-        margin-top: $mde-preview-margin-top;
         padding: $mde-preview-vertical-padding $mde-preview-horizontal-padding;
-        border: 1px dotted $mde-border-color;
-        border-radius: $mde-textarea-border-radius;
 
         p, blockquote, ul, ol, dl, table, pre {
             margin-top: 0;
