@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Command } from "../types";
-import { MdeToolbarButtonGroup } from "./MdeToolbarButtonGroup";
-import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
-import { MdeToolbarButton } from "./MdeToolbarButton";
+import {Command} from "../types";
+import {MdeToolbarButtonGroup} from "./MdeToolbarButtonGroup";
+import {MdeToolbarDropdown} from "./MdeToolbarDropdown";
+import {MdeToolbarButton} from "./MdeToolbarButton";
 
 export interface MdeToolbarProps {
     commands: Command[][];

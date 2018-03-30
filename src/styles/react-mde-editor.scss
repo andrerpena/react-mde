@@ -7,7 +7,8 @@
   .public-DraftEditor-content {
     box-sizing: border-box;
     width: 100%;
-    height: $mde-editor-min-height;
+    min-height: $mde-editor-min-height;
+    max-height: $mde-editor-max-height;
     padding: $mde-editor-padding;
     overflow-y: scroll;
   }

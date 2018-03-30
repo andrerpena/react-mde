@@ -27,7 +27,6 @@ export class App extends React.Component<{}, AppState> {
             <div className="container">
                 <ReactMde
                     onChange={this.handleValueChange}
-                    commands={ReactMdeCommands.getDefaultCommands()}
                     editorState={this.state.mdeState}
                     generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
                 />
