@@ -1,6 +1,6 @@
 import {EditorState, ContentState, SelectionState} from "draft-js";
 import {MarkdownState} from "../types/MarkdownState";
-import {TextSelection} from "../types";
+import {GenerateMarkdownPreview, MdeState, TextSelection} from "../types";
 
 export function getContentLengthOfAllBlocksBefore(editorState, key) {
     let count = 0;
@@ -94,11 +94,21 @@ export function buildSelectionState(contentState: ContentState, selection: TextS
         focusKey: endBlockData.block.getKey(),
         focusOffset: endBlockData.blockOffset,
     }) as SelectionState;
-};
+}
 
 export function getMarkdownStateFromDraftState(editorState: EditorState): MarkdownState {
     return {
         text: getPlainText(editorState),
         selection: getSelection(editorState),
+    };
+}
+
+export async function getMdeStateFromDraftState(editorState: EditorState, generateMarkdownPreview: GenerateMarkdownPreview): Promise<MdeState> {
+    const markdown = getPlainText(editorState);
+    const html = await generateMarkdownPreview(markdown);
+    return {
+        html,
+        markdown,
+        draftEditorState: editorState,
     };
 }

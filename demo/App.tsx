@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactMde, {ReactMdeTypes, ReactMdeCommands} from "../src";
+import ReactMde, {ReactMdeTypes} from "../src";
 import * as Showdown from "showdown";
 
 export interface AppState {

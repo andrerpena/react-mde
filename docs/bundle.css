@@ -339,8 +339,18 @@ template {
 [hidden] {
   display: none;
 }
-.mde-header {
-  padding: 6px 0; }
+/**
+ * Draft v0.10.5
+ *
+ * Copyright (c) 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+.DraftEditor-editorContainer,.DraftEditor-root,.public-DraftEditor-content{height:inherit;text-align:initial}.public-DraftEditor-content[contenteditable=true]{-webkit-user-modify:read-write-plaintext-only}.DraftEditor-root{position:relative}.DraftEditor-editorContainer{background-color:rgba(255,255,255,0);border-left:.1px solid transparent;position:relative;z-index:1}.public-DraftEditor-block{position:relative}.DraftEditor-alignLeft .public-DraftStyleDefault-block{text-align:left}.DraftEditor-alignLeft .public-DraftEditorPlaceholder-root{left:0;text-align:left}.DraftEditor-alignCenter .public-DraftStyleDefault-block{text-align:center}.DraftEditor-alignCenter .public-DraftEditorPlaceholder-root{margin:0 auto;text-align:center;width:100%}.DraftEditor-alignRight .public-DraftStyleDefault-block{text-align:right}.DraftEditor-alignRight .public-DraftEditorPlaceholder-root{right:0;text-align:right}.public-DraftEditorPlaceholder-root{color:#9197a3;position:absolute;z-index:1}.public-DraftEditorPlaceholder-hasFocus{color:#bdc1c9}.DraftEditorPlaceholder-hidden{display:none}.public-DraftStyleDefault-block{position:relative;white-space:pre-wrap}.public-DraftStyleDefault-ltr{direction:ltr;text-align:left}.public-DraftStyleDefault-rtl{direction:rtl;text-align:right}.public-DraftStyleDefault-listLTR{direction:ltr}.public-DraftStyleDefault-listRTL{direction:rtl}.public-DraftStyleDefault-ol,.public-DraftStyleDefault-ul{margin:16px 0;padding:0}.public-DraftStyleDefault-depth0.public-DraftStyleDefault-listLTR{margin-left:1.5em}.public-DraftStyleDefault-depth0.public-DraftStyleDefault-listRTL{margin-right:1.5em}.public-DraftStyleDefault-depth1.public-DraftStyleDefault-listLTR{margin-left:3em}.public-DraftStyleDefault-depth1.public-DraftStyleDefault-listRTL{margin-right:3em}.public-DraftStyleDefault-depth2.public-DraftStyleDefault-listLTR{margin-left:4.5em}.public-DraftStyleDefault-depth2.public-DraftStyleDefault-listRTL{margin-right:4.5em}.public-DraftStyleDefault-depth3.public-DraftStyleDefault-listLTR{margin-left:6em}.public-DraftStyleDefault-depth3.public-DraftStyleDefault-listRTL{margin-right:6em}.public-DraftStyleDefault-depth4.public-DraftStyleDefault-listLTR{margin-left:7.5em}.public-DraftStyleDefault-depth4.public-DraftStyleDefault-listRTL{margin-right:7.5em}.public-DraftStyleDefault-unorderedListItem{list-style-type:square;position:relative}.public-DraftStyleDefault-unorderedListItem.public-DraftStyleDefault-depth0{list-style-type:disc}.public-DraftStyleDefault-unorderedListItem.public-DraftStyleDefault-depth1{list-style-type:circle}.public-DraftStyleDefault-orderedListItem{list-style-type:none;position:relative}.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-listLTR:before{left:-36px;position:absolute;text-align:right;width:30px}.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-listRTL:before{position:absolute;right:-36px;text-align:left;width:30px}.public-DraftStyleDefault-orderedListItem:before{content:counter(ol0) ". ";counter-increment:ol0}.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-depth1:before{content:counter(ol1) ". ";counter-increment:ol1}.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-depth2:before{content:counter(ol2) ". ";counter-increment:ol2}.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-depth3:before{content:counter(ol3) ". ";counter-increment:ol3}.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-depth4:before{content:counter(ol4) ". ";counter-increment:ol4}.public-DraftStyleDefault-depth0.public-DraftStyleDefault-reset{counter-reset:ol0}.public-DraftStyleDefault-depth1.public-DraftStyleDefault-reset{counter-reset:ol1}.public-DraftStyleDefault-depth2.public-DraftStyleDefault-reset{counter-reset:ol2}.public-DraftStyleDefault-depth3.public-DraftStyleDefault-reset{counter-reset:ol3}.public-DraftStyleDefault-depth4.public-DraftStyleDefault-reset{counter-reset:ol4}.mde-header {
+  padding: 10px; }
   .mde-header button:focus {
     outline: 0; }
   .mde-header ul.mde-header-group {
@@ -351,15 +361,16 @@ template {
     .mde-header ul.mde-header-group li.mde-header-item {
       display: inline-block;
       position: relative;
-      margin: 0 0.25rem; }
+      margin: 0 4px; }
       .mde-header ul.mde-header-group li.mde-header-item button {
         text-align: left;
         cursor: pointer;
-        padding: .25rem;
+        height: 22px;
+        padding: 4px;
         margin: 0;
         border: none;
         background: none;
-        color: #767676; }
+        color: #242729; }
 
 @keyframes tooltip-appear {
   from {
@@ -407,32 +418,37 @@ template {
           white-space: nowrap; }
       .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown {
         position: absolute;
-        right: 50%;
-        transform: translateX(50%);
+        left: 0;
+        top: 30px;
         background-color: white;
-        border: 1px solid rgba(0, 0, 0, 0.15);
+        border: 1px solid #c8ccd0;
         padding: 5px;
-        top: 30px; }
+        z-index: 2;
+        transform: translateX(-9px); }
         .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li {
           margin: 0;
           white-space: nowrap;
-          list-style: none; }
-          .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li p {
-            margin: 0;
-            padding: 0;
-            font-weight: bold;
-            line-height: 1em;
-            background: none;
-            border: 0;
-            text-align: left; }
-            .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li p:hover {
-              color: #4078c0; }
-            .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li p.header-1 {
-              font-size: 20px; }
-            .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li p.header-2 {
-              font-size: 18px; }
-            .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li p.header-3 {
-              font-size: 14px; }
+          list-style: none;
+          display: block; }
+          .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button {
+            display: block; }
+            .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p {
+              display: block;
+              margin: 0;
+              padding: 0;
+              font-weight: bold;
+              line-height: 1em;
+              background: none;
+              border: 0;
+              text-align: left; }
+              .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p:hover {
+                color: #4078c0; }
+              .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-1 {
+                font-size: 20px; }
+              .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-2 {
+                font-size: 18px; }
+              .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-3 {
+                font-size: 14px; }
         .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown::before {
           position: absolute;
           content: "";
@@ -441,7 +457,7 @@ template {
           border: 8px solid transparent;
           border-bottom-color: rgba(0, 0, 0, 0.15);
           top: -16px;
-          right: 50%;
+          left: 3px;
           transform: translateX(50%); }
         .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown::after {
           position: absolute;
@@ -451,23 +467,23 @@ template {
           border: 7px solid transparent;
           border-bottom-color: white;
           top: -14px;
-          right: 50%;
+          left: 5px;
           transform: translateX(50%); }
 
-.mde-text textarea {
-  display: block;
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 200px;
-  padding: 0.5rem;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem; }
+.mde-text {
+  border-width: 1px 0 1px 0;
+  border-style: solid;
+  border-color: #c8ccd0; }
+  .mde-text .public-DraftEditor-content {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 200px;
+    max-height: 200px;
+    padding: 10px;
+    overflow-y: scroll; }
 
 .mde-preview .mde-preview-content {
-  margin-top: 8px;
-  padding: 10px 10px;
-  border: 1px dotted rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem; }
+  padding: 10px 10px; }
   .mde-preview .mde-preview-content p, .mde-preview .mde-preview-content blockquote, .mde-preview .mde-preview-content ul, .mde-preview .mde-preview-content ol, .mde-preview .mde-preview-content dl, .mde-preview .mde-preview-content table, .mde-preview .mde-preview-content pre {
     margin-top: 0;
     margin-bottom: 16px; }
@@ -544,7 +560,6 @@ template {
     clear: both;
     content: ""; }
   .mde-preview .mde-preview-content table {
-    font-size: 14px;
     display: block;
     width: 100%;
     border-spacing: 0;
@@ -553,33 +568,17 @@ template {
       font-weight: bold; }
     .mde-preview .mde-preview-content table th, .mde-preview .mde-preview-content table td {
       padding: 6px 13px;
-      border: 1px solid rgba(0, 0, 0, 0.15); }
+      border: 1px solid #c8ccd0; }
 
-.mde-preview .mde-help {
-  color: rgba(0, 0, 0, 0.15);
-  margin-top: 4px;
-  margin-left: 1px; }
-  .mde-preview .mde-help a.markdown-help {
-    text-decoration: none;
-    font-size: 12px;
-    color: gray; }
-    .mde-preview .mde-help a.markdown-help svg.markdown-help-svg {
-      fill: gray;
-      display: inline-block;
-      vertical-align: bottom !important; }
-    .mde-preview .mde-help a.markdown-help span.markdown-help-text {
-      margin-left: 3px;
-      display: inline-block;
-      vertical-align: center; }
+.react-mde {
+  border: 1px solid #c8ccd0;
+  border-radius: 2px; }
 body {
   font-size: 14px;
   font-family: sans-serif; }
 
 .container {
-  max-width: 600px;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  padding: 8px;
-  margin: 10px; }
+  max-width: 600px; }
   @media screen and (min-width: 768px) {
     .container {
       margin: 50px auto; } }
