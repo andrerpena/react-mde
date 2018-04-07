@@ -19,21 +19,18 @@ A simple yet powerful and extensible Markdown Editor editor for React.
 - Font Awesome 5.* for the icons. This is not a hard dependency and there are plans to eliminate it altogether, but for now,
 the button classes are meant to be resolved by Font Awesome, which can be installed [using your preferred method](https://fontawesome.com/how-to-use/svg-with-js).
 The easiest is just add this to `<head/>`:
-
+<!-- -->
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
  
-
 ## Optional dependencies
 
 - Showdown. `React-mde` is not opinionated as to how to transform markdown into HTML and this can be done both in client-side,
 like StackOverflow, or in server-side, like GitHub. The easiest way is to use Showdown and process it in client-side. If you
 decide to do so, install Showdown:
-
-
+<!-- -->
 
     npm install --save showdown
-
 
 ## Using
 
