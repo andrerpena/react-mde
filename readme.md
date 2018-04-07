@@ -130,7 +130,7 @@ React-mde is designed to be composable and to facilitate new layouts
 
 ![architecture](https://github.com/andrerpena/react-mde/blob/master/assets/architecture.png)
 
-## Change log / Migrating
+## Change log / Migrating from older versions
 
 [Instructions here](https://github.com/andrerpena/react-mde/blob/master/docs-md/ChangeLogMigrating.md).
 
