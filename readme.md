@@ -14,7 +14,7 @@ A simple yet powerful and extensible Markdown Editor editor for React. React-mde
 
 ## Dependencies
 
-`React-mde` currently depends on:
+React-mde currently depends on:
 
 - [Draft.js](https://draftjs.org/). This facilitates features that would otherwise be quite
 difficult. The best examples being history management, mentions and pasting files.
@@ -40,7 +40,7 @@ decide to do so, install Showdown:
 
 ## Using
 
- React-mde is a completely controlled component.
+React-mde is a completely controlled component.
     
     Minimal example using Showdown:
     
@@ -112,7 +112,7 @@ but the easiest is just adding this to the `<head/>`:
 
 ## XSS concerns
 
-`React-mde` does not automatically sanitize the HTML preview. If your using Showdown,
+React-mde does not automatically sanitize the HTML preview. If your using Showdown,
 this has been taken from [their documentation](https://github.com/showdownjs/showdown/wiki/Markdown's-XSS-Vulnerability-(and-how-to-mitigate-it)):
     
 > Cross-side scripting is a well known technique to gain access to private information of the users
