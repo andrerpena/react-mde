@@ -6,6 +6,7 @@ A simple yet powerful and extensible Markdown Editor editor for React.
 
 ## Demos
 
+[Demo](http://andrerpena.me/react-mde/)
 
 ## Installing
 
@@ -28,6 +29,7 @@ The easiest is just add this to `<head/>`:
 - Showdown. `React-mde` is not opinionated as to how to transform markdown into HTML and this can be done both in client-side,
 like StackOverflow, or in server-side, like GitHub. The easiest way is to use Showdown and process it in client-side. If you
 decide to do so, install Showdown:
+
 
 
     npm install --save showdown
