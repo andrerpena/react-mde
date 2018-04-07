@@ -483,7 +483,7 @@ template {
     overflow-y: scroll; }
 
 .mde-preview .mde-preview-content {
-  padding: 10px 10px; }
+  padding: 10px 10px 20px 10px; }
   .mde-preview .mde-preview-content p, .mde-preview .mde-preview-content blockquote, .mde-preview .mde-preview-content ul, .mde-preview .mde-preview-content ol, .mde-preview .mde-preview-content dl, .mde-preview .mde-preview-content table, .mde-preview .mde-preview-content pre {
     margin-top: 0;
     margin-bottom: 16px; }

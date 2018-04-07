@@ -30316,7 +30316,9 @@ var App = /** @class */ (function (_super) {
             _this.setState({ mdeState: mdeState });
         };
         _this.state = {
-            mdeState: null,
+            mdeState: {
+                markdown: "**Hello world!!!**",
+            },
         };
         _this.converter = new Showdown.Converter({ tables: true, simplifiedAutoLink: true });
         return _this;
@@ -39907,16 +39909,16 @@ var ReactMde = /** @class */ (function (_super) {
     };
     ReactMde.prototype.render = function () {
         var Layout = LayoutMap_1.layoutMap[this.props.layout];
-        var _a = this.props, commands = _a.commands, layoutOptions = _a.layoutOptions;
+        var _a = this.props, commands = _a.commands, layoutOptions = _a.layoutOptions, className = _a.className;
         var editorState = this.props.editorState;
-        if (!editorState) {
+        if (!editorState || !editorState.draftEditorState) {
             editorState = {
                 html: "",
                 markdown: "",
                 draftEditorState: draft_js_1.EditorState.createEmpty(),
             };
         }
-        return (React.createElement("div", { className: "react-mde" },
+        return (React.createElement("div", { className: "react-mde " + (className || "") },
             React.createElement(Layout, { onChange: this.handleDraftStateChange, onCommand: this.onCommand, commands: commands, layoutOptions: layoutOptions, mdeEditorState: editorState })));
     };
     ReactMde.defaultProps = {
