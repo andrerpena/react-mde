@@ -88,9 +88,9 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
     render() {
         const Layout = layoutMap[this.props.layout];
-        const {commands, layoutOptions} = this.props;
+        const {commands, layoutOptions, className} = this.props;
         let {editorState} = this.props;
-        if (!editorState) {
+        if (!editorState || !editorState.draftEditorState) {
             editorState = {
                 html: "",
                 markdown: "",
@@ -98,7 +98,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             };
         }
         return (
-            <div className="react-mde">
+            <div className={`react-mde ${className || ""}`}>
                 <Layout
                     onChange={this.handleDraftStateChange}
                     onCommand={this.onCommand}

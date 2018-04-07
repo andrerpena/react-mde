@@ -13,7 +13,9 @@ export class App extends React.Component<{}, AppState> {
     constructor(props) {
         super(props);
         this.state = {
-            mdeState: null,
+            mdeState: {
+                markdown: "**Hello world!!!**",
+            },
         };
         this.converter = new Showdown.Converter({tables: true, simplifiedAutoLink: true});
     }

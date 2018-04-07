@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as Showdown from "showdown";
 
 export interface ReactMdePreviewProps {
     previewRef?: (ref: MdePreview) => void;
