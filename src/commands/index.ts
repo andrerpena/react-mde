@@ -7,9 +7,9 @@ import { linkCommand } from "./linkCommand";
 import { orderedListCommand } from "./orderedCommand";
 import { quoteCommand } from "./quoteCommand";
 import { unorderedListCommand } from "./unorderedListCommand";
-import {Command, CommandSet} from "../types";
+import {Command} from "../types";
 
-const getDefaultCommands: () => Array<Array<Command | CommandSet>> = () => [
+const getDefaultCommands: () => Command[][] = () => [
     [headerCommand, boldCommand, italicCommand],
     [linkCommand, quoteCommand, codeCommand, imageCommand],
     [unorderedListCommand, orderedListCommand],

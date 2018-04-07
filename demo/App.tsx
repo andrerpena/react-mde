@@ -1,35 +1,36 @@
 import * as React from "react";
-import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "../src";
+import ReactMde, {ReactMdeTypes} from "../src";
+import * as Showdown from "showdown";
 
-interface AppState {
-    reactMdeValue: ReactMdeTypes.Value;
+export interface AppState {
+    mdeState: ReactMdeTypes.MdeState;
 }
 
 export class App extends React.Component<{}, AppState> {
 
+    converter: Showdown.Converter;
+
     constructor(props) {
         super(props);
         this.state = {
-            reactMdeValue: {text: ""},
+            mdeState: {
+                markdown: "**Hello world!!!**",
+            },
         };
+        this.converter = new Showdown.Converter({tables: true, simplifiedAutoLink: true});
     }
 
-    handleValueChange = (value: ReactMdeTypes.Value) => {
-        this.setState({reactMdeValue: value});
+    handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
+        this.setState({mdeState});
     }
 
     render() {
         return (
             <div className="container">
                 <ReactMde
-                    textAreaProps={{
-                        id: "ta1",
-                        name: "ta1",
-                    }}
-                    value={this.state.reactMdeValue}
                     onChange={this.handleValueChange}
-                    commands={ReactMdeCommands.getDefaultCommands()}
-                    showdownOptions={{tables: true, simplifiedAutoLink: true}}
+                    editorState={this.state.mdeState}
+                    generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
                 />
             </div>
         );

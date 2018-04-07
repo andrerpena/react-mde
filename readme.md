@@ -1,20 +1,11 @@
 # react-mde
 
-A simple yet powerful and extensible Markdown Editor editor for React, inspired by GitHub. This is the editor used by http://aboutdevs.com.
+A simple yet powerful and extensible Markdown Editor editor for React.
 
-![image](https://github.com/andrerpena/react-mde/blob/master/assets/react-mde.png)
+![image](https://github.com/andrerpena/react-mde/blob/master/assets/react-mde-5.png)
 
 ## Demos
 
-Demos are provided through https://codesandbox.io. Feel free to fork and play with different options :smile:.
-
-[React-mde 4.* - JavaScript - Basic Demo](https://codesandbox.io/s/qz116r505w)
-
-[React-mde 4.* - TypeScript - Basic Demo](https://codesandbox.io/s/y0xwwqo88j)
-
-[React-mde 3.* - JavaScript - Basic Demo](https://codesandbox.io/s/mz1945q5my)
-
-[React-mde 3.* - TypeScript - Basic Demo](https://codesandbox.io/s/z1zv6py3)
 
 ## Installing
 
@@ -24,48 +15,78 @@ Demos are provided through https://codesandbox.io. Feel free to fork and play wi
 
 `React-mde` currently depends on:
 
-- Font Awesome - For the icons
-- Showdown - For rendering the markdown preview
+- Font Awesome 5.* for the icons. This is not a hard dependency and there are plans to eliminate it altogether, but for now,
+the button classes are meant to be resolved by Font Awesome, which can be installed [using your preferred method](https://fontawesome.com/how-to-use/svg-with-js).
+The easiest is just add this to `<head/>`:
 
-`React-mde` used Font Awesome 4.7.* as an NPM dependency before 3.*. Now Font Awesome needs
-to be installed separately [using your preferred method](https://fontawesome.com/how-to-use/svg-with-js). The easiest is just add this to `<head/>`:
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
  
-You also need NPM packages.
 
+## Optional dependencies
 
+- Showdown. `React-mde` is not opinionated as to how to transform markdown into HTML and this can be done both in client-side,
+like StackOverflow, or in server-side, like GitHub. The easiest way is to use Showdown and process it in client-side. If you
+decide to do so, install Showdown:
 
-For `React-mde` 3.*+:
 
     npm install --save showdown
-    
-For `React-mde` 2.*: (this will install Font Awesome 4.7.*)
-    
-    npm install --save showdown font-awesome
+
 
 ## Using
 
-React-mde is a completely controlled component. You can experiment with the props below
-forking the [Codesandbox demos](https://github.com/andrerpena/react-mde#demos)
+ React-mde is a completely controlled component.
+    
+    Minimal example using Showdown:
+    
+    import * as React from "react";
+    import ReactMde, {ReactMdeTypes} from "../src";
+    import * as Showdown from "showdown";
+    
+    export interface AppState {
+        mdeState: ReactMdeTypes.MdeState;
+    }
+    
+    export class App extends React.Component<{}, AppState> {
+    
+        converter: Showdown.Converter;
+    
+        constructor(props) {
+            super(props);
+            this.state = {
+                mdeState: null,
+            };
+            this.converter = new Showdown.Converter({tables: true, simplifiedAutoLink: true});
+        }
+    
+        handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
+            this.setState({mdeState});
+        }
+    
+        render() {
+            return (
+                <div className="container">
+                    <ReactMde
+                        onChange={this.handleValueChange}
+                        editorState={this.state.mdeState}
+                        generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
+                    />
+                </div>
+            );
+        }
+    }
 
-**Props**:
 
-- **value**: The current value. An object with this structure `{text: "", selection?: {start:0, end:2}, scrollTop?: number }` 
-where `text` is the text and `selection` is an object containing `start` and `end` representing what should be selected.
-Passing null to `selection` is perfectly fine.
-- **onChange**: Function that should handle the value. The `value` passed as a parameter to the `onChange` function is of the same type as the `value` prop above.
-- **commands**: An array of array of command objects (`[[cmd1, cmd2],[cmd3, cmd4]]`). The first array represents groups,
- the second represents commands inside that group. For an example, refer to how the `getDefaultCommands()` [is implemented](https://github.com/andrerpena/react-mde/blob/master/src/commands/index.ts). How to create custom commands is explained below.
-- **textAreaProps**: Whatever you want to pass to the `textarea` component.
-- **showdownFlavor**: The Markdown flavor to use. This defaults to `original`, the [original specs by John Gruber](https://daringfireball.net/projects/markdown/). Please refer to the [Showdown documentation](https://github.com/showdownjs/showdown#flavors) for the complete list of supported flavors.
-- **showdownOptions**: An object with options to be passed to Showdown. Please refer to the [Showdown documentation](https://github.com/showdownjs/showdown#valid-options) for the complete list of options. Note that, unlike what happens by default with Showdown, the options passed here will **override** the defined flavor.
-Notice that tables, for example, are disabled by default in Showdown. So, in order to enable tables, you'd pass something like `showdownOptions={{tables: true}}` to `ReactMde`.
-- **visibility**: Determines which sub-components are visible. `visibility` is an object optionally containing these booleans:
-`toolbar`, `textarea`, `preview` and `previewHelp`. For example, in order to hide the preview, you can pass `visibility:{{preview:false}}`.
-- **className**: Custom className.
-- **processHtml**: A function that receives the HTML generated by Showdown and returned a processed/sanitized version before
-displaying it in the preview. This is useful to avoid XSS.
+## React-mde Props
+
+The types are described below
+
+- **editorState: MdeState**: The state of the editor. This contains the markdown, the HTML and the underlying Draft.js state.
+- **className?: string**: Optional class name to be added to the top level element.
+- **commands?: Command[][]**: An array of array of commands. If no commands are specified, the default will be used. Commands are explained in more details below.
+- **onChange: (value: MdeState) => void**: Event handler for the `onChange` event.
+- **generateMarkdownPreview: (markdown: string) => Promise<string>;**: Function that should return the generated HTML for the preview.
+- **layout?: string**: The name of the layout to be used. For now, the only supported layout is the default: `vertical`.
 
 ## Styling
 
@@ -75,204 +96,42 @@ Easiest way: import `react-mde-all.css`:
 
     import 'react-mde/lib/styles/css/react-mde-all.css';
     
-If you want to have a more granular control over the styles, you can import each individual file:
-
-    import 'react-mde/lib/styles/css/react-mde.css';
-    import 'react-mde/lib/styles/css/react-mde-toolbar.css';
-    import 'react-mde/lib/styles/css/react-mde-textarea.css';
-    import 'react-mde/lib/styles/css/react-mde-preview.css';
+If you want to have a more granular control over the styles, you can import each individual file.
     
 If you're using SASS, you can override these variables: https://github.com/andrerpena/react-mde/blob/master/src/styles/variables.scss
 
-You also need Font Awesome for the toolbar icons. `React-mde` 3.\*+ uses Font Awesome 5.\*. `React-mde` 2.\* uses Font Awesome 4.*.
-
-Font Awesome 5 [can be installed in different ways](https://fontawesome.com/how-to-use/svg-with-js), but the easiest is just adding this to the `<head/>`:
+You also need Font Awesome for the toolbar icons. Font Awesome 5 [can be installed in different ways](https://fontawesome.com/how-to-use/svg-with-js),
+but the easiest is just adding this to the `<head/>`:
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
-If you're using `React-mde` 2.\*, Font Awesome 4.\* is required. After installing the NPM, 
-import it in your JavaScript or TypeScript like this:
-
-    import '../node_modules/font-awesome/css/font-awesome.css';
-    
-Normalize is optional but it's used in the Demo.
-    
-    import '../node_modules/normalize.css/normalize.css';
-    
-    
 ## XSS concerns
-    
-Taken from the [Markdown repository documentation](https://github.com/showdownjs/showdown/wiki/Markdown's-XSS-Vulnerability-(and-how-to-mitigate-it)):
 
-> Cross-side scripting is a well known technique to gain access to private information of the users 
+`React-mde` does not automatically sanitize the HTML preview. If your using Showdown,
+this has been taken from [their documentation](https://github.com/showdownjs/showdown/wiki/Markdown's-XSS-Vulnerability-(and-how-to-mitigate-it)):
+    
+> Cross-side scripting is a well known technique to gain access to private information of the users
 of a website. The attacker injects spurious HTML content (a script) on the web page which will read 
 the user’s cookies and do something bad with it (like steal credentials). As a countermeasure,
  you should filter any suspicious content coming from user input. Showdown doesn’t include an 
  XSS filter, so you must provide your own. But be careful in how you do it…
  
-`React-mde` does not automatically sanitize the Showdown generated HTML for you. However,
-you can use your preferred anti-XSS library and use the `processHtml` prop to sanitize
-the HTML before it is presented in the preview.
+You might want to take a look at [showdown-xss-filter](https://github.com/VisionistInc/showdown-xss-filter).
+
     
 ## Commands
 
 React-mde allows you to use the build-in commands, implement your own commands, or both.
 
-There are two types of commands, the `button` commands (default if you don't say anything), and the `dropdown` commands.
-`button` commands appear as button and execute a single action when clicked. `dropdown` commands have `subCommands` and
-will display a dropdown when you click them.
-
-### Anatomy of a button command
-
-You don't have to create your own commands at all, but if you want, this is how a command looks like:
-
-    const makeLinkCommand = {
-        icon: 'link',
-        tooltip:
-            'Insert a link',
-        execute:
-            (text: string, selection: TextSelection) => {
-                const {newText, insertionLength} = insertText(text, '[', selection.start);
-                const finalText = insertText(newText, '](url)', selection.end + insertionLength).newText;
-                return {
-                    text: finalText,
-                    selection: {
-                        start: selection.start + insertionLength,
-                        end: selection.end + insertionLength,
-                    },
-                };
-            },
-    };
-
-
-**props:**
-
-- **type**: The type of the command.
-- **icon**: If this is a text, it will print a `font-awesome` `<i/>` element with the classes `fa fa-${icon}`. Passing `bold` will print `<i className="fa fa-bold"></i>`.
- If the passing value is a React element, it will print the react element.
-- **tooltip**: If any, it will print a tooltip with the passed text.
-- **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`,
- which is the textarea text before the command, and `selection`, an object containing `start` and `end`. 
- Your function should return the new `text` and the new `selection` (after your command).
-
-
-### Anatomy of a dropdown command
-
-    {
-		type: 'dropdown',
-		icon: 'header',
-		subCommands: [
-			{
-				content: <p className="header-1">Header</p>,
-				execute: function (text, selection) {
-					return makeHeader(text, selection, '# ');
-				}
-			},
-			{
-				content: <p className="header-2">Header</p>,
-				execute: function (text, selection) {
-					return makeHeader(text, selection, '## ');
-				}
-			},
-			{
-				content: <p className="header-3">Header</p>,
-				execute: function (text, selection) {
-					return makeHeader(text, selection, '### ');
-				}
-			}
-		]
-	}
-
-
-**props:**
-
-
- - **type**: The type of the command.
- - **icon**: If this is a text, it will print a `font-awesome` `<i/>` element with the classes `fa fa-${icon}`. Passing `bold` will print `<i className="fa fa-bold"></i>`.
- If the passing value is a React element, it will print the react element.
- - **subCommands**: A list of commands that will dropdown when you click the button.
-
-**subCommands** is an array of objects with the following props:
-
- - **content**: A React component that will be displayed within the `li`.
- - **execute**: The function that will actually execute the command. This function accepts 2 parameters: `text`, which is the whole textarea text before your command, and `selection`, a 2 items array containing the beggining and end of the current selection.
- Your function should return the current `text` (after your command) and the current `selection` (after your command).
-
 ## Composition and custom layouts
 
-`ReactMde` is designed to make it easy for users to customize the layout, or to make any of it sub-components invisible,
-like the Preview, for instance. The `ReactMde` component, itself, just a thin layout wrapper for its 3 internal components
-with visibility options.
+React-mde is designed to be composable and to facilitate new layouts
 
-If you want to create your own layout, please take a look at the source code of the `ReactMde` component:
-https://github.com/andrerpena/react-mde/blob/master/src/ReactMde.tsx. It's easy to simply create your own, only
-leveraging the internal components you'd like and laying them out in the way you prefer
+![architecture](https://github.com/andrerpena/react-mde/blob/master/assets/architecture.png)
 
-    import * as ReactMde from 'react-mde';
-    // Now you have (among other utility modules):
-    // The ReactMde.ReactMdeToolbar component
-    // The ReactMde.ReactMdeTextArea component
-    // The ReactMde.ReactMdePreview component
-    
-    
-# Migrating
+## Change log / Migrating
 
-## From 3.\* to 4.\*
-
-Major differences:
-
-- Passing `commands` to `React-Mde` is now optional. If none is passed, it will automatically
-use the default ones.
-- Now the `React-mde` sub-components cannot be imported directly from the main package.
-This change will not affect you if you don't using sub-components. This will not affect the majority
-of the users.
-
-    // 3.\* and below:
-    import { ReactMarkdownTextArea } from "react-mde"
-    // 4.\* and after:
-    import { ReactMdeComponents } from "react-mde"
-    const { ReactMarkdownTextArea } = ReactMdeComponents
-
-Architectural differences:
-
-- Now the layout is decoupled from `React-Mde` in such a way that now, introducing new layouts, like
-horizontal and tabs, will not require breaking changes. The only layout available now is `Vertical`.
-
-## From 2.* to 3.\*
-
-Font Awesome 5 is now used, and it's not a NPM peer dependency anymore. 
-It's up to you how to install it, it [can be installed in different ways](https://fontawesome.com/how-to-use/svg-with-js), but the easiest is just adding this to the `<head/>`:
-
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-
-## From 1.\* to 2.\*
-
-2.* is a major refactoring of the code to improve composability
-
-Major differences:
-
-- Now the main `react-mde` component is composed of 3 sub-components, the `ReactMdeToolbar`, the `ReactMdeTextArea` and the `ReactMdePreview`.
-You can import `react-mde` directly or import each of the sub-components and have more flexibility building your own layout.
-- Each sub-component now has its own CSS/SCSS file and we're now including a `react-mde-all.css`, or the SCSS alternative, for simplicity.
-- We realized that on version 1.*, it was difficult to select which components you wanted to use. So now...
-
-
-    import * as ReactMde from 'react-mde';
-    ReactMde.ReactMdeComponents // contains all components and you can select your own components
-    ReactMde.getDefaultComponents() // will return an array with all components
-    
-    
-How to upgrade an existing 1.* JavaScript project: https://github.com/andrerpena/react-mde-js-demo/commit/e62af170fa258f7f17f29d41f395f24e9eaf3b72
-
-How to upgrade an existing 1.* TypeScript project: https://github.com/andrerpena/react-mde-ts-demo/commit/d6718305c0132649cabca432e1e9415ea06cd643
-
-## From 0.* to 1.*
-
-Major differences:
-
-- Instead of using the `getDefaultCommands` function, now the default commands are exported directly.
-- The `textAreaId` and `textareaName` props were replaced by `textAreaProps` that allows you to pass whatever you want to the `textarea` component.
-- The paths of the CSS and SCSS have changed.
+[Instructions here](https://github.com/andrerpena/react-mde/blob/master/docs-md/ChangeLogMigrating.md).
 
 ## Roadmap
 
@@ -284,4 +143,4 @@ React-mde is MIT licensed
 
 ## About the author
 
-Made with :heart: by André Pena. Check out my website: https://aboutdevs.com/andrerpena
+Made with :heart: by André Pena. Check out my website: http://andrerpena.me

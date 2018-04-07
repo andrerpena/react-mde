@@ -1,21 +1,96 @@
-// TEXT INSERTION HELPERS
+import {MarkdownState} from "../types/MarkdownState";
+import {TextInsertionResult, TextSelection, Word, AlterLineFunction} from "../types";
 
-import { TextSelection } from "../types/TextSelection";
-import { TextInsertionResult } from "../types/TextInsertionResult";
-import { Word } from "../types/Word";
-import { AlterLineFunction } from "../types/FunctionTypes";
+export function getSurroundingWord(text: string, position: number): Word {
+    if (!text) throw Error("Argument 'text' should be truthy");
+
+    const isWordDelimiter = (c: string) => c === " " || c.charCodeAt(0) === 10;
+
+    // leftIndex is initialized to 0 because if position is 0, it won't even enter the iteration
+    let leftIndex = 0;
+    // rightIndex is initialized to text.length because if position is equal to text.length it won't even enter the interation
+    let rightIndex = text.length;
+
+    // iterate to the left
+    for (let i = position; i - 1 > -1; i--) {
+        if (isWordDelimiter(text[i - 1])) {
+            leftIndex = i;
+            break;
+        }
+    }
+
+    // iterate to the right
+    for (let i = position; i < text.length; i++) {
+        if (isWordDelimiter(text[i])) {
+            rightIndex = i;
+            break;
+        }
+    }
+
+    return {
+        word: text.slice(leftIndex, rightIndex),
+        position: {
+            start: leftIndex,
+            end: rightIndex,
+        },
+    };
+}
+
+export function insertBeforeAndAfter(markdownState: MarkdownState, insertion: string): MarkdownState {
+    const {text} = markdownState;
+    let {selection} = markdownState;
+    selection = selectWordIfCaretIsInsideOne({text, selection});
+    // the user is selecting a word section
+    const {newText, insertionLength} = insertText(text, insertion, selection.start);
+    const finalText = insertText(newText, insertion, selection.end + insertionLength).newText;
+    return {
+        text: finalText,
+        selection: {
+            start: selection.start + insertionLength,
+            end: selection.end + insertionLength,
+        },
+    };
+}
+
+export function selectWordIfCaretIsInsideOne({text, selection}: MarkdownState): TextSelection {
+    if (text && text.length && selection.start === selection.end) {
+        // the user is pointing to a word
+        return getSurroundingWord(text, selection.start).position;
+    }
+    return selection;
+}
 
 /**
- * Inserts "textToBeInserted" in "text" at the "insertionPosition"
+ * Inserts breaks before, only if needed. The returned selection will not include this breaks
  *
- * @param {any} originalText
- * @param {any} textToInsert
- * @param {any} insertionPosition
+ * @export
+ * @param {any} text
+ * @param {any} selection
  * @returns
  */
-export function insertText(originalText: string, textToInsert: string, insertionPosition: number): TextInsertionResult {
-    const newText = [originalText.slice(0, insertionPosition), textToInsert, originalText.slice(insertionPosition)].join("");
-    return {newText, insertionLength: textToInsert.length};
+export function insertBreaksBeforeSoThatThereIsAnEmptyLineBefore({text, selection}: MarkdownState): TextInsertionResult {
+    const breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection.start);
+    const insertionBefore = Array(breaksNeededBefore + 1).join("\n");
+
+    let newText = text;
+    let newSelection = selection;
+    let insertionLength = 0;
+
+    // if line-breaks have to be added before
+    if (insertionBefore) {
+        const textInsertion = insertText(text, insertionBefore, selection.start);
+        newText = textInsertion.newText;
+        insertionLength = textInsertion.insertionLength;
+        newSelection = {
+            start: selection.start + textInsertion.insertionLength,
+            end: selection.end + textInsertion.insertionLength,
+        };
+    }
+    return {
+        newText,
+        insertionLength,
+        newSelection,
+    };
 }
 
 /**
@@ -53,6 +128,19 @@ export function insertAfter(originalText: string, textToInsert: string, selectio
         end: selection.end + textInsertion.insertionLength,
     };
     return {...textInsertion, newSelection};
+}
+
+/**
+ * Inserts "textToBeInserted" in "text" at the "insertionPosition"
+ *
+ * @param {any} originalText
+ * @param {any} textToInsert
+ * @param {any} insertionPosition
+ * @returns
+ */
+export function insertText(originalText: string, textToInsert: string, insertionPosition: number): TextInsertionResult {
+    const newText = [originalText.slice(0, insertionPosition), textToInsert, originalText.slice(insertionPosition)].join("");
+    return {newText, insertionLength: textToInsert.length};
 }
 
 /**
@@ -115,47 +203,13 @@ export function getBreaksNeededForEmptyLineAfter(text = "", startPosition: numbe
 }
 
 /**
- * Inserts breaks before, only if needed. The returned selection will not include this breaks
- *
- * @export
- * @param {any} text
- * @param {any} selection
- * @returns
- */
-export function insertBreaksBeforeSoThatThereIsAnEmptyLineBefore(text: string, selection: TextSelection): TextInsertionResult {
-    const breaksNeededBefore = getBreaksNeededForEmptyLineBefore(text, selection.start);
-    const insertionBefore = Array(breaksNeededBefore + 1).join("\n");
-
-    let newText = text;
-    let newSelection = selection;
-    let insertionLength = 0;
-
-    // if line-breaks have to be added before
-    if (insertionBefore) {
-        const textInsertion = insertText(text, insertionBefore, selection.start);
-        newText = textInsertion.newText;
-        insertionLength = textInsertion.insertionLength;
-        newSelection = {
-            start: selection.start + textInsertion.insertionLength,
-            end: selection.end + textInsertion.insertionLength,
-        };
-    }
-    return {
-        newText,
-        insertionLength,
-        newSelection,
-    };
-}
-
-/**
  * Inserts breaks after, only if needed. The returned selection will not include this breaks
  *
  * @export
- * @param {any} text
- * @param {any} selection
  * @returns
+ * @param markdownState
  */
-export function insertBreaksAfterSoThatThereIsAnEmptyLineAfter(text: string, selection: TextSelection): TextInsertionResult {
+export function insertBreaksAfterSoThatThereIsAnEmptyLineAfter({text, selection}: MarkdownState): TextInsertionResult {
     const breaksNeededBefore = getBreaksNeededForEmptyLineAfter(text, selection.end);
     const insertionAfter = Array(breaksNeededBefore + 1).join("\n");
 
@@ -206,61 +260,54 @@ export function insertBeforeEachLine(text: string, insertion: string | AlterLine
     };
 }
 
-// MISC
-
 /**
- * Gets the word surrounding the given position. Word delimiters are spaces and line-breaks
- *
+ * Helper for creating commands that make lists
  * @export
- * @param {any} text
- * @param {any} position
+ * @param markdownState
+ * @param {any} insertionBeforeEachLine
+ * @returns
  */
-export function getSurroundingWord(text: string, position: number): Word {
-    if (!text) throw Error("Argument 'text' should be truthy");
+export function makeList({text, selection}: MarkdownState, insertionBeforeEachLine: string | AlterLineFunction): MarkdownState {
+    let textInsertion;
 
-    const isWordDelimiter = (c: string) => c === " " || c.charCodeAt(0) === 10;
+    selection = selectWordIfCaretIsInsideOne({text, selection});
 
-    // leftIndex is initialized to 0 because if position is 0, it won't even enter the iteration
-    let leftIndex = 0;
-    // rightIndex is initialized to text.length because if position is equal to text.length it won't even enter the interation
-    let rightIndex = text.length;
+    // insert breaks before, if needed
+    textInsertion = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore({text, selection});
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
 
-    // iterate to the left
-    for (let i = position; i - 1 > -1; i--) {
-        if (isWordDelimiter(text[i - 1])) {
-            leftIndex = i;
-            break;
-        }
-    }
+    // insert breaks after, if needed
+    textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter({text, selection});
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
 
-    // iterate to the right
-    for (let i = position; i < text.length; i++) {
-        if (isWordDelimiter(text[i])) {
-            rightIndex = i;
-            break;
-        }
-    }
+    // inserts 'insertionBeforeEachLine' before each line
+    textInsertion = insertBeforeEachLine(text, insertionBeforeEachLine, selection);
+    text = textInsertion.newText;
+    selection = textInsertion.newSelection;
 
     return {
-        word: text.slice(leftIndex, rightIndex),
-        position: {
-            start: leftIndex,
-            end: rightIndex,
-        },
+        text,
+        selection,
     };
 }
 
 /**
- * Returns the selection of the current work if selection[0] is equal to selection[1] and carret is inside a word
- *
- * @export
+ * Helper for creating a command that makes a header
  * @param {any} text
  * @param {any} selection
+ * @param {any} insertionBefore
+ * @returns
  */
-export function selectCurrentWordIfCaretIsInsideOne(text: string, selection: TextSelection): TextSelection {
-    if (text && text.length && selection.start === selection.end) {
-        // the user is pointing to a word
-        return getSurroundingWord(text, selection.start).position;
-    }
-    return selection;
+export function makeHeader({text, selection}: MarkdownState, insertionBefore: string): MarkdownState {
+    selection = selectWordIfCaretIsInsideOne({text, selection});
+    // the user is selecting a word section
+    const insertionText = insertBefore(text, insertionBefore, selection, false);
+    const newText = insertionText.newText;
+    const newSelection = insertionText.newSelection;
+    return {
+        text: newText,
+        selection: newSelection,
+    };
 }

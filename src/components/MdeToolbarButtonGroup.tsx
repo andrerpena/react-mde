@@ -1,9 +1,9 @@
 import * as React from "react";
 
-export interface HeaderGroupProps {
+export interface MdeToolbarButtonGroupProps {
 }
 
-export const HeaderGroup: React.SFC<HeaderGroupProps> = (props) => {
+export const MdeToolbarButtonGroup: React.SFC<MdeToolbarButtonGroupProps> = (props) => {
     return (
         <ul className="mde-header-group">
             {props.children}

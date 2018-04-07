@@ -1,19 +1,22 @@
-import {Command, TextSelection} from "../types";
-import {insertText} from "../helpers/ReactMdeTextHelper";
+import * as React from "react";
+import {Command} from "../types";
+import {insertText} from "../util/MarkdownUtil";
+import {MdeToolbarIcon} from "../components";
 
 export const imageCommand: Command = {
-    icon: "image",
-    tooltip: "Insert a picture",
+    buttonContent: <MdeToolbarIcon icon="image"/>,
+    buttonProps: { "aria-label": "Insert a picture" },
     execute:
-        (text: string, selection: TextSelection) => {
+        (getMarkdownState, setMarkdownState) => {
+            const {text, selection} = getMarkdownState();
             const {newText, insertionLength} = insertText(text, "![", selection.start);
             const finalText = insertText(newText, "](image-url)", selection.end + insertionLength).newText;
-            return {
+            setMarkdownState({
                 text: finalText,
                 selection: {
                     start: selection.start + insertionLength,
                     end: selection.end + insertionLength,
                 },
-            };
+            });
         },
 };
