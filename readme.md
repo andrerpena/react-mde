@@ -1,6 +1,6 @@
 # react-mde
 
-A simple yet powerful and extensible Markdown Editor editor for React.
+A simple yet powerful and extensible Markdown Editor editor for React. React-mde is built on top of [Draft.js](https://draftjs.org/).
 
 ![image](https://github.com/andrerpena/react-mde/blob/master/assets/react-mde-5.png)
 
@@ -10,13 +10,19 @@ A simple yet powerful and extensible Markdown Editor editor for React.
 
 ## Installing
 
-    npm install --save react-mde
+    npm i --save react-mde
 
 ## Dependencies
 
 `React-mde` currently depends on:
 
-- Font Awesome 5.* for the icons. This is not a hard dependency and there are plans to eliminate it altogether, but for now,
+[Draft.js](https://draftjs.org/). This facilitates features that would otherwise be quite
+difficult. The best examples being history management, mentions and pasting files.
+<!-- -->
+
+    npm i --save draft-js
+
+- [Font Awesome 5.*](https://fontawesome.com/) for the icons. This is not a hard dependency and there are plans to eliminate it altogether, but for now,
 the button classes are meant to be resolved by Font Awesome, which can be installed [using your preferred method](https://fontawesome.com/how-to-use/svg-with-js).
 The easiest is just add this to `<head/>`:
 <!-- -->
@@ -30,7 +36,7 @@ like StackOverflow, or in server-side, like GitHub. The easiest way is to use Sh
 decide to do so, install Showdown:
 <!-- -->
 
-    npm install --save showdown
+    npm i --save showdown
 
 ## Using
 
