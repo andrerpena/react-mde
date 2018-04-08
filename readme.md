@@ -15,9 +15,9 @@ A simple yet powerful and extensible Markdown Editor editor for React. React-mde
 
 ## Dependencies
 
-`React-mde` currently depends on:
+React-mde currently depends on:
 
-[Draft.js](https://draftjs.org/). This facilitates features that would otherwise be quite
+-[Draft.js](https://draftjs.org/). This facilitates features that would otherwise be quite
 difficult. The best examples being history management, mentions and pasting files.
 <!-- -->
 
@@ -32,7 +32,7 @@ The easiest is just add this to `<head/>`:
  
 ## Optional dependencies
 
-- Showdown. `React-mde` is not opinionated as to how to transform markdown into HTML and this can be done both in client-side,
+-[Showdown](https://github.com/showdownjs/showdown). React-mde is not opinionated as to how to transform markdown into HTML and this can be done both in client-side,
 like StackOverflow, or in server-side, like GitHub. The easiest way is to use Showdown and process it in client-side. If you
 decide to do so, install Showdown:
 <!-- -->
@@ -41,7 +41,7 @@ decide to do so, install Showdown:
 
 ## Using
 
- React-mde is a completely controlled component.
+React-mde is a completely controlled component.
     
     Minimal example using Showdown:
     
@@ -113,7 +113,7 @@ but the easiest is just adding this to the `<head/>`:
 
 ## XSS concerns
 
-`React-mde` does not automatically sanitize the HTML preview. If your using Showdown,
+React-mde does not automatically sanitize the HTML preview. If your using Showdown,
 this has been taken from [their documentation](https://github.com/showdownjs/showdown/wiki/Markdown's-XSS-Vulnerability-(and-how-to-mitigate-it)):
     
 > Cross-side scripting is a well known technique to gain access to private information of the users
@@ -135,7 +135,7 @@ React-mde is designed to be composable and to facilitate new layouts
 
 ![architecture](https://github.com/andrerpena/react-mde/blob/master/assets/architecture.png)
 
-## Change log / Migrating
+## Change log / Migrating from older versions
 
 [Instructions here](https://github.com/andrerpena/react-mde/blob/master/docs-md/ChangeLogMigrating.md).
 
