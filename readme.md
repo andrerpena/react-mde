@@ -6,7 +6,8 @@ A simple yet powerful and extensible Markdown Editor editor for React. React-mde
 
 ## Demos
 
-[Demo](http://andrerpena.me/react-mde/)
+-[Demo](http://andrerpena.me/react-mde/).
+-[CodeSandbox Demo](https://codesandbox.io/s/o5vpjwyp79). Fork it to play around with it.
 
 ## Installing
 

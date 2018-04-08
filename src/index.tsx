@@ -9,7 +9,6 @@ export {
     ReactMdeTypes,
     ReactMdeCommands,
     ReactMdeComponents,
-    ReactMde,
     ReactMdeProps,
     DraftUtil,
     MarkdownUtil,
