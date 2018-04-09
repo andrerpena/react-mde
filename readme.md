@@ -122,7 +122,6 @@ the user’s cookies and do something bad with it (like steal credentials). As a
  
 You might want to take a look at [showdown-xss-filter](https://github.com/VisionistInc/showdown-xss-filter).
 
-    
 ## Commands
 
 React-mde allows you to use the build-in commands, implement your own commands, or both.
@@ -132,6 +131,11 @@ React-mde allows you to use the build-in commands, implement your own commands, 
 React-mde is designed to be composable and to facilitate new layouts
 
 ![architecture](https://github.com/andrerpena/react-mde/blob/master/assets/architecture.png)
+
+## Programmatically controlling text and selection
+
+`DraftUtil.buildNewMdeState` can be used to programmatically create a new state based on the current state.
+[Example with a button that duplicates the text](https://codesandbox.io/s/l4jlp3p5om)
 
 ## Change log / Migrating from older versions
 
