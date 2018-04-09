@@ -13071,6 +13071,7 @@ function getMdeStateFromDraftState(editorState, generateMarkdownPreview) {
 }
 exports.getMdeStateFromDraftState = getMdeStateFromDraftState;
 function buildNewDraftState(currentDraftState, newText, newSelection) {
+    if (newSelection === void 0) { newSelection = null; }
     var newDraftEditorState;
     // TODO: Fix the redo. It's no working properly but this is an implementation detail.
     // handling text change history push
@@ -13078,11 +13079,14 @@ function buildNewDraftState(currentDraftState, newText, newSelection) {
     newDraftEditorState = draft_js_1.EditorState.forceSelection(currentDraftState, currentDraftState.getSelection());
     newDraftEditorState = draft_js_1.EditorState.push(newDraftEditorState, contentState, "insert-characters");
     // handling text selection history push
-    var newSelectionState = buildSelectionState(newDraftEditorState.getCurrentContent(), newSelection);
+    var newSelectionState = newSelection
+        ? buildSelectionState(newDraftEditorState.getCurrentContent(), newSelection)
+        : currentDraftState.getSelection();
     return draft_js_1.EditorState.forceSelection(newDraftEditorState, newSelectionState);
 }
 exports.buildNewDraftState = buildNewDraftState;
 function buildNewMdeState(currentState, generateMarkdownPreview, newText, newSelection) {
+    if (newSelection === void 0) { newSelection = null; }
     return __awaiter(this, void 0, void 0, function () {
         var newDraftState, html;
         return __generator(this, function (_a) {
