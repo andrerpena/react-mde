@@ -112,3 +112,27 @@ export async function getMdeStateFromDraftState(editorState: EditorState, genera
         draftEditorState: editorState,
     };
 }
+
+export function buildNewDraftState(currentDraftState: EditorState, newText: string, newSelection: TextSelection) {
+    let newDraftEditorState: EditorState;
+    // TODO: Fix the redo. It's no working properly but this is an implementation detail.
+
+    // handling text change history push
+    const contentState = ContentState.createFromText(newText);
+    newDraftEditorState = EditorState.forceSelection(currentDraftState, currentDraftState.getSelection());
+    newDraftEditorState = EditorState.push(newDraftEditorState, contentState, "insert-characters");
+
+    // handling text selection history push
+    const newSelectionState = buildSelectionState(newDraftEditorState.getCurrentContent(), newSelection);
+    return EditorState.forceSelection(newDraftEditorState, newSelectionState);
+}
+
+export async function buildNewMdeState(currentState: MdeState, generateMarkdownPreview: GenerateMarkdownPreview, newText: string, newSelection: TextSelection): Promise<MdeState> {
+    const newDraftState = buildNewDraftState(currentState.draftEditorState, newText, newSelection);
+    const html = await generateMarkdownPreview(newText);
+    return {
+        html,
+        markdown: newText,
+        draftEditorState: newDraftState,
+    };
+}

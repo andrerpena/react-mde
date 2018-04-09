@@ -13070,6 +13070,38 @@ function getMdeStateFromDraftState(editorState, generateMarkdownPreview) {
     });
 }
 exports.getMdeStateFromDraftState = getMdeStateFromDraftState;
+function buildNewDraftState(currentDraftState, newText, newSelection) {
+    var newDraftEditorState;
+    // TODO: Fix the redo. It's no working properly but this is an implementation detail.
+    // handling text change history push
+    var contentState = draft_js_1.ContentState.createFromText(newText);
+    newDraftEditorState = draft_js_1.EditorState.forceSelection(currentDraftState, currentDraftState.getSelection());
+    newDraftEditorState = draft_js_1.EditorState.push(newDraftEditorState, contentState, "insert-characters");
+    // handling text selection history push
+    var newSelectionState = buildSelectionState(newDraftEditorState.getCurrentContent(), newSelection);
+    return draft_js_1.EditorState.forceSelection(newDraftEditorState, newSelectionState);
+}
+exports.buildNewDraftState = buildNewDraftState;
+function buildNewMdeState(currentState, generateMarkdownPreview, newText, newSelection) {
+    return __awaiter(this, void 0, void 0, function () {
+        var newDraftState, html;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    newDraftState = buildNewDraftState(currentState.draftEditorState, newText, newSelection);
+                    return [4 /*yield*/, generateMarkdownPreview(newText)];
+                case 1:
+                    html = _a.sent();
+                    return [2 /*return*/, {
+                            html: html,
+                            markdown: newText,
+                            draftEditorState: newDraftState,
+                        }];
+            }
+        });
+    });
+}
+exports.buildNewMdeState = buildNewMdeState;
 
 
 /***/ }),
@@ -30351,7 +30383,6 @@ exports.DraftUtil = DraftUtil;
 var MarkdownUtil = __webpack_require__(11);
 exports.MarkdownUtil = MarkdownUtil;
 var ReactMde_1 = __webpack_require__(194);
-exports.ReactMde = ReactMde_1.ReactMde;
 exports.default = ReactMde_1.ReactMde;
 
 
@@ -39861,16 +39892,8 @@ var ReactMde = /** @class */ (function (_super) {
             // set markdown state
             function (_a) {
                 var text = _a.text, selection = _a.selection;
-                // TODO: Fix the redo. It's no working properly but this is an implementation detail.
-                var _b = _this.props, draftEditorState = _b.editorState.draftEditorState, generateMarkdownPreview = _b.generateMarkdownPreview;
-                var newDraftEditorState;
-                // handling text change history push
-                var contentState = draft_js_1.ContentState.createFromText(text);
-                newDraftEditorState = draft_js_1.EditorState.forceSelection(draftEditorState, draftEditorState.getSelection());
-                newDraftEditorState = draft_js_1.EditorState.push(newDraftEditorState, contentState, "insert-characters");
-                // handling text selection history push
-                var newSelectionState = DraftUtil_1.buildSelectionState(newDraftEditorState.getCurrentContent(), selection);
-                newDraftEditorState = draft_js_1.EditorState.forceSelection(newDraftEditorState, newSelectionState);
+                var draftEditorState = _this.props.editorState.draftEditorState;
+                var newDraftEditorState = DraftUtil_1.buildNewDraftState(draftEditorState, text, selection);
                 _this.handleDraftStateChange(newDraftEditorState);
             }, 
             // get draft state

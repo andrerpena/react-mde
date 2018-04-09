@@ -5,6 +5,7 @@ import {layoutMap, LayoutMap} from "./LayoutMap";
 import {ContentState, EditorState} from "draft-js";
 import {MarkdownState} from "./types/MarkdownState";
 import {
+    buildNewDraftState,
     buildSelectionState,
     getMarkdownStateFromDraftState, getMdeStateFromDraftState,
 } from "./util/DraftUtil";
@@ -49,19 +50,8 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             () => getMarkdownStateFromDraftState(this.props.editorState.draftEditorState),
             // set markdown state
             ({text, selection}: MarkdownState) => {
-                // TODO: Fix the redo. It's no working properly but this is an implementation detail.
-                const {editorState: {draftEditorState}, generateMarkdownPreview} = this.props;
-                let newDraftEditorState;
-
-                // handling text change history push
-                const contentState = ContentState.createFromText(text);
-                newDraftEditorState = EditorState.forceSelection(draftEditorState, draftEditorState.getSelection());
-                newDraftEditorState = EditorState.push(newDraftEditorState, contentState, "insert-characters");
-
-                // handling text selection history push
-                const newSelectionState = buildSelectionState(newDraftEditorState.getCurrentContent(), selection);
-                newDraftEditorState = EditorState.forceSelection(newDraftEditorState, newSelectionState);
-
+                const {editorState: {draftEditorState}} = this.props;
+                const newDraftEditorState = buildNewDraftState(draftEditorState, text, selection);
                 this.handleDraftStateChange(newDraftEditorState);
             },
             // get draft state
