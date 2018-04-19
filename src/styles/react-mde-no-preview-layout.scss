@@ -6,7 +6,7 @@
   flex-direction: column;
 
   .mde-text {
-    overflow-y: scroll;
+    overflow-y: auto;
     border-bottom: none;
   }
 }
