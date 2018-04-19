@@ -135,7 +135,7 @@ React-mde is designed to be composable and to facilitate new layouts
 ## Programmatically controlling text and selection
 
 `DraftUtil.buildNewMdeState` can be used to programmatically create a new state based on the current state.
-[Example with a button that duplicates the text](https://codesandbox.io/s/l4jlp3p5om)
+[Example with a button that duplicates the text](https://codesandbox.io/s/l4jlp3p5om). For the initial state, you can just pass null to `editorState` and React-Mde will build a new `MdeState` and call `onChange` with the first `MdeState`
 
 ## Change log / Migrating from older versions
 
