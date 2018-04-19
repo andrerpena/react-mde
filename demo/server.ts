@@ -23,6 +23,6 @@ app.use((req, res) => res.status(200).send(require("./index.html")));
 app.listen(port, "0.0.0.0", () => {
     const demoUrl = `http://localhost:${port}/`;
     // tslint:disable-next-line
-    console.log(`${packageJson.name} at ${demoUrl}`);
+    console.log(`${packageJson.name} running at ${demoUrl}`);
     opn(demoUrl);
 });
