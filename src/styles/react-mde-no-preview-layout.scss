@@ -1,7 +1,12 @@
 @import "variables";
 
 .react-mde-no-preview-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
   .mde-text {
+    overflow-y: scroll;
     border-bottom: none;
   }
 }
