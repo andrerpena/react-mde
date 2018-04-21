@@ -9,21 +9,45 @@
         border-bottom: 1px solid $mde-border-color;
     }
 
-    .react-mde-content {
+    .mde-tabs {
+        display: flex;
+        align-items: stretch;
+
+        .mde-tab {
+            border: none;
+            border-left: 1px solid $mde-border-color;
+            padding: 10px;
+            background: none;
+        }
+
+        .mde-tab:hover {
+            cursor: pointer;
+        }
+
+        .mde-tab-activated {
+            background: white;
+        }
+    }
+
+    .mde-content {
         display: flex;
         height: 100%;
 
         .mde-text {
-            width: 50%;
+            min-width: 50%;
             overflow-y: auto;
             border-radius: 0px;
         }
 
         .mde-preview {
-            width: 50%;
+            min-width: 50%;
             padding: 10px;
             border-left: 1px solid $mde-border-color;
             overflow-y: auto;
+        }
+
+        .mde-preview-only {
+            border-left: none;
         }
     }
 }
