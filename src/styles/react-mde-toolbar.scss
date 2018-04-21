@@ -1,6 +1,7 @@
 @import "variables";
 
 .mde-header {
+  flex-shrink: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
