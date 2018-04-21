@@ -9,6 +9,33 @@
         border-bottom: 1px solid $mde-border-color;
     }
 
+    .mde-tabs {
+        display: flex;
+        align-items: flex-end;
+
+        .mde-tab {
+            position: relative;
+            top: 1px;
+            border: 1px solid $mde-toolbar-color;
+            border-bottom: none;
+            border-top-left-radius: $mde-border-radius;
+            border-top-right-radius: $mde-border-radius;
+            margin-right: 10px;
+            padding: 10px;
+            background: none;
+        }
+
+        .mde-tab:hover {
+            border-color: $mde-border-color;
+            cursor: pointer;
+        }
+
+        .mde-tab-activated {
+            border-color: $mde-border-color;
+            background: white;
+        }
+    }
+
     .mde-text {
         overflow-y: auto;
     }
