@@ -33,20 +33,22 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
         const { commands, mdeEditorState } = this.props;
 
         return (
-            <div className="vertical-layout">
+            <div className="react-mde-vertical-layout">
                 <MdeToolbar
                     commands={commands}
                     onCommand={this.handleCommand}
                 />
-                <MdeEditor
-                    editorRef={(c) => this.editorRef = c}
-                    onChange={this.handleMdeStateChange}
-                    editorState={mdeEditorState}
-                />
-                <MdePreview
-                    previewRef={(c) => this.previewRef = c}
-                    html={mdeEditorState ? mdeEditorState.html : ""}
-                />
+                <div className="react-mde-content">
+                    <MdeEditor
+                        editorRef={(c) => this.editorRef = c}
+                        onChange={this.handleMdeStateChange}
+                        editorState={mdeEditorState}
+                    />
+                    <MdePreview
+                        previewRef={(c) => this.previewRef = c}
+                        html={mdeEditorState ? mdeEditorState.html : ""}
+                    />
+                </div>
             </div>
         );
     }

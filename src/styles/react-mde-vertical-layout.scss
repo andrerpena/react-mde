@@ -1,3 +1,27 @@
-.react-mde-vertical-layout {
+@import "variables";
 
+.react-mde-vertical-layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .mde-header {
+        border-bottom: 1px solid $mde-border-color;
+    }
+
+    .react-mde-content {
+        display: flex;
+        flex-direction: column;
+
+        .mde-text {
+            overflow-y: auto;
+            height: 50%;
+        }
+
+        .mde-preview {
+            overflow-y: auto;
+            height: 50%;
+            border-top: 1px solid $mde-border-color;
+        }
+    }
 }
