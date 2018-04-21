@@ -48,7 +48,6 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
                     <button onClick={() => this.setState({tab: TAB_PREVIEW})}>Preview</button>
                 </div>
                 <MdeToolbar
-                    className="react-mde-toolbar"
                     commands={commands}
                     onCommand={this.handleCommand}
                 />
