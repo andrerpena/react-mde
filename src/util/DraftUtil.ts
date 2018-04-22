@@ -105,7 +105,7 @@ export function getMarkdownStateFromDraftState(editorState: EditorState): Markdo
 
 export async function getMdeStateFromDraftState(editorState: EditorState, generateMarkdownPreview: GenerateMarkdownPreview): Promise<MdeState> {
     const markdown = getPlainText(editorState);
-    const html = await generateMarkdownPreview(markdown);
+    const html = generateMarkdownPreview ? await generateMarkdownPreview(markdown) : "";
     return {
         html,
         markdown,

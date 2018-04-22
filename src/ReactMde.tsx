@@ -15,7 +15,7 @@ export interface ReactMdeProps {
     className?: string;
     commands?: Command[][];
     onChange: (value: MdeState) => void;
-    generateMarkdownPreview: GenerateMarkdownPreview;
+    generateMarkdownPreview?: GenerateMarkdownPreview;
     layout?: keyof LayoutMap;
     layoutOptions?: any;
 }

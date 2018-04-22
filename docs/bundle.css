@@ -573,6 +573,9 @@ template {
 .react-mde {
   border: 1px solid #c8ccd0;
   border-radius: 2px; }
+
+.react-mde-no-preview-layout .mde-text {
+  border-bottom: none; }
 body {
   font-size: 14px;
   font-family: sans-serif; }

@@ -89,8 +89,8 @@ The types are described below
 - **className?: string**: Optional class name to be added to the top level element.
 - **commands?: Command[][]**: An array of array of commands. If no commands are specified, the default will be used. Commands are explained in more details below.
 - **onChange: (value: MdeState) => void**: Event handler for the `onChange` event.
-- **generateMarkdownPreview: (markdown: string) => Promise<string>;**: Function that should return the generated HTML for the preview.
-- **layout?: string**: The name of the layout to be used. For now, the only supported layout is the default: `vertical`.
+- **generateMarkdownPreview: (markdown: string) => Promise<string>;**: Function that should return the generated HTML for the preview. If this `prop` is falsy, then no preview is going to be generated.
+- **layout?: string**: The name of the layout to be used. For now, the supported layouts are : `vertical` and `noPreview`.
 
 ## Styling
 
