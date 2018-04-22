@@ -1,8 +1,9 @@
 import * as React from "react";
-import {VerticalLayout} from "./components-layout";
+import {VerticalLayout, NoPreviewLayout} from "./components-layout";
 
 class LayoutMap {
     vertical: typeof VerticalLayout = VerticalLayout;
+    noPreview: typeof NoPreviewLayout = NoPreviewLayout;
 }
 
 const layoutMap = new LayoutMap();
