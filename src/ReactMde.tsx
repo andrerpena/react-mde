@@ -45,17 +45,17 @@ export class ReactMde extends React.Component<ReactMdeProps> {
     }
 
     onCommand = (command: Command) => {
+        const {draftEditorState} = this.props.editorState;
         command.execute(
             // get markdown state
-            () => getMarkdownStateFromDraftState(this.props.editorState.draftEditorState),
+            () => getMarkdownStateFromDraftState(draftEditorState),
             // set markdown state
             ({text, selection}: MarkdownState) => {
-                const {editorState: {draftEditorState}} = this.props;
                 const newDraftEditorState = buildNewDraftState(draftEditorState, text, selection);
                 this.handleDraftStateChange(newDraftEditorState);
             },
-            // get draft state
-            () => this.props.editorState.draftEditorState,
+            // draft state
+            draftEditorState,
             // set draft state
             (draftEditorState: EditorState) => this.handleDraftStateChange(draftEditorState),
         );

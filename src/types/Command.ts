@@ -9,7 +9,7 @@ export interface Command {
     execute?: (
         getMarkdownState: () => MarkdownState,
         setMarkdownState: (state: MarkdownState) => void,
-        getEditorState?: () => EditorState,
+        EditorState?,
         setEditorState?: (state: EditorState) => void,
     ) => void;
 }
