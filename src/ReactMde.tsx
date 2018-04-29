@@ -63,17 +63,18 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
     async componentDidMount() {
         const {editorState, generateMarkdownPreview} = this.props;
-        if (editorState && !editorState.draftEditorState) {
-            const newEditorState: MdeState = {
-                html: editorState.html,
-                markdown: editorState.markdown,
-                draftEditorState: EditorState.createWithContent(ContentState.createFromText(editorState.markdown)),
-            };
-            if (newEditorState.markdown && !newEditorState.html) {
-                newEditorState.html = await generateMarkdownPreview(newEditorState.markdown);
-            }
-            this.handleOnChange(newEditorState);
-        }
+        if (!editorState || editorState.draftEditorState)
+            return;
+
+        const newEditorState: MdeState = {
+            html: editorState.html,
+            markdown: editorState.markdown,
+            draftEditorState: EditorState.createWithContent(ContentState.createFromText(editorState.markdown)),
+        };
+        if (newEditorState.markdown && !newEditorState.html && generateMarkdownPreview != null)
+            newEditorState.html = await generateMarkdownPreview(newEditorState.markdown);
+
+        this.handleOnChange(newEditorState);
     }
 
     render() {
