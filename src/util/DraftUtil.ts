@@ -130,6 +130,7 @@ export function buildNewDraftState(currentDraftState: EditorState, newText: stri
     return EditorState.forceSelection(newDraftEditorState, newSelectionState);
 }
 
+/*
 export async function buildNewMdeState(currentState: MdeState, generateMarkdownPreview: GenerateMarkdownPreview, newText: string, newSelection: TextSelection = null): Promise<MdeState> {
     const newDraftState = buildNewDraftState(currentState.draftEditorState, newText, newSelection);
     const html = await generateMarkdownPreview(newText);
@@ -139,3 +140,4 @@ export async function buildNewMdeState(currentState: MdeState, generateMarkdownP
         draftEditorState: newDraftState,
     };
 }
+*/
