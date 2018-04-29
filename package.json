@@ -55,7 +55,7 @@
     "gulp-typescript": "^4.0.1",
     "merge2": "^1.2.1",
     "mocha": "^5.0.1",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.9.0",
     "normalize.css": "^8.0.0",
     "opn": "^5.2.0",
     "react": "^16.2.0",
