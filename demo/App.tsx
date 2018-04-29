@@ -17,7 +17,11 @@ export class App extends React.Component<{}, AppState> {
                 markdown: "**Hello world!!!**",
             },
         };
-        this.converter = new Showdown.Converter({tables: true, simplifiedAutoLink: true});
+        this.converter = new Showdown.Converter({
+            tables: true,
+            simplifiedAutoLink: true,
+            strikethrough: true,
+        });
     }
 
     handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {

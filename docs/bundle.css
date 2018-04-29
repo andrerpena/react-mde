@@ -431,7 +431,8 @@ template {
           list-style: none;
           display: block; }
           .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button {
-            display: block; }
+            display: block;
+            height: auto; }
             .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p {
               display: block;
               margin: 0;
@@ -449,6 +450,8 @@ template {
                 font-size: 18px; }
               .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-3 {
                 font-size: 14px; }
+              .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-4 {
+                font-size: 12px; }
         .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown::before {
           position: absolute;
           content: "";
