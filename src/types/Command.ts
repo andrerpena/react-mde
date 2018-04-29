@@ -6,5 +6,5 @@ export interface Command {
     buttonContent: React.ReactNode;
     buttonProps?: any;
     children?: Command[];
-    execute?: (EditorState) => EditorState;
+    execute?: (EditorState, data?) => EditorState;
 }
