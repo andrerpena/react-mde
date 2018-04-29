@@ -3,12 +3,8 @@ import {Command, GenerateMarkdownPreview, MdeState} from "./types";
 import {getDefaultCommands} from "./commands";
 import {layoutMap, LayoutMap} from "./LayoutMap";
 import {ContentState, EditorState} from "draft-js";
-import {MarkdownState} from "./types/MarkdownState";
-import {
-    buildNewDraftState,
-    buildSelectionState,
-    getMarkdownStateFromDraftState, getMdeStateFromDraftState,
-} from "./util/DraftUtil";
+import {getMdeStateFromDraftState} from "./util/DraftUtil";
+
 
 export interface ReactMdeProps {
     editorState: MdeState;
@@ -46,19 +42,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
     onCommand = (command: Command) => {
         const {draftEditorState} = this.props.editorState;
-        command.execute(
-            // get markdown state
-            () => getMarkdownStateFromDraftState(draftEditorState),
-            // set markdown state
-            ({text, selection}: MarkdownState) => {
-                const newDraftEditorState = buildNewDraftState(draftEditorState, text, selection);
-                this.handleDraftStateChange(newDraftEditorState);
-            },
-            // draft state
-            draftEditorState,
-            // set draft state
-            (draftEditorState: EditorState) => this.handleDraftStateChange(draftEditorState),
-        );
+        this.handleDraftStateChange(command.execute(draftEditorState));
     }
 
     async componentDidMount() {
