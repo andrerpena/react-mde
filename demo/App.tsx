@@ -21,6 +21,7 @@ export class App extends React.Component<{}, AppState> {
             tables: true,
             simplifiedAutoLink: true,
             strikethrough: true,
+            tasklists: true,
         });
     }
 

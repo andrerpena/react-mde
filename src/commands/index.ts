@@ -8,12 +8,13 @@ import { linkCommand } from "./linkCommand";
 import { orderedListCommand } from "./orderedCommand";
 import { quoteCommand } from "./quoteCommand";
 import { unorderedListCommand } from "./unorderedListCommand";
+import { checkListCommand } from "./checkListCommand";
 import {Command} from "../types";
 
 const getDefaultCommands: () => Command[][] = () => [
     [headerCommand, boldCommand, italicCommand, strikethroughCommand],
     [linkCommand, quoteCommand, codeCommand, imageCommand],
-    [unorderedListCommand, orderedListCommand],
+    [unorderedListCommand, orderedListCommand, checkListCommand],
 ];
 
 export {
@@ -27,5 +28,6 @@ export {
     orderedListCommand,
     quoteCommand,
     unorderedListCommand,
+    checkListCommand,
     getDefaultCommands,
 };
