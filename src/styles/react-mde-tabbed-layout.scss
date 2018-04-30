@@ -1,0 +1,19 @@
+@import "variables";
+
+.react-mde-tabbed-layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .mde-header {
+        border-bottom: 1px solid $mde-border-color;
+    }
+
+    .mde-text {
+        overflow-y: auto;
+    }
+
+    .mde-preview {
+        overflow-y: auto;
+    }
+}
