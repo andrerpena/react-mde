@@ -9,8 +9,8 @@ export interface MdeToolbarProps {
     onCommand: (command: Command) => void;
 }
 
-export const MdeToolbar: React.SFC<MdeToolbarProps> = ({commands, onCommand}) => {
-    if (!commands || commands.length === 0) {
+export const MdeToolbar: React.SFC<MdeToolbarProps> = ({children, commands, onCommand}) => {
+    if ((!commands || commands.length === 0) && !children) {
         return null;
     }
     return (
@@ -39,7 +39,11 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = ({commands, onCommand}) =>
                                 />;
                             })
                         }
-                    </MdeToolbarButtonGroup>))}
+                    </MdeToolbarButtonGroup>))
+            }
+            <div className="mde-toolbar-children">
+                {children}
+            </div>
         </div>
     );
 };

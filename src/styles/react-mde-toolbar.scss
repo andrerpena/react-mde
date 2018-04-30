@@ -1,16 +1,31 @@
 @import "variables";
 
 .mde-header {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+
+  background: $mde-toolbar-color;
+
+  .mde-toolbar-children {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+  }
+
   button:focus {
     outline: 0;
   }
-  padding: $mde-toolbar-padding;
-  background: $mde-toolbar-color;
+
   ul.mde-header-group {
-    display: inline-block;
     margin: 0 1rem 0 0;
-    padding: 0;
+    padding: $mde-toolbar-padding;
     list-style: none;
+    display: flex;
+    flex-wrap: nowrap;
+
     li.mde-header-item {
       display: inline-block;
       position: relative;

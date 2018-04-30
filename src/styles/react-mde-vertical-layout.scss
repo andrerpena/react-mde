@@ -9,6 +9,26 @@
         border-bottom: 1px solid $mde-border-color;
     }
 
+    .mde-tabs {
+        display: flex;
+        align-items: stretch;
+
+        .mde-tab {
+            border: none;
+            border-left: 1px solid $mde-border-color;
+            padding: 10px;
+            background: none;
+        }
+
+        .mde-tab:hover {
+            cursor: pointer;
+        }
+
+        .mde-tab-activated {
+            background: white;
+        }
+    }
+
     .react-mde-content {
         display: flex;
         flex-direction: column;
@@ -22,6 +42,15 @@
             overflow-y: auto;
             height: 50%;
             border-top: 1px solid $mde-border-color;
+        }
+
+        .mde-text-only {
+            height: 100%;
+        }
+
+        .mde-preview-only {
+            border-top: none;
+            height: 100%;
         }
     }
 }

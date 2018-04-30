@@ -5,6 +5,10 @@ import {MdePreview, MdeEditor, MdeToolbar} from "../components";
 import {LayoutProps} from "../types/LayoutProps";
 
 export class VerticalLayout extends React.Component<LayoutProps, {}> {
+    state = {
+        showCode: true,
+        showPreview: true,
+    };
 
     editorRef: MdeEditor;
     previewRef: MdePreview;
@@ -23,6 +27,16 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
         onCommand(command);
     }
 
+    handleShowCode = () => {
+        if (!this.state.showCode || this.state.showPreview)
+            this.setState({showCode: !this.state.showCode});
+    }
+
+    handleShowPreview = () => {
+        if (!this.state.showPreview || this.state.showCode)
+            this.setState({showPreview: !this.state.showPreview});
+    }
+
     /**
      * Renders react-mde
      * @returns
@@ -32,22 +46,56 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
 
         const { commands, mdeEditorState } = this.props;
 
+        let styleTabCode = "mde-tab";
+        let styleTabPreview = "mde-tab";
+        let stylePreview = null;
+        let styleCode = null;
+        if (this.state.showCode)
+            styleTabCode += " mde-tab-activated";
+        else
+            stylePreview = "mde-preview-only";
+        if (this.state.showPreview)
+            styleTabPreview += " mde-tab-activated";
+        else
+            styleCode = "mde-text-only";
+
         return (
             <div className="react-mde-vertical-layout">
                 <MdeToolbar
                     commands={commands}
                     onCommand={this.handleCommand}
-                />
+                >
+                    <div className="mde-tabs">
+                        <button
+                            className={styleTabCode}
+                            onClick={this.handleShowCode}
+                        >
+                            Code
+                        </button>
+                        <button
+                            className={styleTabPreview}
+                            onClick={this.handleShowPreview}
+                        >
+                            Preview
+                        </button>
+                    </div>
+                </MdeToolbar>
                 <div className="react-mde-content">
-                    <MdeEditor
-                        editorRef={(c) => this.editorRef = c}
-                        onChange={this.handleMdeStateChange}
-                        editorState={mdeEditorState}
-                    />
-                    <MdePreview
-                        previewRef={(c) => this.previewRef = c}
-                        html={mdeEditorState ? mdeEditorState.html : ""}
-                    />
+                    {this.state.showCode &&
+                        <MdeEditor
+                            className={styleCode}
+                            editorRef={(c) => this.editorRef = c}
+                            onChange={this.handleMdeStateChange}
+                            editorState={mdeEditorState}
+                        />
+                    }
+                    {this.state.showPreview &&
+                        <MdePreview
+                            className={stylePreview}
+                            previewRef={(c) => this.previewRef = c}
+                            html={mdeEditorState ? mdeEditorState.html : ""}
+                        />
+                    }
                 </div>
             </div>
         );
