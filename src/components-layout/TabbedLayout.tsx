@@ -1,9 +1,7 @@
 import * as React from "react";
-import {Command} from "../types";
+import {Command, LayoutProps} from "../types";
 import {ReactMde} from "../ReactMde";
 import {MdePreview, MdeEditor, MdeToolbar} from "../components";
-import {LayoutProps} from "../types/LayoutProps";
-
 
 export const TAB_CODE: string = "TAB_CODE";
 export const TAB_PREVIEW: string = "TAB_PREVIEW";
@@ -15,8 +13,6 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
 
     editorRef: MdeEditor;
     previewRef: MdePreview;
-
-
 
     /**
      * Handler for the textArea value change

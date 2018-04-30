@@ -1,9 +1,7 @@
 import * as React from "react";
-import {Command} from "../types";
+import {Command, LayoutProps} from "../types";
 import {ReactMde} from "../ReactMde";
 import {MdePreview, MdeEditor, MdeToolbar} from "../components";
-import {LayoutProps} from "../types/LayoutProps";
-import {TAB_CODE, TAB_PREVIEW} from "./TabbedLayout";
 
 export class HorizontalLayout extends React.Component<LayoutProps, {}> {
     state = {
@@ -31,12 +29,12 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
     handleShowCode = () => {
         if (!this.state.showCode || this.state.showPreview)
             this.setState({showCode: !this.state.showCode});
-    };
+    }
 
     handleShowPreview = () => {
         if (!this.state.showPreview || this.state.showCode)
             this.setState({showPreview: !this.state.showPreview});
-    };
+    }
 
     /**
      * Renders react-mde

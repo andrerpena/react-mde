@@ -1,8 +1,7 @@
 import * as React from "react";
-import {Command} from "../types";
+import {Command, LayoutProps} from "../types";
 import {ReactMde} from "../ReactMde";
 import {MdePreview, MdeEditor, MdeToolbar} from "../components";
-import {LayoutProps} from "../types/LayoutProps";
 
 export class VerticalLayout extends React.Component<LayoutProps, {}> {
     state = {

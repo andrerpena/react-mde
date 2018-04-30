@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export interface ReactMdePreviewProps {
-    className?: string,
+    className?: string;
     previewRef?: (ref: MdePreview) => void;
     html: string;
 }

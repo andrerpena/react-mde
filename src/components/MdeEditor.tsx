@@ -3,7 +3,7 @@ import {MdeState} from "../types";
 import {Editor, EditorState} from "draft-js";
 
 export interface MdeEditorProps {
-    className?: string,
+    className?: string;
     onChange: (value: EditorState) => void;
     editorRef?: (ref: MdeEditor) => void;
     editorState: MdeState;
