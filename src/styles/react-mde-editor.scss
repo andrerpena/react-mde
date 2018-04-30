@@ -1,15 +1,10 @@
 @import "variables";
 
 .mde-text {
-  border-width: 1px 0 1px 0;
-  border-style: solid;
-  border-color: $mde-border-color;
+
   .public-DraftEditor-content {
-    box-sizing: border-box;
     width: 100%;
     min-height: $mde-editor-min-height;
-    max-height: $mde-editor-max-height;
     padding: $mde-editor-padding;
-    overflow-y: scroll;
   }
 }

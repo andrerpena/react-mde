@@ -4,7 +4,7 @@ import {ReactMde} from "../ReactMde";
 import {MdePreview, MdeEditor, MdeToolbar} from "../components";
 import {LayoutProps} from "../types/LayoutProps";
 
-export class VerticalLayout extends React.Component<LayoutProps, {}> {
+export class HorizontalLayout extends React.Component<LayoutProps, {}> {
 
     editorRef: MdeEditor;
     previewRef: MdePreview;
@@ -33,7 +33,7 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
         const { commands, mdeEditorState } = this.props;
 
         return (
-            <div className="react-mde-vertical-layout">
+            <div className="react-mde-horizontal-layout">
                 <MdeToolbar
                     commands={commands}
                     onCommand={this.handleCommand}

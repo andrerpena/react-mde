@@ -1,6 +1,11 @@
 @import "variables";
 
+* {
+    box-sizing: border-box;
+}
+
 .react-mde {
-  border: 1px solid $mde-border-color;
-  border-radius: $mde-border-radius
+    height: 100%;
+    border: 1px solid $mde-border-color;
+    border-radius: $mde-border-radius;
 }

@@ -1,6 +1,6 @@
 @import "variables";
 
-.react-mde-vertical-layout {
+.react-mde-horizontal-layout {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -11,17 +11,19 @@
 
     .react-mde-content {
         display: flex;
-        flex-direction: column;
+        height: 100%;
 
         .mde-text {
+            width: 50%;
             overflow-y: auto;
-            height: 50%;
+            border-radius: 0px;
         }
 
         .mde-preview {
+            width: 50%;
+            padding: 10px;
+            border-left: 1px solid $mde-border-color;
             overflow-y: auto;
-            height: 50%;
-            border-top: 1px solid $mde-border-color;
         }
     }
 }
