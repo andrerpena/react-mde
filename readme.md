@@ -2,14 +2,17 @@
 
 A simple yet powerful and extensible Markdown Editor editor for React. React-mde is built on top of [Draft.js](https://draftjs.org/).
 
+> 5.5.0-alpha.1 is brings multiple layouts that were implemented by Nes-si :heart:. We're just adjusting it before
+officially publishing the final 5.5.0 version. 
+
 ## Demos
 
-- [Demo](http://andrerpena.me/react-mde/).
+- [Demos (5.5.0-alpha.1)](http://andrerpena.me/react-mde/).
 - [CodeSandbox Demo](https://codesandbox.io/s/o5vpjwyp79). Fork it and have fun =).
 
 ## Installing
 
-    npm i --save react-mde
+    npm i --save react-mde // or react-mde@5.5.0-alpha.1 for the same version available in the demos.
 
 ## Dependencies
 
