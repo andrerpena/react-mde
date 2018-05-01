@@ -18,9 +18,8 @@
         ]
     },
     "include": [
-        "./src/**/*.ts",
-        "./src/**/*.tsx",
-        "./test/**/*.ts",
-        "./demo/**/*.ts"
+        "./src/**/*",
+        "./test/**/*",
+        "./.storybook/**/*"
     ]
 }

@@ -3,8 +3,8 @@ const rename = require('gulp-rename');
 const ts = require('gulp-typescript');
 const sass = require('gulp-sass');
 const merge = require('merge2');
-const webpackStream = require('webpack-stream');
 const tsProject = ts.createProject('./tsconfig.build.json');
+const run = require('gulp-run');
 
 gulp.task('build_styles', function () {
     return gulp.src('./src/styles/**/*.scss')
@@ -39,9 +39,7 @@ gulp.task('copy-index', function () {
 });
 
 gulp.task('build-demo', ['copy-index'], function () {
-    return gulp.src('demo/client.ts')
-        .pipe(webpackStream(require('./webpack.config.demo.prod.js'), require("webpack")))
-        .pipe(gulp.dest('docs/'));
+    return run("npm run build:storybook").exec();
 });
 
 // all
