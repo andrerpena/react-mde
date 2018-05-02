@@ -9,6 +9,7 @@ import { orderedListCommand } from "./orderedCommand";
 import { quoteCommand } from "./quoteCommand";
 import { unorderedListCommand } from "./unorderedListCommand";
 import { checkListCommand } from "./checkListCommand";
+import { tabCommand } from "./tabCommand";
 import {Command} from "../types";
 
 const getDefaultCommands: () => Command[][] = () => [
@@ -29,5 +30,6 @@ export {
     quoteCommand,
     unorderedListCommand,
     checkListCommand,
+    tabCommand,
     getDefaultCommands,
 };

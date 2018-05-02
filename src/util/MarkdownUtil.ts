@@ -293,6 +293,69 @@ export function makeList({text, selection}: MarkdownState, insertionBeforeEachLi
     };
 }
 
+export function onTab({text, selection}: MarkdownState, reverse: boolean): MarkdownState {
+    let start = 0;
+    for (let i = selection.start; i - 1 > -1; i--) {
+        if (text[i - 1] == '\n') {
+            start = i;
+            break;
+        }
+    }
+
+    let end = text.length;
+    for (let i = selection.end; i < text.length; i++) {
+        if (text[i + 1] == '\n') {
+            end = i;
+            break;
+        }
+    }
+
+    const substring = text.slice(start, end);
+    const strings = substring.split(/\n/);
+
+    let addLength = 0;
+    let spaces = 0;
+    const newText = strings.map(line => {
+        let str = line.match(/^ +/);
+        spaces = str && str[0]  ?  str[0].length  :  0;
+
+        if (reverse) {
+            let removeSpaces = 4;
+            if (!spaces || spaces % 4 != 0)
+                removeSpaces = spaces % 4;
+
+            addLength -= removeSpaces;
+            return line.slice(removeSpaces);
+        }
+
+        let addSpaces = '    ';
+        if (spaces % 4 == 1)
+            addSpaces = '   ';
+        if (spaces % 4 == 2)
+            addSpaces = '  ';
+        if (spaces % 4 == 3)
+            addSpaces = ' ';
+
+        addLength += addSpaces.length;
+        return addSpaces + line;
+    }).join("\n");
+
+    text = text.slice(0, start) + newText + text.slice(end);
+
+    if (strings.length <= 1)
+        selection = {
+            start: start + addLength + spaces,
+            end: start + addLength + spaces
+        };
+    else
+        selection = {
+            start: start,
+            end: end + addLength,
+        };
+
+    return {text, selection};
+}
+
 /**
  * Helper for creating a command that makes a header
  * @param {any} text

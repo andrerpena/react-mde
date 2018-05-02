@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MdeState} from "../types";
 import {Editor, EditorState} from "draft-js";
-import {boldCommand, codeCommand, italicCommand} from "../commands";
+import {boldCommand, codeCommand, italicCommand, tabCommand} from "../commands";
 
 export interface MdeEditorProps {
     className?: string;
@@ -38,6 +38,13 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
         }
     };
 
+    handleTab = event => {
+        event.preventDefault();
+
+        const {editorState: {draftEditorState}, onChange} = this.props;
+        onChange(tabCommand.execute(draftEditorState, event.shiftKey));
+    }
+
     render() {
         const {editorState: {draftEditorState}, className} = this.props;
         return (
@@ -47,6 +54,7 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
                     stripPastedStyles={true}
                     editorState={draftEditorState}
                     onChange={this.handleOnChange}
+                    onTab={this.handleTab}
                     handleKeyCommand={this.handleKeyCommand}
                 />
             </div>

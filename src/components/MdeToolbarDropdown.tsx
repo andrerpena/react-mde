@@ -66,8 +66,11 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
         this.closeDropdown();
     }
 
-    handleOpenDropdown = () => {
-        this.openDropdown();
+    handleClick = () => {
+        if (!this.state.open)
+            this.openDropdown();
+        else
+            this.closeDropdown();
     }
 
     render() {
@@ -106,7 +109,7 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
                     ref={(ref) => {
                         this.dropdownOpener = ref;
                     }}
-                    onClick={this.handleOpenDropdown}
+                    onClick={this.handleClick}
                 >
                     {buttonContent}
                 </button>
