@@ -23,9 +23,12 @@
     "url": "git+https://github.com/andrerpena/react-mde.git"
   },
   "keywords": [
-    "boilerplate",
     "react",
-    "component"
+    "component",
+    "markdown",
+    "editor",
+    "text-editor",
+    "markdown-editor"
   ],
   "author": "Andre Pena",
   "license": "MIT",
