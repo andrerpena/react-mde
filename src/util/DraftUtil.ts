@@ -113,23 +113,24 @@ export async function getMdeStateFromDraftState(editorState: EditorState, genera
     };
 }
 
-export function buildNewDraftState(currentDraftState: EditorState, newText: string, newSelection: TextSelection = null) {
-    let newDraftEditorState: EditorState;
+export function buildNewDraftState(currentState: EditorState, markdownState: MarkdownState) {
+    let {text, selection} = markdownState;
     // TODO: Fix the redo. It's no working properly but this is an implementation detail.
 
     // handling text change history push
-    const contentState = ContentState.createFromText(newText);
-    newDraftEditorState = EditorState.forceSelection(currentDraftState, currentDraftState.getSelection());
-    newDraftEditorState = EditorState.push(newDraftEditorState, contentState, "insert-characters");
+    const contentState = ContentState.createFromText(text);
+    let state = EditorState.forceSelection(currentState, currentState.getSelection());
+    state = EditorState.push(state, contentState, "insert-characters");
 
     // handling text selection history push
-    const newSelectionState = newSelection
-        ? buildSelectionState(newDraftEditorState.getCurrentContent(), newSelection)
-        : currentDraftState.getSelection();
+    const selectionState = selection
+        ? buildSelectionState(state.getCurrentContent(), selection)
+        : currentState.getSelection();
 
-    return EditorState.forceSelection(newDraftEditorState, newSelectionState);
+    return EditorState.forceSelection(state, selectionState);
 }
 
+/*
 export async function buildNewMdeState(currentState: MdeState, generateMarkdownPreview: GenerateMarkdownPreview, newText: string, newSelection: TextSelection = null): Promise<MdeState> {
     const newDraftState = buildNewDraftState(currentState.draftEditorState, newText, newSelection);
     const html = await generateMarkdownPreview(newText);
@@ -139,3 +140,4 @@ export async function buildNewMdeState(currentState: MdeState, generateMarkdownP
         draftEditorState: newDraftState,
     };
 }
+*/

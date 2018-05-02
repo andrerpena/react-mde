@@ -3,12 +3,8 @@ import {Command, GenerateMarkdownPreview, MdeState} from "./types";
 import {getDefaultCommands} from "./commands";
 import {layoutMap, LayoutMap} from "./LayoutMap";
 import {ContentState, EditorState} from "draft-js";
-import {MarkdownState} from "./types/MarkdownState";
-import {
-    buildNewDraftState,
-    buildSelectionState,
-    getMarkdownStateFromDraftState, getMdeStateFromDraftState,
-} from "./util/DraftUtil";
+import {getMdeStateFromDraftState} from "./util/DraftUtil";
+
 
 export interface ReactMdeProps {
     editorState: MdeState;
@@ -45,35 +41,24 @@ export class ReactMde extends React.Component<ReactMdeProps> {
     }
 
     onCommand = (command: Command) => {
-        command.execute(
-            // get markdown state
-            () => getMarkdownStateFromDraftState(this.props.editorState.draftEditorState),
-            // set markdown state
-            ({text, selection}: MarkdownState) => {
-                const {editorState: {draftEditorState}} = this.props;
-                const newDraftEditorState = buildNewDraftState(draftEditorState, text, selection);
-                this.handleDraftStateChange(newDraftEditorState);
-            },
-            // get draft state
-            () => this.props.editorState.draftEditorState,
-            // set draft state
-            (draftEditorState: EditorState) => this.handleDraftStateChange(draftEditorState),
-        );
+        const {draftEditorState} = this.props.editorState;
+        this.handleDraftStateChange(command.execute(draftEditorState));
     }
 
     async componentDidMount() {
         const {editorState, generateMarkdownPreview} = this.props;
-        if (editorState && !editorState.draftEditorState) {
-            const newEditorState: MdeState = {
-                html: editorState.html,
-                markdown: editorState.markdown,
-                draftEditorState: EditorState.createWithContent(ContentState.createFromText(editorState.markdown)),
-            };
-            if (newEditorState.markdown && !newEditorState.html) {
-                newEditorState.html = await generateMarkdownPreview(newEditorState.markdown);
-            }
-            this.handleOnChange(newEditorState);
-        }
+        if (!editorState || editorState.draftEditorState)
+            return;
+
+        const newEditorState: MdeState = {
+            html: editorState.html,
+            markdown: editorState.markdown,
+            draftEditorState: EditorState.createWithContent(ContentState.createFromText(editorState.markdown)),
+        };
+        if (newEditorState.markdown && !newEditorState.html && generateMarkdownPreview != null)
+            newEditorState.html = await generateMarkdownPreview(newEditorState.markdown);
+
+        this.handleOnChange(newEditorState);
     }
 
     render() {

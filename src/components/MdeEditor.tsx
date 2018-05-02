@@ -1,6 +1,7 @@
 import * as React from "react";
 import {MdeState} from "../types";
 import {Editor, EditorState} from "draft-js";
+import {boldCommand, codeCommand, italicCommand} from "../commands";
 
 export interface MdeEditorProps {
     className?: string;
@@ -17,6 +18,26 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
         onChange(editorState);
     }
 
+    handleKeyCommand = (command, editorState) => {
+        const {onChange} = this.props;
+        switch (command) {
+            case 'bold':
+                onChange(boldCommand.execute(editorState));
+                return 'handled';
+
+            case 'italic':
+                onChange(italicCommand.execute(editorState));
+                return 'handled';
+
+            case 'code':
+                onChange(codeCommand.execute(editorState));
+                return 'handled';
+
+            default:
+                return 'not-handled';
+        }
+    };
+
     render() {
         const {editorState: {draftEditorState}, className} = this.props;
         return (
@@ -26,6 +47,7 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
                     stripPastedStyles={true}
                     editorState={draftEditorState}
                     onChange={this.handleOnChange}
+                    handleKeyCommand={this.handleKeyCommand}
                 />
             </div>
         );
