@@ -3,7 +3,6 @@ import {Command} from "../types";
 import {onTab} from "../util/MarkdownUtil";
 import {getMarkdownStateFromDraftState, buildNewDraftState} from "../util/DraftUtil";
 
-
 export const tabCommand: Command = {
     buttonContent: null,
     buttonProps: null,

@@ -21,24 +21,24 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
     handleKeyCommand = (command, editorState) => {
         const {onChange} = this.props;
         switch (command) {
-            case 'bold':
+            case "bold":
                 onChange(boldCommand.execute(editorState));
-                return 'handled';
+                return "handled";
 
-            case 'italic':
+            case "italic":
                 onChange(italicCommand.execute(editorState));
-                return 'handled';
+                return "handled";
 
-            case 'code':
+            case "code":
                 onChange(codeCommand.execute(editorState));
-                return 'handled';
+                return "handled";
 
             default:
-                return 'not-handled';
+                return "not-handled";
         }
-    };
+    }
 
-    handleTab = event => {
+    handleTab = (event) => {
         event.preventDefault();
 
         const {editorState: {draftEditorState}, onChange} = this.props;

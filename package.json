@@ -85,5 +85,8 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "draft-js": "^0.10.5"
+  },
+  "dependencies": {
+    "npm": "^6.0.0"
   }
 }

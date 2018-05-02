@@ -4,13 +4,12 @@ import {insertText} from "../util/MarkdownUtil";
 import {buildNewDraftState, getMarkdownStateFromDraftState} from "../util/DraftUtil";
 import {MdeToolbarIcon} from "../components";
 
-
 export const imageCommand: Command = {
     buttonContent: <MdeToolbarIcon icon="image"/>,
 
     buttonProps: { "aria-label": "Insert a picture" },
 
-    execute: state => {
+    execute: (state) => {
         const {text, selection} = getMarkdownStateFromDraftState(state);
         const {newText, insertionLength} = insertText(text, "![", selection.start);
         const finalText = insertText(newText, "](image-url)", selection.end + insertionLength).newText;
@@ -22,8 +21,8 @@ export const imageCommand: Command = {
                 selection: {
                     start: selection.start + insertionLength,
                     end: selection.end + insertionLength,
-                }
-            }
+                },
+            },
         );
     },
 };

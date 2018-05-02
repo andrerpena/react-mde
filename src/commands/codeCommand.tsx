@@ -10,19 +10,18 @@ import {
 import {buildNewDraftState, getMarkdownStateFromDraftState} from "../util/DraftUtil";
 import {MdeToolbarIcon} from "../components";
 
-
 export const codeCommand: Command = {
     buttonContent: <MdeToolbarIcon icon="code"/>,
 
     buttonProps: { "aria-label": "Insert code" },
 
-    execute: state => {
+    execute: (state) => {
         let {text, selection} = getMarkdownStateFromDraftState(state);
         selection = selectWordIfCaretIsInsideOne({text, selection});
 
         // when there's no breaking line
         if (text.slice(selection.start, selection.end).indexOf("\n") === -1) {
-            let mdState = insertBeforeAndAfter({text, selection}, "`");
+            const mdState = insertBeforeAndAfter({text, selection}, "`");
             return buildNewDraftState(state, mdState);
         }
 

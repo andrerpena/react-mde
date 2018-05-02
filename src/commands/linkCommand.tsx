@@ -4,13 +4,12 @@ import {insertText, selectWordIfCaretIsInsideOne} from "../util/MarkdownUtil";
 import {buildNewDraftState, getMarkdownStateFromDraftState} from "../util/DraftUtil";
 import {MdeToolbarIcon} from "../components";
 
-
 export const linkCommand: Command = {
     buttonContent: <MdeToolbarIcon icon="link"/>,
 
     buttonProps: { "aria-label": "Insert a link" },
 
-    execute: state => {
+    execute: (state) => {
         const {text, selection} = getMarkdownStateFromDraftState(state);
         const newSelection = selectWordIfCaretIsInsideOne({text, selection});
         const {newText, insertionLength} = insertText(text, "[", newSelection.start);
@@ -23,7 +22,7 @@ export const linkCommand: Command = {
                 selection: {
                     start: newSelection.start + insertionLength,
                     end: newSelection.end + insertionLength,
-                }
+                },
             },
         );
     },

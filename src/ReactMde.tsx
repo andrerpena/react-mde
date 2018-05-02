@@ -5,7 +5,6 @@ import {layoutMap, LayoutMap} from "./LayoutMap";
 import {ContentState, EditorState} from "draft-js";
 import {getMdeStateFromDraftState} from "./util/DraftUtil";
 
-
 export interface ReactMdeProps {
     editorState: MdeState;
     className?: string;

@@ -114,7 +114,7 @@ export async function getMdeStateFromDraftState(editorState: EditorState, genera
 }
 
 export function buildNewDraftState(currentState: EditorState, markdownState: MarkdownState) {
-    let {text, selection} = markdownState;
+    const {text, selection} = markdownState;
     // TODO: Fix the redo. It's no working properly but this is an implementation detail.
 
     // handling text change history push

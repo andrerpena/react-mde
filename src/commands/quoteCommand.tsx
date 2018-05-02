@@ -8,13 +8,12 @@ import {
 import {buildNewDraftState, getMarkdownStateFromDraftState} from "../util/DraftUtil";
 import {MdeToolbarIcon} from "../components";
 
-
 export const quoteCommand: Command = {
     buttonContent: <MdeToolbarIcon icon="quote-right"/>,
 
     buttonProps: { "aria-label": "Insert a quote" },
 
-    execute: state => {
+    execute: (state) => {
         let {text, selection} = getMarkdownStateFromDraftState(state);
         selection = selectWordIfCaretIsInsideOne({text, selection});
 
