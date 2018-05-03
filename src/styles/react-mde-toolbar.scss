@@ -6,7 +6,7 @@
   flex-wrap: wrap;
   align-items: stretch;
   border-bottom: 1px solid $mde-border-color;
-
+  border-radius: $mde-border-radius $mde-border-radius 0 0;
   background: $mde-toolbar-color;
 
   .mde-toolbar-children {
