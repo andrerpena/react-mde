@@ -2,6 +2,7 @@ import * as React from "react";
 import {Command, LayoutProps} from "../types";
 import {ReactMde} from "../ReactMde";
 import {MdePreview, MdeEditor, MdeToolbar} from "../components";
+import * as classNames from "classnames";
 
 export interface HorizontalLayoutOptions {
     displayToggleButtons: boolean;
@@ -55,16 +56,6 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
             ? {...defaultLayoutOptions, ...layoutOptions}
             : defaultLayoutOptions;
 
-        let styleTabCode = "mde-tab";
-        let styleTabPreview = "mde-tab";
-        let stylePreview = null;
-        if (this.state.showCode)
-            styleTabCode += " mde-tab-activated";
-        else
-            stylePreview = "mde-preview-only";
-        if (this.state.showPreview)
-            styleTabPreview += " mde-tab-activated";
-
         return (
             <div className="react-mde-horizontal-layout">
                 <MdeToolbar
@@ -73,13 +64,19 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
                 >
                     {finalLayoutOptions.displayToggleButtons && <div className="mde-tabs">
                         <button
-                            className={styleTabCode}
+                            className={classNames({
+                                "mde-tab": true,
+                                "mde-tab-activated": this.state.showCode,
+                            })}
                             onClick={this.handleShowCode}
                         >
                             Code
                         </button>
                         <button
-                            className={styleTabPreview}
+                            className={classNames({
+                                "mde-tab": true,
+                                "mde-tab-activated": this.state.showPreview,
+                            })}
                             onClick={this.handleShowPreview}
                         >
                             Preview
@@ -96,7 +93,9 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
                     }
                     {this.state.showPreview &&
                     <MdePreview
-                        className={stylePreview}
+                        className={classNames({
+                            "mde-preview-only": !this.state.showCode,
+                        })}
                         previewRef={(c) => this.previewRef = c}
                         html={mdeEditorState ? mdeEditorState.html : ""}
                     />
