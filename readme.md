@@ -2,12 +2,12 @@
 
 A simple yet powerful and extensible Markdown Editor editor for React. React-mde is built on top of [Draft.js](https://draftjs.org/).
 
-> 5.5.0-alpha.1 is brings multiple layouts that were implemented by Nes-si :heart:. We're just adjusting it before
+> 5.5.0-alpha.* is brings multiple layouts that were implemented by Nes-si :heart:. We're just adjusting it before
 officially publishing the final 5.5.0 version. 
 
 ## Demos
 
-- [Demos (5.5.0-alpha.1)](http://andrerpena.me/react-mde/).
+- [Demos (5.5.0-alpha.*)](http://andrerpena.me/react-mde/).
 - [CodeSandbox Demo](https://codesandbox.io/s/o5vpjwyp79). Fork it and have fun =).
 
 ## Installing
@@ -94,6 +94,9 @@ The types are described below
 - **onChange: (value: MdeState) => void**: Event handler for the `onChange` event.
 - **generateMarkdownPreview: (markdown: string) => Promise<string>;**: Function that should return the generated HTML for the preview. If this `prop` is falsy, then no preview is going to be generated.
 - **layout?: string**: The name of the layout to be used. For now, the supported layouts are : `vertical` and `noPreview`.
+- **layoutOptions?: any**: An object with options to be passed to the `layout-component`. Each layout may or may not expect
+options. It is recommended to [inspect the layouts source code](https://github.com/andrerpena/react-mde/tree/master/src/components-layout) to see what options can be passed to each
+while the documentation is not complete. 
 
 ## Styling
 
@@ -103,7 +106,7 @@ Easiest way: import `react-mde-all.css`:
 
     import 'react-mde/lib/styles/css/react-mde-all.css';
     
-If you want to have a more granular control over the styles, you can import each individual file.
+If you want to have a more granular control over the styles, you can [import each individual file](https://github.com/andrerpena/react-mde/tree/master/src/styles).
     
 If you're using SASS, you can override these variables: https://github.com/andrerpena/react-mde/blob/master/src/styles/variables.scss
 
@@ -127,11 +130,13 @@ You might want to take a look at [showdown-xss-filter](https://github.com/Vision
 
 ## Commands
 
-React-mde allows you to use the build-in commands, implement your own commands, or both.
+React-mde allows you to use the build-in commands, implement your own commands, or both. If you wish
+to implement your own commands, please refer to the [commands source code](https://github.com/andrerpena/react-mde/tree/master/src/commands) to understand how they
+should be implemented.
 
 ## Composition and custom layouts
 
-React-mde is designed to be composable and to facilitate new layouts
+React-mde is designed to be composable and to facilitate new layouts:
 
 ![architecture](https://github.com/andrerpena/react-mde/blob/master/assets/architecture.png)
 
@@ -150,8 +155,9 @@ Check the project here: https://github.com/andrerpena/react-mde/projects/1
 
 ## Licence
 
-React-mde is MIT licensed
+React-mde is [MIT licensed](https://github.com/andrerpena/react-mde/blob/master/LICENSE).
 
 ## About the author
 
-Made with :heart: by André Pena. Check out my website: http://andrerpena.me
+Made with :heart: by André Pena and [other awesome contributors](https://github.com/andrerpena/react-mde/graphs/contributors).
+Check out my website: http://andrerpena.me.
