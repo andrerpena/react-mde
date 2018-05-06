@@ -2,6 +2,7 @@ import * as React from "react";
 import {Command, LayoutProps} from "../types";
 import {ReactMde} from "../ReactMde";
 import {MdePreview, MdeEditor, MdeToolbar} from "../components";
+import * as classNames from "classnames";
 
 export interface VerticalLayoutOptions {
     displayToggleButtons: boolean;
@@ -56,19 +57,6 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
             ? {...defaultLayoutOptions, ...layoutOptions}
             : defaultLayoutOptions;
 
-        let styleTabCode = "mde-tab";
-        let styleTabPreview = "mde-tab";
-        let stylePreview = null;
-        let styleCode = null;
-        if (this.state.showCode)
-            styleTabCode += " mde-tab-activated";
-        else
-            stylePreview = "mde-preview-only";
-        if (this.state.showPreview)
-            styleTabPreview += " mde-tab-activated";
-        else
-            styleCode = "mde-text-only";
-
         return (
             <div className="react-mde-vertical-layout">
                 <MdeToolbar
@@ -77,13 +65,19 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
                 >
                     {finalLayoutOptions.displayToggleButtons && <div className="mde-tabs">
                         <button
-                            className={styleTabCode}
+                            className={classNames({
+                                "mde-tab": true,
+                                "mde-tab-activated": this.state.showCode,
+                            })}
                             onClick={this.handleShowCode}
                         >
                             Code
                         </button>
                         <button
-                            className={styleTabPreview}
+                            className={classNames({
+                                "mde-tab": true,
+                                "mde-tab-activated": this.state.showPreview,
+                            })}
                             onClick={this.handleShowPreview}
                         >
                             Preview
@@ -93,7 +87,9 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
                 <div className="react-mde-content">
                     {this.state.showCode &&
                     <MdeEditor
-                        className={styleCode}
+                        className={classNames({
+                            "mde-text-only": !this.state.showPreview,
+                        })}
                         editorRef={(c) => this.editorRef = c}
                         onChange={this.handleMdeStateChange}
                         editorState={mdeEditorState}
@@ -101,7 +97,9 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
                     }
                     {this.state.showPreview &&
                     <MdePreview
-                        className={stylePreview}
+                        className={classNames({
+                            "mde-preview-only": !this.state.showCode,
+                        })}
                         previewRef={(c) => this.previewRef = c}
                         html={mdeEditorState ? mdeEditorState.html : ""}
                     />
