@@ -3,6 +3,14 @@ import {Command, LayoutProps} from "../types";
 import {ReactMde} from "../ReactMde";
 import {MdePreview, MdeEditor, MdeToolbar} from "../components";
 
+export interface HorizontalLayoutOptions {
+    displayToggleButtons: boolean;
+}
+
+const defaultLayoutOptions: HorizontalLayoutOptions = {
+    displayToggleButtons: false,
+};
+
 export class HorizontalLayout extends React.Component<LayoutProps, {}> {
     state = {
         showCode: true,
@@ -22,7 +30,7 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
     }
 
     handleCommand = (command: Command) => {
-        const { onCommand } = this.props;
+        const {onCommand} = this.props;
         onCommand(command);
     }
 
@@ -42,7 +50,10 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
      * @memberOf ReactMde
      */
     render() {
-        const { commands, mdeEditorState } = this.props;
+        const {commands, mdeEditorState, layoutOptions} = this.props;
+        const finalLayoutOptions = layoutOptions
+            ? {...defaultLayoutOptions, ...layoutOptions}
+            : defaultLayoutOptions;
 
         let styleTabCode = "mde-tab";
         let styleTabPreview = "mde-tab";
@@ -60,7 +71,7 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
                     commands={commands}
                     onCommand={this.handleCommand}
                 >
-                    <div className="mde-tabs">
+                    {finalLayoutOptions.displayToggleButtons && <div className="mde-tabs">
                         <button
                             className={styleTabCode}
                             onClick={this.handleShowCode}
@@ -73,22 +84,22 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
                         >
                             Preview
                         </button>
-                    </div>
+                    </div>}
                 </MdeToolbar>
                 <div className="mde-content">
                     {this.state.showCode &&
-                        <MdeEditor
-                            editorRef={(c) => this.editorRef = c}
-                            onChange={this.handleMdeStateChange}
-                            editorState={mdeEditorState}
-                        />
+                    <MdeEditor
+                        editorRef={(c) => this.editorRef = c}
+                        onChange={this.handleMdeStateChange}
+                        editorState={mdeEditorState}
+                    />
                     }
                     {this.state.showPreview &&
-                        <MdePreview
-                            className={stylePreview}
-                            previewRef={(c) => this.previewRef = c}
-                            html={mdeEditorState ? mdeEditorState.html : ""}
-                        />
+                    <MdePreview
+                        className={stylePreview}
+                        previewRef={(c) => this.previewRef = c}
+                        html={mdeEditorState ? mdeEditorState.html : ""}
+                    />
                     }
                 </div>
             </div>

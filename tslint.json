@@ -17,6 +17,7 @@
       "never-prefix"
     ],
     "curly": false,
+    "no-object-literal-type-assertion": false,
     "object-literal-sort-keys": false,
     "member-ordering": false,
     "jsx-no-lambda": [
