@@ -5,7 +5,9 @@ import {MdePreview, MdeEditor, MdeToolbar} from "../components";
 import * as classNames from "classnames";
 
 export interface VerticalLayoutOptions {
-    displayToggleButtons: boolean;
+    displayToggleButtons?: boolean;
+    editorClassName?: object | string | Array<object | string>;
+    previewClassName?: object | string | Array<object | string>;
 }
 
 const defaultLayoutOptions: VerticalLayoutOptions = {
@@ -89,7 +91,7 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
                     <MdeEditor
                         className={classNames({
                             "mde-text-only": !this.state.showPreview,
-                        })}
+                        }, finalLayoutOptions.editorClassName)}
                         editorRef={(c) => this.editorRef = c}
                         onChange={this.handleMdeStateChange}
                         editorState={mdeEditorState}
@@ -99,7 +101,7 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
                     <MdePreview
                         className={classNames({
                             "mde-preview-only": !this.state.showCode,
-                        })}
+                        }, finalLayoutOptions.previewClassName)}
                         previewRef={(c) => this.previewRef = c}
                         html={mdeEditorState ? mdeEditorState.html : ""}
                     />

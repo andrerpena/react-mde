@@ -5,7 +5,9 @@ import {MdePreview, MdeEditor, MdeToolbar} from "../components";
 import * as classNames from "classnames";
 
 export interface HorizontalLayoutOptions {
-    displayToggleButtons: boolean;
+    displayToggleButtons?: boolean;
+    editorClassName?: object | string | Array<object | string>;
+    previewClassName?: object | string | Array<object | string>;
 }
 
 const defaultLayoutOptions: HorizontalLayoutOptions = {
@@ -86,6 +88,7 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
                 <div className="mde-content">
                     {this.state.showCode &&
                     <MdeEditor
+                        className={classNames(finalLayoutOptions.editorClassName)}
                         editorRef={(c) => this.editorRef = c}
                         onChange={this.handleMdeStateChange}
                         editorState={mdeEditorState}
@@ -95,7 +98,7 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
                     <MdePreview
                         className={classNames({
                             "mde-preview-only": !this.state.showCode,
-                        })}
+                        }, finalLayoutOptions.editorClassName)}
                         previewRef={(c) => this.previewRef = c}
                         html={mdeEditorState ? mdeEditorState.html : ""}
                     />
