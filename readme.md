@@ -12,7 +12,7 @@ officially publishing the final 5.5.0 version.
 
 ## Installing
 
-    npm i --save react-mde // or react-mde@5.5.0-alpha.1 for the same version available in the demos.
+    npm i --save react-mde // or react-mde@5.5.0-alpha.4 for the same version available in the demos.
 
 ## Dependencies
 
