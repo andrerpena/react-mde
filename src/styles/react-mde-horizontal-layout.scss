@@ -19,10 +19,6 @@
         .mde-tab:hover {
             cursor: pointer;
         }
-
-        .mde-tab-activated {
-            background: white;
-        }
     }
 
     .mde-content {
@@ -32,18 +28,13 @@
         .mde-text {
             min-width: 50%;
             overflow-y: auto;
-            border-radius: 0px;
+            border-radius: 0;
         }
 
         .mde-preview {
             min-width: 50%;
-            padding: 10px;
             border-left: 1px solid $mde-border-color;
             overflow-y: auto;
-        }
-
-        .mde-preview-only {
-            border-left: none;
         }
     }
 }

@@ -14,14 +14,6 @@
             padding: 10px;
             background: none;
         }
-
-        .mde-tab:hover {
-            cursor: pointer;
-        }
-
-        .mde-tab-activated {
-            background: white;
-        }
     }
 
     .react-mde-content {
@@ -39,15 +31,6 @@
             height: $mde-preview-vertical-height;
             overflow-y: auto;
             border-top: 1px solid $mde-border-color;
-        }
-
-        .mde-text-only {
-            height: 100%;
-        }
-
-        .mde-preview-only {
-            border-top: none;
-            height: 100%;
         }
     }
 }
