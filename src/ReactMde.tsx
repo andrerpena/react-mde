@@ -13,6 +13,7 @@ export interface ReactMdeProps {
     generateMarkdownPreview?: GenerateMarkdownPreview;
     layout?: keyof LayoutMap;
     layoutOptions?: any;
+    emptyPreviewHtml?: string;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
@@ -20,6 +21,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
     static defaultProps: Partial<ReactMdeProps> = {
         commands: getDefaultCommands(),
         layout: "vertical",
+        emptyPreviewHtml: "<p>&nbsp;</p>",
     };
 
     handleOnChange = ({markdown, html, draftEditorState}: MdeState) => {
@@ -54,15 +56,16 @@ export class ReactMde extends React.Component<ReactMdeProps> {
             markdown: editorState.markdown,
             draftEditorState: EditorState.createWithContent(ContentState.createFromText(editorState.markdown)),
         };
-        if (newEditorState.markdown && !newEditorState.html && generateMarkdownPreview != null)
+        if (newEditorState.markdown && !newEditorState.html && generateMarkdownPreview != null) {
             newEditorState.html = await generateMarkdownPreview(newEditorState.markdown);
+        }
 
         this.handleOnChange(newEditorState);
     }
 
     render() {
         const Layout = layoutMap[this.props.layout];
-        const {commands, layoutOptions, className} = this.props;
+        const {commands, layoutOptions, className, emptyPreviewHtml} = this.props;
         let {editorState} = this.props;
         if (!editorState || !editorState.draftEditorState) {
             editorState = {
@@ -79,6 +82,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                     commands={commands}
                     layoutOptions={layoutOptions}
                     mdeEditorState={editorState}
+                    emptyPreviewHtml={emptyPreviewHtml}
                 />
             </div>
         );

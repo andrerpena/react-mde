@@ -8,4 +8,6 @@ export interface LayoutProps {
     commands?: Command[][];
     layoutOptions: any;
     mdeEditorState: MdeState;
+    // The default HTML that should be displayed in the preview when there is no text
+    emptyPreviewHtml: string;
 }

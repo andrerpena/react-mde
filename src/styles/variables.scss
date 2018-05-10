@@ -1,9 +1,22 @@
+//General
+
 $mde-border-radius:                 2px !default;
 $mde-border-color:                  #c8ccd0 !default;
 $mde-button-color:                  #242729 !default;
 $mde-toolbar-color:                 #f9f9f9 !default;
 $mde-toolbar-padding:               10px !default;
-$mde-editor-min-height:             200px !default;
+$mde-editor-default-min-height:     200px !default;
+$mde-editor-default-height:         auto !default;
 $mde-editor-padding:                10px !default;
 $mde-preview-horizontal-padding:    10px !default;
-$mde-preview-padding:               10px 10px 20px 10px !default;
+$mde-preview-padding:               10px !default;
+$mde-preview-default-min-height:    $mde-editor-default-min-height !default;
+$mde-preview-default-height:        auto !default;
+
+
+// Layout specific variables
+
+$mde-editor-vertical-min-height:    $mde-editor-default-min-height !default;
+$mde-editor-vertical-height:        auto !default;
+$mde-preview-vertical-min-height:   0 !default;
+$mde-preview-vertical-height:       auto !default;

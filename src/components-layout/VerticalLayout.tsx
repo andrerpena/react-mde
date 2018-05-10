@@ -54,7 +54,7 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
      */
     render() {
 
-        const {commands, mdeEditorState, layoutOptions} = this.props;
+        const {commands, mdeEditorState, layoutOptions, emptyPreviewHtml} = this.props;
         const finalLayoutOptions = layoutOptions
             ? {...defaultLayoutOptions, ...layoutOptions}
             : defaultLayoutOptions;
@@ -104,6 +104,7 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
                         }, finalLayoutOptions.previewClassName)}
                         previewRef={(c) => this.previewRef = c}
                         html={mdeEditorState ? mdeEditorState.html : ""}
+                        emptyPreviewHtml={emptyPreviewHtml}
                     />
                     }
                 </div>

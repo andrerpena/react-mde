@@ -53,7 +53,7 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
      * @memberOf ReactMde
      */
     render() {
-        const {commands, mdeEditorState, layoutOptions} = this.props;
+        const {commands, mdeEditorState, layoutOptions, emptyPreviewHtml} = this.props;
         const finalLayoutOptions = layoutOptions
             ? {...defaultLayoutOptions, ...layoutOptions}
             : defaultLayoutOptions;
@@ -101,6 +101,7 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
                         }, finalLayoutOptions.editorClassName)}
                         previewRef={(c) => this.previewRef = c}
                         html={mdeEditorState ? mdeEditorState.html : ""}
+                        emptyPreviewHtml={emptyPreviewHtml}
                     />
                     }
                 </div>
