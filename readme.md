@@ -39,45 +39,50 @@ decide to do so, install Showdown:
 ## Using
 
 React-mde is a completely controlled component.
-    
-    Minimal example using Showdown:
-    
-    import * as React from "react";
-    import ReactMde, {ReactMdeTypes} from "../src";
-    import * as Showdown from "showdown";
-    
-    export interface AppState {
-        mdeState: ReactMdeTypes.MdeState;
+
+Minimal example using Showdown:
+```jsx
+import * as React from "react";
+import ReactMde, {ReactMdeTypes} from "../src";
+import * as Showdown from "showdown";
+
+export interface AppState {
+    mdeState: ReactMdeTypes.MdeState;
+}
+
+export class App extends React.Component<{}, AppState> {
+
+    converter: Showdown.Converter;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            mdeState: null,
+        };
+        this.converter = new Showdown.Converter({tables: true, simplifiedAutoLink: true});
     }
-    
-    export class App extends React.Component<{}, AppState> {
-    
-        converter: Showdown.Converter;
-    
-        constructor(props) {
-            super(props);
-            this.state = {
-                mdeState: null,
-            };
-            this.converter = new Showdown.Converter({tables: true, simplifiedAutoLink: true});
-        }
-    
-        handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
-            this.setState({mdeState});
-        }
-    
-        render() {
-            return (
-                <div className="container">
-                    <ReactMde
-                        onChange={this.handleValueChange}
-                        editorState={this.state.mdeState}
-                        generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
-                    />
-                </div>
-            );
-        }
+
+    handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
+        this.setState({mdeState});
     }
+
+    render() {
+        return (
+            <div className="container">
+                <ReactMde
+                    onChange={this.handleValueChange}
+                    editorState={this.state.mdeState}
+                    generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
+                />
+            </div>
+        );
+    }
+}
+```
+    
+    
+    
+    
 
 
 ## React-mde Props
@@ -89,7 +94,7 @@ The types are described below
 - **commands?: Command[][]**: An array of array of commands. If no commands are specified, the default will be used. Commands are explained in more details below.
 - **onChange: (value: MdeState) => void**: Event handler for the `onChange` event.
 - **generateMarkdownPreview: (markdown: string) => Promise<string>;**: Function that should return the generated HTML for the preview. If this `prop` is falsy, then no preview is going to be generated.
-- **layout?: string**: The name of the layout to be used. For now, the supported layouts are : `vertical` and `noPreview`.
+- **layout?: string**: The name of the layout to be used. For now, the supported layouts are : `vertical`, `horizontal`, `tabbed` and `noPreview`.
 - **layoutOptions?: any**: An object with options to be passed to the `layout-component`. Each layout may or may not expect
 options. It is recommended to [inspect the layouts source code](https://github.com/andrerpena/react-mde/tree/master/src/components-layout) to see what options can be passed to each
 while the documentation is not complete. 
