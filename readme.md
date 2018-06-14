@@ -93,6 +93,7 @@ The types are described below
 - **layoutOptions?: any**: An object with options to be passed to the `layout-component`. Each layout may or may not expect
 options. It is recommended to [inspect the layouts source code](https://github.com/andrerpena/react-mde/tree/master/src/components-layout) to see what options can be passed to each
 while the documentation is not complete. 
+-- **readOnly?: boolean**: Flag to render the editor in read-only mode.
 
 ## Styling
 

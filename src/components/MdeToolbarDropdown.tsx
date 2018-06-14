@@ -7,6 +7,7 @@ export interface HeaderItemDropdownProps {
     buttonProps: any;
     commands: Command[];
     onCommand: (command: Command) => void;
+    readOnly: boolean;
 }
 
 export interface HeaderItemDropdownState {
@@ -74,7 +75,7 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
     }
 
     render() {
-        const {commands} = this.props;
+        const {commands, readOnly} = this.props;
         const {open} = this.state;
 
         const items = commands.map((command, index) => (
@@ -83,6 +84,7 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
                 buttonProps={command.buttonProps}
                 buttonContent={command.buttonContent}
                 onClick={(e) => this.handleOnClickCommand(e, command)}
+                readOnly={readOnly}
             />
         ));
 
@@ -110,6 +112,7 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
                         this.dropdownOpener = ref;
                     }}
                     onClick={this.handleClick}
+                    disabled={readOnly}
                 >
                     {buttonContent}
                 </button>

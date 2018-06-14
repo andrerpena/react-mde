@@ -29,18 +29,20 @@ export class NoPreviewLayout extends React.Component<LayoutProps, {}> {
      */
     render() {
 
-        const { commands, mdeEditorState } = this.props;
+        const { commands, mdeEditorState, readOnly } = this.props;
 
         return (
             <div className="react-mde-no-preview-layout">
                 <MdeToolbar
                     commands={commands}
                     onCommand={this.handleCommand}
+                    readOnly={readOnly}
                 />
                 <MdeEditor
                     editorRef={(c) => this.editorRef = c}
                     onChange={this.handleMdeStateChange}
                     editorState={mdeEditorState}
+                    readOnly={readOnly}
                 />
             </div>
         );
