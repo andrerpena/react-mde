@@ -8,6 +8,7 @@ export interface MdeEditorProps {
     onChange: (value: EditorState) => void;
     editorRef?: (ref: MdeEditor) => void;
     editorState: MdeState;
+    readOnly: boolean;
 }
 
 export class MdeEditor extends React.Component<MdeEditorProps, {}> {
@@ -46,7 +47,7 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
     }
 
     render() {
-        const {editorState: {draftEditorState}, className} = this.props;
+        const {editorState: {draftEditorState}, className, readOnly} = this.props;
         return (
             <div className={`mde-text ${className || ""}`}>
                 <Editor
@@ -56,6 +57,7 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
                     onChange={this.handleOnChange}
                     onTab={this.handleTab}
                     handleKeyCommand={this.handleKeyCommand}
+                    readOnly={readOnly}
                 />
             </div>
         );

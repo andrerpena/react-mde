@@ -14,6 +14,7 @@ export interface ReactMdeProps {
     layout?: keyof LayoutMap;
     layoutOptions?: any;
     emptyPreviewHtml?: string;
+    readOnly?: boolean;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
@@ -22,6 +23,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
         commands: getDefaultCommands(),
         layout: "vertical",
         emptyPreviewHtml: "<p>&nbsp;</p>",
+        readOnly: false,
     };
 
     handleOnChange = ({markdown, html, draftEditorState}: MdeState) => {
@@ -65,7 +67,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
     render() {
         const Layout = layoutMap[this.props.layout];
-        const {commands, layoutOptions, className, emptyPreviewHtml} = this.props;
+        const {commands, layoutOptions, className, emptyPreviewHtml, readOnly} = this.props;
         let {editorState} = this.props;
         if (!editorState || !editorState.draftEditorState) {
             editorState = {
@@ -83,6 +85,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                     layoutOptions={layoutOptions}
                     mdeEditorState={editorState}
                     emptyPreviewHtml={emptyPreviewHtml}
+                    readOnly={readOnly}
                 />
             </div>
         );

@@ -7,9 +7,10 @@ import {MdeToolbarButton} from "./MdeToolbarButton";
 export interface MdeToolbarProps {
     commands: Command[][];
     onCommand: (command: Command) => void;
+    readOnly: boolean;
 }
 
-export const MdeToolbar: React.SFC<MdeToolbarProps> = ({children, commands, onCommand}) => {
+export const MdeToolbar: React.SFC<MdeToolbarProps> = ({children, commands, onCommand, readOnly}) => {
     if ((!commands || commands.length === 0) && !children) {
         return null;
     }
@@ -28,6 +29,7 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = ({children, commands, onCo
                                             buttonContent={c.buttonContent}
                                             commands={c.children}
                                             onCommand={(cmd) => onCommand(cmd)}
+                                            readOnly={readOnly}
                                         />
                                     );
                                 }
@@ -36,6 +38,7 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = ({children, commands, onCo
                                     buttonContent={c.buttonContent}
                                     buttonProps={c.buttonProps}
                                     onClick={() => onCommand(c as Command)}
+                                    readOnly={readOnly}
                                 />;
                             })
                         }

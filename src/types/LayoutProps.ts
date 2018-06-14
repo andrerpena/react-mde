@@ -10,4 +10,5 @@ export interface LayoutProps {
     mdeEditorState: MdeState;
     // The default HTML that should be displayed in the preview when there is no text
     emptyPreviewHtml: string;
+    readOnly: boolean;
 }
