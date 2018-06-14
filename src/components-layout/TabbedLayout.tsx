@@ -53,12 +53,14 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
                 >
                     <div className="mde-tabs">
                         <button
+                            type="button"
                             className={styleTabCode}
                             onClick={() => this.setState({tab: TAB_CODE})}
                         >
                             Code
                         </button>
                         <button
+                            type="button"
                             className={styleTabPreview}
                             onClick={() => this.setState({tab: TAB_PREVIEW})}
                         >
