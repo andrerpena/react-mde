@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactMde, {ReactMdeTypes} from "../src";
+import ReactMde, { ReactMdeTypes } from "../src";
 import * as Showdown from "showdown";
 
 export interface AppState {
@@ -26,7 +26,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
-        this.setState({mdeState});
+        this.setState({ mdeState });
     }
 
     render() {
