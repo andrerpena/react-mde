@@ -18,7 +18,6 @@ export interface ReactMdeProps {
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
-
     static defaultProps: Partial<ReactMdeProps> = {
         commands: getDefaultCommands(),
         layout: "vertical",
@@ -29,29 +28,33 @@ export class ReactMde extends React.Component<ReactMdeProps> {
     handleOnChange = ({markdown, html, draftEditorState}: MdeState) => {
         const {onChange} = this.props;
         onChange({markdown, html, draftEditorState});
-    }
+    };
 
     handleDraftStateChange = (draftEditorState: EditorState) => {
-        const { generateMarkdownPreview } = this.props;
-        getMdeStateFromDraftState(draftEditorState, generateMarkdownPreview)
-            .then((mdeState) => {
-                this.handleOnChange({
-                    html: mdeState.html,
-                    markdown: mdeState.markdown,
-                    draftEditorState,
-                });
+        const {generateMarkdownPreview} = this.props;
+        getMdeStateFromDraftState(draftEditorState, generateMarkdownPreview).then(mdeState => {
+            this.handleOnChange({
+                html: mdeState.html,
+                markdown: mdeState.markdown,
+                draftEditorState,
             });
-    }
+        });
+    };
 
     onCommand = (command: Command) => {
         const {draftEditorState} = this.props.editorState;
-        this.handleDraftStateChange(command.execute(draftEditorState));
-    }
+        const executedCommand = command.execute(draftEditorState);
+        if (executedCommand.constructor.name === "Promise") {
+            return (executedCommand as Promise<EditorState>).then(result => this.handleDraftStateChange(result));
+        } else {
+            const newEditorState = executedCommand as EditorState;
+            return this.handleDraftStateChange(newEditorState);
+        }
+    };
 
     async componentDidMount() {
         const {editorState, generateMarkdownPreview} = this.props;
-        if (!editorState || editorState.draftEditorState)
-            return;
+        if (!editorState || editorState.draftEditorState) return;
 
         const newEditorState: MdeState = {
             html: editorState.html,
