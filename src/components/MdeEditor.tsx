@@ -17,12 +17,12 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
     handleOnChange = (editorState: EditorState) => {
         const {onChange} = this.props;
         onChange(editorState);
-    };
+    }
 
     executeCastAsEditorState = (commandToExecute: Command, editorState: EditorState, data?: any): EditorState => {
         const newEditorState = commandToExecute.execute(editorState, data) as EditorState;
         return newEditorState;
-    };
+    }
 
     handleKeyCommand = (command, editorState) => {
         const {onChange} = this.props;
@@ -42,9 +42,9 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
             default:
                 return "not-handled";
         }
-    };
+    }
 
-    handleTab = event => {
+    handleTab = (event) => {
         event.preventDefault();
 
         const {
@@ -52,7 +52,7 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
             onChange,
         } = this.props;
         onChange(this.executeCastAsEditorState(tabCommand, draftEditorState, event.shiftKey));
-    };
+    }
 
     render() {
         const {
@@ -63,7 +63,7 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
         return (
             <div className={`mde-text ${className || ""}`}>
                 <Editor
-                    ref={editor => (this.editorRef = editor)}
+                    ref={(editor) => (this.editorRef = editor)}
                     stripPastedStyles={true}
                     editorState={draftEditorState}
                     onChange={this.handleOnChange}
