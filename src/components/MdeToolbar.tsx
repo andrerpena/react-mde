@@ -1,16 +1,18 @@
 import * as React from "react";
-import {Command} from "../types";
+import {Command, ButtonContentOptions} from "../types";
 import {MdeToolbarButtonGroup} from "./MdeToolbarButtonGroup";
 import {MdeToolbarDropdown} from "./MdeToolbarDropdown";
 import {MdeToolbarButton} from "./MdeToolbarButton";
 
 export interface MdeToolbarProps {
+    buttonContentOptions: ButtonContentOptions;
     commands: Command[][];
     onCommand: (command: Command) => void;
     readOnly: boolean;
 }
 
-export const MdeToolbar: React.SFC<MdeToolbarProps> = ({children, commands, onCommand, readOnly}) => {
+export const MdeToolbar: React.SFC<MdeToolbarProps> = (props) => {
+    const {buttonContentOptions, children, commands, onCommand, readOnly} = props;
     if ((!commands || commands.length === 0) && !children) {
         return null;
     }
@@ -26,7 +28,8 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = ({children, commands, onCo
                                         <MdeToolbarDropdown
                                             key={j}
                                             buttonProps={c.buttonProps}
-                                            buttonContent={c.buttonContent}
+                                            buttonContentOptions={buttonContentOptions}
+                                            buttonContent={c.buttonContentBuilder(buttonContentOptions)}
                                             commands={c.children}
                                             onCommand={(cmd) => onCommand(cmd)}
                                             readOnly={readOnly}
@@ -35,7 +38,7 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = ({children, commands, onCo
                                 }
                                 return <MdeToolbarButton
                                     key={j}
-                                    buttonContent={c.buttonContent}
+                                    buttonContent={c.buttonContentBuilder(buttonContentOptions)}
                                     buttonProps={c.buttonProps}
                                     onClick={() => onCommand(c as Command)}
                                     readOnly={readOnly}

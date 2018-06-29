@@ -4,7 +4,7 @@ import {onTab} from "../util/MarkdownUtil";
 import {getMarkdownStateFromDraftState, buildNewDraftState} from "../util/DraftUtil";
 
 export const tabCommand: Command = {
-    buttonContent: null,
+    buttonContentBuilder: () => null,
     buttonProps: null,
 
     execute: (state, reverse) => {

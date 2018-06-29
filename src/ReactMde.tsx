@@ -1,14 +1,16 @@
 import * as React from "react";
-import {Command, GenerateMarkdownPreview, MdeState} from "./types";
+import {Command, GenerateMarkdownPreview, MdeState, ButtonContentOptions} from "./types";
 import {getDefaultCommands} from "./commands";
 import {layoutMap, LayoutMap} from "./LayoutMap";
 import {ContentState, EditorState} from "draft-js";
 import {getMdeStateFromDraftState} from "./util/DraftUtil";
+import { MdeToolbarIcon } from "./components";
 
 export interface ReactMdeProps {
     editorState: MdeState;
     className?: string;
     commands?: Command[][];
+    buttonContentOptions?: ButtonContentOptions;
     onChange: (value: MdeState) => void;
     generateMarkdownPreview?: GenerateMarkdownPreview;
     layout?: keyof LayoutMap;
@@ -20,6 +22,9 @@ export interface ReactMdeProps {
 export class ReactMde extends React.Component<ReactMdeProps> {
     static defaultProps: Partial<ReactMdeProps> = {
         commands: getDefaultCommands(),
+        buttonContentOptions: {
+          iconProvider: (name) => <MdeToolbarIcon icon={name} />,
+        },
         layout: "vertical",
         emptyPreviewHtml: "<p>&nbsp;</p>",
         readOnly: false,
@@ -70,7 +75,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
     render() {
         const Layout = layoutMap[this.props.layout];
-        const {commands, layoutOptions, className, emptyPreviewHtml, readOnly} = this.props;
+        const {buttonContentOptions, commands, layoutOptions, className, emptyPreviewHtml, readOnly} = this.props;
         let {editorState} = this.props;
         if (!editorState || !editorState.draftEditorState) {
             editorState = {
@@ -82,6 +87,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
         return (
             <div className={`react-mde ${className || ""}`}>
                 <Layout
+                    buttonContentOptions={buttonContentOptions}
                     onChange={this.handleDraftStateChange}
                     onCommand={this.onCommand}
                     commands={commands}

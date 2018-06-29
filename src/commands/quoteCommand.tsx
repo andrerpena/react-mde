@@ -6,10 +6,9 @@ import {
     selectWordIfCaretIsInsideOne,
 } from "../util/MarkdownUtil";
 import {buildNewDraftState, getMarkdownStateFromDraftState} from "../util/DraftUtil";
-import {MdeToolbarIcon} from "../components";
 
 export const quoteCommand: Command = {
-    buttonContent: <MdeToolbarIcon icon="quote-right"/>,
+    buttonContentBuilder: ({ iconProvider }) => iconProvider("quote-right"),
 
     buttonProps: { "aria-label": "Insert a quote" },
 

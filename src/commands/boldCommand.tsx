@@ -2,10 +2,9 @@ import * as React from "react";
 import {Command} from "../types";
 import {insertBeforeAndAfter} from "../util/MarkdownUtil";
 import {getMarkdownStateFromDraftState, buildNewDraftState} from "../util/DraftUtil";
-import {MdeToolbarIcon} from "../components";
 
 export const boldCommand: Command = {
-    buttonContent: <MdeToolbarIcon icon="bold"/>,
+    buttonContentBuilder: ({ iconProvider }) => iconProvider("bold"),
 
     buttonProps: { "aria-label": "Add bold text" },
 
