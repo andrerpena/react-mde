@@ -47,8 +47,11 @@ export class ReactMde extends React.Component<ReactMdeProps> {
     }
 
     onCommand = (command: Command) => {
+        if (!command.execute) return;
         const {draftEditorState} = this.props.editorState;
         const executedCommand = command.execute(draftEditorState);
+        // When this issue is solved, probably it won't be required anymore to do an explicit type cast:
+        // https://github.com/Microsoft/TypeScript/issues/1260
         if (executedCommand.constructor.name === "Promise") {
             return (executedCommand as Promise<EditorState>).then((result) => this.handleDraftStateChange(result));
         } else {
