@@ -1,5 +1,4 @@
 import * as React from "react";
-import {MarkdownState} from "./MarkdownState";
 import {EditorState} from "draft-js";
 
 export interface ButtonContentOptions {

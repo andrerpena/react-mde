@@ -2,7 +2,6 @@ import * as React from "react";
 import * as Showdown from "showdown";
 import ReactMde, {ReactMdeTypes} from "../../../src/index";
 import {storiesOf} from "@storybook/react";
-import { MdeToolbarIcon } from "../../../src/components";
 
 interface EmojiIconsStoryState {
     mdeState: ReactMdeTypes.MdeState;

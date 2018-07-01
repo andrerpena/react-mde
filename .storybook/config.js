@@ -4,11 +4,11 @@ import "../src/styles/react-mde-all.scss";
 import "./styles/demo.scss";
 
 function loadStories() {
-    require("./stories/layouts/EmojiIconsStory.tsx");
     require("./stories/layouts/VerticalLayoutStory.tsx");
     require("./stories/layouts/HorizontalLayoutStory.tsx");
     require("./stories/layouts/TabbedLayoutStory.tsx");
     require("./stories/layouts/NoPreviewLayoutStory.tsx");
+    require("./stories/iconCustomization/EmojiIconsStory.tsx");
 }
 
 configure(loadStories, module);
