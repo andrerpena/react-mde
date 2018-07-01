@@ -8,10 +8,9 @@ import {
     selectWordIfCaretIsInsideOne,
 } from "../util/MarkdownUtil";
 import {buildNewDraftState, getMarkdownStateFromDraftState} from "../util/DraftUtil";
-import {MdeToolbarIcon} from "../components";
 
 export const codeCommand: Command = {
-    buttonContent: <MdeToolbarIcon icon="code"/>,
+    buttonContentBuilder: ({ iconProvider }) => iconProvider("code"),
 
     buttonProps: { "aria-label": "Insert code" },
 

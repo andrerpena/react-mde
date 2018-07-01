@@ -1,8 +1,9 @@
-import {Command} from "./Command";
+import {Command, ButtonContentOptions} from "./Command";
 import {MdeState} from "./MdeState";
 import {EditorState} from "draft-js";
 
 export interface LayoutProps {
+    buttonContentOptions: ButtonContentOptions;
     onChange: (editorState: EditorState) => void;
     onCommand: (command: Command) => void;
     commands?: Command[][];

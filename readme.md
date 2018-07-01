@@ -20,8 +20,8 @@ difficult. The best examples being history management, mentions and pasting file
 
     npm i --save draft-js
 
-- [Font Awesome 5.*](https://fontawesome.com/) for the icons. This is not a hard dependency and there are plans to eliminate it altogether, but for now,
-the button classes are meant to be resolved by Font Awesome, which can be installed [using your preferred method](https://fontawesome.com/how-to-use/svg-with-js).
+- [Font Awesome 5.*](https://fontawesome.com/) for the icons. This is not a hard dependency and can be changed (see the **Customizing Icons** section below).
+To use Font Awesome icons, install [using your preferred method](https://fontawesome.com/how-to-use/svg-with-js).
 The easiest is just add this to `<head/>`:
 <!-- -->
 
@@ -79,11 +79,29 @@ export class App extends React.Component<{}, AppState> {
     }
 }
 ```
-    
-    
-    
-    
 
+### Customizing Icons
+
+By default, React-mde will use Font Awesome class names to render icons (see above for how to install).
+The default icon provider returns icons that look like the following:
+
+```jsx
+<i className={`fas fa-${icon}`} aria-hidden="true"/>
+```
+
+This can be changed by passing a `buttonContentOptions` prop to the `ReactMde` component with an `iconProvider` option to tell React-mde how to render icons.
+
+For example, you can use your own custom icon component by changing the `iconProvider`:
+
+```jsx
+<ReactMde
+    buttonContentOptions={{
+        iconProvider: name => <MyCustomIcon name={name} />,
+    }}
+    onChange={this.handleValueChange}
+    // ...
+/>
+```
 
 ## React-mde Props
 
@@ -92,6 +110,7 @@ The types are described below
 - **editorState: MdeState**: The state of the editor. This contains the markdown, the HTML and the underlying Draft.js state.
 - **className?: string**: Optional class name to be added to the top level element.
 - **commands?: Command[][]**: An array of array of commands. If no commands are specified, the default will be used. Commands are explained in more details below.
+- **buttonContentOptions?: { iconProvider: (iconName: string) => React.ReactNode }** An optional set of button content options, including an `iconProvider` to allow custom icon rendering.
 - **onChange: (value: MdeState) => void**: Event handler for the `onChange` event.
 - **generateMarkdownPreview: (markdown: string) => Promise<string>;**: Function that should return the generated HTML for the preview. If this `prop` is falsy, then no preview is going to be generated.
 - **layout?: string**: The name of the layout to be used. For now, the supported layouts are : `vertical`, `horizontal`, `tabbed` and `noPreview`.

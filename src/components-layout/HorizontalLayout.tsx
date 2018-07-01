@@ -33,12 +33,13 @@ export class HorizontalLayout extends React.Component<LayoutProps, {}> {
      * @memberOf ReactMde
      */
     render() {
-        const {commands, mdeEditorState, layoutOptions, emptyPreviewHtml, readOnly} = this.props;
+        const {buttonContentOptions, commands, mdeEditorState, layoutOptions, emptyPreviewHtml, readOnly} = this.props;
         const finalLayoutOptions = layoutOptions ? {...layoutOptions} : {};
 
         return (
             <div className="react-mde-horizontal-layout">
                 <MdeToolbar
+                    buttonContentOptions={buttonContentOptions}
                     commands={commands}
                     onCommand={this.handleCommand}
                     readOnly={readOnly}
