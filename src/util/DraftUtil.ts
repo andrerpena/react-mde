@@ -1,6 +1,5 @@
 import {EditorState, ContentState, SelectionState} from "draft-js";
-import {MarkdownState} from "../types/MarkdownState";
-import {GenerateMarkdownPreview, MdeState, TextSelection} from "../types";
+import {MarkdownState, GenerateMarkdownPreview, MdeState, TextSelection} from "../types";
 
 export function getContentLengthOfAllBlocksBefore(editorState, key) {
     let count = 0;

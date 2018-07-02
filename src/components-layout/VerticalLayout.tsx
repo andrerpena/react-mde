@@ -4,11 +4,6 @@ import {ReactMde} from "../ReactMde";
 import {MdePreview, MdeEditor, MdeToolbar} from "../components";
 import * as classNames from "classnames";
 
-export interface VerticalLayoutOptions {
-    editorClassName?: object | string | Array<object | string>;
-    previewClassName?: object | string | Array<object | string>;
-}
-
 export class VerticalLayout extends React.Component<LayoutProps, {}> {
     editorRef: MdeEditor;
     previewRef: MdePreview;
