@@ -3,7 +3,7 @@ import * as Showdown from "showdown";
 import ReactMde, {ReactMdeTypes} from "../../../src/index";
 import {storiesOf} from "@storybook/react";
 
-interface EmojiIconsStoryState {
+interface State {
     mdeState: ReactMdeTypes.MdeState;
 }
 
@@ -25,7 +25,7 @@ const iconProvider = (name) => {
   return icons[name] || "❓";
 };
 
-class EmojiIconsStory extends React.Component<{}, EmojiIconsStoryState> {
+class EmojiIconsStory extends React.Component<{}, State> {
     converter: Showdown.Converter;
 
     constructor(props) {

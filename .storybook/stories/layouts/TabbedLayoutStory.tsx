@@ -3,11 +3,11 @@ import * as Showdown from "showdown";
 import ReactMde, {ReactMdeTypes} from "../../../src/index";
 import {storiesOf} from "@storybook/react";
 
-interface VerticalLayoutStoryComponentState {
+interface State {
     mdeState: ReactMdeTypes.MdeState;
 }
 
-class VerticalLayoutStoryComponent extends React.Component<{}, VerticalLayoutStoryComponentState> {
+class VerticalLayoutStoryComponent extends React.Component<{}, State> {
     converter: Showdown.Converter;
 
     constructor(props) {

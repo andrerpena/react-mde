@@ -1,5 +1,5 @@
 import {EditorState, ContentState, SelectionState} from "draft-js";
-import {MarkdownState, GenerateMarkdownPreview, MdeState, TextSelection} from "../types";
+import {GenerateMarkdownPreview, MdeState, TextSelection, MarkdownState} from "../types";
 
 export function getContentLengthOfAllBlocksBefore(editorState, key) {
     let count = 0;
@@ -17,7 +17,7 @@ export function getContentLengthOfAllBlocksBefore(editorState, key) {
     return count;
 }
 
-export function getSelection(editorState): TextSelection {
+export function getSelection(editorState: EditorState): TextSelection {
     const selection = editorState.getSelection();
 
     const startKey = selection.getStartKey();
@@ -112,7 +112,7 @@ export async function getMdeStateFromDraftState(editorState: EditorState, genera
     };
 }
 
-export function buildNewDraftState(currentState: EditorState, markdownState: MarkdownState) {
+export function buildNewDraftState(currentState: EditorState, markdownState: MarkdownState): EditorState {
     const {text, selection} = markdownState;
     // TODO: Fix the redo. It's no working properly but this is an implementation detail.
 
@@ -128,15 +128,3 @@ export function buildNewDraftState(currentState: EditorState, markdownState: Mar
 
     return EditorState.forceSelection(state, selectionState);
 }
-
-/*
-export async function buildNewMdeState(currentState: MdeState, generateMarkdownPreview: GenerateMarkdownPreview, newText: string, newSelection: TextSelection = null): Promise<MdeState> {
-    const newDraftState = buildNewDraftState(currentState.draftEditorState, newText, newSelection);
-    const html = generateMarkdownPreview ? await generateMarkdownPreview(newText) : "";
-    return {
-        html,
-        markdown: newText,
-        draftEditorState: newDraftState,
-    };
-}
-*/
