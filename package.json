@@ -6,9 +6,9 @@
   "types": "./lib/definitions/index.d.ts",
   "scripts": {
     "test": "mocha --timeout 15000 -r ts-node/register ./test/*Spec.ts",
-    "start": "start-storybook -p 9001 -c .storybook",
+    "start": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
+    "start:storybook": "start-storybook -p 9001 -c .storybook",
     "start:storybook:prod": "npm run build:storybook && static-server docs",
-    "start:demo": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
     "build:ts": "tsc --project ./tsconfig.build.json",
     "build": "cross-env NODE_ENV=production gulp build",
     "build:lib": "cross-env NODE_ENV=production gulp build-lib",
