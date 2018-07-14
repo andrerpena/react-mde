@@ -12,6 +12,6 @@ export interface Command {
     buttonProps?: any;
     children?: Command[];
     execute?: (EditorState, data?) => EditorState | Promise<EditorState>;
-    CustomButtonComponent?: any;
+    CustomButtonComponent?: any; /* TODO (@bnbarak): change to the right type */
     setValues?: any;
 }
