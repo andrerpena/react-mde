@@ -32,7 +32,7 @@ class VerticalLayoutStoryComponent extends React.Component<{}, State> {
 
     handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
         this.setState({mdeState});
-    };
+    }
 
     render() {
         return (
