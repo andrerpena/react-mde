@@ -5,15 +5,26 @@ export interface MdeToolbarButtonProps {
     buttonProps: any;
     onClick: React.MouseEventHandler<any>;
     readOnly: boolean;
+    setValues?: any;
+    CustomButtonComponent?: any; /* TODO (bnbarak): set the right type - Component/PureComponent */
 }
 
 export const MdeToolbarButton: React.SFC<MdeToolbarButtonProps> = (props) => {
-    const {buttonContent, buttonProps, onClick, readOnly} = props;
+    const {buttonContent, buttonProps, onClick, readOnly, CustomButtonComponent, setValues} = props;
+    const defaultButton = (
+        <button
+            type="button"
+            {...buttonProps}
+            onClick={onClick}
+            disabled={readOnly}
+        >
+            {buttonContent}
+        </button>
+    );
+    const customComponent = (<CustomButtonComponent handleSubmit={onClick} setValues={setValues}/>);
     return (
         <li className="mde-header-item">
-            <button type="button" {...buttonProps} onClick={onClick} disabled={readOnly}>
-                {buttonContent}
-            </button>
+            {CustomButtonComponent ? customComponent : defaultButton}
         </li>
     );
 };
