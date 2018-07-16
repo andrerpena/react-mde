@@ -5,10 +5,15 @@ import {getMarkdownStateFromDraftState, buildNewDraftState} from "../../../../sr
 import ButtonComponent from "./ButtonComponent";
 
 let myVal = "def";
-const customCommand: Command = {
+const UploadImageCommand: Command = {
 
-    buttonContentBuilder: ({ iconProvider }) => iconProvider("bold"),
-    buttonProps: { "aria-label": "Add bold text" },
+    buttonContentBuilder: ({iconProvider}) => iconProvider("bold"),
+    buttonProps: {
+        "aria-label": "Add bold text",
+        "setValues": (value) => {
+            myVal = value;
+        },
+    },
     execute: (state) => {
         const {text, selection} = getMarkdownStateFromDraftState(state);
         const {newText, insertionLength} = insertText(text, "![", selection.start);
@@ -25,10 +30,7 @@ const customCommand: Command = {
             },
         );
     },
-    CustomButtonComponent: ButtonComponent,
-    setValues: (value) => {
-        myVal = value;
-    },
+    buttonComponentClass: ButtonComponent,
 };
 
-export default customCommand;
+export default UploadImageCommand;

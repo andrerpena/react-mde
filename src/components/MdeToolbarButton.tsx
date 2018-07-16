@@ -1,30 +1,24 @@
 import * as React from "react";
 
 export interface MdeToolbarButtonProps {
-    buttonContent: React.ReactNode;
+    buttonComponentClass?: React.ComponentClass | string;
     buttonProps: any;
+    buttonContent: React.ReactNode;
     onClick: React.MouseEventHandler<any>;
     readOnly: boolean;
-    setValues?: any;
-    CustomButtonComponent?: any; /* TODO (bnbarak): set the right type - Component/PureComponent */
 }
 
 export const MdeToolbarButton: React.SFC<MdeToolbarButtonProps> = (props) => {
-    const {buttonContent, buttonProps, onClick, readOnly, CustomButtonComponent, setValues} = props;
-    const defaultButton = (
-        <button
-            type="button"
-            {...buttonProps}
-            onClick={onClick}
-            disabled={readOnly}
-        >
-            {buttonContent}
-        </button>
-    );
-    const customComponent = (<CustomButtonComponent handleSubmit={onClick} setValues={setValues}/>);
+    const {buttonComponentClass, buttonContent, buttonProps, onClick, readOnly} = props;
+    const finalButtonComponent = buttonComponentClass || "button";
     return (
         <li className="mde-header-item">
-            {CustomButtonComponent ? customComponent : defaultButton}
+            {React.createElement(finalButtonComponent, {
+                ...buttonProps, ...{
+                    onClick,
+                    disabled: readOnly,
+                },
+            }, buttonContent)}
         </li>
     );
 };

@@ -42,8 +42,7 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = (props) => {
                                     buttonProps={c.buttonProps}
                                     onClick={() => onCommand(c as Command)}
                                     readOnly={readOnly}
-                                    CustomButtonComponent={c.CustomButtonComponent}
-                                    setValues={c.setValues}
+                                    buttonComponentClass={c.buttonComponentClass}
                                 />;
                             })
                         }

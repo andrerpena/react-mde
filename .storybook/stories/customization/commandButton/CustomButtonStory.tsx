@@ -2,11 +2,9 @@ import * as React from "react";
 import * as Showdown from "showdown";
 import ReactMde, {ReactMdeTypes} from "../../../../src/index";
 import {storiesOf} from "@storybook/react";
-import CustomCommand from "./ImageUploader";
+import UploadImageCommand from "./UploadImageCommand";
 
-const commands = [
-    [CustomCommand],
-];
+const commands = [[UploadImageCommand]];
 
 interface State {
     mdeState: ReactMdeTypes.MdeState;
