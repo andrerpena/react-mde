@@ -2,10 +2,10 @@ import * as React from "react";
 import {Command} from "../../src/types";
 import {insertBeforeAndAfter, insertText} from "../../src/util/MarkdownUtil";
 import {getMarkdownStateFromDraftState, buildNewDraftState} from "../../src/util/DraftUtil";
-import ButtonComponent from "./ButtonComponent";
+import ButtonComponent from "./FullDuplexButton";
 
 let myVal = "def";
-const customCommand: Command = {
+const customCommandFullDuplex: Command = {
 
     buttonContentBuilder: ({ iconProvider }) => iconProvider("bold"),
     buttonProps: { "aria-label": "Add bold text" },
@@ -31,4 +31,4 @@ const customCommand: Command = {
     },
 };
 
-export default customCommand;
+export default customCommandFullDuplex;

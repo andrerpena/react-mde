@@ -17,6 +17,7 @@ export interface ReactMdeProps {
     layoutOptions?: any;
     emptyPreviewHtml?: string;
     readOnly?: boolean;
+    otherProps?: any;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
@@ -99,7 +100,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
     render() {
         const Layout = layoutMap[this.props.layout];
-        const {buttonContentOptions, commands, layoutOptions, className, emptyPreviewHtml, readOnly} = this.props;
+        const {buttonContentOptions, commands, layoutOptions, className, emptyPreviewHtml, readOnly, otherProps} = this.props;
         const {editorState} = this.props;
         let finalEditorState: MdeState = editorState;
         if (!finalEditorState || !finalEditorState.draftEditorState) {
@@ -122,6 +123,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                     mdeEditorState={finalEditorState}
                     emptyPreviewHtml={emptyPreviewHtml}
                     readOnly={readOnly}
+                    otherProps={otherProps}
                 />
             </div>
         );

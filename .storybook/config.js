@@ -9,6 +9,7 @@ function loadStories() {
     require("./stories/layouts/TabbedLayoutStory.tsx");
     require("./stories/layouts/NoPreviewLayoutStory.tsx");
     require("./stories/button/CustomButtonStory.tsx");
+    require("./stories/button/CustomButtonOtherPropsStory.tsx");
     require("./stories/iconCustomization/EmojiIconsStory.tsx");
 }
 

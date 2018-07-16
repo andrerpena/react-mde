@@ -28,7 +28,7 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
      * @memberOf ReactMde
      */
     render() {
-        const {buttonContentOptions, commands, mdeEditorState, layoutOptions, emptyPreviewHtml, readOnly} = this.props;
+        const {buttonContentOptions, commands, mdeEditorState, layoutOptions, emptyPreviewHtml, readOnly, otherProps} = this.props;
         const finalLayoutOptions = layoutOptions ? {...layoutOptions} : {};
 
         return (
@@ -38,6 +38,7 @@ export class VerticalLayout extends React.Component<LayoutProps, {}> {
                     commands={commands}
                     onCommand={this.handleCommand}
                     readOnly={readOnly}
+                    otherProps={otherProps}
                 />
                 <div className="react-mde-content">
                     <MdeEditor

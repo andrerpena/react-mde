@@ -3,16 +3,19 @@ import {Command, ButtonContentOptions} from "../types";
 import {MdeToolbarButtonGroup} from "./MdeToolbarButtonGroup";
 import {MdeToolbarDropdown} from "./MdeToolbarDropdown";
 import {MdeToolbarButton} from "./MdeToolbarButton";
+import {MdeEditor} from "./index";
 
 export interface MdeToolbarProps {
     buttonContentOptions: ButtonContentOptions;
     commands: Command[][];
     onCommand: (command: Command) => void;
     readOnly: boolean;
+    mdeEditorState?: MdeEditor;
+    otherProps?: any;
 }
 
 export const MdeToolbar: React.SFC<MdeToolbarProps> = (props) => {
-    const {buttonContentOptions, children, commands, onCommand, readOnly} = props;
+    const {buttonContentOptions, children, commands, onCommand, readOnly, otherProps} = props;
     if ((!commands || commands.length === 0) && !children) {
         return null;
     }
@@ -44,6 +47,7 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = (props) => {
                                     readOnly={readOnly}
                                     CustomButtonComponent={c.CustomButtonComponent}
                                     setValues={c.setValues}
+                                    otherProps={otherProps}
                                 />;
                             })
                         }
