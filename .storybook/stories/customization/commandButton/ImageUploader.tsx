@@ -1,9 +1,9 @@
 import * as React from "react";
-import {Command} from "../../src/types";
-import {insertBeforeAndAfter, insertText} from "../../src/util/MarkdownUtil";
-import {getMarkdownStateFromDraftState, buildNewDraftState} from "../../src/util/DraftUtil";
+import {Command} from "../../../../src/types";
+import {insertText} from "../../../../src/util/MarkdownUtil";
+import {getMarkdownStateFromDraftState, buildNewDraftState} from "../../../../src/util/DraftUtil";
 import ButtonComponent from "./ButtonComponent";
-x
+
 let myVal = "def";
 const customCommand: Command = {
 

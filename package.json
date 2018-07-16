@@ -13,8 +13,8 @@
     "build": "cross-env NODE_ENV=production gulp build",
     "build:lib": "cross-env NODE_ENV=production gulp build-lib",
     "build:storybook": "build-storybook -c .storybook -o docs",
-    "tslint": "tslint --project \".\"",
-    "tslint:fix": "tslint --project \".\" --fix",
+    "lint": "tslint --project \".\"",
+    "lint:fix": "tslint --project \".\" --fix",
     "tsc": "tsc",
     "webpack": "webpack --config webpack.config.demo.dev.js",
     "webpack:prod": "webpack --config webpack.config.demo.prod.js"

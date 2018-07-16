@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as Showdown from "showdown";
-import ReactMde, {ReactMdeTypes} from "../../../src/index";
+import ReactMde, {ReactMdeTypes} from "../../../../src/index";
 import {storiesOf} from "@storybook/react";
-import CustomCommand from "../../customButton/ImageUploader";
+import CustomCommand from "./ImageUploader";
 
 const commands = [
     [CustomCommand],
@@ -47,7 +47,7 @@ class VerticalLayoutStoryComponent extends React.Component<{}, State> {
     }
 }
 
-storiesOf("Custom", module)
-    .add("custom button", () => (
+storiesOf("Customization", module)
+    .add("Command button", () => (
         <VerticalLayoutStoryComponent/>
     ));

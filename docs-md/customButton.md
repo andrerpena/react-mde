@@ -70,7 +70,7 @@ class ReactMdeButtonExample extends React.Component {
 }
 ```
 
-3.  Invoke `this.props.setValues()` and `this.props.handleSubmit()` in `ButtonComponent.js`:
+3.  Invoke `this.props.setValues()` and `this.props.handleSubmit()` in `ButtonComponent.tsx`:
 
 ```
 export default class SimpleForm extends React.Component {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Showdown from "showdown";
-import ReactMde, {ReactMdeTypes} from "../../../src/index";
+import ReactMde, {ReactMdeTypes} from "../../../../src/index";
 import {storiesOf} from "@storybook/react";
 
 interface State {
@@ -60,7 +60,7 @@ class EmojiIconsStory extends React.Component<{}, State> {
     }
 }
 
-storiesOf("Icon Customization", module)
-    .add("emojis", () => (
+storiesOf("Customization", module)
+    .add("Command emoji", () => (
         <EmojiIconsStory/>
     ));
