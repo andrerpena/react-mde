@@ -2,7 +2,7 @@ import * as React from "react";
 
 export interface MdeToolbarButtonProps {
     buttonContent: React.ReactNode;
-    buttonProps: any;
+    buttonProps?: any;
     onClick: React.MouseEventHandler<any>;
     readOnly: boolean;
     setValues?: any;
@@ -12,7 +12,6 @@ export interface MdeToolbarButtonProps {
 
 export const MdeToolbarButton: React.SFC<MdeToolbarButtonProps> = (props) => {
     const {buttonContent, buttonProps, onClick, readOnly, CustomButtonComponent, setValues, otherProps} = props;
-    console.log("otherProps", otherProps)
     const defaultButton = (
         <button
             type="button"
