@@ -8,7 +8,8 @@ function loadStories() {
     require("./stories/layouts/HorizontalLayoutStory.tsx");
     require("./stories/layouts/TabbedLayoutStory.tsx");
     require("./stories/layouts/NoPreviewLayoutStory.tsx");
-    require("./stories/customization/commandIcon/EmojiIconsStory.tsx");
+    //WIP
+    //require("./stories/customization/commandIcon/EmojiIconsStory.tsx");
     require("./stories/customization/commandButton/CustomButtonStory.tsx");
 }
 
