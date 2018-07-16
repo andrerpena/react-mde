@@ -101,3 +101,39 @@ export default class SimpleForm extends React.Component {
   }
 }
 ```
+
+## Full Duplex Communication
+
+Pass
+1. Parent component can pass `otherProps` that will be passed to the button component.
+
+```
+render() {
+        const otherProps = {
+            data: "yo",
+            receiveDataFromMde: (data)=>console.log(data),
+        };
+        return (
+            <ReactMde
+                layout="vertical"
+                onChange={this.handleValueChange}
+                editorState={this.state.mdeState}
+                generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
+                commands={commands}
+                otherProps={otherProps} // <-- note the new prop
+            />
+        );
+    }
+```
+
+2. Custom Button:
+```
+  handleSubmit() {
+    const data = this.props.data;
+    this.props.receiveDataFromMde(`Button got ${data}`);
+  }
+
+  render() {
+    return <button onClick={this.handleSubmit} > send data back </button>
+  }
+```
