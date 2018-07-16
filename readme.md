@@ -103,6 +103,9 @@ For example, you can use your own custom icon component by changing the `iconPro
 />
 ```
 
+## Custom props
+[See doccs](docs/customButton.md "See doccs")
+
 ## React-mde Props
 
 The types are described below
