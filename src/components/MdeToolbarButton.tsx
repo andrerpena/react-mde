@@ -22,11 +22,11 @@ export const MdeToolbarButton: React.SFC<MdeToolbarButtonProps> = (props) => {
             {buttonContent}
         </button>
     );
-    const customComponent = (<CustomButtonComponent
+    const customComponent = CustomButtonComponent ? (<CustomButtonComponent
         handleSubmit={onClick}
         setValues={setValues}
         {...otherProps}
-    />);
+    />) : null;
     return (
         <li className="mde-header-item">
             {CustomButtonComponent ? customComponent : defaultButton}
