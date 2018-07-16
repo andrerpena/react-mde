@@ -33,13 +33,13 @@ class VerticalLayoutStoryFullDuplexComponent extends React.Component<{}, State> 
     handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
         this.setState({mdeState});
     }
-    recieveDataFromMde(data) {
+    receiveDataFromMde(data) {
         console.log(`parent got: "${data}"`);
     }
     render() {
         const otherProps = {
             data: "yo",
-            recieveDataFromMde: this.recieveDataFromMde,
+            recieveDataFromMde: (data)=>console.log(data),
         };
         return (
             <ReactMde

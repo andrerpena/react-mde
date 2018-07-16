@@ -12,7 +12,7 @@ export default class FullFuplexButton extends React.Component {
 
   handleSubmit() {
     const data = this.props.data;
-    this.props.recieveDataFromMde(`Button got ${data}`);
+    this.props.receiveDataFromMde(`Button got ${data}`);
   }
 
   render() {
