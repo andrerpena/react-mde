@@ -9,7 +9,6 @@ export default class FullFuplexButton extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
   handleSubmit() {
     const data = this.props.data;
     this.props.recieveDataFromMde(`Button got ${data}`);
