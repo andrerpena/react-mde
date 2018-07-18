@@ -1,3 +1,9 @@
+# NOTE: 
+This project was cloned from the supported repositoyry because it was a good base but needed enought modification to justify a fork.
+
+> Date of forking: 7/10/18
+
+
 # react-mde
 
 A simple yet powerful and extensible Markdown Editor editor for React. React-mde is built on top of [Draft.js](https://draftjs.org/).
