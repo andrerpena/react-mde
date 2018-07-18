@@ -39,18 +39,23 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
 
         let styleTabCode = "mde-tab";
         let styleTabPreview = "mde-tab";
-        switch (this.state.tab) {
-            case TAB_CODE: styleTabCode += " mde-tab-activated"; break;
-            case TAB_PREVIEW: styleTabPreview += " mde-tab-activated"; break;
+        const isReadOnly = readOnly || this.state.tab === TAB_PREVIEW;
+        const allCommands = isReadOnly ? [] : commands;
+        const currentTab = readOnly ? TAB_PREVIEW : this.state.tab;
+        const disableCodeButton = readOnly;
+        if (currentTab === TAB_CODE) {
+            styleTabCode += " mde-tab-activated";
+        } else {
+            styleTabPreview += " mde-tab-activated";
         }
 
         return (
             <div className="react-mde-tabbed-layout">
                 <MdeToolbar
                     buttonContentOptions={buttonContentOptions}
-                    commands={commands}
+                    commands={allCommands}
                     onCommand={this.handleCommand}
-                    readOnly={readOnly}
+                    readOnly={isReadOnly}
                     otherProps={otherProps}
                 >
                     <div className="mde-tabs">
@@ -58,6 +63,7 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
                             type="button"
                             className={styleTabCode}
                             onClick={() => this.setState({tab: TAB_CODE})}
+                            disabled={disableCodeButton}
                         >
                             Code
                         </button>
@@ -71,7 +77,7 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
                     </div>
                 </MdeToolbar>
                 {
-                    this.state.tab === TAB_CODE ?
+                    currentTab === TAB_CODE ?
                         <MdeEditor
                             editorRef={(c) => this.editorRef = c}
                             onChange={this.handleMdeStateChange}

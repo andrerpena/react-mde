@@ -36,6 +36,7 @@ class VerticalLayoutStoryComponent extends React.Component<{}, State> {
                 onChange={this.handleValueChange}
                 editorState={this.state.mdeState}
                 generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
+                readOnly={false}
             />
         );
     }

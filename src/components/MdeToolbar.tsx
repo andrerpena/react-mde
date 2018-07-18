@@ -21,6 +21,9 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = (props) => {
     }
     return (
         <div className="mde-header">
+            <div className="mde-toolbar-children">
+                {children}
+            </div>
             {
                 commands.map((cg: Command[], i: number) => (
                     <MdeToolbarButtonGroup key={i}>
@@ -53,9 +56,6 @@ export const MdeToolbar: React.SFC<MdeToolbarProps> = (props) => {
                         }
                     </MdeToolbarButtonGroup>))
             }
-            <div className="mde-toolbar-children">
-                {children}
-            </div>
         </div>
     );
 };
