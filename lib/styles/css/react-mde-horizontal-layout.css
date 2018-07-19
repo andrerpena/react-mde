@@ -1,0 +1,25 @@
+.react-mde-horizontal-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column; }
+  .react-mde-horizontal-layout .mde-tabs {
+    display: flex;
+    align-items: stretch; }
+    .react-mde-horizontal-layout .mde-tabs .mde-tab {
+      border: none;
+      border-left: 1px solid #c8ccd0;
+      padding: 10px;
+      background: none; }
+    .react-mde-horizontal-layout .mde-tabs .mde-tab:hover {
+      cursor: pointer; }
+  .react-mde-horizontal-layout .mde-content {
+    display: flex;
+    height: 100%; }
+    .react-mde-horizontal-layout .mde-content .mde-text {
+      min-width: 50%;
+      overflow-y: auto;
+      border-radius: 0; }
+    .react-mde-horizontal-layout .mde-content .mde-preview {
+      min-width: 50%;
+      border-left: 1px solid #c8ccd0;
+      overflow-y: auto; }

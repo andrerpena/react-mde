@@ -1,0 +1,6 @@
+.react-mde-no-preview-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column; }
+  .react-mde-no-preview-layout .mde-text {
+    overflow-y: auto; }

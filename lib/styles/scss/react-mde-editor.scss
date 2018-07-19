@@ -1,0 +1,10 @@
+@import "variables.scss";
+
+.mde-text {
+
+  .public-DraftEditor-content {
+    width: 100%;
+    min-height: $mde-editor-default-min-height;
+    padding: $mde-editor-padding;
+  }
+}
