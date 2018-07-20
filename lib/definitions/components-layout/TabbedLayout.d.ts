@@ -15,6 +15,7 @@ export declare class TabbedLayout extends React.Component<LayoutProps, {}> {
      */
     handleMdeStateChange: (value: any) => void;
     handleCommand: (command: Command) => void;
+    handleTabChange: (event: any) => void;
     /**
      * Renders react-mde
      * @returns

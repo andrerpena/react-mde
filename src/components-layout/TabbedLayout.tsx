@@ -28,6 +28,12 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
         onCommand(command);
     }
 
+    handleTabChange = (event) => {
+        const tab = event.target.value;
+        this.setState({tab})
+        this.props.onTabChange(tab);
+    }
+
     /**
      * Renders react-mde
      * @returns
@@ -62,15 +68,17 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
                         <button
                             type="button"
                             className={styleTabCode}
-                            onClick={() => this.setState({tab: TAB_CODE})}
+                            onClick={this.handleTabChange}
                             disabled={disableCodeButton}
+                            value={TAB_CODE}
                         >
-                            Code
+                            Markdown
                         </button>
                         <button
                             type="button"
                             className={styleTabPreview}
-                            onClick={() => this.setState({tab: TAB_PREVIEW})}
+                            onClick={this.handleTabChange}
+                            value={TAB_PREVIEW}
                         >
                             Preview
                         </button>

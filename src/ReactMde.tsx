@@ -18,6 +18,7 @@ export interface ReactMdeProps {
     emptyPreviewHtml?: string;
     readOnly?: boolean;
     otherProps?: any;
+    onTabChange?: any;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
@@ -45,6 +46,10 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                 draftEditorState,
             });
         });
+    }
+
+    onTabChange = (tab) => {
+        this.props.onTabChange(tab);
     }
 
     onCommand = (command: Command) => {
@@ -124,6 +129,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                     emptyPreviewHtml={emptyPreviewHtml}
                     readOnly={readOnly}
                     otherProps={otherProps}
+                    onTabChange={this.onTabChange}
                 />
             </div>
         );

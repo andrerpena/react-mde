@@ -27,7 +27,10 @@ class VerticalLayoutStoryComponent extends React.Component<{}, State> {
 
     handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
         this.setState({mdeState});
-    }
+    };
+    onTabChange(tab) {
+        console.log("tab", tab)
+    };
 
     render() {
         return (
@@ -37,6 +40,7 @@ class VerticalLayoutStoryComponent extends React.Component<{}, State> {
                 editorState={this.state.mdeState}
                 generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
                 readOnly={false}
+                onTabChange={this.onTabChange}
             />
         );
     }

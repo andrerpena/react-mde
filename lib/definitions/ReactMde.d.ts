@@ -14,11 +14,13 @@ export interface ReactMdeProps {
     emptyPreviewHtml?: string;
     readOnly?: boolean;
     otherProps?: any;
+    onTabChange?: any;
 }
 export declare class ReactMde extends React.Component<ReactMdeProps> {
     static defaultProps: Partial<ReactMdeProps>;
     handleOnChange: ({ markdown, html, draftEditorState }: MdeState) => void;
     handleDraftStateChange: (draftEditorState: EditorState) => void;
+    onTabChange: (tab: any) => void;
     onCommand: (command: Command) => void | Promise<void>;
     ensureMdeStateIsInSync(): Promise<void>;
     componentDidMount(): Promise<void>;
