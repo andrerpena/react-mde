@@ -8,7 +8,7 @@ export const TAB_PREVIEW: string = "TAB_PREVIEW";
 
 export class TabbedLayout extends React.Component<LayoutProps, {}> {
     state = {
-        tab: TAB_CODE,
+        tab: TAB_PREVIEW,
     };
 
     editorRef: MdeEditor;
@@ -67,20 +67,20 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
                     <div className="mde-tabs">
                         <button
                             type="button"
+                            className={styleTabPreview}
+                            onClick={this.handleTabChange}
+                            value={TAB_PREVIEW}
+                        >
+                            Preview
+                        </button>
+                        <button
+                            type="button"
                             className={styleTabCode}
                             onClick={this.handleTabChange}
                             disabled={disableCodeButton}
                             value={TAB_CODE}
                         >
                             Markdown
-                        </button>
-                        <button
-                            type="button"
-                            className={styleTabPreview}
-                            onClick={this.handleTabChange}
-                            value={TAB_PREVIEW}
-                        >
-                            Preview
                         </button>
                     </div>
                 </MdeToolbar>
