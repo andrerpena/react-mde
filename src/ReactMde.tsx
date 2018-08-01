@@ -50,14 +50,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
         if (!command.execute) return;
         const {draftEditorState} = this.props.editorState;
         const executedCommand = command.execute(draftEditorState);
-        // When this issue is solved, probably it won't be required anymore to do an explicit type cast:
-        // https://github.com/Microsoft/TypeScript/issues/1260
-        if (executedCommand.constructor.name === "Promise") {
-            return (executedCommand as Promise<EditorState>).then((result) => this.handleDraftStateChange(result));
-        } else {
-            const newEditorState = executedCommand as EditorState;
-            return this.handleDraftStateChange(newEditorState);
-        }
+        return Promise.resolve(executedCommand).then((result) => this.handleDraftStateChange(result));
     }
 
     // The user is **only** supposed to pass the 'markdown' prop of the editorState. Both 'html' and 'draftEditorState'
