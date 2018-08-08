@@ -1,47 +1,44 @@
 import * as React from "react";
 import * as Showdown from "showdown";
-import ReactMde, {ReactMdeTypes} from "../../../src/index";
-import {storiesOf} from "@storybook/react";
+import ReactMde, { ReactMdeTypes } from "../../../src/index";
+import { storiesOf } from "@storybook/react";
 
 interface State {
-    mdeState: ReactMdeTypes.MdeState;
+  value: string;
 }
 
 class VerticalLayoutStoryComponent extends React.Component<{}, State> {
-    converter: Showdown.Converter;
+  converter: Showdown.Converter;
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            mdeState: {
-                markdown: "**Hello world!**",
-            },
-        };
-        this.converter = new Showdown.Converter({
-            tables: true,
-            simplifiedAutoLink: true,
-            strikethrough: true,
-            tasklists: true,
-        });
-    }
+  constructor(props) {
+    super(props);
+    this.state = { value: "**Hello world!**" };
+    this.converter = new Showdown.Converter({
+      tables: true,
+      simplifiedAutoLink: true,
+      strikethrough: true,
+      tasklists: true
+    });
+  }
 
-    handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
-        this.setState({mdeState});
-    }
+  handleValueChange = (value: string) => {
+    this.setState({ value });
+  };
 
-    render() {
-        return (
-            <ReactMde
-                layout="noPreview"
-                onChange={this.handleValueChange}
-                editorState={this.state.mdeState}
-                generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
-            />
-        );
-    }
+  render() {
+    return (
+      <ReactMde
+        layout="noPreview"
+        onChange={this.handleValueChange}
+        value={this.state.value}
+        generateMarkdownPreview={markdown =>
+          Promise.resolve(this.converter.makeHtml(markdown))
+        }
+      />
+    );
+  }
 }
 
-storiesOf("Layouts", module)
-    .add("noPreview", () => (
-        <VerticalLayoutStoryComponent/>
-    ));
+storiesOf("Layouts", module).add("noPreview", () => (
+  <VerticalLayoutStoryComponent />
+));
