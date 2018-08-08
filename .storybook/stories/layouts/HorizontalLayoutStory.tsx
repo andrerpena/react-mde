@@ -1,22 +1,18 @@
 import * as React from "react";
 import * as Showdown from "showdown";
-import ReactMde, {ReactMdeTypes} from "../../../src/index";
-import {storiesOf} from "@storybook/react";
+import ReactMde from "../../../src/index";
+import { storiesOf } from "@storybook/react";
 
 interface State {
-    mdeState: ReactMdeTypes.MdeState;
+    value: string;
 }
 
 class VerticalLayoutStoryComponent extends React.Component<{}, State> {
     converter: Showdown.Converter;
 
-    constructor(props) {
+    constructor (props) {
         super(props);
-        this.state = {
-            mdeState: {
-                markdown: "**Hello world!**",
-            },
-        };
+        this.state = { value: "**Hello world!**" };
         this.converter = new Showdown.Converter({
             tables: true,
             simplifiedAutoLink: true,
@@ -25,16 +21,16 @@ class VerticalLayoutStoryComponent extends React.Component<{}, State> {
         });
     }
 
-    handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
-        this.setState({mdeState});
+    handleValueChange = (value: string) => {
+        this.setState({ value });
     }
 
-    render() {
+    render () {
         return (
             <ReactMde
                 layout="horizontal"
                 onChange={this.handleValueChange}
-                editorState={this.state.mdeState}
+                value={this.state.value}
                 generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
             />
         );

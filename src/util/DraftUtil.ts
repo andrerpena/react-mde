@@ -1,5 +1,5 @@
 import {EditorState, ContentState, SelectionState} from "draft-js";
-import {GenerateMarkdownPreview, MdeState, TextSelection, MarkdownState} from "../types";
+import { TextSelection, MarkdownState} from "../types";
 
 export function getContentLengthOfAllBlocksBefore(editorState, key) {
     let count = 0;
@@ -99,16 +99,6 @@ export function getMarkdownStateFromDraftState(editorState: EditorState): Markdo
     return {
         text: getPlainText(editorState),
         selection: getSelection(editorState),
-    };
-}
-
-export async function getMdeStateFromDraftState(editorState: EditorState, generateMarkdownPreview: GenerateMarkdownPreview): Promise<MdeState> {
-    const markdown = getPlainText(editorState);
-    const html = generateMarkdownPreview ? await generateMarkdownPreview(markdown) : "";
-    return {
-        html,
-        markdown,
-        draftEditorState: editorState,
     };
 }
 

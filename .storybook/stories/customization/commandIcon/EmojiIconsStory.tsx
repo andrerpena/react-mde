@@ -4,7 +4,7 @@ import ReactMde, {ReactMdeTypes} from "../../../../src/index";
 import {storiesOf} from "@storybook/react";
 
 interface State {
-    mdeState: ReactMdeTypes.MdeState;
+    value: string;
 }
 
 const icons = {
@@ -31,9 +31,7 @@ class EmojiIconsStory extends React.Component<{}, State> {
     constructor(props) {
         super(props);
         this.state = {
-            mdeState: {
-                markdown: "**Hello world!**",
-            },
+            value: "**Hello world!**",
         };
         this.converter = new Showdown.Converter({
             tables: true,
@@ -43,8 +41,8 @@ class EmojiIconsStory extends React.Component<{}, State> {
         });
     }
 
-    handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
-        this.setState({mdeState});
+    handleValueChange = (value: string) => {
+        this.setState({value});
     }
 
     render() {
@@ -53,7 +51,7 @@ class EmojiIconsStory extends React.Component<{}, State> {
                 layout="horizontal"
                 buttonContentOptions={{ iconProvider }}
                 onChange={this.handleValueChange}
-                editorState={this.state.mdeState}
+                value={this.state.value}
                 generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
             />
         );
