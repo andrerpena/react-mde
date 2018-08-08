@@ -94,7 +94,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
           onCommand={this.onCommand}
           commands={commands}
           layoutOptions={layoutOptions}
-          mdeEditorState={this.cachedDraftState}
+          editorState={this.cachedDraftState}
           emptyPreviewHtml={emptyPreviewHtml}
           readOnly={readOnly}
         />
