@@ -6,7 +6,7 @@ import {
 } from "./types";
 import { getDefaultCommands } from "./commands";
 import { LayoutMap } from "./LayoutMap";
-import { ContentState, EditorState } from "draft-js";
+import { ContentState, EditorProps, EditorState } from "draft-js";
 import { getPlainText } from "./util/DraftUtil";
 import { MdeEditor, MdePreview, MdeToolbar, MdeToolbarIcon } from "./components";
 import { isPromiseLike } from "./util/Promise";
@@ -23,6 +23,7 @@ export interface ReactMdeProps {
   layout?: keyof LayoutMap;
   emptyPreviewHtml?: string;
   readOnly?: boolean;
+  draftEditorProps?: Partial<EditorProps>;
 }
 
 export interface ReactMdeState {
@@ -128,7 +129,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       commands,
       className,
       emptyPreviewHtml,
-      readOnly
+      readOnly,
+      draftEditorProps
     } = this.props;
 
     let styleTabCode = "mde-tab";
@@ -183,6 +185,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
               onChange={this.handleTextChange}
               editorState={this.cachedDraftState}
               readOnly={readOnly}
+              draftEditorProps={draftEditorProps}
             />
             :
             < MdePreview
