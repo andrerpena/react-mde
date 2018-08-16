@@ -26,7 +26,9 @@ The easiest is just add this to `<head/>`:
 <!-- -->
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
- 
+
+It is possible to use React-mde with Font Awesome 4 (and possibly earlier versions) – see below under 'Customizing Icons'.
+
 ## Optional dependencies
 
 - [Showdown](https://github.com/showdownjs/showdown). React-mde is not opinionated as to how to transform markdown into HTML and this can be done both in client-side,
@@ -103,8 +105,16 @@ For example, you can use your own custom icon component by changing the `iconPro
 />
 ```
 
+In order to use Font Awesome 4 classes, you can pass the following prop:
+```
+buttonContentOptions={{
+    iconProvider: name => <i className={`fa fa-${name}`} />,
+}}
+```
+This will cause React-mde to use FA4-style classnames.
+
 ## Custom props
-[See doccs](docs/customButton.md "See doccs")
+[See docs](docs/customButton.md "See docs")
 
 ## React-mde Props
 
