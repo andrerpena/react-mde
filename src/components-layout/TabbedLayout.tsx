@@ -45,46 +45,7 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
         }
 
         return (
-            <div className="react-mde-tabbed-layout">
-                <MdeToolbar
-                    buttonContentOptions={buttonContentOptions}
-                    commands={commands}
-                    onCommand={this.handleCommand}
-                    readOnly={readOnly}
-                >
-                    <div className="mde-tabs">
-                        <button
-                            type="button"
-                            className={styleTabCode}
-                            onClick={() => this.setState({tab: TAB_CODE})}
-                        >
-                            Code
-                        </button>
-                        <button
-                            type="button"
-                            className={styleTabPreview}
-                            onClick={() => this.setState({tab: TAB_PREVIEW})}
-                        >
-                            Preview
-                        </button>
-                    </div>
-                </MdeToolbar>
-                {
-                    this.state.tab === TAB_CODE ?
-                        <MdeEditor
-                            editorRef={(c) => this.editorRef = c}
-                            onChange={this.handleMdeStateChange}
-                            editorState={editorState}
-                            readOnly={readOnly}
-                        />
-                    :
-                        < MdePreview
-                            previewRef={(c) => this.previewRef = c}
-                            html={mdeEditorState ? mdeEditorState.html : ""}
-                            emptyPreviewHtml={emptyPreviewHtml}
-                        />
-                }
-            </div>
+
         );
     }
 }
