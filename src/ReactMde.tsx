@@ -2,25 +2,22 @@ import * as React from "react";
 import {
   Command,
   GenerateMarkdownPreview,
-  ButtonContentOptions
+  ButtonContentOptions, CommandGroup
 } from "./types";
 import { getDefaultCommands } from "./commands";
-import { LayoutMap } from "./LayoutMap";
 import { ContentState, EditorProps, EditorState } from "draft-js";
 import { getPlainText } from "./util/DraftUtil";
 import { MdeEditor, MdePreview, MdeToolbar, MdeToolbarIcon } from "./components";
-import { isPromiseLike } from "./util/Promise";
-import { TAB_CODE, TAB_PREVIEW } from "./components-layout";
-import * as classNames from 'classnames'
+import * as classNames from "classnames";
+import { extractCommandMap } from "./util/CommandUtils";
 
 export interface ReactMdeProps {
   onChange: (value: string) => void;
   value: string;
   className?: string;
-  commands?: Command[][];
+  commands?: CommandGroup[];
   buttonContentOptions?: ButtonContentOptions;
   generateMarkdownPreview: GenerateMarkdownPreview;
-  layout?: keyof LayoutMap;
   emptyPreviewHtml?: string;
   readOnly?: boolean;
   draftEditorProps?: Partial<EditorProps>;
@@ -42,12 +39,13 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   editorRef: MdeEditor;
   previewRef: MdePreview;
 
+  keyCommandMap: { [key: string]: Command };
+
   static defaultProps: Partial<ReactMdeProps> = {
     commands: getDefaultCommands(),
     buttonContentOptions: {
       iconProvider: name => <MdeToolbarIcon icon={name}/>
     },
-    layout: "vertical",
     emptyPreviewHtml: "<p>&nbsp;</p>",
     readOnly: false
   };
@@ -56,9 +54,12 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     super(props);
     this.rebuildCache(props.value);
     this.state = {
-      currentTab: 'write',
+      currentTab: "write",
       previewLoading: false
     };
+    this.keyCommandMap = {};
+    const { commands } = this.props;
+    this.keyCommandMap = extractCommandMap(commands);
   }
 
   rebuildCache = (value: string) => {
@@ -70,10 +71,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
   handleTextChange = (editorState: EditorState) => {
     const { onChange } = this.props;
-
     this.cachedValue = getPlainText(editorState);
     this.cachedDraftState = editorState;
-
     onChange(this.cachedValue);
   };
 
@@ -86,34 +85,30 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       // previewHtml is always set to null. If the user has clicked the
       // preview tab, previewHtml will be set as soon as the promise resolves
       previewHtml: null,
-      previewLoading: newTab === 'preview'
+      previewLoading: newTab === "preview"
     });
 
-    if(newTab === 'preview') {
+    if (newTab === "preview") {
       // fire preview load
       const { generateMarkdownPreview } = this.props;
       generateMarkdownPreview(this.cachedValue).then((previewHtml) => {
         this.setState({
           // the current tab will be preview because changing tabs during preview
           // load should be prevented
-          currentTab: 'preview',
+          currentTab: "preview",
           // previewHtml is always set to null. If the user has clicked the
           // preview tab, previewHtml will be set as soon as the promise resolves
           previewHtml,
           previewLoading: false
         });
-      })
+      });
     }
   };
 
   onCommand = (command: Command) => {
     if (!command.execute) return;
-    const executedCommand = command.execute(this.cachedDraftState);
-    if (isPromiseLike(executedCommand)) {
-      executedCommand.then(result => this.handleTextChange(result));
-    } else {
-      this.handleTextChange(executedCommand);
-    }
+    const newEditorState = command.execute(this.cachedDraftState);
+    this.handleTextChange(newEditorState);
   };
 
   componentDidUpdate (prevProps: ReactMdeProps) {
@@ -121,6 +116,15 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       this.rebuildCache(this.props.value);
     }
   }
+
+  handleKeyCommand = (command: string) => {
+    const { onChange } = this.props;
+    if (this.keyCommandMap[command]) {
+      this.onCommand(this.keyCommandMap[command]);
+      return "handled";
+    }
+    return "not-handled";
+  };
 
   render () {
 
@@ -133,28 +137,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       draftEditorProps
     } = this.props;
 
-    let styleTabCode = "mde-tab";
-    let styleTabPreview = "mde-tab";
-    switch (this.state.currentTab) {
-      case TAB_CODE:
-        styleTabCode += " mde-tab-activated";
-        break;
-      case TAB_PREVIEW:
-        styleTabPreview += " mde-tab-activated";
-        break;
-    }
-
-    const reactMdeClassNames = classNames(
-      "react-mde",
-      "react-mde-tabbed-layout",
-      className,
-      {
-        "react-mde-tab-write": this.state.currentTab === "write",
-        "react-mde-tab-preview": this.state.currentTab === "preview"
-      });
-
     return (
-      <div className={reactMdeClassNames}>
+      <div className={classNames("react-mde", "react-mde-tabbed-layout", className)}>
         <MdeToolbar
           buttonContentOptions={buttonContentOptions}
           commands={commands}
@@ -164,28 +148,29 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           <div className="mde-tabs">
             <button
               type="button"
-              className={styleTabCode}
-              onClick={() => this.handleTabChange('write')}
+              className={classNames({ "react-mde-tab-write": this.state.currentTab === "write" })}
+              onClick={() => this.handleTabChange("write")}
             >
               Code
             </button>
             <button
               type="button"
-              className={styleTabPreview}
-              onClick={() => this.handleTabChange('preview')}
+              className={classNames({ "react-mde-tab-preview": this.state.currentTab === "preview" })}
+              onClick={() => this.handleTabChange("preview")}
             >
               Preview
             </button>
           </div>
         </MdeToolbar>
         {
-          this.state.currentTab === 'write' ?
+          this.state.currentTab === "write" ?
             <MdeEditor
               editorRef={(c) => this.editorRef = c}
               onChange={this.handleTextChange}
               editorState={this.cachedDraftState}
               readOnly={readOnly}
               draftEditorProps={draftEditorProps}
+              handleKeyCommand={this.handleKeyCommand}
             />
             :
             < MdePreview

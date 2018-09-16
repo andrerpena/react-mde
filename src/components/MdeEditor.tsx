@@ -1,20 +1,17 @@
 import * as React from "react";
-import { MdeState, Command } from "../types";
-import { Editor, EditorState, EditorProps } from "draft-js";
-import {
-  boldCommand,
-  codeCommand,
-  italicCommand,
-  tabCommand
-} from "../commands";
+import { Editor, EditorState, EditorProps, DraftHandleValue } from "draft-js";
+import { buildNewDraftState, getMarkdownStateFromDraftState } from "../util/DraftUtil";
+import { addTab } from "../util/MarkdownUtil";
+
 
 export interface MdeEditorProps {
   className?: string;
   onChange: (value: EditorState) => void;
   editorRef?: (ref: MdeEditor) => void;
-  editorState: MdeState;
+  editorState: EditorState;
   readOnly: boolean;
   draftEditorProps: Partial<EditorProps>;
+  handleKeyCommand: (command: string, editorState: EditorState) => DraftHandleValue
 }
 
 export class MdeEditor extends React.Component<MdeEditorProps, {}> {
@@ -25,71 +22,32 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
     onChange(editorState);
   };
 
-  executeCastAsEditorState = (
-    commandToExecute: Command,
-    editorState: EditorState,
-    data?: any
-  ): EditorState => {
-    const newEditorState = commandToExecute.execute(
-      editorState,
-      data
-    ) as EditorState;
-    return newEditorState;
-  };
-
-  // TODO: remove this
-  handleKeyCommand = (command, editorState) => {
-    const { onChange } = this.props;
-    switch (command) {
-      case "bold":
-        onChange(this.executeCastAsEditorState(boldCommand, editorState));
-        return "handled";
-
-      case "italic":
-        onChange(this.executeCastAsEditorState(italicCommand, editorState));
-        return "handled";
-
-      case "code":
-        onChange(this.executeCastAsEditorState(codeCommand, editorState));
-        return "handled";
-
-      default:
-        return "not-handled";
-    }
-  };
-
   handleTab = event => {
     event.preventDefault();
-
-    const {
-      editorState: { draftEditorState },
-      onChange
-    } = this.props;
-    onChange(
-      this.executeCastAsEditorState(
-        tabCommand,
-        draftEditorState,
-        event.shiftKey
-      )
-    );
+    const { editorState } = this.props;
+    let mdState = getMarkdownStateFromDraftState(editorState);
+    mdState = addTab(mdState, event.shiftKey);
+    const newDraftState = buildNewDraftState(editorState, mdState);
+    this.handleOnChange(newDraftState);
   };
 
   render() {
     const {
-      editorState: { draftEditorState },
+      editorState,
       className,
       readOnly,
-      draftEditorProps
+      draftEditorProps,
+      handleKeyCommand
     } = this.props;
     return (
       <div className={`mde-text ${className || ""}`}>
         <Editor
           ref={editor => (this.editorRef = editor)}
           stripPastedStyles={true}
-          editorState={draftEditorState}
+          editorState={editorState}
           onChange={this.handleOnChange}
           onTab={this.handleTab}
-          handleKeyCommand={this.handleKeyCommand}
+          handleKeyCommand={handleKeyCommand}
           readOnly={readOnly}
           {...draftEditorProps}
         />

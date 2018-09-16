@@ -1,6 +1,6 @@
 export * from "./Command";
+export * from "./CommandGroup";
 export * from "./FunctionTypes";
-export * from "./LayoutProps";
 export * from "./MarkdownState";
 export * from "./TextInsertionResult";
 export * from "./TextSelection";

@@ -292,7 +292,7 @@ export function makeList({text, selection}: MarkdownState, insertionBeforeEachLi
     };
 }
 
-export function onTab({text, selection}: MarkdownState, reverse: boolean): MarkdownState {
+export function addTab({text, selection}: MarkdownState, reverse: boolean): MarkdownState {
     let start = 0;
     for (let i = selection.start; i - 1 > -1; i--) {
         if (text[i - 1] === "\n") {

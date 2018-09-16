@@ -7,7 +7,6 @@
   "scripts": {
     "test": "mocha --timeout 15000 -r ts-node/register ./test/*Spec.ts",
     "start": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
-    "start:storybook": "start-storybook -p 9001 -c .storybook",
     "start:storybook:prod": "npm run build:storybook && static-server docs",
     "build:ts": "tsc --project ./tsconfig.build.json",
     "build": "cross-env NODE_ENV=production gulp build",
@@ -47,7 +46,6 @@
     "@types/react": "^16.0.38",
     "@types/react-dom": "^16.0.4",
     "@types/showdown": "^1.7.2",
-    "@types/storybook__react": "^3.0.7",
     "@types/webpack-dev-middleware": "^2.0.0",
     "@types/webpack-hot-middleware": "^2.16.2",
     "awesome-typescript-loader": "^5.0.0",
