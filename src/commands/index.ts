@@ -5,7 +5,7 @@ import { imageCommand } from "./imageCommand";
 import { italicCommand } from "./italicCommand";
 import { strikethroughCommand } from "./strikethroughCommand";
 import { linkCommand } from "./linkCommand";
-import { orderedListCommand } from "./orderedCommand";
+import { orderedListCommand } from "./orderedListCommand";
 import { quoteCommand } from "./quoteCommand";
 import { unorderedListCommand } from "./unorderedListCommand";
 import { checkListCommand } from "./checkListCommand";
