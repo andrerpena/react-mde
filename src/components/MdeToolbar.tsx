@@ -3,54 +3,79 @@ import { Command, ButtonContentOptions, CommandGroup } from "../types";
 import { MdeToolbarButtonGroup } from "./MdeToolbarButtonGroup";
 import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
+import * as classNames from "classnames";
+import { Tab } from "../types/Tab";
 
 export interface MdeToolbarProps {
   buttonContentOptions: ButtonContentOptions;
   commands: CommandGroup[];
   onCommand: (command: Command) => void;
+  onTabChange: (tab: Tab) => void;
   readOnly: boolean;
+  tab: Tab
 }
 
-export const MdeToolbar: React.SFC<MdeToolbarProps> = (props) => {
-  const { buttonContentOptions, children, commands, onCommand, readOnly } = props;
-  if ((!commands || commands.length === 0) && !children) {
-    return null;
+export class MdeToolbar extends React.Component<MdeToolbarProps> {
+
+  handleTabChange = (tab: Tab) => {
+    const { onTabChange } = this.props;
+    onTabChange(tab)
   }
-  return (
-    <div className="mde-header">
-      {
-        commands.map((commandGroup: CommandGroup, i: number) => (
-          <MdeToolbarButtonGroup key={i}>
-            {
-              commandGroup.commands.map((c: Command, j) => {
-                if (c.children) {
-                  return (
-                    <MdeToolbarDropdown
-                      key={j}
-                      buttonProps={c.buttonProps}
-                      buttonContentOptions={buttonContentOptions}
-                      buttonContent={c.buttonContentBuilder(buttonContentOptions)}
-                      commands={c.children}
-                      onCommand={(cmd) => onCommand(cmd)}
-                      readOnly={readOnly}
-                    />
-                  );
-                }
-                return <MdeToolbarButton
-                  key={j}
-                  buttonContent={c.buttonContentBuilder(buttonContentOptions)}
-                  buttonProps={c.buttonProps}
-                  onClick={() => onCommand(c as Command)}
-                  readOnly={readOnly}
-                  buttonComponentClass={c.buttonComponentClass}
-                />;
-              })
-            }
-          </MdeToolbarButtonGroup>))
-      }
-      <div className="mde-toolbar-children">
-        {children}
+
+  render () {
+    const { buttonContentOptions, children, commands, onCommand, readOnly } = this.props;
+    if ((!commands || commands.length === 0) && !children) {
+      return null;
+    }
+    return (
+      <div className="mde-header">
+        <div className="mde-tabs">
+          <button
+            type="button"
+            className={classNames({ "react-mde-tab-write": this.props.tab === "write" })}
+            onClick={() => this.handleTabChange("write")}
+          >
+            Code
+          </button>
+          <button
+            type="button"
+            className={classNames({ "react-mde-tab-preview": this.props.tab === "preview" })}
+            onClick={() => this.handleTabChange("preview")}
+          >
+            Preview
+          </button>
+        </div>
+        {
+          commands.map((commandGroup: CommandGroup, i: number) => (
+            <MdeToolbarButtonGroup key={i}>
+              {
+                commandGroup.commands.map((c: Command, j) => {
+                  if (c.children) {
+                    return (
+                      <MdeToolbarDropdown
+                        key={j}
+                        buttonProps={c.buttonProps}
+                        buttonContentOptions={buttonContentOptions}
+                        buttonContent={c.buttonContentBuilder(buttonContentOptions)}
+                        commands={c.children}
+                        onCommand={(cmd) => onCommand(cmd)}
+                        readOnly={readOnly}
+                      />
+                    );
+                  }
+                  return <MdeToolbarButton
+                    key={j}
+                    buttonContent={c.buttonContentBuilder(buttonContentOptions)}
+                    buttonProps={c.buttonProps}
+                    onClick={() => onCommand(c as Command)}
+                    readOnly={readOnly}
+                    buttonComponentClass={c.buttonComponentClass}
+                  />;
+                })
+              }
+            </MdeToolbarButtonGroup>))
+        }
       </div>
-    </div>
-  );
-};
+    );
+  }
+}

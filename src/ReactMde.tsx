@@ -10,6 +10,7 @@ import { getPlainText } from "./util/DraftUtil";
 import { MdeEditor, MdePreview, MdeToolbar, MdeToolbarIcon } from "./components";
 import * as classNames from "classnames";
 import { extractCommandMap } from "./util/CommandUtils";
+import { Tab } from "./types/Tab";
 
 export interface ReactMdeProps {
   onChange: (value: string) => void;
@@ -28,8 +29,6 @@ export interface ReactMdeState {
   previewLoading: boolean,
   previewHtml?: string
 }
-
-export type Tab = "write" | "preview"
 
 export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
@@ -105,7 +104,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     }
   };
 
-  onCommand = (command: Command) => {
+  handleCommand = (command: Command) => {
     if (!command.execute) return;
     const newEditorState = command.execute(this.cachedDraftState);
     this.handleTextChange(newEditorState);
@@ -120,7 +119,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   handleKeyCommand = (command: string) => {
     const { onChange } = this.props;
     if (this.keyCommandMap[command]) {
-      this.onCommand(this.keyCommandMap[command]);
+      this.handleCommand(this.keyCommandMap[command]);
       return "handled";
     }
     return "not-handled";
@@ -142,26 +141,11 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         <MdeToolbar
           buttonContentOptions={buttonContentOptions}
           commands={commands}
-          onCommand={this.onCommand}
+          onCommand={this.handleCommand}
+          onTabChange={this.handleTabChange}
+          tab={this.state.currentTab}
           readOnly={readOnly}
-        >
-          <div className="mde-tabs">
-            <button
-              type="button"
-              className={classNames({ "react-mde-tab-write": this.state.currentTab === "write" })}
-              onClick={() => this.handleTabChange("write")}
-            >
-              Code
-            </button>
-            <button
-              type="button"
-              className={classNames({ "react-mde-tab-preview": this.state.currentTab === "preview" })}
-              onClick={() => this.handleTabChange("preview")}
-            >
-              Preview
-            </button>
-          </div>
-        </MdeToolbar>
+        />
         {
           this.state.currentTab === "write" ?
             <MdeEditor
