@@ -9,11 +9,19 @@
   border-radius: $mde-border-radius $mde-border-radius 0 0;
   background: $mde-toolbar-color;
 
-  .mde-toolbar-children {
-    flex-grow: 1;
+  .mde-tabs {
     display: flex;
-    justify-content: flex-end;
-    align-items: stretch;
+    flex-direction: row;
+
+    button {
+      border-radius: $mde-border-radius;
+      margin: 6px;
+      background-color: transparent;
+      border: transparent;
+      &.selected {
+        border: 1px solid $mde-border-color
+      }
+    }
   }
 
   button:focus {

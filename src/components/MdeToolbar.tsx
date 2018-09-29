@@ -32,14 +32,14 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
         <div className="mde-tabs">
           <button
             type="button"
-            className={classNames({ "react-mde-tab-write": this.props.tab === "write" })}
+            className={classNames({ "selected": this.props.tab === "write" })}
             onClick={() => this.handleTabChange("write")}
           >
             Code
           </button>
           <button
             type="button"
-            className={classNames({ "react-mde-tab-preview": this.props.tab === "preview" })}
+            className={classNames({ "selected": this.props.tab === "preview" })}
             onClick={() => this.handleTabChange("preview")}
           >
             Preview
