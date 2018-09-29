@@ -7,7 +7,7 @@ import {
 import { getDefaultCommands } from "./commands";
 import { ContentState, EditorProps, EditorState } from "draft-js";
 import { getPlainText } from "./util/DraftUtil";
-import { MdeEditor, MdePreview, MdeToolbar, MdeToolbarIcon } from "./components";
+import { MdeEditor, MdePreview, MdeToolbar, MdeFontAwesomeIcon } from "./components";
 import * as classNames from "classnames";
 import { extractCommandMap } from "./util/CommandUtils";
 import { Tab } from "./types/Tab";
@@ -43,7 +43,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   static defaultProps: Partial<ReactMdeProps> = {
     commands: getDefaultCommands(),
     buttonContentOptions: {
-      iconProvider: name => <MdeToolbarIcon icon={name}/>
+      iconProvider: name => <MdeFontAwesomeIcon icon={name}/>
     },
     emptyPreviewHtml: "<p>&nbsp;</p>",
     readOnly: false
