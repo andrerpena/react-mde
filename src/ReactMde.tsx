@@ -11,6 +11,8 @@ import { MdeEditor, MdePreview, MdeToolbar, MdeFontAwesomeIcon } from "./compone
 import * as classNames from "classnames";
 import { extractCommandMap } from "./util/CommandUtils";
 import { Tab } from "./types/Tab";
+import { L18n } from "./types/L18n";
+import { enL18n } from "./l18n/react-mde.en";
 
 export interface ReactMdeProps {
   onChange: (value: string) => void;
@@ -22,6 +24,7 @@ export interface ReactMdeProps {
   emptyPreviewHtml?: string;
   readOnly?: boolean;
   draftEditorProps?: Partial<EditorProps>;
+  l18n?: L18n;
 }
 
 export interface ReactMdeState {
@@ -46,7 +49,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       iconProvider: name => <MdeFontAwesomeIcon icon={name}/>
     },
     emptyPreviewHtml: "<p>&nbsp;</p>",
-    readOnly: false
+    readOnly: false,
+    l18n: enL18n
   };
 
   constructor (props: ReactMdeProps) {
@@ -133,7 +137,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       className,
       emptyPreviewHtml,
       readOnly,
-      draftEditorProps
+      draftEditorProps,
+      l18n
     } = this.props;
 
     return (
@@ -145,6 +150,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           onTabChange={this.handleTabChange}
           tab={this.state.currentTab}
           readOnly={readOnly}
+          l18n={l18n}
         />
         {
           this.state.currentTab === "write" ?
