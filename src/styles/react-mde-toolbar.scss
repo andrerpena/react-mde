@@ -17,7 +17,8 @@
       border-radius: $mde-border-radius;
       margin: 6px;
       background-color: transparent;
-      border: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
       &.selected {
         border: 1px solid $mde-border-color
       }
