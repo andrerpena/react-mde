@@ -6,9 +6,9 @@ A simple yet powerful and extensible Markdown Editor editor for React. React-mde
 still in alpha. Please check [the change log](https://github.com/andrerpena/react-mde/blob/master/docs-md/ChangeLogMigrating.md)
 and the [old docs](https://github.com/andrerpena/react-mde/blob/master/docs-md/5.*-readme.md).
 
-## Demos
+## Demo
 
-- [Demos](http://andrerpena.me/react-mde/).
+- [Demo](http://andrerpena.me/react-mde/). [Source](https://github.com/andrerpena/react-mde/tree/master/demo).
 
 ## Installing
 
