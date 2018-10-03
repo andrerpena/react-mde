@@ -3,7 +3,8 @@
 A simple yet powerful and extensible Markdown Editor editor for React. React-mde is built on top of [Draft.js](https://draftjs.org/).
 
 > Warning, react-mde is passing through breaking changes. This documentation refers to the new 6.0 version which is 
-still in alpha. Please check [the change log](https://github.com/andrerpena/react-mde/blob/master/docs-md/ChangeLogMigrating.md)
+still in alpha. Please check [the change log](https://github.com/andrerpena/react-mde/blob/master/docs-md/ChangeLogMigrating.md),
+the [original issue](https://github.com/andrerpena/react-mde/issues/136)
 and the [old docs](https://github.com/andrerpena/react-mde/blob/master/docs-md/5.*-readme.md).
 
 ## Demo

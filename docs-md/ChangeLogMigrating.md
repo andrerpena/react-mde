@@ -13,6 +13,7 @@ and only update it when the new provided string value is different than the last
 to maintain multiple layouts. In case it does'nt suit your needs, you can inspect the [supported layout implementation](https://github.com/andrerpena/react-mde/blob/master/src/ReactMde.tsx)
 and implement your own. All the required dependencies are exported.
 
+[More information here]: https://github.com/andrerpena/react-mde/issues/136
 
 ## From 4.\* to 5.\*
 
