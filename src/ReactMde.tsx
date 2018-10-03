@@ -25,12 +25,16 @@ export interface ReactMdeProps {
   readOnly?: boolean;
   draftEditorProps?: Partial<EditorProps>;
   l18n?: L18n;
+  minEditorHeight: number;
+  maxEditorHeight: number;
+  minPreviewHeight: number;
 }
 
 export interface ReactMdeState {
   currentTab: Tab,
   previewLoading: boolean,
-  previewHtml?: string
+  previewHtml?: string,
+  editorHeight: number
 }
 
 export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
@@ -41,6 +45,12 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   editorRef: MdeEditor;
   previewRef: MdePreview;
 
+  // resizeYStart will be null when it is not resizing
+  gripDrag: {
+    originalDragY: number;
+    originalHeight: number;
+  } = null;
+
   keyCommandMap: { [key: string]: Command };
 
   static defaultProps: Partial<ReactMdeProps> = {
@@ -50,7 +60,10 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     },
     emptyPreviewHtml: "<p>&nbsp;</p>",
     readOnly: false,
-    l18n: enL18n
+    l18n: enL18n,
+    minEditorHeight: 200,
+    maxEditorHeight: 500,
+    minPreviewHeight: 200
   };
 
   constructor (props: ReactMdeProps) {
@@ -58,7 +71,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     this.rebuildCache(props.value);
     this.state = {
       currentTab: "write",
-      previewLoading: false
+      previewLoading: false,
+      editorHeight: props.minEditorHeight
     };
     this.keyCommandMap = {};
     const { commands } = this.props;
@@ -77,6 +91,29 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     this.cachedValue = getPlainText(editorState);
     this.cachedDraftState = editorState;
     onChange(this.cachedValue);
+  };
+
+  handleGripMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    this.gripDrag = {
+      originalHeight: this.state.editorHeight,
+      originalDragY: event.clientY
+    };
+  };
+
+  handleGripMouseUp = () => {
+    this.gripDrag = null;
+  };
+
+  handleGripMouseMove = (event: MouseEvent) => {
+    if (this.gripDrag !== null) {
+      const newHeight = this.gripDrag.originalHeight + event.clientY - this.gripDrag.originalDragY;
+      if (newHeight >= this.props.minEditorHeight && newHeight <= this.props.maxEditorHeight) {
+        this.setState({
+          ...this.state,
+          editorHeight: this.gripDrag.originalHeight + (event.clientY - this.gripDrag.originalDragY)
+        });
+      }
+    }
   };
 
   handleTabChange = (newTab: Tab) => {
@@ -108,6 +145,11 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     }
   };
 
+  componentDidMount () {
+    document.addEventListener<"mousemove">("mousemove", this.handleGripMouseMove);
+    document.addEventListener<"mouseup">("mouseup", this.handleGripMouseUp);
+  }
+
   handleCommand = (command: Command) => {
     if (!command.execute) return;
     const newEditorState = command.execute(this.cachedDraftState);
@@ -137,7 +179,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       emptyPreviewHtml,
       readOnly,
       draftEditorProps,
-      l18n
+      l18n,
+      minPreviewHeight
     } = this.props;
 
     return (
@@ -153,30 +196,37 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         />
         {
           this.state.currentTab === "write" ?
-            <MdeEditor
-              editorRef={(c) => this.editorRef = c}
-              onChange={this.handleTextChange}
-              editorState={this.cachedDraftState}
-              readOnly={readOnly}
-              draftEditorProps={draftEditorProps}
-              handleKeyCommand={this.handleKeyCommand}
-            />
+            <>
+              <MdeEditor
+                editorRef={(c) => this.editorRef = c}
+                onChange={this.handleTextChange}
+                editorState={this.cachedDraftState}
+                readOnly={readOnly}
+                draftEditorProps={draftEditorProps}
+                handleKeyCommand={this.handleKeyCommand}
+                height={this.state.editorHeight}
+              />
+              <div className="grip"
+                   onMouseDown={this.handleGripMouseDown}
+              >
+                <svg aria-hidden="true" data-prefix="far" data-icon="ellipsis-h" role="img"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 512 512" className="icon">
+                  <path fill="currentColor"
+                        d="M304 256c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm120-48c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zm-336 0c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
+                        className=""></path>
+                </svg>
+              </div>
+            </>
             :
             < MdePreview
               previewRef={(c) => this.previewRef = c}
               html={this.state.previewHtml}
               loading={this.state.previewLoading}
               emptyPreviewHtml={emptyPreviewHtml}
+              minHeight={minPreviewHeight}
             />
         }
-        <div className="grip">
-          <svg aria-hidden="true" data-prefix="far" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 512 512" className="icon">
-            <path fill="currentColor"
-                  d="M304 256c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm120-48c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zm-336 0c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
-                  className=""></path>
-          </svg>
-        </div>
       </div>
     );
   }

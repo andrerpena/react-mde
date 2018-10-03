@@ -6,15 +6,16 @@ export interface ReactMdePreviewProps {
   html: string;
   emptyPreviewHtml?: string;
   loading: boolean;
+  minHeight: number
 }
 
 export class MdePreview extends React.Component<ReactMdePreviewProps> {
   previewRef: HTMLDivElement;
 
   render () {
-    const { html, className } = this.props;
+    const { html, className, minHeight } = this.props;
     return (
-      <div className={`mde-preview ${className || ""}`}>
+      <div className={`mde-preview ${className || ""}`} style={{ minHeight: minHeight + 10}}>
         <div
           className="mde-preview-content"
           dangerouslySetInnerHTML={{ __html: html || "<p>&nbsp;</p>" }}

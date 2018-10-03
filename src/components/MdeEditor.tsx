@@ -11,7 +11,8 @@ export interface MdeEditorProps {
   editorState: EditorState;
   readOnly: boolean;
   draftEditorProps: Partial<EditorProps>;
-  handleKeyCommand: (command: string, editorState: EditorState) => DraftHandleValue
+  handleKeyCommand: (command: string, editorState: EditorState) => DraftHandleValue;
+  height: number;
 }
 
 export class MdeEditor extends React.Component<MdeEditorProps, {}> {
@@ -37,10 +38,11 @@ export class MdeEditor extends React.Component<MdeEditorProps, {}> {
       className,
       readOnly,
       draftEditorProps,
-      handleKeyCommand
+      handleKeyCommand,
+      height
     } = this.props;
     return (
-      <div className={`mde-text ${className || ""}`}>
+      <div className={`mde-text ${className || ""}`} style={{height}}>
         <Editor
           ref={editor => (this.editorRef = editor)}
           stripPastedStyles={true}

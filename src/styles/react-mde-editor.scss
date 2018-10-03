@@ -1,10 +1,9 @@
 @import "variables.scss";
 
 .mde-text {
-
+  overflow-y: auto;
   .public-DraftEditor-content {
     width: 100%;
-    min-height: $mde-editor-default-min-height;
     padding: $mde-editor-padding;
   }
 }
