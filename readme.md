@@ -17,6 +17,12 @@ and the [old docs](https://github.com/andrerpena/react-mde/blob/master/docs-md/5
 
     // 5.8 version:
     npm i react-mde
+    
+## Mobile
+
+React-mde currently [does not work properly on mobile](https://github.com/andrerpena/react-mde/issues/111) due to a [a problem with Draftjs](https://github.com/facebook/draft-js/issues/102).
+It will be fixed as soon as Facebook fixes Draft.js. On the flip-side, neither Github or Stackoverflow have
+rich Markdown editor on mobile so the recommendation is just replacing React-mde with a `textarea`.
 
 ## Dependencies
 
