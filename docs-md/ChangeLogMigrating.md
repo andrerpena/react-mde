@@ -1,6 +1,19 @@
     
 # Change log / Migrating
 
+## From 5.* to 6.*
+
+Major differences
+
+- The `value` now is a simple markdown string. Under the hoods, `react-mde` will cache the Draft.js state
+and only update it when the new provided string value is different than the last one emitted in the `onChange` event.
+- The `commands` used to be an array of array of `Command`. Now they are an array of `CommandGroup` that contains a property 
+`commands` which is an array of `Command`.
+- There are no built in support of custom layouts anymore. This was necessary because I am not able
+to maintain multiple layouts. In case it does'nt suit your needs, you can inspect the [supported layout implementation](https://github.com/andrerpena/react-mde/blob/master/src/ReactMde.tsx)
+and implement your own. All the required dependencies are exported.
+
+
 ## From 4.\* to 5.\*
 
 Major differences:

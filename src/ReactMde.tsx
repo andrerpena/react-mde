@@ -15,12 +15,12 @@ import { L18n } from "./types/L18n";
 import { enL18n } from "./l18n/react-mde.en";
 
 export interface ReactMdeProps {
-  onChange: (value: string) => void;
   value: string;
+  onChange: (value: string) => void;
   className?: string;
   commands?: CommandGroup[];
-  buttonContentOptions?: ButtonContentOptions;
   generateMarkdownPreview: GenerateMarkdownPreview;
+  buttonContentOptions?: ButtonContentOptions;
   emptyPreviewHtml?: string;
   readOnly?: boolean;
   draftEditorProps?: Partial<EditorProps>;
