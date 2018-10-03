@@ -1,10 +1,25 @@
 @import "variables.scss";
 
+$grip-height: 10px;
+
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .react-mde {
-    border: 1px solid $mde-border-color;
-    border-radius: $mde-border-radius;
+  border: 1px solid $mde-border-color;
+  border-radius: $mde-border-radius;
+
+  .grip {
+    border-top: 1px solid $mde-border-color;
+    background-color: $mde-toolbar-color;
+    text-align: center;
+    height: $grip-height;
+    color: black;
+    cursor: s-resize;
+
+    .icon {
+      height: $grip-height;
+    }
+  }
 }
