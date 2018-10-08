@@ -10,6 +10,7 @@ and the [old docs](https://github.com/andrerpena/react-mde/blob/master/docs-md/5
 ## Demo
 
 - [Demo](http://andrerpena.me/react-mde/). [Source](https://github.com/andrerpena/react-mde/tree/master/demo).
+- [Demo on CodeSandbox](https://codesandbox.io/s/o5vpjwyp79).
 
 ## Installing
 
@@ -34,6 +35,9 @@ difficult. The best examples being history management, mentions and pasting file
 <!-- -->
 
     npm i --save draft-js
+
+Don't forget to [include the Draft.css](https://draftjs.org/docs/advanced-topics-issues-and-pitfalls.html#missing-draft-css)
+file.
 
 - [Font Awesome 5.*](https://fontawesome.com/) for the icons. This is not a hard dependency and can be changed (see the **Customizing Icons** section below).
 To use Font Awesome icons, install [using your preferred method](https://fontawesome.com/how-to-use/svg-with-js).

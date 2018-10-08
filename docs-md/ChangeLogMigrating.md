@@ -1,4 +1,3 @@
-    
 # Change log / Migrating
 
 ## From 5.* to 6.*
