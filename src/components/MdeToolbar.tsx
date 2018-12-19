@@ -5,8 +5,7 @@ import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
 import * as classNames from "classnames";
 import { Tab } from "../types/Tab";
-import { L18n } from "../types/L18n";
-import { enL18n } from "../l18n/react-mde.en";
+import { L18n } from "..";
 
 export interface MdeToolbarProps {
   buttonContentOptions: ButtonContentOptions;
@@ -22,10 +21,11 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
 
   handleTabChange = (tab: Tab) => {
     const { onTabChange } = this.props;
-    onTabChange(tab)
+    onTabChange(tab);
   };
 
   render () {
+    const { l18n } = this.props;
     const { buttonContentOptions, children, commands, onCommand, readOnly } = this.props;
     if ((!commands || commands.length === 0) && !children) {
       return null;
@@ -38,14 +38,14 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
             className={classNames({ "selected": this.props.tab === "write" })}
             onClick={() => this.handleTabChange("write")}
           >
-            {enL18n.write}
+            {l18n.write}
           </button>
           <button
             type="button"
             className={classNames({ "selected": this.props.tab === "preview" })}
             onClick={() => this.handleTabChange("preview")}
           >
-            {enL18n.preview}
+            {l18n.preview}
           </button>
         </div>
         {

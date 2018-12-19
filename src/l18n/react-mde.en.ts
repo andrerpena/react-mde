@@ -1,4 +1,4 @@
-import { L18n } from "../types/L18n";
+import { L18n } from "..";
 
 export const enL18n: L18n = {
   write: 'Write',

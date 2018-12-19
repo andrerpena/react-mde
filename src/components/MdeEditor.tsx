@@ -3,7 +3,6 @@ import { Editor, EditorState, EditorProps, DraftHandleValue } from "draft-js";
 import { buildNewDraftState, getMarkdownStateFromDraftState } from "../util/DraftUtil";
 import { addTab } from "../util/MarkdownUtil";
 
-
 export interface MdeEditorProps {
   className?: string;
   onChange: (value: EditorState) => void;
