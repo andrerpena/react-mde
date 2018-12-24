@@ -67,12 +67,7 @@ import * as React from "react";
 import ReactMde from "../src";
 import * as Showdown from "showdown";
 
-export interface AppState {
-  value: string;
-}
-
-export class App extends React.Component<{}, AppState> {
-  converter: Showdown.Converter;
+export class App extends React.Component {
 
   constructor (props) {
     super(props);
@@ -87,7 +82,7 @@ export class App extends React.Component<{}, AppState> {
     });
   }
 
-  handleValueChange = (value: string) => {
+  handleValueChange = (value) => {
     this.setState({ value });
   };
 
