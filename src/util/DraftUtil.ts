@@ -1,5 +1,5 @@
 import { EditorState, ContentState, SelectionState } from "draft-js";
-import { TextSelection, MarkdownState } from "../types";
+import { TextRange, MarkdownState } from "../types";
 
 export function getContentLengthOfAllBlocksBefore(editorState, key) {
   let count = 0;
@@ -17,7 +17,7 @@ export function getContentLengthOfAllBlocksBefore(editorState, key) {
   return count;
 }
 
-export function getSelection(editorState: EditorState): TextSelection {
+export function getSelection(editorState: EditorState): TextRange {
   const selection = editorState.getSelection();
 
   const startKey = selection.getStartKey();
@@ -109,7 +109,7 @@ const findBlockKeyAndOffsetForPosition = (
 
 export function buildSelectionState(
   contentState: ContentState,
-  selection: TextSelection
+  selection: TextRange
 ) {
   const firstBlock = contentState.getFirstBlock();
   if (firstBlock === null) {
@@ -144,36 +144,4 @@ export function buildSelectionState(
     focusKey: endBlockData.block.getKey(),
     focusOffset: endBlockData.blockOffset
   }) as SelectionState;
-}
-
-export function getMarkdownStateFromDraftState(
-  editorState: EditorState
-): MarkdownState {
-  return {
-    text: getPlainText(editorState),
-    selection: getSelection(editorState)
-  };
-}
-
-export function buildNewDraftState(
-  currentState: EditorState,
-  markdownState: MarkdownState
-): EditorState {
-  const { text, selection } = markdownState;
-  // TODO: Fix the redo. It's no working properly but this is an implementation detail.
-
-  // handling text change history push
-  const contentState = ContentState.createFromText(text);
-  let state = EditorState.forceSelection(
-    currentState,
-    currentState.getSelection()
-  );
-  state = EditorState.push(state, contentState, "insert-characters");
-
-  // handling text selection history push
-  const selectionState = selection
-    ? buildSelectionState(state.getCurrentContent(), selection)
-    : currentState.getSelection();
-
-  return EditorState.forceSelection(state, selectionState);
 }

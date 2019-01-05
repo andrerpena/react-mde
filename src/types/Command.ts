@@ -1,5 +1,5 @@
 import * as React from "react";
-import { EditorState } from "draft-js";
+import { TextApi, TextState } from "./CommandOptions";
 
 export interface ButtonContentOptions {
   iconProvider: (iconName: string) => React.ReactNode;
@@ -12,7 +12,7 @@ export interface Command {
     buttonContentBuilder: ButtonContentBuilder;
     buttonProps?: any;
     children?: Command[];
-    execute?: (EditorState, data?) => EditorState;
+    execute?: (state: TextState, api: TextApi) => void;
     // Draft.js triggers Key Commands. the keyCommand property determines
     // which Draft.js key command should be handled by this react-mde command
     keyCommand?: string

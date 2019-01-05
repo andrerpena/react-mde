@@ -5,14 +5,13 @@ import {
   ButtonContentOptions, CommandGroup
 } from "./types";
 import { getDefaultCommands } from "./commands";
-import { ContentState, EditorProps, EditorState } from "draft-js";
-import { getPlainText } from "./util/DraftUtil";
-import { MdeEditor, MdePreview, MdeToolbar, MdeFontAwesomeIcon } from "./components";
+import { TextArea, MdePreview, MdeToolbar, MdeFontAwesomeIcon } from "./components";
 import * as classNames from "classnames";
 import { extractCommandMap } from "./util/CommandUtils";
 import { Tab } from "./types/Tab";
 import { L18n } from "./types/L18n";
 import { enL18n } from "./l18n/react-mde.en";
+import { CommandOrchestrator } from "./commandOrchestrator";
 
 export interface ReactMdeProps {
   value: string;
@@ -23,7 +22,7 @@ export interface ReactMdeProps {
   buttonContentOptions?: ButtonContentOptions;
   emptyPreviewHtml?: string;
   readOnly?: boolean;
-  draftEditorProps?: Partial<EditorProps>;
+  textAreaProps?: Partial<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>>;
   l18n?: L18n;
   minEditorHeight: number;
   maxEditorHeight: number;
@@ -39,10 +38,9 @@ export interface ReactMdeState {
 
 export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
-  cachedDraftState: EditorState;
-  cachedValue: string;
+  commandOrchestrator: CommandOrchestrator;
 
-  editorRef: MdeEditor;
+  textAreaRef: HTMLTextAreaElement;
   previewRef: MdePreview;
 
   // resizeYStart will be null when it is not resizing
@@ -68,7 +66,6 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
   constructor (props: ReactMdeProps) {
     super(props);
-    this.rebuildCache(props.value);
     this.state = {
       currentTab: "write",
       previewLoading: false,
@@ -79,18 +76,9 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     this.keyCommandMap = extractCommandMap(commands);
   }
 
-  rebuildCache = (value: string) => {
-    this.cachedValue = value;
-    this.cachedDraftState = value
-      ? EditorState.createWithContent(ContentState.createFromText(value))
-      : EditorState.createEmpty();
-  };
-
-  handleTextChange = (editorState: EditorState) => {
+  handleTextChange = (value: string) => {
     const { onChange } = this.props;
-    this.cachedValue = getPlainText(editorState);
-    this.cachedDraftState = editorState;
-    onChange(this.cachedValue);
+    onChange(value);
   };
 
   handleGripMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -117,6 +105,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   };
 
   handleTabChange = (newTab: Tab) => {
+    const { value } = this.props;
+
     // TODO: Prevent tab change if the preview is being loaded. The reason
     // is that, if the keeps changing text and tabs, depending on the time
     // the preview promises take to settle, there might be a race condition.
@@ -131,7 +121,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     if (newTab === "preview") {
       // fire preview load
       const { generateMarkdownPreview } = this.props;
-      generateMarkdownPreview(this.cachedValue).then((previewHtml) => {
+      generateMarkdownPreview(value).then((previewHtml) => {
         this.setState({
           // the current tab will be preview because changing tabs during preview
           // load should be prevented
@@ -151,23 +141,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   }
 
   handleCommand = (command: Command) => {
-    if (!command.execute) return;
-    const newEditorState = command.execute(this.cachedDraftState);
-    this.handleTextChange(newEditorState);
-  };
-
-  componentDidUpdate (prevProps: ReactMdeProps) {
-    if (prevProps.value !== this.props.value) {
-      this.rebuildCache(this.props.value);
-    }
-  }
-
-  handleKeyCommand = (command: string) => {
-    if (this.keyCommandMap[command]) {
-      this.handleCommand(this.keyCommandMap[command]);
-      return "handled";
-    }
-    return "not-handled";
+    this.commandOrchestrator.executeCommand(command);
   };
 
   render () {
@@ -178,9 +152,10 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       className,
       emptyPreviewHtml,
       readOnly,
-      draftEditorProps,
+      value,
       l18n,
-      minPreviewHeight
+      minPreviewHeight,
+      textAreaProps
     } = this.props;
 
     return (
@@ -197,14 +172,13 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         {
           this.state.currentTab === "write" ?
             <>
-              <MdeEditor
-                editorRef={(c) => this.editorRef = c}
+              <TextArea
+                editorRef={(c: HTMLTextAreaElement) => this.textAreaRef = c}
                 onChange={this.handleTextChange}
-                editorState={this.cachedDraftState}
                 readOnly={readOnly}
-                draftEditorProps={draftEditorProps}
-                handleKeyCommand={this.handleKeyCommand}
+                textAreaProps={textAreaProps}
                 height={this.state.editorHeight}
+                value={value}
               />
               <div className="grip"
                    onMouseDown={this.handleGripMouseDown}
