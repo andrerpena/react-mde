@@ -11,7 +11,7 @@ import { extractCommandMap } from "./util/CommandUtils";
 import { Tab } from "./types/Tab";
 import { L18n } from "./types/L18n";
 import { enL18n } from "./l18n/react-mde.en";
-import { CommandOrchestrator } from "./commandOrchestrator";
+import { CommandOrchestrator, TextAreaCommandOrchestrator } from "./commandOrchestrator";
 
 export interface ReactMdeProps {
   value: string;
@@ -140,6 +140,11 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     document.addEventListener<"mouseup">("mouseup", this.handleGripMouseUp);
   }
 
+  setTextAreaRef = (element: HTMLTextAreaElement) => {
+    this.textAreaRef = element;
+    this.commandOrchestrator = new TextAreaCommandOrchestrator(this.textAreaRef);
+  };
+
   handleCommand = (command: Command) => {
     this.commandOrchestrator.executeCommand(command);
   };
@@ -173,7 +178,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           this.state.currentTab === "write" ?
             <>
               <TextArea
-                editorRef={(c: HTMLTextAreaElement) => this.textAreaRef = c}
+                editorRef={this.setTextAreaRef}
                 onChange={this.handleTextChange}
                 readOnly={readOnly}
                 textAreaProps={textAreaProps}

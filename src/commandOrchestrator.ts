@@ -33,7 +33,7 @@ export function getStateFromTextArea (textArea: HTMLTextAreaElement): TextState 
       end: textArea.selectionEnd
     },
     text: textArea.value,
-    selectedText: textArea.value.slice(textArea.selectionStart, textArea.selectionEnd - 1)
+    selectedText: textArea.value.slice(textArea.selectionStart, textArea.selectionEnd)
   };
 }
 
