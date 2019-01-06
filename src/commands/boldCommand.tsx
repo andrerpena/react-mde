@@ -4,6 +4,7 @@ import { TextApi, TextState } from "../types/CommandOptions";
 import { selectWord } from "../util/MarkdownUtil";
 
 export const boldCommand: Command = {
+  name: "bold",
   buttonContentBuilder: ({ iconProvider }) => iconProvider("bold"),
   buttonProps: { "aria-label": "Add bold text" },
   execute: (state0: TextState, api: TextApi) => {
@@ -18,5 +19,5 @@ export const boldCommand: Command = {
       end: state2.selection.end - 2
     });
   },
-  keyCommand: "bold"
+  keyCommand: "bold",
 };

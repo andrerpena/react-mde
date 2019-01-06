@@ -19,7 +19,7 @@ gulp.task('copy_styles', function () {
 });
 
 gulp.task('build-lib', ['copy_styles', 'build_styles'], function () {
-    const tsResult = gulp.src('src/**/*.{ts,tsx}')
+    const tsResult = tsProject.src()
         .pipe(tsProject({
             declaration: true
         }));

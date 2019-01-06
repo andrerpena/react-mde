@@ -8,6 +8,7 @@ export interface ButtonContentOptions {
 export type ButtonContentBuilder = (options: ButtonContentOptions) => React.ReactNode;
 
 export interface Command {
+    name: string,
     buttonComponentClass?: React.ComponentClass | string;
     buttonContentBuilder: ButtonContentBuilder;
     buttonProps?: any;

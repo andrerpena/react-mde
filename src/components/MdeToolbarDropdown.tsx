@@ -82,6 +82,7 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
         const items = commands.map((command, index) => (
             <MdeToolbarButton
                 key={`header-item${index}`}
+                name={command.name}
                 buttonProps={command.buttonProps}
                 buttonContent={command.buttonContentBuilder(buttonContentOptions)}
                 onClick={(e) => this.handleOnClickCommand(e, command)}

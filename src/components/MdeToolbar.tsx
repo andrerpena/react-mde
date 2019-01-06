@@ -68,6 +68,7 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
                   }
                   return <MdeToolbarButton
                     key={j}
+                    name={c.name}
                     buttonContent={c.buttonContentBuilder(buttonContentOptions)}
                     buttonProps={c.buttonProps}
                     onClick={() => onCommand(c as Command)}

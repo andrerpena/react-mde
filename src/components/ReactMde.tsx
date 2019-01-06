@@ -3,30 +3,30 @@ import {
   Command,
   GenerateMarkdownPreview,
   ButtonContentOptions, CommandGroup
-} from "./types";
-import { getDefaultCommands } from "./commands";
-import { TextArea, MdePreview, MdeToolbar, MdeFontAwesomeIcon } from "./components";
+} from "../types";
+import { getDefaultCommands } from "../commands";
+import { TextArea, MdePreview, MdeToolbar, MdeFontAwesomeIcon } from ".";
 import * as classNames from "classnames";
-import { extractCommandMap } from "./util/CommandUtils";
-import { Tab } from "./types/Tab";
-import { L18n } from "./types/L18n";
-import { enL18n } from "./l18n/react-mde.en";
-import { CommandOrchestrator, TextAreaCommandOrchestrator } from "./commandOrchestrator";
+import { extractCommandMap } from "../util/CommandUtils";
+import { Tab } from "../types/Tab";
+import { L18n } from "../types/L18n";
+import { enL18n } from "../l18n/react-mde.en";
+import { CommandOrchestrator, TextAreaCommandOrchestrator } from "../commandOrchestrator";
 
 export interface ReactMdeProps {
   value: string;
   onChange: (value: string) => void;
+  generateMarkdownPreview: GenerateMarkdownPreview;
+  minEditorHeight: number;
+  maxEditorHeight: number;
+  minPreviewHeight: number;
   className?: string;
   commands?: CommandGroup[];
-  generateMarkdownPreview: GenerateMarkdownPreview;
   buttonContentOptions?: ButtonContentOptions;
   emptyPreviewHtml?: string;
   readOnly?: boolean;
   textAreaProps?: Partial<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>>;
   l18n?: L18n;
-  minEditorHeight: number;
-  maxEditorHeight: number;
-  minPreviewHeight: number;
 }
 
 export interface ReactMdeState {
