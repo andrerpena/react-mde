@@ -64,7 +64,7 @@ React-mde is a completely controlled component.
 Minimal example using Showdown:
 ```jsx
 import * as React from "react";
-import ReactMde from "../src";
+import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 
 export class App extends React.Component {
