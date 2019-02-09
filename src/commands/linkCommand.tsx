@@ -1,28 +1,23 @@
-// import * as React from "react";
-// import {Command} from "../types";
-// import {insertText, selectWordIfCaretIsInsideOne} from "../util/MarkdownUtil";
-// import {buildNewDraftState, getMarkdownStateFromDraftState} from "../util/DraftUtil";
-//
-// export const linkCommand: Command = {
-//     buttonContentBuilder: ({ iconProvider }) => iconProvider("link"),
-//
-//     buttonProps: { "aria-label": "Insert a link" },
-//
-//     execute: (state) => {
-//         const {text, selection} = getMarkdownStateFromDraftState(state);
-//         const newSelection = selectWordIfCaretIsInsideOne({text, selection});
-//         const {newText, insertionLength} = insertText(text, "[", newSelection.start);
-//         const finalText = insertText(newText, "](url)", newSelection.end + insertionLength).newText;
-//
-//         return buildNewDraftState(
-//             state,
-//             {
-//                 text: finalText,
-//                 selection: {
-//                     start: newSelection.start + insertionLength,
-//                     end: newSelection.end + insertionLength,
-//                 },
-//             },
-//         );
-//     },
-// };
+import * as React from "react";
+import {Command} from "../types";
+import {TextApi, TextState} from "../types/CommandOptions";
+import {selectWord} from "../util/MarkdownUtil";
+
+export const linkCommand: Command = {
+    name: "bold",
+    buttonContentBuilder: ({iconProvider}) => iconProvider("link"),
+    buttonProps: {"aria-label": "Add bold text"},
+    execute: (state0: TextState, api: TextApi) => {
+        // Adjust the selection to encompass the whole word if the caret is inside one
+        const newSelectionRange = selectWord({text: state0.text, selection: state0.selection});
+        const state1 = api.setSelectionRange(newSelectionRange);
+        // Replaces the current selection with the bold mark up
+        const state2 = api.replaceSelection(`[${state1.selectedText}](url)`);
+        // Adjust the selection to not contain the **
+        api.setSelectionRange({
+            start: state2.selection.end - 6 - state1.selectedText.length,
+            end: state2.selection.end - 6
+        });
+    },
+    keyCommand: "bold",
+};

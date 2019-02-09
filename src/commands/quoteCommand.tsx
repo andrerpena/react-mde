@@ -1,35 +1,30 @@
-// import * as React from "react";
-// import {Command} from "../types";
-// import {
-//     insertBefore, insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
-//     insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
-//     selectWordIfCaretIsInsideOne,
-// } from "../util/MarkdownUtil";
-// import {buildNewDraftState, getMarkdownStateFromDraftState} from "../util/DraftUtil";
-//
-// export const quoteCommand: Command = {
-//     buttonContentBuilder: ({ iconProvider }) => iconProvider("quote-right"),
-//
-//     buttonProps: { "aria-label": "Insert a quote" },
-//
-//     execute: (state) => {
-//         let {text, selection} = getMarkdownStateFromDraftState(state);
-//         selection = selectWordIfCaretIsInsideOne({text, selection});
-//
-//         let textInsertion;
-//
-//         textInsertion = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore({text, selection});
-//         text = textInsertion.newText;
-//         selection = textInsertion.newSelection;
-//
-//         textInsertion = insertBefore(text, "> ", selection, false);
-//         text = textInsertion.newText;
-//         selection = textInsertion.newSelection;
-//
-//         textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter({text, selection});
-//         text = textInsertion.newText;
-//         selection = textInsertion.newSelection;
-//
-//         return buildNewDraftState(state, {text, selection});
-//     },
-// };
+import * as React from "react";
+import { Command } from "../types";
+import { TextApi, TextState } from "../types/CommandOptions";
+import {getBreaksNeededForEmptyLineAfter, getBreaksNeededForEmptyLineBefore, selectWord} from "../util/MarkdownUtil";
+
+export const quoteCommand: Command = {
+    name: "quote",
+    buttonContentBuilder: ({ iconProvider }) => iconProvider("quote-right"),
+    buttonProps: { "aria-label": "Add bold text" },
+    execute: (state0: TextState, api: TextApi) => {
+        // Adjust the selection to encompass the whole word if the caret is inside one
+        const newSelectionRange = selectWord({ text: state0.text, selection: state0.selection });
+        const state1 = api.setSelectionRange(newSelectionRange);
+
+        const breaksBeforeCount = getBreaksNeededForEmptyLineBefore(state1.text, state1.selection.start);
+        const breaksBefore = Array(breaksBeforeCount + 1).join("\n");
+
+        const breaksAfterCount = getBreaksNeededForEmptyLineAfter(state1.text, state1.selection.end);
+        const breaksAfter = Array(breaksAfterCount + 1).join("\n");
+
+        // Replaces the current selection with the bold mark up
+        const state2 = api.replaceSelection( `${breaksBefore}> ${state1.selectedText}${breaksAfter}`);
+        // Adjust the selection to not contain the **
+        api.setSelectionRange({
+            start: state2.selection.end - state1.selectedText.length - breaksAfterCount,
+            end: state2.selection.end - breaksAfterCount
+        });
+    },
+    keyCommand: "quote",
+};
