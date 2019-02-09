@@ -13,6 +13,7 @@ import {CommandGroup} from "../types";
 import {headerCommand} from "./headerCommand";
 import {linkCommand} from "./linkCommand";
 import {quoteCommand} from "./quoteCommand";
+import {codeCommand} from "./codeCommand";
 
 // const getDefaultCommands: () => CommandGroup[] = () => [
 //   { commands: [headerCommand, strikeThroughCommand, italicCommand, strikethroughCommand] },
@@ -25,7 +26,7 @@ const getDefaultCommands: () => CommandGroup[] = () => [
         commands: [headerCommand, boldCommand, italicCommand, strikeThroughCommand]
     },
     {
-        commands: [linkCommand, quoteCommand]
+        commands: [linkCommand, quoteCommand, codeCommand]
     }
 ];
 
