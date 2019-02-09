@@ -10,6 +10,7 @@ import { strikeThroughCommand } from "./strikethroughCommand";
 // import { unorderedListCommand } from "./unorderedListCommand";
 // import { checkListCommand } from "./checkListCommand";
 import { CommandGroup } from "../types";
+import {headerCommand} from "./headerCommand";
 
 // const getDefaultCommands: () => CommandGroup[] = () => [
 //   { commands: [headerCommand, strikeThroughCommand, italicCommand, strikethroughCommand] },
@@ -18,7 +19,7 @@ import { CommandGroup } from "../types";
 // ];
 
 const getDefaultCommands: () => CommandGroup[] = () => [
-  { commands: [boldCommand, italicCommand, strikeThroughCommand] }
+  { commands: [headerCommand, boldCommand, italicCommand, strikeThroughCommand] }
 ];
 
 export {
