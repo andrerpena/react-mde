@@ -19,11 +19,15 @@ export const quoteCommand: Command = {
         const breaksAfter = Array(breaksAfterCount + 1).join("\n");
 
         // Replaces the current selection with the bold mark up
-        const state2 = api.replaceSelection( `${breaksBefore}> ${state1.selectedText}${breaksAfter}`);
+        api.replaceSelection( `${breaksBefore}> ${state1.selectedText}${breaksAfter}`);
         // Adjust the selection to not contain the **
+
+        const selectionStart = state1.selection.start + breaksBeforeCount + 2;
+        const selectionEnd = selectionStart + state1.selectedText.length;
+
         api.setSelectionRange({
-            start: state2.selection.end - state1.selectedText.length - breaksAfterCount,
-            end: state2.selection.end - breaksAfterCount
+            start: selectionStart,
+            end: selectionEnd
         });
     },
     keyCommand: "quote",

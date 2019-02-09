@@ -43,22 +43,18 @@ export const unorderedListCommand: Command = {
         const breaksAfterCount = getBreaksNeededForEmptyLineAfter(state1.text, state1.selection.end);
         const breaksAfter = Array(breaksAfterCount + 1).join("\n");
 
-        const state2 = api.replaceSelection(`${breaksBefore}${state1.selectedText}${breaksAfter}`);
+        const modifiedText = insertBeforeEachLine(state1.selectedText, "- ");
 
-        // const modifiedText = insertBeforeEachLine(state2.selectedText, "- ");
-        // const state3 = api.replaceSelection(modifiedText.modifiedText);
+        api.replaceSelection(`${breaksBefore}${modifiedText.modifiedText}${breaksAfter}`);
 
-        const modifiedText = { insertionLength: 0 };
-        const state3 = state2;
-
-        const selectionRange = {
-            start: state3.selection.end - state1.selectedText.length - breaksAfterCount,
-            end: state3.selection.end - breaksAfterCount
-        };
+        const selectionStart = state1.selection.start + breaksBeforeCount;
+        const selectionEnd = selectionStart + modifiedText.modifiedText.length;
 
         // Adjust the selection to not contain the **
-        api.setSelectionRange(selectionRange);
-    }
-    ,
+        api.setSelectionRange({
+            start: selectionStart,
+            end: selectionEnd
+        });
+    },
     keyCommand: "code",
 }

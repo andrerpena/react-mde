@@ -14,11 +14,15 @@ export const codeCommand: Command = {
 
         // when there's no breaking line
         if (state1.selectedText.indexOf("\n") === -1) {
-            const state2 = api.replaceSelection(`\`${state1.selectedText}\``);
+            api.replaceSelection(`\`${state1.selectedText}\``);
             // Adjust the selection to not contain the **
+
+            const selectionStart = state1.selection.start + 1;
+            const selectionEnd = selectionStart + state1.selectedText.length;
+
             api.setSelectionRange({
-                start: state2.selection.end - 1 - state1.selectedText.length,
-                end: state2.selection.end - 1
+                start: selectionStart,
+                end: selectionEnd
             });
             return;
         }
@@ -29,11 +33,14 @@ export const codeCommand: Command = {
         const breaksAfterCount = getBreaksNeededForEmptyLineAfter(state1.text, state1.selection.end);
         const breaksAfter = Array(breaksAfterCount + 1).join("\n");
 
-        const state2 = api.replaceSelection(`${breaksBefore}\`\`\`\n${state1.selectedText}\n\`\`\`${breaksAfter}`);
-        // Adjust the selection to not contain the **
+        api.replaceSelection(`${breaksBefore}\`\`\`\n${state1.selectedText}\n\`\`\`${breaksAfter}`);
+
+        const selectionStart = state1.selection.start + breaksBeforeCount + 4;
+        const selectionEnd = selectionStart + state1.selectedText.length;
+
         api.setSelectionRange({
-            start: state2.selection.end - 1 - state1.selectedText.length - breaksAfterCount - 3,
-            end: state2.selection.end - 1 - breaksAfterCount - 3
+            start: selectionStart,
+            end: selectionEnd
         });
     }
     ,
