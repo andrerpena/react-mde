@@ -15,6 +15,7 @@ import {linkCommand} from "./linkCommand";
 import {quoteCommand} from "./quoteCommand";
 import {codeCommand} from "./codeCommand";
 import {imageCommand} from "./imageCommand";
+import {unorderedListCommand} from "./listCommands";
 
 // const getDefaultCommands: () => CommandGroup[] = () => [
 //   { commands: [headerCommand, strikeThroughCommand, italicCommand, strikethroughCommand] },
@@ -28,6 +29,9 @@ const getDefaultCommands: () => CommandGroup[] = () => [
     },
     {
         commands: [linkCommand, quoteCommand, codeCommand, imageCommand]
+    },
+    {
+        commands: [unorderedListCommand]
     }
 ];
 
