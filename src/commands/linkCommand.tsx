@@ -4,7 +4,7 @@ import {TextApi, TextState} from "../types/CommandOptions";
 import {selectWord} from "../util/MarkdownUtil";
 
 export const linkCommand: Command = {
-    name: "bold",
+    name: "link",
     buttonContentBuilder: ({iconProvider}) => iconProvider("link"),
     buttonProps: {"aria-label": "Add bold text"},
     execute: (state0: TextState, api: TextApi) => {
