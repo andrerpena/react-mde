@@ -1,6 +1,7 @@
-import { Command, TextRange } from "./types";
 import { TextApi, TextState } from "./types/CommandOptions";
 import { insertText } from "./util/InsertText";
+import {Command} from "./types/Command";
+import {TextRange} from "./types/TextRange";
 
 export interface CommandOrchestrator {
   executeCommand (command: Command): void

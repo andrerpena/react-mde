@@ -1,16 +1,18 @@
 import * as React from "react";
-import {
-    Command,
-    GenerateMarkdownPreview, CommandGroup, GetIcon
-} from "../types";
-import {getDefaultCommands} from "../commands";
-import {TextArea, MdePreview, MdeToolbar, MdeFontAwesomeIcon} from ".";
 import {extractCommandMap} from "../util/CommandUtils";
 import {Tab} from "../types/Tab";
-import {L18n} from "..";
 import {enL18n} from "../l18n/react-mde.en";
 import {CommandOrchestrator, TextAreaCommandOrchestrator} from "../commandOrchestrator";
 import {classNames} from "../util/ClassNames";
+import {GenerateMarkdownPreview} from "../types/FunctionTypes";
+import {CommandGroup} from "../types/CommandGroup";
+import {Command, GetIcon} from "../types/Command";
+import {MdePreview} from "./MdePreview";
+import {getDefaultCommands} from "../commands/index";
+import {MdeFontAwesomeIcon} from "../icons/MdeFontAwesomeIcon";
+import {MdeToolbar} from "./MdeToolbar";
+import {TextArea} from "./TextArea";
+import {L18n} from "../types/L18n";
 
 export interface ReactMdeProps {
     value: string;

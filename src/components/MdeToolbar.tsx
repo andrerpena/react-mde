@@ -1,11 +1,12 @@
 import * as React from "react";
-import {Command, CommandGroup, GetIcon} from "../types";
 import { MdeToolbarButtonGroup } from "./MdeToolbarButtonGroup";
 import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
 import { Tab } from "../types/Tab";
-import { L18n } from "..";
 import {classNames} from "../util/ClassNames";
+import {CommandGroup} from "../types/CommandGroup";
+import {Command, GetIcon} from "../types/Command";
+import {L18n} from "../types/L18n";
 
 export interface MdeToolbarProps {
   getIconFromProvider: GetIcon;

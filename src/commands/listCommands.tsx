@@ -1,7 +1,7 @@
 import * as React from "react";
-import {Command} from "../types";
 import {TextApi, TextState} from "../types/CommandOptions";
 import {getBreaksNeededForEmptyLineAfter, getBreaksNeededForEmptyLineBefore, selectWord} from "../util/MarkdownUtil";
+import {Command} from "../types/Command";
 
 export type AlterLineFunction = (line: string, index: number) => string;
 

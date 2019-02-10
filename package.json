@@ -2,15 +2,16 @@
   "name": "react-mde",
   "version": "6.0.0",
   "description": "React Markdown Editor",
-  "main": "./lib/js/index.js",
-  "types": "./lib/definitions/index.d.ts",
+  "main": "dist/index.es.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "mocha --timeout 15000 -r ts-node/register ./test/*Spec.ts",
     "start": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
     "build:ts": "tsc --project ./tsconfig.build.json",
     "build": "cross-env NODE_ENV=production gulp build",
     "build:demo": "cross-env NODE_ENV=production gulp build-demo",
-    "build:lib": "cross-env NODE_ENV=production gulp build-lib",
+    "build:lib": "rollup -c",
     "lint": "pretty-quick",
     "tsc": "tsc",
     "webpack": "webpack --config webpack.config.demo.dev.js",
@@ -72,6 +73,8 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.1.2",
+    "rollup": "^1.1.2",
+    "rollup-plugin-typescript2": "^0.19.2",
     "sass-loader": "^7.0.1",
     "showdown": "^1.8.6",
     "static-server": "^2.2.1",
@@ -92,8 +95,6 @@
     "react-dom": "^16.0.0"
   },
   "dependencies": {
-    "classnames": "^2.2.5",
-    "insert-text-at-cursor": "^0.1.1",
     "npm": "^6.1.0"
   }
 }

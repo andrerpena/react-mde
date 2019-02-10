@@ -1,4 +1,5 @@
-import { TextRange, TextSection } from "../types";
+import {TextRange} from "../types/TextRange";
+import {TextSection} from "../types/TextSection";
 
 export function getSurroundingWord (text: string, position: number): TextRange {
   if (!text) throw Error("Argument 'text' should be truthy");

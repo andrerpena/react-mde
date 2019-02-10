@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Command, GetIcon} from "../types";
 import {MdeToolbarButton} from "./MdeToolbarButton";
+import {Command, GetIcon} from "../types/Command";
 
 export interface HeaderItemDropdownProps {
     getIconFromProvider: GetIcon;

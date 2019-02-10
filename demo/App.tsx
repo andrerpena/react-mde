@@ -1,6 +1,6 @@
 import * as React from "react";
-import ReactMde from "../src";
 import * as Showdown from "showdown";
+import {ReactMde} from "../src/components/ReactMde";
 
 export interface AppState {
   value: string;
