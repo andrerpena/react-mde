@@ -1,33 +1,38 @@
-import { boldCommand } from "./boldCommand";
-import { codeCommand } from "./codeCommand";
-import { headerCommand } from "./headerCommand";
-import { imageCommand } from "./imageCommand";
-import { italicCommand } from "./italicCommand";
-import { strikethroughCommand } from "./strikethroughCommand";
-import { linkCommand } from "./linkCommand";
-import { orderedListCommand } from "./orderedListCommand";
-import { quoteCommand } from "./quoteCommand";
-import { unorderedListCommand } from "./unorderedListCommand";
-import { checkListCommand } from "./checkListCommand";
-import { CommandGroup } from "../types";
+import {boldCommand} from "./boldCommand";
+import {italicCommand} from "./italicCommand";
+import {strikeThroughCommand} from "./strikethroughCommand";
+import {CommandGroup} from "../types";
+import {headerCommand} from "./headerCommand";
+import {linkCommand} from "./linkCommand";
+import {quoteCommand} from "./quoteCommand";
+import {codeCommand} from "./codeCommand";
+import {imageCommand} from "./imageCommand";
+import {checkedListCommand, orderedListCommand, unorderedListCommand} from "./listCommands";
 
 const getDefaultCommands: () => CommandGroup[] = () => [
-  { commands: [headerCommand, boldCommand, italicCommand, strikethroughCommand] },
-  { commands: [linkCommand, quoteCommand, codeCommand, imageCommand] },
-  { commands: [unorderedListCommand, orderedListCommand, checkListCommand] }
+    {
+        commands: [headerCommand, boldCommand, italicCommand, strikeThroughCommand]
+    },
+    {
+        commands: [linkCommand, quoteCommand, codeCommand, imageCommand]
+    },
+    {
+        commands: [unorderedListCommand, orderedListCommand, checkedListCommand]
+    }
 ];
 
 export {
-  boldCommand,
-  codeCommand,
-  headerCommand,
-  imageCommand,
-  italicCommand,
-  strikethroughCommand,
-  linkCommand,
-  orderedListCommand,
-  quoteCommand,
-  unorderedListCommand,
-  checkListCommand,
-  getDefaultCommands
+    boldCommand,
+    italicCommand,
+    strikeThroughCommand,
+    CommandGroup,
+    headerCommand,
+    linkCommand,
+    quoteCommand,
+    codeCommand,
+    imageCommand,
+    checkedListCommand,
+    orderedListCommand,
+    unorderedListCommand,
+    getDefaultCommands
 };

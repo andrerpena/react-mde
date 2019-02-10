@@ -1,26 +1,26 @@
 {
-    "compilerOptions": {
-        "outDir": "ts-build",
-        "noImplicitAny": false,
-        "jsx": "react",
-        "target": "es5",
-        "module": "commonjs",
-        "typeRoots": [
-            "./node_modules/@types"
-        ],
-        "lib": [
-            "dom",
-            "es2015",
-            "es2015.collection",
-            "es2016",
-            "es2016.array.include"
-        ]
-    },
-    "include": [
-        "./src/**/*.ts",
-        "./src/**/*.tsx",
-        "./test/**/*.ts",
-        "./demo/**/*.ts",
-        "./demo/**/*.tsx"
+  "compilerOptions": {
+    "outDir": "ts-build",
+    "noImplicitAny": false,
+    "jsx": "react",
+    "target": "es5",
+    "module": "commonjs",
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "lib": [
+      "dom",
+      "es2015",
+      "es2015.collection",
+      "es2016",
+      "es2016.array.include"
     ]
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./test/**/*.ts",
+    "./demo/**/*.ts",
+    "./demo/**/*.tsx"
+  ]
 }

@@ -19,7 +19,7 @@ gulp.task('copy_styles', function () {
 });
 
 gulp.task('build-lib', ['copy_styles', 'build_styles'], function () {
-    const tsResult = gulp.src('src/**/*.{ts,tsx}')
+    const tsResult = tsProject.src()
         .pipe(tsProject({
             declaration: true
         }));
@@ -39,9 +39,9 @@ gulp.task('copy-index', function () {
 });
 
 gulp.task('build-demo', ['copy-index'], function () {
-  return gulp.src('demo/client.ts')
-    .pipe(webpackStream(require('./webpack.config.demo.prod.js'), require("webpack")))
-    .pipe(gulp.dest('docs/'));
+    return gulp.src('demo/client.ts')
+        .pipe(webpackStream(require('./webpack.config.demo.prod.js'), require("webpack")))
+        .pipe(gulp.dest('docs/'))
 });
 
 // all

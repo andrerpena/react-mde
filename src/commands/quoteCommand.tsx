@@ -1,35 +1,33 @@
 import * as React from "react";
-import {Command} from "../types";
-import {
-    insertBefore, insertBreaksAfterSoThatThereIsAnEmptyLineAfter,
-    insertBreaksBeforeSoThatThereIsAnEmptyLineBefore,
-    selectWordIfCaretIsInsideOne,
-} from "../util/MarkdownUtil";
-import {buildNewDraftState, getMarkdownStateFromDraftState} from "../util/DraftUtil";
+import { Command } from "../types";
+import { TextApi, TextState } from "../types/CommandOptions";
+import {getBreaksNeededForEmptyLineAfter, getBreaksNeededForEmptyLineBefore, selectWord} from "../util/MarkdownUtil";
 
 export const quoteCommand: Command = {
-    buttonContentBuilder: ({ iconProvider }) => iconProvider("quote-right"),
+    name: "quote",
+    buttonProps: { "aria-label": "Add bold text" },
+    execute: (state0: TextState, api: TextApi) => {
+        // Adjust the selection to encompass the whole word if the caret is inside one
+        const newSelectionRange = selectWord({ text: state0.text, selection: state0.selection });
+        const state1 = api.setSelectionRange(newSelectionRange);
 
-    buttonProps: { "aria-label": "Insert a quote" },
+        const breaksBeforeCount = getBreaksNeededForEmptyLineBefore(state1.text, state1.selection.start);
+        const breaksBefore = Array(breaksBeforeCount + 1).join("\n");
 
-    execute: (state) => {
-        let {text, selection} = getMarkdownStateFromDraftState(state);
-        selection = selectWordIfCaretIsInsideOne({text, selection});
+        const breaksAfterCount = getBreaksNeededForEmptyLineAfter(state1.text, state1.selection.end);
+        const breaksAfter = Array(breaksAfterCount + 1).join("\n");
 
-        let textInsertion;
+        // Replaces the current selection with the bold mark up
+        api.replaceSelection( `${breaksBefore}> ${state1.selectedText}${breaksAfter}`);
+        // Adjust the selection to not contain the **
 
-        textInsertion = insertBreaksBeforeSoThatThereIsAnEmptyLineBefore({text, selection});
-        text = textInsertion.newText;
-        selection = textInsertion.newSelection;
+        const selectionStart = state1.selection.start + breaksBeforeCount + 2;
+        const selectionEnd = selectionStart + state1.selectedText.length;
 
-        textInsertion = insertBefore(text, "> ", selection, false);
-        text = textInsertion.newText;
-        selection = textInsertion.newSelection;
-
-        textInsertion = insertBreaksAfterSoThatThereIsAnEmptyLineAfter({text, selection});
-        text = textInsertion.newText;
-        selection = textInsertion.newSelection;
-
-        return buildNewDraftState(state, {text, selection});
+        api.setSelectionRange({
+            start: selectionStart,
+            end: selectionEnd
+        });
     },
+    keyCommand: "quote",
 };

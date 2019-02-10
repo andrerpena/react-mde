@@ -373,12 +373,21 @@ body {
     flex-direction: row; }
     .mde-header .mde-tabs button {
       border-radius: 2px;
-      margin: 6px;
+      margin: 6px 3px;
       background-color: transparent;
       border: 1px solid transparent;
       cursor: pointer; }
+      .mde-header .mde-tabs button:first-child {
+        margin-left: 6px; }
       .mde-header .mde-tabs button.selected {
         border: 1px solid #c8ccd0; }
+  .mde-header .svg-icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    font-size: inherit;
+    overflow: visible;
+    vertical-align: -.125em; }
   .mde-header button:focus {
     outline: 0; }
   .mde-header ul.mde-header-group {
@@ -504,8 +513,10 @@ body {
 
 .mde-text {
   overflow-y: auto; }
-  .mde-text .public-DraftEditor-content {
+  .mde-text textarea {
     width: 100%;
+    height: 100%;
+    border: 0;
     padding: 10px; }
 
 .mde-preview .mde-preview-content {

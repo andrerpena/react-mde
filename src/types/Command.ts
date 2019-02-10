@@ -1,18 +1,15 @@
 import * as React from "react";
-import { EditorState } from "draft-js";
+import { TextApi, TextState } from "./CommandOptions";
 
-export interface ButtonContentOptions {
-  iconProvider: (iconName: string) => React.ReactNode;
-}
-
-export type ButtonContentBuilder = (options: ButtonContentOptions) => React.ReactNode;
+export type GetIcon = (iconName: string) => React.ReactNode;
 
 export interface Command {
+    name: string,
     buttonComponentClass?: React.ComponentClass | string;
-    buttonContentBuilder: ButtonContentBuilder;
+    icon?: (getIconFromProvider: GetIcon) => React.ReactNode;
     buttonProps?: any;
     children?: Command[];
-    execute?: (EditorState, data?) => EditorState;
+    execute?: (state: TextState, api: TextApi) => void;
     // Draft.js triggers Key Commands. the keyCommand property determines
     // which Draft.js key command should be handled by this react-mde command
     keyCommand?: string

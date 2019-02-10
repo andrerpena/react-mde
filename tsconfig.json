@@ -16,10 +16,5 @@
             "es2016",
             "es2016.array.include"
         ]
-    },
-    "include": [
-        "./src/**/*",
-        "./test/**/*",
-        "./.storybook/**/*"
-    ]
+    }
 }

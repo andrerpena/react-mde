@@ -1,9 +1,9 @@
 import * as React from "react";
-import {Command, ButtonContentOptions} from "../types";
+import {Command, GetIcon} from "../types";
 import {MdeToolbarButton} from "./MdeToolbarButton";
 
 export interface HeaderItemDropdownProps {
-    buttonContentOptions: ButtonContentOptions;
+    getIcon: GetIcon;
     buttonContent: React.ReactNode;
     buttonProps: any;
     commands: Command[];
@@ -76,14 +76,15 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
     }
 
     render() {
-        const {buttonContentOptions, commands, readOnly} = this.props;
+        const {getIcon, commands, readOnly} = this.props;
         const {open} = this.state;
 
         const items = commands.map((command, index) => (
             <MdeToolbarButton
                 key={`header-item${index}`}
+                name={command.name}
                 buttonProps={command.buttonProps}
-                buttonContent={command.buttonContentBuilder(buttonContentOptions)}
+                buttonContent={command.icon ? command.icon(getIcon) : getIcon(command.name)}
                 onClick={(e) => this.handleOnClickCommand(e, command)}
                 readOnly={readOnly}
             />

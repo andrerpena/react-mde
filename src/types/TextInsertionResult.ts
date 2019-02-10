@@ -1,10 +1,10 @@
 /**
  * The result of text being inserted
  */
-import { TextSelection } from "./TextSelection";
+import { TextRange } from "./TextRange";
 
 export interface TextInsertionResult {
     newText: string;
-    newSelection?: TextSelection;
+    newSelection?: TextRange;
     insertionLength: number;
 }

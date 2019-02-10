@@ -1,20 +1,18 @@
-import * as ReactMdeCommands from "./commands";
-import * as ReactMdeTypes from "./types";
-import * as ReactMdeComponents from "./components";
-import * as DraftUtil from "./util/DraftUtil";
-import * as MarkdownUtil from "./util/MarkdownUtil";
-import { ReactMde, ReactMdeProps } from "./ReactMde";
+import * as MarkdownUtil from "./util/MarkdownUtil"
+import * as commands from "./commands";
+import { ReactMde, ReactMdeProps } from "./components";
+import { IconProviderProps, SvgIcon, MdeFontAwesomeIcon } from "./icons";
 import { L18n } from "./types/L18n";
 
 
 export {
-  ReactMdeTypes,
-  ReactMdeCommands,
-  ReactMdeComponents,
   ReactMdeProps,
-  DraftUtil,
   MarkdownUtil,
-  L18n
+  L18n,
+  SvgIcon,
+  MdeFontAwesomeIcon,
+  IconProviderProps,
+  commands
 };
 
 export default ReactMde;
