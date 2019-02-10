@@ -15,14 +15,26 @@
 
     button {
       border-radius: $mde-border-radius;
-      margin: 6px;
+      margin: 6px 3px;
       background-color: transparent;
       border: 1px solid transparent;
       cursor: pointer;
+      &:first-child {
+        margin-left: 6px;
+      }
       &.selected {
         border: 1px solid $mde-border-color
       }
     }
+  }
+
+  .svg-icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    font-size: inherit;
+    overflow: visible;
+    vertical-align: -.125em;
   }
 
   button:focus {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Command, ButtonContentOptions, CommandGroup } from "../types";
+import {Command, CommandGroup, GetIcon} from "../types";
 import { MdeToolbarButtonGroup } from "./MdeToolbarButtonGroup";
 import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
@@ -8,7 +8,7 @@ import { Tab } from "../types/Tab";
 import { L18n } from "..";
 
 export interface MdeToolbarProps {
-  buttonContentOptions: ButtonContentOptions;
+  getIconFromProvider: GetIcon;
   commands: CommandGroup[];
   onCommand: (command: Command) => void;
   onTabChange: (tab: Tab) => void;
@@ -26,7 +26,7 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
 
   render () {
     const { l18n } = this.props;
-    const { buttonContentOptions, children, commands, onCommand, readOnly } = this.props;
+    const { getIconFromProvider, children, commands, onCommand, readOnly } = this.props;
     if ((!commands || commands.length === 0) && !children) {
       return null;
     }
@@ -56,20 +56,20 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
                   if (c.children) {
                     return (
                       <MdeToolbarDropdown
-                        key={j}
-                        buttonProps={c.buttonProps}
-                        buttonContentOptions={buttonContentOptions}
-                        buttonContent={c.buttonContentBuilder(buttonContentOptions)}
-                        commands={c.children}
-                        onCommand={(cmd) => onCommand(cmd)}
-                        readOnly={readOnly}
+                          key={j}
+                          buttonProps={c.buttonProps}
+                          getIconFromProvider={getIconFromProvider}
+                          buttonContent={c.icon ? c.icon(getIconFromProvider) : getIconFromProvider(c.name)}
+                          commands={c.children}
+                          onCommand={(cmd) => onCommand(cmd)}
+                          readOnly={readOnly}
                       />
                     );
                   }
                   return <MdeToolbarButton
                     key={j}
                     name={c.name}
-                    buttonContent={c.buttonContentBuilder(buttonContentOptions)}
+                    buttonContent={c.icon ? c.icon(getIconFromProvider) : getIconFromProvider(c.name)}
                     buttonProps={c.buttonProps}
                     onClick={() => onCommand(c as Command)}
                     readOnly={readOnly}

@@ -5,7 +5,6 @@ import {getBreaksNeededForEmptyLineAfter, getBreaksNeededForEmptyLineBefore, sel
 
 export const quoteCommand: Command = {
     name: "quote",
-    buttonContentBuilder: ({ iconProvider }) => iconProvider("quote-right"),
     buttonProps: { "aria-label": "Add bold text" },
     execute: (state0: TextState, api: TextApi) => {
         // Adjust the selection to encompass the whole word if the caret is inside one

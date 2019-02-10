@@ -18,27 +18,26 @@ function setHeader(state0: TextState, api: TextApi, prefix: string) {
 
 export const headerCommand: Command = {
     name: "header",
-    buttonContentBuilder: ({iconProvider}) => iconProvider("heading"),
     buttonProps: {"aria-label": "Add header"},
     children: [
         {
             name: "header-1",
-            buttonContentBuilder: () => <p className="header-1">Header 1</p>,
+            icon: () => <p className="header-1">Header 1</p>,
             execute: (state: TextState, api: TextApi) => setHeader(state, api, "# "),
         },
         {
             name: "header-2",
-            buttonContentBuilder: () => <p className="header-2">Header 2</p>,
+            icon: () => <p className="header-2">Header 2</p>,
             execute: (state: TextState, api: TextApi) => setHeader(state, api, "## "),
         },
         {
             name: "header-3",
-            buttonContentBuilder: () => <p className="header-3">Header 3</p>,
+            icon: () => <p className="header-3">Header 3</p>,
             execute: (state: TextState, api: TextApi) => setHeader(state, api, "### "),
         },
         {
             name: "header-4",
-            buttonContentBuilder: () => <p className="header-4">Header 4</p>,
+            icon: () => <p className="header-4">Header 4</p>,
             execute: (state: TextState, api: TextApi) => setHeader(state, api, "#### "),
         },
     ],

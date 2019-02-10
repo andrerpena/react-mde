@@ -4,8 +4,7 @@ import { TextApi, TextState } from "../types/CommandOptions";
 import { selectWord } from "../util/MarkdownUtil";
 
 export const italicCommand: Command = {
-  name: "bold",
-  buttonContentBuilder: ({ iconProvider }) => iconProvider("italic"),
+  name: "italic",
   buttonProps: { "aria-label": "Add italic text" },
   execute: (state0: TextState, api: TextApi) => {
     // Adjust the selection to encompass the whole word if the caret is inside one

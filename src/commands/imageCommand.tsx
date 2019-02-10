@@ -5,7 +5,6 @@ import {selectWord} from "../util/MarkdownUtil";
 
 export const imageCommand: Command = {
     name: "image",
-    buttonContentBuilder: ({iconProvider}) => iconProvider("image"),
     buttonProps: {"aria-label": "Add image"},
     execute: (state0: TextState, api: TextApi) => {
         // Adjust the selection to encompass the whole word if the caret is inside one
