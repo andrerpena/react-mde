@@ -1,3 +1,9 @@
+/*!
+ * The MIT License
+   Copyright (c) 2018 Dmitriy Kubyshkin
+   Copied from https://github.com/grassator/insert-text-at-cursor
+ */
+
 /**
  * @param {HTMLElement} input
  * @return {boolean}

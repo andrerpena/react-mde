@@ -5,13 +5,12 @@ import {
 } from "../types";
 import {getDefaultCommands} from "../commands";
 import {TextArea, MdePreview, MdeToolbar, MdeFontAwesomeIcon} from ".";
-import * as classNames from "classnames";
 import {extractCommandMap} from "../util/CommandUtils";
 import {Tab} from "../types/Tab";
 import {L18n} from "..";
 import {enL18n} from "../l18n/react-mde.en";
 import {CommandOrchestrator, TextAreaCommandOrchestrator} from "../commandOrchestrator";
-import {SvgIcon} from "../icons/SvgIcon";
+import {classNames} from "../util/ClassNames";
 
 export interface ReactMdeProps {
     value: string;

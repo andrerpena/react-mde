@@ -3,9 +3,9 @@ import {Command, CommandGroup, GetIcon} from "../types";
 import { MdeToolbarButtonGroup } from "./MdeToolbarButtonGroup";
 import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
-import * as classNames from "classnames";
 import { Tab } from "../types/Tab";
 import { L18n } from "..";
+import {classNames} from "../util/ClassNames";
 
 export interface MdeToolbarProps {
   getIconFromProvider: GetIcon;
