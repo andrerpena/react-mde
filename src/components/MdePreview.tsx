@@ -1,7 +1,6 @@
 import * as React from "react";
 import {GenerateMarkdownPreview} from "../types";
-import {Simulate} from "react-dom/test-utils";
-import load = Simulate.load;
+import * as classNames from "classnames";
 
 export interface ReactMdePreviewProps {
     className?: string;
@@ -39,10 +38,10 @@ export class MdePreview extends React.Component<ReactMdePreviewProps, ReactMdePr
 
     render() {
         const {className, minHeight, emptyPreviewHtml} = this.props;
-        const {loading, html} = this.state;
+        const {html, loading} = this.state;
         const finalHtml = loading ? emptyPreviewHtml : html;
         return (
-            <div className={`mde-preview ${className || ""}`} style={{minHeight: minHeight + 10}}>
+            <div className={classNames("mde-preview", {className, loading})} style={{minHeight: minHeight + 10}}>
                 <div
                     className="mde-preview-content"
                     dangerouslySetInnerHTML={{__html: finalHtml || "<p>&nbsp;</p>"}}
