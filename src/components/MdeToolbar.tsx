@@ -5,10 +5,10 @@ import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
 import { Tab } from "../types/Tab";
 import { L18n } from "..";
-import {classNames} from "../util/ClassNames";
+import classNames from "classnames"
 
 export interface MdeToolbarProps {
-  getIconFromProvider: GetIcon;
+  getIcon: GetIcon;
   commands: CommandGroup[];
   onCommand: (command: Command) => void;
   onTabChange: (tab: Tab) => void;
@@ -26,7 +26,7 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
 
   render () {
     const { l18n } = this.props;
-    const { getIconFromProvider, children, commands, onCommand, readOnly } = this.props;
+    const { getIcon, children, commands, onCommand, readOnly } = this.props;
     if ((!commands || commands.length === 0) && !children) {
       return null;
     }
@@ -58,8 +58,8 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
                       <MdeToolbarDropdown
                           key={j}
                           buttonProps={c.buttonProps}
-                          getIconFromProvider={getIconFromProvider}
-                          buttonContent={c.icon ? c.icon(getIconFromProvider) : getIconFromProvider(c.name)}
+                          getIcon={getIcon}
+                          buttonContent={c.icon ? c.icon(getIcon) : getIcon(c.name)}
                           commands={c.children}
                           onCommand={(cmd) => onCommand(cmd)}
                           readOnly={readOnly}
@@ -69,7 +69,7 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
                   return <MdeToolbarButton
                     key={j}
                     name={c.name}
-                    buttonContent={c.icon ? c.icon(getIconFromProvider) : getIconFromProvider(c.name)}
+                    buttonContent={c.icon ? c.icon(getIcon) : getIcon(c.name)}
                     buttonProps={c.buttonProps}
                     onClick={() => onCommand(c as Command)}
                     readOnly={readOnly}

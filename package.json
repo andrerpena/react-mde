@@ -1,6 +1,6 @@
 {
   "name": "react-mde",
-  "version": "7.0.0-alpha.3",
+  "version": "7.0.0",
   "description": "React Markdown Editor",
   "main": "./lib/js/index.js",
   "types": "./lib/definitions/index.d.ts",
@@ -93,6 +93,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "insert-text-at-cursor": "^0.1.2",
     "npm": "^6.1.0"
-  }
+  },
+  "style": "react-mde/lib/styles/css/react-mde-all.css"
 }

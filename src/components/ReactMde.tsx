@@ -10,8 +10,8 @@ import {Tab} from "../types/Tab";
 import {L18n} from "..";
 import {enL18n} from "../l18n/react-mde.en";
 import {CommandOrchestrator, TextAreaCommandOrchestrator} from "../commandOrchestrator";
-import {classNames} from "../util/ClassNames";
 import {SvgIcon} from "../icons";
+import classNames from "classnames"
 
 export interface ReactMdeProps {
     value: string;
@@ -24,7 +24,7 @@ export interface ReactMdeProps {
     onTabChange: (tab: "write" | "preview") => void,
     className?: string;
     commands?: CommandGroup[];
-    getIconFromProvider?: GetIcon;
+    getIcon?: GetIcon;
     emptyPreviewHtml?: string;
     readOnly?: boolean;
     textAreaProps?: Partial<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>>;
@@ -52,7 +52,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
     static defaultProps: Partial<ReactMdeProps> = {
         commands: getDefaultCommands(),
-        getIconFromProvider: name => <SvgIcon icon={name}/>,
+        getIcon: name => <SvgIcon icon={name}/>,
         emptyPreviewHtml: "<p>&nbsp;</p>",
         readOnly: false,
         l18n: enL18n,
@@ -122,7 +122,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     render() {
 
         const {
-            getIconFromProvider,
+            getIcon,
             commands,
             className,
             emptyPreviewHtml,
@@ -138,7 +138,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         return (
             <div className={classNames("react-mde", "react-mde-tabbed-layout", className)}>
                 <MdeToolbar
-                    getIconFromProvider={getIconFromProvider}
+                    getIcon={getIcon}
                     commands={commands}
                     onCommand={this.handleCommand}
                     onTabChange={this.handleTabChange}
