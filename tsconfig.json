@@ -9,9 +9,6 @@
         "typeRoots": [
             "./node_modules/@types"
         ],
-        "exclude": [
-            "./lib"
-        ],
         "lib": [
             "dom",
             "es2015",

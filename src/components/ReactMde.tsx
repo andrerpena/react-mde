@@ -4,14 +4,14 @@ import {
     GenerateMarkdownPreview, GetIcon
 } from "../types";
 import {getDefaultCommands} from "../commands";
-import { MdePreview, MdeToolbar, TextArea} from ".";
+import {MdePreview, MdeToolbar, TextArea} from ".";
 import {extractCommandMap} from "../util/CommandUtils";
 import {Tab} from "../types/Tab";
 import {L18n} from "..";
 import {enL18n} from "../l18n/react-mde.en";
 import {CommandOrchestrator, TextAreaCommandOrchestrator} from "../commandOrchestrator";
 import {classNames} from "../util/ClassNames";
-import {SvgIcon} from "../icons/SvgIcon";
+import {SvgIcon} from "../icons";
 
 export interface ReactMdeProps {
     value: string;
@@ -20,6 +20,8 @@ export interface ReactMdeProps {
     minEditorHeight: number;
     maxEditorHeight: number;
     minPreviewHeight: number;
+    currentTab: "write" | "preview";
+    onTabChange: (tab: "write" | "preview") => void,
     className?: string;
     commands?: CommandGroup[];
     getIconFromProvider?: GetIcon;
@@ -30,9 +32,6 @@ export interface ReactMdeProps {
 }
 
 export interface ReactMdeState {
-    currentTab: Tab,
-    previewLoading: boolean,
-    previewHtml?: string,
     editorHeight: number
 }
 
@@ -59,14 +58,13 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         l18n: enL18n,
         minEditorHeight: 200,
         maxEditorHeight: 500,
-        minPreviewHeight: 200
+        minPreviewHeight: 200,
+        currentTab: "write"
     };
 
     constructor(props: ReactMdeProps) {
         super(props);
         this.state = {
-            currentTab: "write",
-            previewLoading: false,
             editorHeight: props.minEditorHeight
         };
         this.keyCommandMap = {};
@@ -103,34 +101,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     };
 
     handleTabChange = (newTab: Tab) => {
-        const {value} = this.props;
-
-        // TODO: Prevent tab change if the preview is being loaded. The reason
-        // is that, if the keeps changing text and tabs, depending on the time
-        // the preview promises take to settle, there might be a race condition.
-        this.setState({
-            currentTab: newTab,
-            // previewHtml is always set to null. If the user has clicked the
-            // preview tab, previewHtml will be set as soon as the promise resolves
-            previewHtml: null,
-            previewLoading: newTab === "preview"
-        });
-
-        if (newTab === "preview") {
-            // fire preview load
-            const {generateMarkdownPreview} = this.props;
-            generateMarkdownPreview(value).then((previewHtml) => {
-                this.setState({
-                    // the current tab will be preview because changing tabs during preview
-                    // load should be prevented
-                    currentTab: "preview",
-                    // previewHtml is always set to null. If the user has clicked the
-                    // preview tab, previewHtml will be set as soon as the promise resolves
-                    previewHtml,
-                    previewLoading: false
-                });
-            });
-        }
+        const {onTabChange} = this.props;
+        onTabChange(newTab)
     };
 
     componentDidMount() {
@@ -158,7 +130,9 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             value,
             l18n,
             minPreviewHeight,
-            textAreaProps
+            textAreaProps,
+            currentTab,
+            generateMarkdownPreview
         } = this.props;
 
         return (
@@ -168,12 +142,12 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
                     commands={commands}
                     onCommand={this.handleCommand}
                     onTabChange={this.handleTabChange}
-                    tab={this.state.currentTab}
+                    tab={currentTab}
                     readOnly={readOnly}
                     l18n={l18n}
                 />
                 {
-                    this.state.currentTab === "write" ?
+                    currentTab === "write" ?
                         <>
               <TextArea
                   editorRef={this.setTextAreaRef}
@@ -198,10 +172,10 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
                         :
                         < MdePreview
                             previewRef={(c) => this.previewRef = c}
-                            html={this.state.previewHtml}
-                            loading={this.state.previewLoading}
                             emptyPreviewHtml={emptyPreviewHtml}
                             minHeight={minPreviewHeight}
+                            generateMarkdownPreview={generateMarkdownPreview}
+                            markdown={value}
                         />
                 }
             </div>

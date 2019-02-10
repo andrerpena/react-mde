@@ -15,43 +15,6 @@ A simple yet powerful and extensible Markdown Editor editor for React.
     // 5.8 version:
     npm i react-mde
     
-## Mobile
-
-React-mde currently [does not work properly on mobile](https://github.com/andrerpena/react-mde/issues/111) due to a [a problem with Draftjs](https://github.com/facebook/draft-js/issues/102).
-It will be fixed as soon as Facebook fixes Draft.js. On the flip-side, neither Github or Stackoverflow have
-rich Markdown editor on mobile so the recommendation is just replacing React-mde with a `textarea`.
-
-## Dependencies
-
-React-mde currently depends on:
-
-- [Draft.js](https://draftjs.org/). This facilitates features that would otherwise be quite
-difficult. The best examples being history management, mentions and pasting files.
-<!-- -->
-
-    npm i --save draft-js
-
-Don't forget to [include the Draft.css](https://draftjs.org/docs/advanced-topics-issues-and-pitfalls.html#missing-draft-css)
-file.
-
-- [Font Awesome 5.*](https://fontawesome.com/) for the icons. This is not a hard dependency and can be changed (see the **Customizing Icons** section below).
-To use Font Awesome icons, install [using your preferred method](https://fontawesome.com/how-to-use/svg-with-js).
-The easiest is just add this to `<head/>`:
-<!-- -->
-
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-
-It is possible to use React-mde with Font Awesome 4 (and possibly earlier versions) – see below under 'Customizing Icons'.
-
-## Optional dependencies
-
-- [Showdown](https://github.com/showdownjs/showdown). React-mde is not opinionated as to how to transform markdown into HTML and this can be done both in client-side,
-like StackOverflow, or in server-side, like GitHub. The easiest way is to use Showdown and process it in client-side. If you
-decide to do so, install Showdown:
-<!-- -->
-
-    npm i --save showdown
-
 ## Using
 
 React-mde is a completely controlled component.
