@@ -4,15 +4,11 @@ A simple yet powerful and extensible Markdown Editor editor for React.
 
 ## Demo
 
-- [Demo](http://andrerpena.me/react-mde/). [Source](https://github.com/andrerpena/react-mde/tree/master/demo).
-- [Demo on CodeSandbox](https://codesandbox.io/s/o5vpjwyp79).
+- [Demo](http://andrerpena.me/react-mde/). [Source in TypeScript](https://github.com/andrerpena/react-mde/tree/master/demo).
+- [Demo project in JSX](https://github.com/andrerpena/react-mde-test).
 
 ## Installing
 
-    // 6.0.0-alpha.1 version:
-    npm i react-mde@6.0.0-alpha.1
-
-    // 5.8 version:
     npm i react-mde
     
 ## Using
