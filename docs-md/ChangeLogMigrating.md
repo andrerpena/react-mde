@@ -1,5 +1,13 @@
 # Change log / Migrating
 
+## From 6.* to 7.*
+
+Major differences
+
+- No more Draft.js
+- No more FontAwesome, even though you can still use it if you want 
+- No more external dependencies
+
 ## From 5.* to 6.*
 
 Major differences

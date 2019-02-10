@@ -23,5 +23,16 @@ const getDefaultCommands: () => CommandGroup[] = () => [
 
 export {
     boldCommand,
+    italicCommand,
+    strikeThroughCommand,
+    CommandGroup,
+    headerCommand,
+    linkCommand,
+    quoteCommand,
+    codeCommand,
+    imageCommand,
+    checkedListCommand,
+    orderedListCommand,
+    unorderedListCommand,
     getDefaultCommands
 };

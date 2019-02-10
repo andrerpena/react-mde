@@ -39,9 +39,9 @@ gulp.task('copy-index', function () {
 });
 
 gulp.task('build-demo', ['copy-index'], function () {
-  return gulp.src('demo/client.ts')
-    .pipe(webpackStream(require('./webpack.config.demo.prod.js'), require("webpack")))
-    .pipe(gulp.dest('docs/'));
+    return gulp.src('demo/client.ts')
+        .pipe(webpackStream(require('./webpack.config.demo.prod.js'), require("webpack")))
+        .pipe(gulp.dest('docs/'))
 });
 
 // all

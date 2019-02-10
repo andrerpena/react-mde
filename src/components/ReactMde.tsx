@@ -1,16 +1,17 @@
 import * as React from "react";
 import {
-    Command,
-    GenerateMarkdownPreview, CommandGroup, GetIcon
+    Command, CommandGroup,
+    GenerateMarkdownPreview, GetIcon
 } from "../types";
 import {getDefaultCommands} from "../commands";
-import {TextArea, MdePreview, MdeToolbar, MdeFontAwesomeIcon} from ".";
+import { MdePreview, MdeToolbar, TextArea} from ".";
 import {extractCommandMap} from "../util/CommandUtils";
 import {Tab} from "../types/Tab";
 import {L18n} from "..";
 import {enL18n} from "../l18n/react-mde.en";
 import {CommandOrchestrator, TextAreaCommandOrchestrator} from "../commandOrchestrator";
 import {classNames} from "../util/ClassNames";
+import {SvgIcon} from "../icons/SvgIcon";
 
 export interface ReactMdeProps {
     value: string;
@@ -52,7 +53,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
     static defaultProps: Partial<ReactMdeProps> = {
         commands: getDefaultCommands(),
-        getIconFromProvider: name => <MdeFontAwesomeIcon icon={name}/>,
+        getIconFromProvider: name => <SvgIcon icon={name}/>,
         emptyPreviewHtml: "<p>&nbsp;</p>",
         readOnly: false,
         l18n: enL18n,
