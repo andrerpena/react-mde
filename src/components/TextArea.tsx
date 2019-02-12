@@ -27,15 +27,13 @@ export class TextArea extends React.Component<MdeEditorProps, {}> {
       value
     } = this.props;
     return (
-      <div className={`mde-text ${className || ""}`} style={{ height }}>
-        <textarea
+        <textarea className={`mde-text ${className || ""}`} style={{ height }}
           ref={editorRef}
           onChange={this.handleOnChange}
           readOnly={readOnly}
           value={value}
           {...textAreaProps}
         />
-      </div>
     );
   }
 }
