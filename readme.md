@@ -11,6 +11,12 @@ A simple yet powerful and extensible Markdown Editor editor for React.
 
     npm i react-mde
     
+## Markdown Preview
+
+React-mde is agnostic regarding how to preview Markdown. The examples will use [Showdown](https://github.com/showdownjs/showdown)
+
+    npm install showdown
+    
 ## Using
 
 React-mde is a completely controlled component.
