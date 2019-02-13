@@ -42,7 +42,7 @@ export class App extends React.Component<{}, AppState> {
                     generateMarkdownPreview={markdown =>
                         Promise.resolve(this.converter.makeHtml(markdown))
                     }
-                    currentTab={this.state.tab}
+                    selectedTab={this.state.tab}
                 />
             </div>
         );

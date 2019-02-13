@@ -16,12 +16,12 @@ import classNames from "classnames"
 export interface ReactMdeProps {
     value: string;
     onChange: (value: string) => void;
+    selectedTab: "write" | "preview";
+    onTabChange: (tab: "write" | "preview") => void,
     generateMarkdownPreview: GenerateMarkdownPreview;
     minEditorHeight: number;
     maxEditorHeight: number;
     minPreviewHeight: number;
-    currentTab: "write" | "preview";
-    onTabChange: (tab: "write" | "preview") => void,
     className?: string;
     commands?: CommandGroup[];
     getIcon?: GetIcon;
@@ -59,7 +59,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         minEditorHeight: 200,
         maxEditorHeight: 500,
         minPreviewHeight: 200,
-        currentTab: "write"
+        selectedTab: "write"
     };
 
     constructor(props: ReactMdeProps) {
@@ -131,7 +131,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             l18n,
             minPreviewHeight,
             textAreaProps,
-            currentTab,
+            selectedTab,
             generateMarkdownPreview
         } = this.props;
 
@@ -142,12 +142,12 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
                     commands={commands}
                     onCommand={this.handleCommand}
                     onTabChange={this.handleTabChange}
-                    tab={currentTab}
+                    tab={selectedTab}
                     readOnly={readOnly}
                     l18n={l18n}
                 />
                 {
-                    currentTab === "write" ?
+                    selectedTab === "write" ?
                         <>
               <TextArea
                   editorRef={this.setTextAreaRef}
