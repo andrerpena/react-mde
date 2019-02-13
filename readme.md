@@ -83,8 +83,10 @@ given a command name.
 
 The types are described below
 
-- **value**: string**: The Markdown value.
+- **value: string**: The Markdown value.
 - **onChange**: (value: string): Event handler for the `onChange` event.
+- **selectedTab: "write" | "preview"**: The currently selected tab.
+- **onTabChange: (tab) => void**: Function called when the selected tab changes.
 - **className?: string**: Optional class name to be added to the top level element.
 - **commands?: CommandGroup[]**: An array of `CommandGroup`, which, each one, contain a `commands` property (array of `Command`). If no commands are specified, the default will be used. Commands are explained in more details below.
 - **generateMarkdownPreview: (markdown: string) => Promise<string>;**: Function that should return the generated HTML for the preview. If this `prop` is falsy, then no preview is going to be generated.
@@ -93,7 +95,7 @@ options. It is recommended to [inspect the layouts source code](https://github.c
 while the documentation is not complete.
 - **emptyPreviewHtml**: What to display in the preview in case there is no markdown. 
 - **readOnly?: boolean**: Flag to render the editor in read-only mode.
-- **draftEditorProps**: Extra props to be passed to the Draft.js `Editor` component.
+- **textAreaProps**: Extra props to be passed to the `textarea` component.
 - **l18n**: A localization option. It contains the strings `write` and `preview`.
 - **minEditorHeight (number)**: The minimum height of the editor.
 - **maxEditorHeight (number)**: The max height of the editor (after that, it will scroll).
