@@ -33,6 +33,7 @@ class VerticalLayoutStoryComponent extends React.Component<{}, State> {
     };
 
     render() {
+        const cleanHtml = (markdown) => Promise.resolve(markdown);
         return (
             <ReactMde
                 layout="tabbed"
@@ -41,6 +42,7 @@ class VerticalLayoutStoryComponent extends React.Component<{}, State> {
                 generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
                 readOnly={false}
                 onTabChange={this.onTabChange}
+                cleanHtml={cleanHtml}
             />
         );
     }

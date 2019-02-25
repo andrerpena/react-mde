@@ -41,8 +41,7 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
      */
     render() {
 
-        const { buttonContentOptions, commands, mdeEditorState, emptyPreviewHtml, readOnly, otherProps } = this.props;
-
+        const { buttonContentOptions, commands, mdeEditorState, emptyPreviewHtml, readOnly, otherProps, cleanHtml } = this.props;
         let styleTabCode = "mde-tab";
         let styleTabPreview = "mde-tab";
         const isReadOnly = readOnly || this.state.tab === TAB_PREVIEW;
@@ -97,6 +96,7 @@ export class TabbedLayout extends React.Component<LayoutProps, {}> {
                             previewRef={(c) => this.previewRef = c}
                             html={mdeEditorState ? mdeEditorState.html : ""}
                             emptyPreviewHtml={emptyPreviewHtml}
+                            cleanHtml={cleanHtml}
                         />
                 }
             </div>

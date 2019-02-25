@@ -19,6 +19,7 @@ export interface ReactMdeProps {
     readOnly?: boolean;
     otherProps?: any;
     onTabChange?: any;
+    cleanHtml?: any;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps> {
@@ -105,7 +106,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
 
     render() {
         const Layout = layoutMap[this.props.layout];
-        const {buttonContentOptions, commands, layoutOptions, className, emptyPreviewHtml, readOnly, otherProps} = this.props;
+        const {buttonContentOptions, commands, layoutOptions, className, emptyPreviewHtml, readOnly, otherProps, cleanHtml} = this.props;
         const {editorState} = this.props;
         let finalEditorState: MdeState = editorState;
         if (!finalEditorState || !finalEditorState.draftEditorState) {
@@ -130,6 +131,7 @@ export class ReactMde extends React.Component<ReactMdeProps> {
                     readOnly={readOnly}
                     otherProps={otherProps}
                     onTabChange={this.onTabChange}
+                    cleanHtml={cleanHtml}
                 />
             </div>
         );

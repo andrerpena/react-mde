@@ -14,4 +14,5 @@ export interface LayoutProps {
     readOnly: boolean;
     otherProps?: any;
     onTabChange?: any;
+    cleanHtml?: any;
 }
