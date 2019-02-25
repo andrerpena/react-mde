@@ -16,4 +16,3 @@ export declare class MdeEditor extends React.Component<MdeEditorProps, {}> {
     handleTab: (event: any) => void;
     render(): JSX.Element;
 }
-//# sourceMappingURL=MdeEditor.d.ts.map

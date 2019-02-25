@@ -4,4 +4,3 @@ export interface MdeState {
     html?: string;
     draftEditorState?: EditorState;
 }
-//# sourceMappingURL=MdeState.d.ts.map

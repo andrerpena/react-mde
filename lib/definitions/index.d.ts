@@ -7,4 +7,3 @@ import * as MarkdownUtil from "./util/MarkdownUtil";
 import { ReactMde, ReactMdeProps } from "./ReactMde";
 export { ReactMdeTypes, ReactMdeCommands, ReactMdeComponents, ReactMdeLayoutComponents, ReactMdeProps, DraftUtil, MarkdownUtil, };
 export default ReactMde;
-//# sourceMappingURL=index.d.ts.map

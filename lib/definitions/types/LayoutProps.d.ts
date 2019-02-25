@@ -12,5 +12,5 @@ export interface LayoutProps {
     readOnly: boolean;
     otherProps?: any;
     onTabChange?: any;
+    cleanHtml?: any;
 }
-//# sourceMappingURL=LayoutProps.d.ts.map

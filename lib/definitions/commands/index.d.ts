@@ -13,4 +13,3 @@ import { tabCommand } from "./tabCommand";
 import { Command } from "../types";
 declare const getDefaultCommands: () => Command[][];
 export { boldCommand, codeCommand, headerCommand, imageCommand, italicCommand, strikethroughCommand, linkCommand, orderedListCommand, quoteCommand, unorderedListCommand, checkListCommand, tabCommand, getDefaultCommands, };
-//# sourceMappingURL=index.d.ts.map

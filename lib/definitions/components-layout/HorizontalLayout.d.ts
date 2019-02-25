@@ -17,4 +17,3 @@ export declare class HorizontalLayout extends React.Component<LayoutProps, {}> {
      */
     render(): JSX.Element;
 }
-//# sourceMappingURL=HorizontalLayout.d.ts.map

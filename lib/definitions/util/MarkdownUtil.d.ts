@@ -80,4 +80,3 @@ export declare function onTab({ text, selection }: MarkdownState, reverse: boole
  * @returns
  */
 export declare function makeHeader({ text, selection }: MarkdownState, insertionBefore: string): MarkdownState;
-//# sourceMappingURL=MarkdownUtil.d.ts.map

@@ -5,4 +5,3 @@ export * from "./MdeToolbarIcon";
 export * from "./MdePreview";
 export * from "./MdeEditor";
 export * from "./MdeToolbar";
-//# sourceMappingURL=index.d.ts.map

@@ -17,4 +17,3 @@ export declare class VerticalLayout extends React.Component<LayoutProps, {}> {
      */
     render(): JSX.Element;
 }
-//# sourceMappingURL=VerticalLayout.d.ts.map

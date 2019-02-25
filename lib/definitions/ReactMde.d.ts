@@ -15,6 +15,7 @@ export interface ReactMdeProps {
     readOnly?: boolean;
     otherProps?: any;
     onTabChange?: any;
+    cleanHtml?: any;
 }
 export declare class ReactMde extends React.Component<ReactMdeProps> {
     static defaultProps: Partial<ReactMdeProps>;
@@ -27,4 +28,3 @@ export declare class ReactMde extends React.Component<ReactMdeProps> {
     componentDidUpdate(): Promise<void>;
     render(): JSX.Element;
 }
-//# sourceMappingURL=ReactMde.d.ts.map

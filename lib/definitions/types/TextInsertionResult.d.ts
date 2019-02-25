@@ -7,4 +7,3 @@ export interface TextInsertionResult {
     newSelection?: TextSelection;
     insertionLength: number;
 }
-//# sourceMappingURL=TextInsertionResult.d.ts.map

@@ -23,4 +23,3 @@ export declare class TabbedLayout extends React.Component<LayoutProps, {}> {
      */
     render(): JSX.Element;
 }
-//# sourceMappingURL=TabbedLayout.d.ts.map

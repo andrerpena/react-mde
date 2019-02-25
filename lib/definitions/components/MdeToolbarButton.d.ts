@@ -9,4 +9,3 @@ export interface MdeToolbarButtonProps {
     otherProps?: any;
 }
 export declare const MdeToolbarButton: React.SFC<MdeToolbarButtonProps>;
-//# sourceMappingURL=MdeToolbarButton.d.ts.map

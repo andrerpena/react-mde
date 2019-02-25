@@ -12,4 +12,3 @@ export interface Command {
     CustomButtonComponent?: any;
     setValues?: any;
 }
-//# sourceMappingURL=Command.d.ts.map

@@ -17,4 +17,3 @@ export declare class NoPreviewLayout extends React.Component<LayoutProps, {}> {
      */
     render(): JSX.Element;
 }
-//# sourceMappingURL=NoPreviewLayout.d.ts.map

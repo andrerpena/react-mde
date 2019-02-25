@@ -21,8 +21,7 @@ export declare class MdeToolbarDropdown extends React.Component<HeaderItemDropdo
     openDropdown: () => void;
     closeDropdown(): void;
     clickedOutside: (e: Event) => boolean;
-    handleOnClickCommand: (e: React.SyntheticEvent<any>, command: Command) => void;
+    handleOnClickCommand: (e: React.SyntheticEvent<any, Event>, command: Command) => void;
     handleClick: () => void;
     render(): JSX.Element;
 }
-//# sourceMappingURL=MdeToolbarDropdown.d.ts.map

@@ -6,4 +6,3 @@ export * from "./MdeState";
 export * from "./TextInsertionResult";
 export * from "./TextSelection";
 export * from "./Word";
-//# sourceMappingURL=index.d.ts.map
