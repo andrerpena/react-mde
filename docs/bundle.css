@@ -396,6 +396,8 @@ body {
     list-style: none;
     display: flex;
     flex-wrap: nowrap; }
+    .mde-header ul.mde-header-group.hidden {
+      visibility: hidden; }
     .mde-header ul.mde-header-group li.mde-header-item {
       display: inline-block;
       position: relative;
