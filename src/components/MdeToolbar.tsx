@@ -1,11 +1,11 @@
 import * as React from "react";
-import {Command, CommandGroup, GetIcon} from "../types";
+import { Command, CommandGroup, GetIcon } from "../types";
 import { MdeToolbarButtonGroup } from "./MdeToolbarButtonGroup";
 import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
 import { Tab } from "../types/Tab";
 import { L18n } from "..";
-import classNames from "classnames"
+import classNames from "classnames";
 
 export interface MdeToolbarProps {
   getIcon: GetIcon;
@@ -24,7 +24,7 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
     onTabChange(tab);
   };
 
-  render () {
+  render() {
     const { l18n } = this.props;
     const { getIcon, children, commands, onCommand, readOnly } = this.props;
     if ((!commands || commands.length === 0) && !children) {
@@ -50,19 +50,19 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
         </div>
         {
           commands.map((commandGroup: CommandGroup, i: number) => (
-            <MdeToolbarButtonGroup key={i}>
+            <MdeToolbarButtonGroup key={i} hidden={this.props.tab === "preview"}>
               {
                 commandGroup.commands.map((c: Command, j) => {
                   if (c.children) {
                     return (
                       <MdeToolbarDropdown
-                          key={j}
-                          buttonProps={c.buttonProps}
-                          getIcon={getIcon}
-                          buttonContent={c.icon ? c.icon(getIcon) : getIcon(c.name)}
-                          commands={c.children}
-                          onCommand={(cmd) => onCommand(cmd)}
-                          readOnly={readOnly}
+                        key={j}
+                        buttonProps={c.buttonProps}
+                        getIcon={getIcon}
+                        buttonContent={c.icon ? c.icon(getIcon) : getIcon(c.name)}
+                        commands={c.children}
+                        onCommand={(cmd) => onCommand(cmd)}
+                        readOnly={readOnly}
                       />
                     );
                   }

@@ -48,6 +48,10 @@
     display: flex;
     flex-wrap: nowrap;
 
+    &.hidden {
+      visibility: hidden;
+    }
+
     li.mde-header-item {
       display: inline-block;
       position: relative;
