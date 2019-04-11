@@ -1,6 +1,6 @@
 import {boldCommand} from "./boldCommand";
 import {italicCommand} from "./italicCommand";
-import {strikeThroughCommand} from "./strikethroughCommand";
+import {strikeThroughCommand} from "./strikeThroughCommand";
 import {CommandGroup} from "../types";
 import {headerCommand} from "./headerCommand";
 import {linkCommand} from "./linkCommand";
