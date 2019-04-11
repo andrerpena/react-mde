@@ -1,5 +1,5 @@
 import * as React from "react";
-import classNames from "classnames";
+import { classNames } from "../util/ClassNames";
 
 export interface MdeToolbarButtonGroupProps {
   hidden: boolean

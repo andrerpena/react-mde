@@ -1,6 +1,6 @@
 import * as React from "react";
 import {GenerateMarkdownPreview} from "../types";
-import * as classNames from "classnames";
+import { classNames } from "../util/ClassNames";
 
 export interface ReactMdePreviewProps {
     className?: string;

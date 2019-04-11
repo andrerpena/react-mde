@@ -1,6 +1,6 @@
 import { Command, TextRange } from "./types";
 import { TextApi, TextState } from "./types/CommandOptions";
-import insertText = require("insert-text-at-cursor");
+import { insertText } from "./util/InsertTextAtPosition";
 
 export interface CommandOrchestrator {
   executeCommand (command: Command): void

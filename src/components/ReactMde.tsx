@@ -11,7 +11,7 @@ import { L18n } from "..";
 import { enL18n } from "../l18n/react-mde.en";
 import { CommandOrchestrator, TextAreaCommandOrchestrator } from "../commandOrchestrator";
 import { SvgIcon } from "../icons";
-import classNames from "classnames";
+import { classNames } from "../util/ClassNames";
 
 export interface ReactMdeProps {
   value: string;

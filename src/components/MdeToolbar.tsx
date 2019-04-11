@@ -5,7 +5,7 @@ import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
 import { Tab } from "../types/Tab";
 import { L18n } from "..";
-import classNames from "classnames";
+import { classNames } from "../util/ClassNames";
 
 export interface MdeToolbarProps {
   getIcon: GetIcon;

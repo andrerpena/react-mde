@@ -166,6 +166,12 @@ should be implemented.
 
 React-mde is [MIT licensed](https://github.com/andrerpena/react-mde/blob/master/LICENSE).
 
+## Third party
+
+In order to make React-mde zero deps, I've embedded two small libraries:
+- https://github.com/grassator/insert-text-at-cursor by https://twitter.com/d_kubyshkin
+- https://github.com/JedWatson/classnames by https://twitter.com/JedWatson
+
 ## About the author
 
 Made with :heart: by André Pena and [other awesome contributors](https://github.com/andrerpena/react-mde/graphs/contributors).
