@@ -11,7 +11,7 @@ export const strikeThroughCommand: Command = {
     const newSelectionRange = selectWord({ text: state0.text, selection: state0.selection });
     const state1 = api.setSelectionRange(newSelectionRange);
     // Replaces the current selection with the bold mark up
-    const state2 = api.replaceSelection(`_${state1.selectedText}_`);
+    const state2 = api.replaceSelection(`~~${state1.selectedText}~~`);
     // Adjust the selection to not contain the **
     api.setSelectionRange({
       start: state2.selection.end - 1 - state1.selectedText.length,
