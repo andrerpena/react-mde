@@ -17,9 +17,8 @@ export const quoteCommand: Command = {
         const breaksAfterCount = getBreaksNeededForEmptyLineAfter(state1.text, state1.selection.end);
         const breaksAfter = Array(breaksAfterCount + 1).join("\n");
 
-        // Replaces the current selection with the bold mark up
+        // Replaces the current selection with the quote mark up
         api.replaceSelection( `${breaksBefore}> ${state1.selectedText}${breaksAfter}`);
-        // Adjust the selection to not contain the **
 
         const selectionStart = state1.selection.start + breaksBeforeCount + 2;
         const selectionEnd = selectionStart + state1.selectedText.length;
