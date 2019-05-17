@@ -76,9 +76,9 @@ export const orderedListCommand: Command = {
 
 export const checkedListCommand: Command = {
     name: "checked-list",
-    buttonProps: {"aria-label": "Add ordered list"},
+    buttonProps: {"aria-label": "Add checked list"},
     execute: (state0: TextState, api: TextApi) => {
-        makeList(state0, api, (item, index) => `${index + 1}. `)
+        makeList(state0, api, (item, index) => `- [ ] `)
     },
     keyCommand: "code",
 };
