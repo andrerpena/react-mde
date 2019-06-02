@@ -18,5 +18,5 @@ export const strikeThroughCommand: Command = {
       end: state2.selection.end - 2
     });
   },
-  keyCommand: "strikethrough",
+  keyCommand: "strikeThrough",
 };
