@@ -4,7 +4,6 @@ import { ReactMde, ReactMdeProps } from "./components";
 import { IconProviderProps, SvgIcon, MdeFontAwesomeIcon } from "./icons";
 import { L18n } from "./types/L18n";
 
-
 export {
   ReactMdeProps,
   MarkdownUtil,
