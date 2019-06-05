@@ -98,8 +98,8 @@ The types are described below
 - **getIcon?: (commandName: string) => React.ReactNode }** An optional set of button content options, including an `iconProvider` to allow custom icon rendering.
 options. It is recommended to [inspect the layouts source code](https://github.com/andrerpena/react-mde/tree/master/src/components-layout) to see what options can be passed to each
 while the documentation is not complete.
-- **emptyPreview**: What to display in the preview in case there is no markdown. Value can be string, React Element or anything React can render.
-- **emptyPreviewHtml (deprecated)**: What to display in the preview in case there is no markdown. Deprecated in favor of emptyPreview
+- **loadingPreview**: What to display in the preview while it is loading. Value can be string, React Element or anything React can render.
+- **emptyPreviewHtml (deprecated)**: What to display in the preview while it is loading. Deprecated in favor of loadingPreview
 - **readOnly?: boolean**: Flag to render the editor in read-only mode.
 - **textAreaProps**: Extra props to be passed to the `textarea` component.
 - **l18n**: A localization option. It contains the strings `write` and `preview`.
