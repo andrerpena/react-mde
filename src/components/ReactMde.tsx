@@ -27,7 +27,7 @@ export interface ReactMdeProps {
   getIcon?: GetIcon;
   // deprecated. Use emptyPreview instead
   emptyPreviewHtml?: string;
-  emptyPreview?: React.ReactNode;
+  loadingPreview?: React.ReactNode;
   readOnly?: boolean;
   textAreaProps?: Partial<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>>;
   l18n?: L18n;
@@ -127,7 +127,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       getIcon,
       commands,
       className,
-      emptyPreview,
+      loadingPreview,
       emptyPreviewHtml,
       readOnly,
       value,
@@ -175,7 +175,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             :
             < MdePreview
               previewRef={(c) => this.previewRef = c}
-              emptyPreview={emptyPreview || emptyPreviewHtml}
+              loadingPreview={loadingPreview || emptyPreviewHtml}
               minHeight={minPreviewHeight}
               generateMarkdownPreview={generateMarkdownPreview}
               markdown={value}

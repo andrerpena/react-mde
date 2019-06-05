@@ -5,7 +5,7 @@ import { classNames } from "../util/ClassNames";
 export interface ReactMdePreviewProps {
   className?: string;
   previewRef?: (ref: MdePreview) => void;
-  emptyPreview?: React.ReactNode;
+  loadingPreview?: React.ReactNode;
   minHeight: number;
   generateMarkdownPreview: GenerateMarkdownPreview;
   markdown: string;
@@ -37,9 +37,9 @@ export class MdePreview extends React.Component<ReactMdePreviewProps, ReactMdePr
   }
 
   render() {
-    const { className, minHeight, emptyPreview } = this.props;
+    const { className, minHeight, loadingPreview } = this.props;
     const { preview, loading } = this.state;
-    const finalHtml = loading ? emptyPreview : preview;
+    const finalHtml = loading ? loadingPreview : preview;
 
     let content;
 
