@@ -3,7 +3,7 @@
 A simple yet powerful and extensible Markdown Editor editor for React. React-mde has no 3rd party dependencies. Min + Gzipped
 package is around 15KB.
 
-> React-mde is used in another tool I made, 🌐 https://remoted.io.
+> Ad: If you are looking for **remote developer jobs**, check out this website I'm working on: 🌐 https://remoted.io. It is [open source](https://github.com/remoted-io/remoted) 😉
 
 ## Demo
 
@@ -21,6 +21,9 @@ package is around 15KB.
 React-mde is agnostic regarding how to preview Markdown. The examples will use [Showdown](https://github.com/showdownjs/showdown)
 
     npm install showdown
+    
+> Starting from version 7.4, it is also possible to return a React Element from `generateMarkdownPreview`, which makes
+it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as a preview. [View issue](https://github.com/andrerpena/react-mde/issues/161).
     
 ## Using
 
@@ -132,6 +135,11 @@ the user’s cookies and do something bad with it (like steal credentials). As a
  XSS filter, so you must provide your own. But be careful in how you do it…
  
 You might want to take a look at [showdown-xss-filter](https://github.com/VisionistInc/showdown-xss-filter).
+
+> Starting from version 7.4, it is also possible to return a React Element from `generateMarkdownPreview`, which makes
+it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as a preview. [View issue](https://github.com/andrerpena/react-mde/issues/161).
+ReactMarkdown has built-in XSS protection.
+  
 
 ## Commands
 
