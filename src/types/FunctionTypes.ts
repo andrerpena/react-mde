@@ -1,2 +1,3 @@
-export type AlterLineFunction = (line: string, lineIndex: number) => string;
-export type GenerateMarkdownPreview = (markdown: string) => Promise<string>;
+import * as React from 'react';
+
+export type GenerateMarkdownPreview = (markdown: string) => Promise<React.ReactNode>;
