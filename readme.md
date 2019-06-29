@@ -22,7 +22,7 @@ React-mde is agnostic regarding how to preview Markdown. The examples will use [
 
     npm install showdown
     
-> Starting from version 7.4, it is also possible to return a React Element from `generateMarkdownPreview`, which makes
+> from version 7.4, it is also possible to return a Promise to React Element from `generateMarkdownPreview`, which makes
 it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as a preview. [View issue](https://github.com/andrerpena/react-mde/issues/161).
     
 ## Using
@@ -97,7 +97,7 @@ The types are described below
 - **onTabChange: (tab) => void**: Function called when the selected tab changes.
 - **className?: string**: Optional class name to be added to the top level element.
 - **commands?: CommandGroup[]**: An array of `CommandGroup`, which, each one, contain a `commands` property (array of `Command`). If no commands are specified, the default will be used. Commands are explained in more details below.
-- **generateMarkdownPreview: (markdown: string) => Promise<string>;**: Function that should return the generated HTML for the preview. If this `prop` is falsy, then no preview is going to be generated.
+- **generateMarkdownPreview: (markdown: string) => Promise<string | ReactElement>;**: Function that should return a Promise to the generated HTML or a React element for the preview. If this `prop` is falsy, then no preview is going to be generated.
 - **getIcon?: (commandName: string) => React.ReactNode }** An optional set of button content options, including an `iconProvider` to allow custom icon rendering.
 options. It is recommended to [inspect the layouts source code](https://github.com/andrerpena/react-mde/tree/master/src/components-layout) to see what options can be passed to each
 while the documentation is not complete.
@@ -136,7 +136,7 @@ the user’s cookies and do something bad with it (like steal credentials). As a
  
 You might want to take a look at [showdown-xss-filter](https://github.com/VisionistInc/showdown-xss-filter).
 
-> Starting from version 7.4, it is also possible to return a React Element from `generateMarkdownPreview`, which makes
+> Starting from version 7.4, it is also possible to return a Promise to a React Element from `generateMarkdownPreview`, which makes
 it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as a preview. [View issue](https://github.com/andrerpena/react-mde/issues/161).
 ReactMarkdown has built-in XSS protection.
   
