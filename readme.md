@@ -27,47 +27,38 @@ it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as
 
 React-mde is a completely controlled component.
 
-Minimal example using Showdown:
+Minimal example using Showdown. [View live on CodeSandBox](https://codesandbox.io/s/react-mde-latest-9i70s):
 ```jsx
 import * as React from "react";
 import ReactMde from "react-mde";
+import ReactDOM from "react-dom";
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 
-export default class App extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      value: "**Hello world!!!**"
-    };
-    this.converter = new Showdown.Converter({
-      tables: true,
-      simplifiedAutoLink: true,
-      strikethrough: true,
-      tasklists: true
-    });
-  }
+const converter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true
+});
 
-  handleValueChange = (value) => {
-    this.setState({ value });
-  };
-
-  render () {
-    return (
-      <div className="container">
-        <ReactMde
-          onChange={this.handleValueChange}
-          value={this.state.value}
-          generateMarkdownPreview={markdown =>
-            Promise.resolve(this.converter.makeHtml(markdown))
-          }
-        />
-      </div>
-    );
-  }
+export default function App() {
+  const [value, setValue] = React.useState("**Hello world!!!**");
+  const [selectedTab, setSelectedTab] = React.useState("write");
+  return (
+    <div className="container">
+      <ReactMde
+        value={value}
+        onChange={setValue}
+        selectedTab={selectedTab}
+        onTabChange={setSelectedTab}
+        generateMarkdownPreview={markdown =>
+          Promise.resolve(converter.makeHtml(markdown))
+        }
+      />
+    </div>
+  );
 }
-
-
 ```
 
 ### Customizing Icons
