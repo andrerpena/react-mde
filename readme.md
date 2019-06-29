@@ -7,8 +7,8 @@ package is around 15KB.
 
 ## Demo
 
-- [Demo](http://andrerpena.me/react-mde/). 
-- [Demo on CodeSandbox](https://codesandbox.io/s/react-mde-latest-9i70s).
+- [Demo](http://andrerpena.me/react-mde/)
+- [Demo on CodeSandbox](https://codesandbox.io/s/react-mde-latest-9i70s)
 
 ## Installing
 
