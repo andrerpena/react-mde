@@ -5,7 +5,7 @@ import {selectWord} from "../util/MarkdownUtil";
 
 export const linkCommand: Command = {
     name: "link",
-    buttonProps: {"aria-label": "Add bold text"},
+    buttonProps: {"aria-label": "Add a link"},
     execute: (state0: TextState, api: TextApi) => {
         // Adjust the selection to encompass the whole word if the caret is inside one
         const newSelectionRange = selectWord({text: state0.text, selection: state0.selection});
