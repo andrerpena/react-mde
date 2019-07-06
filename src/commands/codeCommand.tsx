@@ -5,7 +5,7 @@ import {getBreaksNeededForEmptyLineAfter, getBreaksNeededForEmptyLineBefore, sel
 
 export const codeCommand: Command = {
     name: "code",
-    buttonProps: {"aria-label": "Add bold text"},
+    buttonProps: {"aria-label": "Insert code"},
     execute: (state0: TextState, api: TextApi) => {
         // Adjust the selection to encompass the whole word if the caret is inside one
         const newSelectionRange = selectWord({text: state0.text, selection: state0.selection});
