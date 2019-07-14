@@ -1,13 +1,14 @@
 import { TextArea } from "../TextArea";
-import { mount } from "enzyme";
+import { render } from '@testing-library/react'
 import * as React from "react";
 
-describe("<MyComponent />", () => {
-  it("renders three <Foo /> components", () => {
-
+describe("<TextArea />", () => {
+  it("load and display value", () => {
     let value = "hello";
     const onChange = (value: string) => value = value;
 
-    const wrapper = mount(<TextArea value={value} onChange={onChange}/>);
+    const {queryByText} = render(<TextArea value={value} onChange={onChange}/>);
+
+    expect(queryByText(value))
   });
 });
