@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render } from '@testing-library/react'
+import { render } from "@testing-library/react";
 import { ReactMde } from "../ReactMde";
 import * as Showdown from "showdown";
 
@@ -15,7 +15,7 @@ describe("<ReactMde />", () => {
     let value = "hello";
     const onChange = (value: string) => (value = value);
 
-    const {queryByText} = render(
+    const { getByText } = render(
       <ReactMde
         onChange={onChange}
         value={value}
@@ -25,6 +25,6 @@ describe("<ReactMde />", () => {
       />
     );
 
-    expect(queryByText(value))
+    expect(getByText(value));
   });
 });
