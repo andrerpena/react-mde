@@ -3,8 +3,6 @@
 A simple yet powerful and extensible **React Markdown Editor**. React-mde has no 3rd party dependencies. Min + Gzipped
 package is around 15KB.
 
-> Ad: If you are looking for **remote developer jobs**, check out this website I'm working on: 🌐 https://remoted.io. It is [open source](https://github.com/remoted-io/remoted) 😉
-
 ## Demo
 
 - [Demo](http://andrerpena.me/react-mde/)
