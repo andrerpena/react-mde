@@ -1,6 +1,6 @@
-import { TextArea } from "../TextArea";
-import { render, cleanup } from "@testing-library/react";
 import * as React from "react";
+import { render, cleanup } from "@testing-library/react";
+import { TextArea } from "../TextArea";
 
 afterEach(cleanup);
 
