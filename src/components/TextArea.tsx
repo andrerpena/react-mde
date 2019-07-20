@@ -7,17 +7,21 @@ export interface MdeEditorProps {
   editorRef?: (ref: HTMLTextAreaElement) => void;
   readOnly?: boolean;
   height?: number;
-  textAreaProps?: Partial<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>>
+  textAreaProps?: Partial<
+    React.DetailedHTMLProps<
+      React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+      HTMLTextAreaElement
+    >
+  >;
 }
 
 export class TextArea extends React.Component<MdeEditorProps, {}> {
-
   handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { onChange } = this.props;
     onChange(event.target.value);
   };
 
-  render () {
+  render() {
     const {
       className,
       readOnly,
@@ -27,13 +31,16 @@ export class TextArea extends React.Component<MdeEditorProps, {}> {
       value
     } = this.props;
     return (
-        <textarea className={`mde-text ${className || ""}`} style={{ height }}
-          ref={editorRef}
-          onChange={this.handleOnChange}
-          readOnly={readOnly}
-          value={value}
-          {...textAreaProps}
-        />
+      <textarea
+        className={`mde-text ${className || ""}`}
+        style={{ height }}
+        ref={editorRef}
+        onChange={this.handleOnChange}
+        readOnly={readOnly}
+        value={value}
+        {...textAreaProps}
+        data-testid="text-area"
+      />
     );
   }
 }
