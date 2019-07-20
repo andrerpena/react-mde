@@ -30,7 +30,7 @@ describe("<MdePreview />", () => {
   });
 
   it("generates markdown preview after loading", () => {
-    const { getByTestId } = render(<MdePreview {...props} />);
+    render(<MdePreview {...props} />);
 
     expect(props.generateMarkdownPreview).toHaveBeenCalled();
   });

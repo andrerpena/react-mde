@@ -16,7 +16,7 @@ describe("<ReactMde />", () => {
 
   beforeEach(() => {
     props = {
-      value: "# awesome title",
+      value: "awesome title",
       onChange: jest.fn(),
       generateMarkdownPreview: markdown =>
         Promise.resolve(converter.makeHtml(markdown))
