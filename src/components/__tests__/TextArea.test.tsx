@@ -1,13 +1,18 @@
-import { TextArea } from "../TextArea";
-import { mount } from "enzyme";
 import * as React from "react";
+import { render, cleanup } from "@testing-library/react";
+import { TextArea } from "../TextArea";
 
-describe("<MyComponent />", () => {
-  it("renders three <Foo /> components", () => {
+afterEach(cleanup);
 
-    let value = "hello";
-    const onChange = (value: string) => value = value;
+describe("<TextArea />", () => {
+  it("loads and displays value", () => {
+    let value = "# awesome title";
+    const onChange = jest.fn();
 
-    const wrapper = mount(<TextArea value={value} onChange={onChange}/>);
+    const { getByText } = render(
+      <TextArea value={value} onChange={onChange} />
+    );
+
+    expect(getByText(value));
   });
 });
