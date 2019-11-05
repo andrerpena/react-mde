@@ -42,7 +42,7 @@ const converter = new Showdown.Converter({
 
 export default function App() {
   const [value, setValue] = React.useState("**Hello world!!!**");
-  const [selectedTab, setSelectedTab] = React.useState("write");
+  const [selectedTab, setSelectedTab] = React.useState<"write" | "preview">("write");
   return (
     <div className="container">
       <ReactMde
