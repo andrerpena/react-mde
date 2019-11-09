@@ -14,7 +14,6 @@ import { SvgIcon } from "../icons";
 import { classNames } from "../util/ClassNames";
 
 export interface ReactMdeProps {
-  defaultValue?: string;
   value: string;
   onChange: (value: string) => void;
   selectedTab: "write" | "preview";
@@ -132,7 +131,6 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       emptyPreviewHtml,
       readOnly,
       value,
-      defaultValue,
       l18n,
       minPreviewHeight,
       textAreaProps,
@@ -160,7 +158,6 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
                 readOnly={readOnly}
                 textAreaProps={textAreaProps}
                 height={this.state.editorHeight}
-                defaultValue={defaultValue}
                 value={value}
               />
               <div className="grip"

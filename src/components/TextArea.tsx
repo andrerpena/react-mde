@@ -1,7 +1,6 @@
 import * as React from "react";
 
 export interface MdeEditorProps {
-  defaultValue?: string;
   value: string;
   onChange: (value: string) => void;
   className?: string;
@@ -29,7 +28,6 @@ export class TextArea extends React.Component<MdeEditorProps, {}> {
       textAreaProps,
       height,
       editorRef,
-      defaultValue,
       value
     } = this.props;
     return (
@@ -39,8 +37,7 @@ export class TextArea extends React.Component<MdeEditorProps, {}> {
         ref={editorRef}
         onChange={this.handleOnChange}
         readOnly={readOnly}
-        defaultValue={defaultValue}
-        value={value}
+        defaultValue={value}
         {...textAreaProps}
         data-testid="text-area"
       />
