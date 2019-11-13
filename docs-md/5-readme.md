@@ -136,6 +136,7 @@ though on the first call, *editorState* is supposed to be something like `{markd
 options. It is recommended to [inspect the layouts source code](https://github.com/andrerpena/react-mde/tree/master/src/components-layout) to see what options can be passed to each
 while the documentation is not complete. 
 -- **readOnly?: boolean**: Flag to render the editor in read-only mode.
+-- **disablePreview?: boolean**: Flag to disable preview, which also disables the tab selection. Useful when handling preview generation externally.
 
 ## Styling
 
