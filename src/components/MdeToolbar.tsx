@@ -13,6 +13,7 @@ export interface MdeToolbarProps {
   onCommand: (command: Command) => void;
   onTabChange: (tab: Tab) => void;
   readOnly: boolean;
+  disablePreview: boolean;
   tab: Tab,
   l18n: L18n
 }
@@ -26,28 +27,29 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
 
   render() {
     const { l18n } = this.props;
-    const { getIcon, children, commands, onCommand, readOnly } = this.props;
+    const { getIcon, children, commands, onCommand, readOnly, disablePreview } = this.props;
     if ((!commands || commands.length === 0) && !children) {
       return null;
     }
     return (
       <div className="mde-header">
-        <div className="mde-tabs">
-          <button
-            type="button"
-            className={classNames({ "selected": this.props.tab === "write" })}
-            onClick={() => this.handleTabChange("write")}
-          >
-            {l18n.write}
-          </button>
-          <button
-            type="button"
-            className={classNames({ "selected": this.props.tab === "preview" })}
-            onClick={() => this.handleTabChange("preview")}
-          >
-            {l18n.preview}
-          </button>
-        </div>
+        {!disablePreview && <div className="mde-tabs">
+            <button
+              type="button"
+              className={classNames({ "selected": this.props.tab === "write" })}
+              onClick={() => this.handleTabChange("write")}
+            >
+              {l18n.write}
+            </button>
+            <button
+              type="button"
+              className={classNames({ "selected": this.props.tab === "preview" })}
+              onClick={() => this.handleTabChange("preview")}
+            >
+              {l18n.preview}
+            </button>
+          </div>
+        }
         {
           commands.map((commandGroup: CommandGroup, i: number) => (
             <MdeToolbarButtonGroup key={i} hidden={this.props.tab === "preview"}>

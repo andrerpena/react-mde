@@ -29,6 +29,7 @@ export interface ReactMdeProps {
   emptyPreviewHtml?: string;
   loadingPreview?: React.ReactNode;
   readOnly?: boolean;
+  disablePreview?: boolean;
   textAreaProps?: Partial<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>>;
   l18n?: L18n;
 }
@@ -61,7 +62,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     minEditorHeight: 200,
     maxEditorHeight: 500,
     minPreviewHeight: 200,
-    selectedTab: "write"
+    selectedTab: "write",
+    disablePreview: false,
   };
 
   constructor(props: ReactMdeProps) {
@@ -130,6 +132,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       loadingPreview,
       emptyPreviewHtml,
       readOnly,
+      disablePreview,
       value,
       l18n,
       minPreviewHeight,
@@ -147,6 +150,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           onTabChange={this.handleTabChange}
           tab={selectedTab}
           readOnly={readOnly}
+          disablePreview={disablePreview}
           l18n={l18n}
         />
         {
