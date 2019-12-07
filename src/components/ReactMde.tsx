@@ -16,7 +16,7 @@ import {
   TextAreaCommandOrchestrator
 } from "../commandOrchestrator";
 import { SvgIcon } from "../icons";
-import { classNames } from "../util/ClassNames";
+import { classNames, ClassValue } from "../util/ClassNames";
 
 export interface ReactMdeProps {
   value: string;
@@ -27,7 +27,7 @@ export interface ReactMdeProps {
   minEditorHeight: number;
   maxEditorHeight: number;
   minPreviewHeight: number;
-  className?: string;
+  className?: ClassValue;
   commands?: CommandGroup[];
   getIcon?: GetIcon;
   // deprecated. Use emptyPreview instead
