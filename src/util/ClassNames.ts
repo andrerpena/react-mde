@@ -4,25 +4,52 @@
   http://jedwatson.github.io/classnames
 */
 
-export function classNames(...args: any[]) {
-  const classes = [];
+export interface ClassArray extends Array<ClassValue> {} // tslint:disable-line no-empty-interface
 
-  for (let i = 0; i < arguments.length; i++) {
-    const arg = arguments[i];
-    if (!arg) continue;
+export interface ClassDictionary {
+  [id: string]: string | boolean;
+}
 
-    const argType = typeof arg;
+export type ClassValue =
+  | string
+  | ClassDictionary
+  | ClassArray
+  | undefined
+  | null
 
-    if (argType === "string" || argType === "number") {
-      classes.push(arg);
-    } else if (Array.isArray(arg) && arg.length) {
-      var inner = classNames.apply(null, arg);
+function isString(classValue: ClassValue): classValue is string {
+  return typeof classValue === "string";
+}
+
+function isNonEmptyArray(
+  classValue: ClassValue
+): classValue is Array<ClassValue> {
+  return Array.isArray(classValue) && classValue.length > 0;
+}
+
+function isClassDictionary(
+  classValue: ClassValue
+): classValue is ClassDictionary {
+  return typeof classValue === "object";
+}
+
+export function classNames(...classValues: ClassValue[]) {
+  const classes: Array<string> = [];
+
+  for (let i = 0; i < classValues.length; i++) {
+    const classValue = classValues[i];
+    if (!classValue) continue;
+
+    if (isString(classValue)) {
+      classes.push(classValue);
+    } else if (isNonEmptyArray(classValue)) {
+      const inner = classNames.apply(null, classValue);
       if (inner) {
         classes.push(inner);
       }
-    } else if (argType === "object") {
-      for (let key in arg) {
-        if (arg.hasOwnProperty(key) && arg[key]) {
+    } else if (isClassDictionary(classValue)) {
+      for (let key in classValue) {
+        if (classValue.hasOwnProperty(key) && classValue[key]) {
           classes.push(key);
         }
       }

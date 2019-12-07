@@ -4,7 +4,7 @@ import { ReactMde, ReactMdeProps } from "./components";
 import { IconProviderProps, SvgIcon, MdeFontAwesomeIcon } from "./icons";
 import { L18n } from "./types/L18n";
 import { TextState, TextApi } from "./types/CommandOptions";
-import { Command } from "./types/Command";
+import { Command } from "./types";
 
 export {
   ReactMdeProps,
