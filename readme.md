@@ -126,7 +126,7 @@ the user’s cookies and do something bad with it (like steal credentials). As a
  
 You might want to take a look at [showdown-xss-filter](https://github.com/VisionistInc/showdown-xss-filter).
 
-> Starting from version 7.4, it is also possible to return a Promise to a React Element from `generateMarkdownPreview`, which makes
+Starting from version 7.4, it is also possible to return a Promise to a React Element from `generateMarkdownPreview`, which makes
 it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as a preview. [View issue](https://github.com/andrerpena/react-mde/issues/161).
 ReactMarkdown has built-in XSS protection.
   
