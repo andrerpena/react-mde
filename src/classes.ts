@@ -5,4 +5,5 @@ export interface Classes {
   toolbar?: ClassValue
   preview?: ClassValue
   textArea?: ClassValue
+  grip?: ClassValue
 }

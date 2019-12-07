@@ -201,7 +201,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
               height={this.state.editorHeight}
               value={value}
             />
-            <div className="grip" onMouseDown={this.handleGripMouseDown}>
+            <div className={classNames("grip", classes?.grip)} onMouseDown={this.handleGripMouseDown}>
               <svg
                 aria-hidden="true"
                 data-prefix="far"
