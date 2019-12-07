@@ -6,7 +6,7 @@
   "types": "./lib/definitions/index.d.ts",
   "scripts": {
     "test": "jest",
-    "start": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
+    "dev": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
     "build:ts": "tsc --project ./tsconfig.build.json",
     "build": "cross-env NODE_ENV=production gulp build",
     "build:demo": "cross-env NODE_ENV=production gulp build-demo",
