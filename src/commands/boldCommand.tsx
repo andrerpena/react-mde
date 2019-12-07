@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Command} from "../types";
-import {TextApi, TextState} from "../types/CommandOptions";
+import {TextApi, TextState} from "..";
 import {selectWord} from "../util/MarkdownUtil";
 
 export const boldCommand: Command = {
