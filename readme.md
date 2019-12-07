@@ -82,7 +82,10 @@ The types are described below
 - **onChange**: (value: string): Event handler for the `onChange` event.
 - **selectedTab: "write" | "preview"**: The currently selected tab.
 - **onTabChange: (tab) => void**: Function called when the selected tab changes.
-- **className?: string**: Optional class name to be added to the top level element.
+- **classes**: An object containing the following optional properties: *reactMde*, *toolbar*, *preview* and *textArea*. 
+This allows for passing class names to each of the inner components of React-mde. Classes defined in the *classes* prop
+follow the specification of [Jed Watson's classNames project](https://github.com/JedWatson/classnames).
+- **className?: string**: OBSOLETE - Optional class name to be added to the top level element. Use the *classes* prop instead.
 - **commands?: CommandGroup[]**: An array of `CommandGroup`, which, each one, contain a `commands` property (array of `Command`). If no commands are specified, the default will be used. Commands are explained in more details below.
 - **generateMarkdownPreview: (markdown: string) => Promise<string | ReactElement>;**: Function that should return a Promise to the generated HTML or a React element for the preview. If this `prop` is falsy, then no preview is going to be generated.
 - **getIcon?: (commandName: string) => React.ReactNode }** An optional set of button content options, including an `iconProvider` to allow custom icon rendering.

@@ -15,7 +15,7 @@ export type ClassValue =
   | ClassDictionary
   | ClassArray
   | undefined
-  | null
+  | null;
 
 function isString(classValue: ClassValue): classValue is string {
   return typeof classValue === "string";

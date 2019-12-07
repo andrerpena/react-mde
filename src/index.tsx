@@ -5,6 +5,7 @@ import { IconProviderProps, SvgIcon, MdeFontAwesomeIcon } from "./icons";
 import { L18n } from "./types/L18n";
 import { TextState, TextApi } from "./types/CommandOptions";
 import { Command } from "./types";
+import { Classes } from "./classes";
 
 export {
   ReactMdeProps,
@@ -16,7 +17,8 @@ export {
   commands,
   TextState,
   TextApi,
-  Command
+  Command,
+  Classes
 };
 
 export default ReactMde;

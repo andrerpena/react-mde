@@ -1,9 +1,10 @@
 import * as React from "react";
+import { classNames, ClassValue } from "../util/ClassNames";
 
 export interface MdeEditorProps {
+  classes?: ClassValue;
   value: string;
   onChange: (value: string) => void;
-  className?: string;
   editorRef?: (ref: HTMLTextAreaElement) => void;
   readOnly?: boolean;
   height?: number;
@@ -23,7 +24,7 @@ export class TextArea extends React.Component<MdeEditorProps, {}> {
 
   render() {
     const {
-      className,
+      classes,
       readOnly,
       textAreaProps,
       height,
@@ -32,7 +33,7 @@ export class TextArea extends React.Component<MdeEditorProps, {}> {
     } = this.props;
     return (
       <textarea
-        className={`mde-text ${className || ""}`}
+        className={classNames("mde-text", classes)}
         style={{ height }}
         ref={editorRef}
         onChange={this.handleOnChange}

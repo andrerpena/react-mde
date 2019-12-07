@@ -1,9 +1,9 @@
 import * as React from "react";
 import { GenerateMarkdownPreview } from "../types";
-import { classNames } from "../util/ClassNames";
+import { classNames, ClassValue } from "../util/ClassNames";
 
 export interface ReactMdePreviewProps {
-  className?: string;
+  classes?: ClassValue;
   previewRef?: (ref: MdePreview) => void;
   loadingPreview?: React.ReactNode;
   minHeight: number;
@@ -40,7 +40,7 @@ export class MdePreview extends React.Component<
   }
 
   render() {
-    const { className, minHeight, loadingPreview } = this.props;
+    const { classes, minHeight, loadingPreview } = this.props;
     const { preview, loading } = this.state;
     const finalHtml = loading ? loadingPreview : preview;
 
@@ -60,7 +60,7 @@ export class MdePreview extends React.Component<
 
     return (
       <div
-        className={classNames("mde-preview", { className, loading })}
+        className={classNames("mde-preview", classes, { loading })}
         style={{ minHeight: minHeight + 10 }}
         data-testid="mde-preview"
       >

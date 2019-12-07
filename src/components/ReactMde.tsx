@@ -9,7 +9,7 @@ import { getDefaultCommands } from "../commands";
 import { MdePreview, MdeToolbar, TextArea } from ".";
 import { extractCommandMap } from "../util/CommandUtils";
 import { Tab } from "../types/Tab";
-import { L18n } from "..";
+import { Classes, L18n } from "..";
 import { enL18n } from "../l18n/react-mde.en";
 import {
   CommandOrchestrator,
@@ -27,6 +27,10 @@ export interface ReactMdeProps {
   minEditorHeight: number;
   maxEditorHeight: number;
   minPreviewHeight: number;
+  classes?: Classes;
+  /**
+   * "className" is OBSOLETE when will soon be removed in favor of the "classes" prop
+   */
   className?: ClassValue;
   commands?: CommandGroup[];
   getIcon?: GetIcon;
@@ -145,10 +149,11 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     this.commandOrchestrator.executeCommand(command);
   };
 
-  render() {
+  render () {
     const {
       getIcon,
       commands,
+      classes,
       className,
       loadingPreview,
       emptyPreviewHtml,
@@ -167,10 +172,15 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         className={classNames(
           "react-mde",
           "react-mde-tabbed-layout",
+          classes?.reactMde,
+          /**
+           * "className" is OBSOLETE and will soon be removed
+           */
           className
         )}
       >
         <MdeToolbar
+          classes={classes?.toolbar}
           getIcon={getIcon}
           commands={commands}
           onCommand={this.handleCommand}
@@ -183,6 +193,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         {selectedTab === "write" ? (
           <>
             <TextArea
+              classes={classes?.textArea}
               editorRef={this.setTextAreaRef}
               onChange={this.handleTextChange}
               readOnly={readOnly}
@@ -210,6 +221,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           </>
         ) : (
           <MdePreview
+            classes={classes?.preview}
             previewRef={c => (this.previewRef = c)}
             loadingPreview={loadingPreview || emptyPreviewHtml}
             minHeight={minPreviewHeight}

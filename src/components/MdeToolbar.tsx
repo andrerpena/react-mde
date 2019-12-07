@@ -5,9 +5,10 @@ import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
 import { MdeToolbarButton } from "./MdeToolbarButton";
 import { Tab } from "../types/Tab";
 import { L18n } from "..";
-import { classNames } from "../util/ClassNames";
+import { classNames, ClassValue } from "../util/ClassNames";
 
 export interface MdeToolbarProps {
+  classes?: ClassValue;
   getIcon: GetIcon;
   commands: CommandGroup[];
   onCommand: (command: Command) => void;
@@ -27,6 +28,7 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
   render() {
     const { l18n } = this.props;
     const {
+      classes,
       getIcon,
       children,
       commands,
@@ -38,7 +40,7 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
       return null;
     }
     return (
-      <div className="mde-header">
+      <div className={classNames("mde-header", classes)}>
         {!disablePreview && (
           <div className="mde-tabs">
             <button
