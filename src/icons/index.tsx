@@ -1,5 +1,5 @@
 export interface IconProviderProps {
-    icon: string;
+  icon: string;
 }
 
 export * from "./MdeFontAwesomeIcon";

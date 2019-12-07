@@ -1,4 +1,4 @@
-import * as MarkdownUtil from "./util/MarkdownUtil"
+import * as MarkdownUtil from "./util/MarkdownUtil";
 import * as commands from "./commands";
 import { ReactMde, ReactMdeProps } from "./components";
 import { IconProviderProps, SvgIcon, MdeFontAwesomeIcon } from "./icons";
@@ -14,7 +14,7 @@ export {
   MdeFontAwesomeIcon,
   IconProviderProps,
   commands,
-  TextState, 
+  TextState,
   TextApi,
   Command
 };

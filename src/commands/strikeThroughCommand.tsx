@@ -8,7 +8,10 @@ export const strikeThroughCommand: Command = {
   buttonProps: { "aria-label": "Add strikethrough text" },
   execute: (state0: TextState, api: TextApi) => {
     // Adjust the selection to encompass the whole word if the caret is inside one
-    const newSelectionRange = selectWord({ text: state0.text, selection: state0.selection });
+    const newSelectionRange = selectWord({
+      text: state0.text,
+      selection: state0.selection
+    });
     const state1 = api.setSelectionRange(newSelectionRange);
     // Replaces the current selection with the strikethrough mark up
     const state2 = api.replaceSelection(`~~${state1.selectedText}~~`);
@@ -18,5 +21,5 @@ export const strikeThroughCommand: Command = {
       end: state2.selection.end - 2
     });
   },
-  keyCommand: "strikeThrough",
+  keyCommand: "strikeThrough"
 };

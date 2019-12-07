@@ -1,7 +1,9 @@
 import * as React from "react";
 import {
-  Command, CommandGroup,
-  GenerateMarkdownPreview, GetIcon
+  Command,
+  CommandGroup,
+  GenerateMarkdownPreview,
+  GetIcon
 } from "../types";
 import { getDefaultCommands } from "../commands";
 import { MdePreview, MdeToolbar, TextArea } from ".";
@@ -9,7 +11,10 @@ import { extractCommandMap } from "../util/CommandUtils";
 import { Tab } from "../types/Tab";
 import { L18n } from "..";
 import { enL18n } from "../l18n/react-mde.en";
-import { CommandOrchestrator, TextAreaCommandOrchestrator } from "../commandOrchestrator";
+import {
+  CommandOrchestrator,
+  TextAreaCommandOrchestrator
+} from "../commandOrchestrator";
 import { SvgIcon } from "../icons";
 import { classNames } from "../util/ClassNames";
 
@@ -17,7 +22,7 @@ export interface ReactMdeProps {
   value: string;
   onChange: (value: string) => void;
   selectedTab: "write" | "preview";
-  onTabChange: (tab: "write" | "preview") => void,
+  onTabChange: (tab: "write" | "preview") => void;
   generateMarkdownPreview: GenerateMarkdownPreview;
   minEditorHeight: number;
   maxEditorHeight: number;
@@ -30,16 +35,20 @@ export interface ReactMdeProps {
   loadingPreview?: React.ReactNode;
   readOnly?: boolean;
   disablePreview?: boolean;
-  textAreaProps?: Partial<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>>;
+  textAreaProps?: Partial<
+    React.DetailedHTMLProps<
+      React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+      HTMLTextAreaElement
+    >
+  >;
   l18n?: L18n;
 }
 
 export interface ReactMdeState {
-  editorHeight: number
+  editorHeight: number;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
-
   commandOrchestrator: CommandOrchestrator;
 
   textAreaRef: HTMLTextAreaElement;
@@ -55,7 +64,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
   static defaultProps: Partial<ReactMdeProps> = {
     commands: getDefaultCommands(),
-    getIcon: name => <SvgIcon icon={name}/>,
+    getIcon: name => <SvgIcon icon={name} />,
     emptyPreviewHtml: "<p>&nbsp;</p>",
     readOnly: false,
     l18n: enL18n,
@@ -63,7 +72,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     maxEditorHeight: 500,
     minPreviewHeight: 200,
     selectedTab: "write",
-    disablePreview: false,
+    disablePreview: false
   };
 
   constructor(props: ReactMdeProps) {
@@ -94,11 +103,19 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
   handleGripMouseMove = (event: MouseEvent) => {
     if (this.gripDrag !== null) {
-      const newHeight = this.gripDrag.originalHeight + event.clientY - this.gripDrag.originalDragY;
-      if (newHeight >= this.props.minEditorHeight && newHeight <= this.props.maxEditorHeight) {
+      const newHeight =
+        this.gripDrag.originalHeight +
+        event.clientY -
+        this.gripDrag.originalDragY;
+      if (
+        newHeight >= this.props.minEditorHeight &&
+        newHeight <= this.props.maxEditorHeight
+      ) {
         this.setState({
           ...this.state,
-          editorHeight: this.gripDrag.originalHeight + (event.clientY - this.gripDrag.originalDragY)
+          editorHeight:
+            this.gripDrag.originalHeight +
+            (event.clientY - this.gripDrag.originalDragY)
         });
       }
     }
@@ -110,13 +127,18 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   };
 
   componentDidMount() {
-    document.addEventListener<"mousemove">("mousemove", this.handleGripMouseMove);
+    document.addEventListener<"mousemove">(
+      "mousemove",
+      this.handleGripMouseMove
+    );
     document.addEventListener<"mouseup">("mouseup", this.handleGripMouseUp);
   }
 
   setTextAreaRef = (element: HTMLTextAreaElement) => {
     this.textAreaRef = element;
-    this.commandOrchestrator = new TextAreaCommandOrchestrator(this.textAreaRef);
+    this.commandOrchestrator = new TextAreaCommandOrchestrator(
+      this.textAreaRef
+    );
   };
 
   handleCommand = (command: Command) => {
@@ -124,7 +146,6 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   };
 
   render() {
-
     const {
       getIcon,
       commands,
@@ -142,7 +163,13 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     } = this.props;
 
     return (
-      <div className={classNames("react-mde", "react-mde-tabbed-layout", className)}>
+      <div
+        className={classNames(
+          "react-mde",
+          "react-mde-tabbed-layout",
+          className
+        )}
+      >
         <MdeToolbar
           getIcon={getIcon}
           commands={commands}
@@ -153,38 +180,43 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           disablePreview={disablePreview}
           l18n={l18n}
         />
-        {
-          selectedTab === "write" ?
-            <>
-              <TextArea
-                editorRef={this.setTextAreaRef}
-                onChange={this.handleTextChange}
-                readOnly={readOnly}
-                textAreaProps={textAreaProps}
-                height={this.state.editorHeight}
-                value={value}
-              />
-              <div className="grip"
-                   onMouseDown={this.handleGripMouseDown}
-              >
-                <svg aria-hidden="true" data-prefix="far" data-icon="ellipsis-h" role="img"
-                     xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 512 512" className="icon">
-                  <path fill="currentColor"
-                        d="M304 256c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm120-48c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zm-336 0c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
-                        className=""/>
-                </svg>
-              </div>
-            </>
-            :
-            < MdePreview
-              previewRef={(c) => this.previewRef = c}
-              loadingPreview={loadingPreview || emptyPreviewHtml}
-              minHeight={minPreviewHeight}
-              generateMarkdownPreview={generateMarkdownPreview}
-              markdown={value}
+        {selectedTab === "write" ? (
+          <>
+            <TextArea
+              editorRef={this.setTextAreaRef}
+              onChange={this.handleTextChange}
+              readOnly={readOnly}
+              textAreaProps={textAreaProps}
+              height={this.state.editorHeight}
+              value={value}
             />
-        }
+            <div className="grip" onMouseDown={this.handleGripMouseDown}>
+              <svg
+                aria-hidden="true"
+                data-prefix="far"
+                data-icon="ellipsis-h"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                className="icon"
+              >
+                <path
+                  fill="currentColor"
+                  d="M304 256c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm120-48c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zm-336 0c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
+                  className=""
+                />
+              </svg>
+            </div>
+          </>
+        ) : (
+          <MdePreview
+            previewRef={c => (this.previewRef = c)}
+            loadingPreview={loadingPreview || emptyPreviewHtml}
+            minHeight={minPreviewHeight}
+            generateMarkdownPreview={generateMarkdownPreview}
+            markdown={value}
+          />
+        )}
       </div>
     );
   }

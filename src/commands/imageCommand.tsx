@@ -8,10 +8,14 @@ export const imageCommand: Command = {
   buttonProps: { "aria-label": "Add image" },
   execute: (state0: TextState, api: TextApi) => {
     // Select everything
-    const newSelectionRange = selectWord({ text: state0.text, selection: state0.selection });
+    const newSelectionRange = selectWord({
+      text: state0.text,
+      selection: state0.selection
+    });
     const state1 = api.setSelectionRange(newSelectionRange);
     // Replaces the current selection with the image
-    const imageTemplate = state1.selectedText || "https://example.com/your-image.png";
+    const imageTemplate =
+      state1.selectedText || "https://example.com/your-image.png";
     api.replaceSelection(`![](${imageTemplate})`);
     // Adjust the selection to not contain the **
     api.setSelectionRange({

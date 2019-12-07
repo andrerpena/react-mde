@@ -19,8 +19,10 @@ const defaultHeaderButtonProps = {
   tabIndex: -1
 };
 
-export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps, HeaderItemDropdownState> {
-
+export class MdeToolbarDropdown extends React.Component<
+  HeaderItemDropdownProps,
+  HeaderItemDropdownState
+> {
   dropdown: any; // TODO: Change this type
   dropdownOpener: any; // TODO: Change this type
 
@@ -59,11 +61,13 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
 
   clickedOutside = (e: Event) => {
     const { target } = e;
-    return this.state.open
-      && this.dropdown
-      && this.dropdownOpener
-      && !this.dropdown.contains(target)
-      && !this.dropdownOpener.contains(target);
+    return (
+      this.state.open &&
+      this.dropdown &&
+      this.dropdownOpener &&
+      !this.dropdown.contains(target) &&
+      !this.dropdownOpener.contains(target)
+    );
   };
 
   handleOnClickCommand = (e: React.SyntheticEvent<any>, command: Command) => {
@@ -73,10 +77,8 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
   };
 
   handleClick = () => {
-    if (!this.state.open)
-      this.openDropdown();
-    else
-      this.closeDropdown();
+    if (!this.state.open) this.openDropdown();
+    else this.closeDropdown();
   };
 
   render() {
@@ -84,39 +86,44 @@ export class MdeToolbarDropdown extends React.Component<HeaderItemDropdownProps,
     const { open } = this.state;
 
     const items = commands.map((command, index) => {
-      return <MdeToolbarButton
-        key={`header-item${index}`}
-        name={command.name}
-        buttonProps={command.buttonProps}
-        buttonContent={command.icon ? command.icon(getIcon) : getIcon(command.name)}
-        onClick={(e) => this.handleOnClickCommand(e, command)}
-        readOnly={readOnly}
-      />;
+      return (
+        <MdeToolbarButton
+          key={`header-item${index}`}
+          name={command.name}
+          buttonProps={command.buttonProps}
+          buttonContent={
+            command.icon ? command.icon(getIcon) : getIcon(command.name)
+          }
+          onClick={e => this.handleOnClickCommand(e, command)}
+          readOnly={readOnly}
+        />
+      );
     });
 
-    const dropdown = open
-      ? (
-        <ul
-          className="react-mde-dropdown"
-          ref={(ref) => {
-            this.dropdown = ref;
-          }}
-        >
-          {items}
-        </ul>
-      )
-      : null;
+    const dropdown = open ? (
+      <ul
+        className="react-mde-dropdown"
+        ref={ref => {
+          this.dropdown = ref;
+        }}
+      >
+        {items}
+      </ul>
+    ) : null;
 
     const { buttonContent, buttonProps } = this.props;
 
-    const finalButtonProps = { ...defaultHeaderButtonProps, ...(buttonProps || {}) };
+    const finalButtonProps = {
+      ...defaultHeaderButtonProps,
+      ...(buttonProps || {})
+    };
 
     return (
       <li className="mde-header-item">
         <button
           type="button"
           {...finalButtonProps}
-          ref={(ref) => {
+          ref={ref => {
             this.dropdownOpener = ref;
           }}
           onClick={this.handleClick}

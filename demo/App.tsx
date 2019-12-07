@@ -4,7 +4,7 @@ import * as Showdown from "showdown";
 
 export interface AppState {
   value: string;
-  tab: "write" | "preview"
+  tab: "write" | "preview";
 }
 
 export class App extends React.Component<{}, AppState> {
