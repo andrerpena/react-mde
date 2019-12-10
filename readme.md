@@ -1,5 +1,4 @@
 # 📝 react-mde
----
 
 [![Status](https://badgen.net/bundlephobia/minzip/react-mde)](https://bundlephobia.com/result?p=react-mde)
 
