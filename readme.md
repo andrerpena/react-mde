@@ -1,4 +1,7 @@
 # 📝 react-mde
+---
+
+[![Status](https://badgen.net/bundlephobia/minzip/react-mde)](https://bundlephobia.com/result?p=react-mde)
 
 A simple yet powerful and extensible **React Markdown Editor**. React-mde has no 3rd party dependencies. Min + Gzipped
 package [is around 9KB](https://bundlephobia.com/result?p=react-mde).
