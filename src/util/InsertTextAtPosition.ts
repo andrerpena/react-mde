@@ -4,19 +4,10 @@
    Copied from https://github.com/grassator/insert-text-at-cursor
  */
 
-function canManipulateViaTextNodes(input: HTMLTextAreaElement | HTMLInputElement) {
-  if (input.nodeName !== "TEXTAREA") {
-    return false;
-  }
-  let browserSupportsTextareaTextNodes;
-  if (typeof browserSupportsTextareaTextNodes === "undefined") {
-    const textarea = document.createElement("textarea");
-    textarea.value = "1";
-    browserSupportsTextareaTextNodes = !!textarea.firstChild;
-  }
-  return browserSupportsTextareaTextNodes;
-}
-
+/**
+ * Inserts the given text at the cursor. If the element contains a selection, the selection
+ * will be replaced by the text.
+ */
 export function insertText(input: HTMLTextAreaElement | HTMLInputElement, text: string) {
   // Most of the used APIs only work with the field selected
   input.focus();
@@ -99,4 +90,17 @@ export function insertText(input: HTMLTextAreaElement | HTMLInputElement, text: 
     e.initEvent("input", true, false);
     input.dispatchEvent(e);
   }
+}
+
+function canManipulateViaTextNodes(input: HTMLTextAreaElement | HTMLInputElement) {
+  if (input.nodeName !== "TEXTAREA") {
+    return false;
+  }
+  let browserSupportsTextareaTextNodes;
+  if (typeof browserSupportsTextareaTextNodes === "undefined") {
+    const textarea = document.createElement("textarea");
+    textarea.value = "1";
+    browserSupportsTextareaTextNodes = !!textarea.firstChild;
+  }
+  return browserSupportsTextareaTextNodes;
 }

@@ -1,6 +1,7 @@
 import * as React from "react";
 import ReactMde from "../src";
 import * as Showdown from "showdown";
+import { MentionSuggestion } from "../src/types";
 
 export interface AppState {
   value: string;
@@ -10,7 +11,7 @@ export interface AppState {
 export class App extends React.Component<{}, AppState> {
   converter: Showdown.Converter;
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       value: "**Hello world!!!**",
@@ -32,7 +33,19 @@ export class App extends React.Component<{}, AppState> {
     this.setState({ tab });
   };
 
-  render() {
+  loadMentionSuggestions = async (text: string) => {
+    const suggestions: MentionSuggestion[] = [{
+      preview: "Andre",
+      value: "andre"
+    },
+      {
+        preview: "Maria",
+        value: "maria"
+      }];
+    return suggestions;
+  };
+
+  render () {
     return (
       <div className="container">
         <ReactMde
@@ -42,6 +55,7 @@ export class App extends React.Component<{}, AppState> {
           generateMarkdownPreview={markdown =>
             Promise.resolve(this.converter.makeHtml(markdown))
           }
+          loadMentionSuggestions={this.loadMentionSuggestions}
           selectedTab={this.state.tab}
         />
       </div>

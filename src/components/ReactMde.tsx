@@ -3,7 +3,7 @@ import {
   Command,
   CommandGroup,
   GenerateMarkdownPreview,
-  GetIcon
+  GetIcon, MentionSuggestion
 } from "../types";
 import { getDefaultCommands } from "../commands";
 import { Preview, Toolbar, TextArea } from ".";
@@ -39,6 +39,7 @@ export interface ReactMdeProps {
   loadingPreview?: React.ReactNode;
   readOnly?: boolean;
   disablePreview?: boolean;
+  loadMentionSuggestions?: (text: string) => Promise<MentionSuggestion[]>;
   textAreaProps?: Partial<
     React.DetailedHTMLProps<
       React.TextareaHTMLAttributes<HTMLTextAreaElement>,
@@ -149,7 +150,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     this.commandOrchestrator.executeCommand(command);
   };
 
-  render () {
+  render() {
     const {
       getIcon,
       commands,
@@ -164,7 +165,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       minPreviewHeight,
       textAreaProps,
       selectedTab,
-      generateMarkdownPreview
+      generateMarkdownPreview,
+      loadMentionSuggestions
     } = this.props;
 
     return (
@@ -200,6 +202,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
               textAreaProps={textAreaProps}
               height={this.state.editorHeight}
               value={value}
+              mentionStartCharacters={["@"]}
+              loadMentionSuggestions={loadMentionSuggestions}
             />
             <div className={classNames("grip", classes?.grip)} onMouseDown={this.handleGripMouseDown}>
               <svg
