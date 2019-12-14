@@ -14,7 +14,7 @@ A simple yet powerful and extensible **React Markdown Editor**. React-mde has no
 The goal is to make react-mde to look and behave like the Github's Markdown editor. These are the major remaining features:
 
 - [ ] [Mentions support](https://github.com/andrerpena/react-mde/issues/200) (under development)
-- [ ] Image upload support
+- [ ] [Image upload support](https://github.com/andrerpena/react-mde/issues/189)
 - [ ] Design improvements
 
 ## Installing
