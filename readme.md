@@ -2,13 +2,20 @@
 
 [![MinZipped](https://badgen.net/bundlephobia/minzip/react-mde)](https://bundlephobia.com/result?p=react-mde)
 
-A simple yet powerful and extensible **React Markdown Editor**. React-mde has no 3rd party dependencies. Min + Gzipped
-package [is around 9KB](https://bundlephobia.com/result?p=react-mde).
+A simple yet powerful and extensible **React Markdown Editor**. React-mde has no 3rd party dependencies.
 
 ## Demo
 
 - [Demo](http://andrerpena.me/react-mde/)
 - [Demo on CodeSandbox](https://codesandbox.io/s/react-mde-latest-9i70s)
+
+## Goal
+
+The goal is to make react-mde to look and behave like the Github's Markdown editor. These are the major remaining features:
+
+- [ ] Mentions support (under development)
+- [ ] Image upload support
+- [ ] Design improvements
 
 ## Installing
 
