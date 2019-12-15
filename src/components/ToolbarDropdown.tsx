@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Command, GetIcon } from "../types";
-import { MdeToolbarButton } from "./MdeToolbarButton";
+import { ToolbarButton } from "./ToolbarButton";
 
-export interface HeaderItemDropdownProps {
+export interface ToolbarDropdownProps {
   getIcon: GetIcon;
   buttonContent: React.ReactNode;
   buttonProps: any;
@@ -11,7 +11,7 @@ export interface HeaderItemDropdownProps {
   readOnly: boolean;
 }
 
-export interface HeaderItemDropdownState {
+export interface ToolbarDropdownState {
   open: boolean;
 }
 
@@ -19,14 +19,14 @@ const defaultHeaderButtonProps = {
   tabIndex: -1
 };
 
-export class MdeToolbarDropdown extends React.Component<
-  HeaderItemDropdownProps,
-  HeaderItemDropdownState
+export class ToolbarDropdown extends React.Component<
+  ToolbarDropdownProps,
+  ToolbarDropdownState
 > {
   dropdown: any; // TODO: Change this type
   dropdownOpener: any; // TODO: Change this type
 
-  constructor(props: HeaderItemDropdownProps) {
+  constructor(props: ToolbarDropdownProps) {
     super(props);
     this.state = {
       open: false
@@ -87,7 +87,7 @@ export class MdeToolbarDropdown extends React.Component<
 
     const items = commands.map((command, index) => {
       return (
-        <MdeToolbarButton
+        <ToolbarButton
           key={`header-item${index}`}
           name={command.name}
           buttonProps={command.buttonProps}

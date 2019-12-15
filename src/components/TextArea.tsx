@@ -1,7 +1,7 @@
 import * as React from "react";
 import { classNames, ClassValue } from "../util/ClassNames";
 
-export interface MdeEditorProps {
+export interface TextAreaProps {
   classes?: ClassValue;
   value: string;
   onChange: (value: string) => void;
@@ -16,7 +16,7 @@ export interface MdeEditorProps {
   >;
 }
 
-export class TextArea extends React.Component<MdeEditorProps, {}> {
+export class TextArea extends React.Component<TextAreaProps, {}> {
   handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { onChange } = this.props;
     onChange(event.target.value);

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export interface MdeToolbarButtonProps {
+export interface ToolbarButtonProps {
   name: string;
   buttonComponentClass?: React.ComponentClass | string;
   buttonProps: any;
@@ -13,7 +13,7 @@ const defaultButtonProps = {
   tabIndex: -1
 };
 
-export const MdeToolbarButton: React.FunctionComponent<MdeToolbarButtonProps> = props => {
+export const ToolbarButton: React.FunctionComponent<ToolbarButtonProps> = props => {
   const {
     buttonComponentClass,
     buttonContent,

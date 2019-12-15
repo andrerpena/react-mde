@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Command, CommandGroup, GetIcon } from "../types";
-import { MdeToolbarButtonGroup } from "./MdeToolbarButtonGroup";
-import { MdeToolbarDropdown } from "./MdeToolbarDropdown";
-import { MdeToolbarButton } from "./MdeToolbarButton";
 import { Tab } from "../types/Tab";
 import { L18n } from "..";
 import { classNames, ClassValue } from "../util/ClassNames";
+import { ToolbarButtonGroup } from "./ToolbarButtonGroup";
+import { ToolbarDropdown } from "./ToolbarDropdown";
+import { ToolbarButton } from "./ToolbarButton";
 
-export interface MdeToolbarProps {
+export interface ToolbarProps {
   classes?: ClassValue;
   getIcon: GetIcon;
   commands: CommandGroup[];
@@ -19,7 +19,7 @@ export interface MdeToolbarProps {
   l18n: L18n;
 }
 
-export class MdeToolbar extends React.Component<MdeToolbarProps> {
+export class Toolbar extends React.Component<ToolbarProps> {
   handleTabChange = (tab: Tab) => {
     const { onTabChange } = this.props;
     onTabChange(tab);
@@ -60,11 +60,11 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
           </div>
         )}
         {commands.map((commandGroup: CommandGroup, i: number) => (
-          <MdeToolbarButtonGroup key={i} hidden={this.props.tab === "preview"}>
+          <ToolbarButtonGroup key={i} hidden={this.props.tab === "preview"}>
             {commandGroup.commands.map((c: Command, j) => {
               if (c.children) {
                 return (
-                  <MdeToolbarDropdown
+                  <ToolbarDropdown
                     key={j}
                     buttonProps={c.buttonProps}
                     getIcon={getIcon}
@@ -76,7 +76,7 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
                 );
               }
               return (
-                <MdeToolbarButton
+                <ToolbarButton
                   key={j}
                   name={c.name}
                   buttonContent={c.icon ? c.icon(getIcon) : getIcon(c.name)}
@@ -87,7 +87,7 @@ export class MdeToolbar extends React.Component<MdeToolbarProps> {
                 />
               );
             })}
-          </MdeToolbarButtonGroup>
+          </ToolbarButtonGroup>
         ))}
       </div>
     );

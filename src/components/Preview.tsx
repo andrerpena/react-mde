@@ -2,9 +2,9 @@ import * as React from "react";
 import { GenerateMarkdownPreview } from "../types";
 import { classNames, ClassValue } from "../util/ClassNames";
 
-export interface ReactMdePreviewProps {
+export interface PreviewProps {
   classes?: ClassValue;
-  previewRef?: (ref: MdePreview) => void;
+  previewRef?: (ref: Preview) => void;
   loadingPreview?: React.ReactNode;
   minHeight: number;
   generateMarkdownPreview: GenerateMarkdownPreview;
@@ -16,8 +16,8 @@ export interface ReactMdePreviewState {
   preview?: React.ReactNode;
 }
 
-export class MdePreview extends React.Component<
-  ReactMdePreviewProps,
+export class Preview extends React.Component<
+  PreviewProps,
   ReactMdePreviewState
 > {
   previewRef: HTMLDivElement;

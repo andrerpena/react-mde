@@ -6,7 +6,7 @@ import {
   GetIcon
 } from "../types";
 import { getDefaultCommands } from "../commands";
-import { MdePreview, MdeToolbar, TextArea } from ".";
+import { Preview, Toolbar, TextArea } from ".";
 import { extractCommandMap } from "../util/CommandUtils";
 import { Tab } from "../types/Tab";
 import { Classes, L18n } from "..";
@@ -56,7 +56,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   commandOrchestrator: CommandOrchestrator;
 
   textAreaRef: HTMLTextAreaElement;
-  previewRef: MdePreview;
+  previewRef: Preview;
 
   // resizeYStart will be null when it is not resizing
   gripDrag: {
@@ -179,7 +179,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           className
         )}
       >
-        <MdeToolbar
+        <Toolbar
           classes={classes?.toolbar}
           getIcon={getIcon}
           commands={commands}
@@ -220,7 +220,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             </div>
           </>
         ) : (
-          <MdePreview
+          <Preview
             classes={classes?.preview}
             previewRef={c => (this.previewRef = c)}
             loadingPreview={loadingPreview || emptyPreviewHtml}
