@@ -7,6 +7,7 @@ import {
 import { Mention } from "./Mention";
 import { MentionSuggestion } from "../types";
 import { insertText } from "../util/InsertTextAtPosition";
+import { mod } from "../util/Math";
 
 export interface MentionState {
   status: "active" | "inactive" | "loading";
@@ -115,9 +116,9 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     const { key } = event;
 
     const { selectionStart } = event.currentTarget;
-    const { mention: { status } } = this.state;
+    const { mention } = this.state;
 
-    switch (status) {
+    switch (mention.status) {
       case "loading":
       case "active":
         if (key === "Escape" || (key === "Backspace" && selectionStart <= this.state.mention.startPosition)) {
@@ -130,11 +131,20 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
               suggestions: []
             }
           });
+        } else if (mention.status === "active" && (key === "ArrowUp" || key === "ArrowDown")) {
+          event.preventDefault();
+          const focusDelta = key === "ArrowUp" ? -1 : 1;
+          this.setState({
+            mention: {
+              ...mention,
+              focusIndex: mod(mention.focusIndex + focusDelta, mention.suggestions.length)
+            }
+          });
         } else {
           // In this case, the mentions box was open but the user typed something else
-          const searchText = this.props.value.substr(this.state.mention.startPosition);
+          const searchText = this.props.value.substr(mention.startPosition);
           this.startLoadingSuggestions(searchText);
-          if (this.state.mention.status !== "loading") {
+          if (mention.status !== "loading") {
             this.setState({
               mention: {
                 ...this.state.mention,

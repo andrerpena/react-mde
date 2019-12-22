@@ -41,6 +41,10 @@ export class App extends React.Component<{}, AppState> {
       {
         preview: "Maria",
         value: "maria"
+      },
+      {
+        preview: "Timur",
+        value: "maria"
       }];
     return suggestions;
   };
