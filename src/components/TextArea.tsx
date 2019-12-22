@@ -225,7 +225,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       loadSuggestions
     } = this.props;
 
-    const mentionsEnabled = suggestionTriggerCharacters && suggestionTriggerCharacters.length && loadSuggestions;
+    const suggestionsEnabled = suggestionTriggerCharacters && suggestionTriggerCharacters.length && loadSuggestions;
 
     const { mention } = this.state;
     return (
@@ -239,17 +239,17 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         value={value}
         data-testid="text-area"
         onBlur={
-          mentionsEnabled
+          suggestionsEnabled
             ? this.handleBlur
             : undefined
         }
         onKeyDown={
-          mentionsEnabled
+          suggestionsEnabled
             ? this.handleKeyDown
             : undefined
         }
         onKeyPress={
-          mentionsEnabled
+          suggestionsEnabled
             ? this.handleKeyPress
             : undefined
         }

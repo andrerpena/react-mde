@@ -68,7 +68,6 @@ export class App extends React.Component<{}, AppState> {
           generateMarkdownPreview={markdown =>
             Promise.resolve(this.converter.makeHtml(markdown))
           }
-          loadSuggestions={this.loadSuggestions}
           selectedTab={this.state.tab}
         />
       </div>
