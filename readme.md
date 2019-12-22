@@ -108,10 +108,10 @@ while the documentation is not complete.
 - **minEditorHeight (number)**: The minimum height of the editor.
 - **maxEditorHeight (number)**: The max height of the editor (after that, it will scroll).
 - **minPreviewHeight (number)**: The minimum height of the preview.
-- **loadSuggestions (text: string, triggeredBy: string) => Promise<Suggestion[]>**: Function to load suggestions based on the
+- **loadSuggestions (text: string, triggeredBy: string) => Promise<Suggestion[]>**: Function to load mention suggestions based on the
 given `text` and `triggeredBy` (character that triggered the suggestions). The result should be an array of `{preview: React.ReactNode, value: string}`.
 The `preview` is what is going to be displayed in the suggestions box. The `value` is what is going to be inserted in the `textarea` on click or enter.
-- **suggestionTriggerCharacters (string[])**: Characters that will triggers suggestions to be loaded. This property is useless
+- **suggestionTriggerCharacters (string[])**: Characters that will trigger mention suggestions to be loaded. This property is useless
 without `loadSuggestions`.
 
 ## Styling
