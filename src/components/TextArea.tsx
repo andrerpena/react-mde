@@ -103,9 +103,10 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       });
   };
 
-  handleSuggestionSelected = (value: string) => {
-    this.textAreaElement.selectionStart = this.state.mention.startPosition;
-    insertText(this.textAreaElement, value);
+  handleSuggestionSelected = (index: number) => {
+    const { mention } = this.state;
+    this.textAreaElement.selectionStart = mention.startPosition - 1;
+    insertText(this.textAreaElement, mention.suggestions[index].value);
     this.setState({
       mention: {
         status: "inactive",
@@ -132,6 +133,17 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
               suggestions: []
             }
           });
+        } else if (key === "Backspace") {
+          const searchText = this.props.value.substr(mention.startPosition + 1);
+          this.startLoadingSuggestions(searchText);
+          if (mention.status !== "loading") {
+            this.setState({
+              mention: {
+                ...this.state.mention,
+                status: "loading"
+              }
+            });
+          }
         } else if (mention.status === "active" && (key === "ArrowUp" || key === "ArrowDown")) {
           event.preventDefault();
           const focusDelta = key === "ArrowUp" ? -1 : 1;
@@ -141,6 +153,9 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
               focusIndex: mod(mention.focusIndex + focusDelta, mention.suggestions.length)
             }
           });
+        } else if (key === "Enter" && mention.status === "active" && mention.suggestions.length) {
+          event.preventDefault();
+          this.handleSuggestionSelected(mention.focusIndex);
         }
         break;
       default:
@@ -158,7 +173,6 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       case "active":
         // In this case, the mentions box was open but the user typed something else
         const searchText = this.props.value.substr(mention.startPosition) + key;
-        console.log(searchText);
         this.startLoadingSuggestions(searchText);
         if (mention.status !== "loading") {
           this.setState({

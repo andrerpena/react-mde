@@ -36,15 +36,15 @@ export class App extends React.Component<{}, AppState> {
   loadMentionSuggestions = async (text: string) => {
     const suggestions: MentionSuggestion[] = [{
       preview: "Andre",
-      value: "andre"
+      value: "#andre"
     },
       {
         preview: "Maria",
-        value: "maria"
+        value: "@maria"
       },
       {
         preview: "Timur",
-        value: "maria"
+        value: "@maria"
       }];
     return suggestions;
   };
