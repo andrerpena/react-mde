@@ -5,4 +5,4 @@ export * from "./MarkdownState";
 export * from "./TextInsertionResult";
 export * from "./TextRange";
 export * from "./TextSection";
-export * from "./MentionSuggestion";
+export * from "./Suggestion";

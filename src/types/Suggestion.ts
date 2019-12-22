@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export interface MentionSuggestion {
+export interface Suggestion {
   /**
    * React element to be used as the preview
    */

@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactMde from "../src";
 import * as Showdown from "showdown";
-import { MentionSuggestion } from "../src/types";
+import { Suggestion } from "../src/types";
 
 export interface AppState {
   value: string;
@@ -33,20 +33,29 @@ export class App extends React.Component<{}, AppState> {
     this.setState({ tab });
   };
 
-  loadMentionSuggestions = async (text: string) => {
-    const suggestions: MentionSuggestion[] = [{
-      preview: "Andre",
-      value: "#andre"
-    },
-      {
-        preview: "Maria",
-        value: "@maria"
-      },
-      {
-        preview: "Timur",
-        value: "@maria"
-      }];
-    return suggestions;
+  loadSuggestions = async (text: string) => {
+    return new Promise<Suggestion[]>((accept, reject) => {
+      setTimeout(() => {
+        const suggestions: Suggestion[] = [{
+          preview: "Andre",
+          value: "@andre"
+        },
+          {
+            preview: "Angela",
+            value: "@angela"
+          },
+          {
+            preview: "David",
+            value: "@david"
+          },
+          {
+            preview: "Louise",
+            value: "@louise"
+          }
+        ].filter((i => i.preview.toLowerCase().includes(text.toLowerCase())));
+        accept(suggestions);
+      }, 250);
+    });
   };
 
   render () {
@@ -59,7 +68,7 @@ export class App extends React.Component<{}, AppState> {
           generateMarkdownPreview={markdown =>
             Promise.resolve(this.converter.makeHtml(markdown))
           }
-          loadMentionSuggestions={this.loadMentionSuggestions}
+          loadSuggestions={this.loadSuggestions}
           selectedTab={this.state.tab}
         />
       </div>

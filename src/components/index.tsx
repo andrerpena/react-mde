@@ -6,3 +6,4 @@ export * from "./Preview";
 export * from "./TextArea";
 export * from "./Toolbar";
 export * from "./ReactMde";
+export * from "./SuggestionsDropdown";

@@ -5,6 +5,8 @@ import {
   ReactMdeProps,
   TextArea,
   TextAreaProps,
+  SuggestionsDropdown,
+  SuggestionsDropdownProps,
   Preview,
   PreviewProps,
   Toolbar,
@@ -17,13 +19,16 @@ import {
 import { IconProviderProps, SvgIcon, MdeFontAwesomeIcon } from "./icons";
 import { L18n } from "./types/L18n";
 import { TextState, TextApi } from "./types/CommandOptions";
-import { Command } from "./types";
+import { Command, Suggestion } from "./types";
 import { Classes } from "./classes";
 
 export {
   ReactMdeProps,
   TextArea,
   TextAreaProps,
+  SuggestionsDropdown,
+  SuggestionsDropdownProps,
+  Suggestion,
   Preview,
   PreviewProps,
   Toolbar,

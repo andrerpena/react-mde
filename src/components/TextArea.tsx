@@ -4,10 +4,10 @@ import {
   CaretCoordinates,
   getCaretCoordinates
 } from "../util/TextAreaCaretPosition";
-import { Mention } from "./Mention";
-import { MentionSuggestion } from "../types";
+import { Suggestion } from "../types";
 import { insertText } from "../util/InsertTextAtPosition";
 import { mod } from "../util/Math";
+import { SuggestionsDropdown } from "./SuggestionsDropdown";
 
 export interface MentionState {
   status: "active" | "inactive" | "loading";
@@ -17,7 +17,7 @@ export interface MentionState {
   startPosition?: number;
   focusIndex?: number;
   caret?: CaretCoordinates;
-  suggestions: MentionSuggestion[];
+  suggestions: Suggestion[];
   /**
    * The character that triggered the mention. Example: @
    */
@@ -35,8 +35,8 @@ export interface TextAreaProps {
   editorRef?: (ref: HTMLTextAreaElement) => void;
   readOnly?: boolean;
   height?: number;
-  mentionStartCharacters?: string[];
-  loadMentionSuggestions?: (text: string, triggeredBy: string) => Promise<MentionSuggestion[]>
+  suggestionTriggerCharacters?: string[];
+  loadSuggestions?: (text: string, triggeredBy: string) => Promise<Suggestion[]>
   textAreaProps?: Partial<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>,
     HTMLTextAreaElement>>;
 }
@@ -78,25 +78,37 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   handleBlur = () => {
     const { mention } = this.state;
     if (mention) {
-      // this.setState({ mention: { active: false } });
+      this.setState({ mention: { status: "inactive", suggestions: [] } });
     }
   };
 
   startLoadingSuggestions = (text: string) => {
     const promiseIndex = ++this.suggestionsPromiseIndex;
-    const { loadMentionSuggestions } = this.props;
+    const { loadSuggestions } = this.props;
     this.currentLoadSuggestionsPromise = this.currentLoadSuggestionsPromise
-      .then(() => loadMentionSuggestions(text, this.state.mention.triggeredBy))
+      .then(() => loadSuggestions(text, this.state.mention.triggeredBy))
       .then(suggestions => {
-        if (this.suggestionsPromiseIndex === promiseIndex) {
-          this.setState({
-            mention: {
-              ...this.state.mention,
-              status: "active",
-              suggestions,
-              focusIndex: 0
-            }
-          });
+        if (this.state.mention.status === "inactive") {
+          // This means this promise resolved too late when the status has already been set to inactice
+          return;
+        } else if (this.suggestionsPromiseIndex === promiseIndex) {
+          if (!suggestions || !suggestions.length) {
+            this.setState({
+              mention: {
+                status: "inactive",
+                suggestions: []
+              }
+            });
+          } else {
+            this.setState({
+              mention: {
+                ...this.state.mention,
+                status: "active",
+                suggestions,
+                focusIndex: 0
+              }
+            });
+          }
           this.suggestionsPromiseIndex = 0;
         }
         return Promise.resolve();
@@ -106,7 +118,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   handleSuggestionSelected = (index: number) => {
     const { mention } = this.state;
     this.textAreaElement.selectionStart = mention.startPosition - 1;
-    insertText(this.textAreaElement, mention.suggestions[index].value);
+    insertText(this.textAreaElement, mention.suggestions[index].value + " ");
     this.setState({
       mention: {
         status: "inactive",
@@ -164,7 +176,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   };
 
   handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const { mentionStartCharacters } = this.props;
+    const { suggestionTriggerCharacters } = this.props;
     const { mention } = this.state;
     const { key } = event;
 
@@ -184,7 +196,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         }
         break;
       case "inactive":
-        if (mentionStartCharacters.indexOf(event.key) === -1) {
+        if (suggestionTriggerCharacters.indexOf(event.key) === -1) {
           return;
         }
         const caret = getCaretCoordinates(event.currentTarget, "@");
@@ -209,11 +221,11 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       textAreaProps,
       height,
       value,
-      mentionStartCharacters,
-      loadMentionSuggestions
+      suggestionTriggerCharacters,
+      loadSuggestions
     } = this.props;
 
-    const mentionsEnabled = mentionStartCharacters && mentionStartCharacters.length && loadMentionSuggestions;
+    const mentionsEnabled = suggestionTriggerCharacters && suggestionTriggerCharacters.length && loadSuggestions;
 
     const { mention } = this.state;
     return (
@@ -243,10 +255,10 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         }
         {...textAreaProps}
       />
-        {mention.status === "active" && mention.suggestions.length && <Mention caret={mention.caret}
-                                                                               suggestions={mention.suggestions}
-                                                                               onSuggestionSelected={this.handleSuggestionSelected}
-                                                                               focusIndex={mention.focusIndex}
+        {mention.status === "active" && mention.suggestions.length && <SuggestionsDropdown caret={mention.caret}
+                                                                                           suggestions={mention.suggestions}
+                                                                                           onSuggestionSelected={this.handleSuggestionSelected}
+                                                                                           focusIndex={mention.focusIndex}
         />}
       </div>
     );
