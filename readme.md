@@ -7,7 +7,7 @@ A simple yet powerful and extensible **React Markdown Editor**. React-mde has no
 ## Demo
 
 - [Demo](http://andrerpena.me/react-mde/)
-- [Demo on CodeSandbox](https://codesandbox.io/s/react-mde-latest-9i70s)
+- [Demo on CodeSandbox](https://codesandbox.io/s/react-mde-latest-bm6p3)
 
 ## Goal
 
