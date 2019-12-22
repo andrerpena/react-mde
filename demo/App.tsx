@@ -69,6 +69,8 @@ export class App extends React.Component<{}, AppState> {
             Promise.resolve(this.converter.makeHtml(markdown))
           }
           selectedTab={this.state.tab}
+          loadSuggestions={this.loadSuggestions}
+          suggestionTriggerCharacters={["@"]}
         />
       </div>
     );
