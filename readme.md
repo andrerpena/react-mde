@@ -34,7 +34,7 @@ it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as
 
 React-mde is a completely controlled component.
 
-Minimal example using Showdown. [View live on CodeSandBox](https://codesandbox.io/s/react-mde-latest-9i70s):
+Minimal example using Showdown. [View live on CodeSandBox](https://codesandbox.io/s/react-mde-latest-bm6p3):
 ```jsx
 import * as React from "react";
 import ReactMde from "react-mde";
@@ -91,7 +91,7 @@ The types are described below
 - **onChange**: (value: string): Event handler for the `onChange` event.
 - **selectedTab: "write" | "preview"**: The currently selected tab.
 - **onTabChange: (tab) => void**: Function called when the selected tab changes.
-- **classes?**: [An object](https://github.com/andrerpena/react-mde/blob/master/src/classes.ts) containing the following optional properties: *reactMde*, *toolbar*, *preview*, *textArea* and *grip*. 
+- **classes?**: [An object](https://github.com/andrerpena/react-mde/blob/master/src/classes.ts) containing the following optional properties: *reactMde*, *toolbar*, *preview*, *textArea*, *grip* and *suggestionsDropdown*. 
 This allows for passing class names to each of the inner components of React-mde. Classes defined in the *classes* prop
 follow the specification of [Jed Watson's classNames project](https://github.com/JedWatson/classnames).
 - **className?: string**: OBSOLETE - Optional class name to be added to the top level element. Use the *classes* prop instead.

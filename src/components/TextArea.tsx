@@ -30,6 +30,7 @@ export interface TextAreaState {
 
 export interface TextAreaProps {
   classes?: ClassValue;
+  suggestionsDropdownClasses?: ClassValue;
   value: string;
   onChange: (value: string) => void;
   editorRef?: (ref: HTMLTextAreaElement) => void;
@@ -222,7 +223,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       height,
       value,
       suggestionTriggerCharacters,
-      loadSuggestions
+      loadSuggestions,
+      suggestionsDropdownClasses
     } = this.props;
 
     const suggestionsEnabled = suggestionTriggerCharacters && suggestionTriggerCharacters.length && loadSuggestions;
@@ -255,10 +257,12 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         }
         {...textAreaProps}
       />
-        {mention.status === "active" && mention.suggestions.length && <SuggestionsDropdown caret={mention.caret}
-                                                                                           suggestions={mention.suggestions}
-                                                                                           onSuggestionSelected={this.handleSuggestionSelected}
-                                                                                           focusIndex={mention.focusIndex}
+        {mention.status === "active" && mention.suggestions.length &&
+        <SuggestionsDropdown classes={suggestionsDropdownClasses}
+                             caret={mention.caret}
+                             suggestions={mention.suggestions}
+                             onSuggestionSelected={this.handleSuggestionSelected}
+                             focusIndex={mention.focusIndex}
         />}
       </div>
     );

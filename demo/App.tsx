@@ -71,6 +71,9 @@ export class App extends React.Component<{}, AppState> {
           selectedTab={this.state.tab}
           loadSuggestions={this.loadSuggestions}
           suggestionTriggerCharacters={["@"]}
+          classes={{
+            suggestionsDropdown: "bbbb"
+          }}
         />
       </div>
     );

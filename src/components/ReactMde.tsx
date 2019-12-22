@@ -199,6 +199,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           <>
             <TextArea
               classes={classes?.textArea}
+              suggestionsDropdownClasses={classes?.suggestionsDropdown}
               editorRef={this.setTextAreaRef}
               onChange={this.handleTextChange}
               readOnly={readOnly}

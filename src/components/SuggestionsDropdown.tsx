@@ -2,8 +2,10 @@ import * as React from "react";
 import { CaretCoordinates } from "../util/TextAreaCaretPosition";
 import { useCallback } from "react";
 import { Suggestion } from "../types";
+import { classNames, ClassValue } from "../util/ClassNames";
 
 export interface SuggestionsDropdownProps {
+  classes?: ClassValue,
   caret: CaretCoordinates,
   suggestions: Suggestion[]
   onSuggestionSelected: (index: number) => void,
@@ -13,7 +15,7 @@ export interface SuggestionsDropdownProps {
   focusIndex: number
 }
 
-export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownProps> = ({ suggestions, caret, onSuggestionSelected, focusIndex }) => {
+export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownProps> = ({ classes, suggestions, caret, onSuggestionSelected, focusIndex }) => {
   const handleSuggestionClick = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
     const index = parseInt(event.currentTarget.attributes["data-index"].value);
@@ -22,7 +24,7 @@ export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownPro
   // onMouseDown should be cancelled because onClick will handle it propertly. This way, the textarea does not lose
   // focus
   const handleMouseDown = useCallback((event: React.MouseEvent) => event.preventDefault(), []);
-  return <ul className="mde-suggestions"
+  return <ul className={classNames("mde-suggestions", classes)}
              style={{ left: caret.left, top: caret.top }}>
     {suggestions.map((s, i) => <li onClick={handleSuggestionClick}
                                    onMouseDown={handleMouseDown}
