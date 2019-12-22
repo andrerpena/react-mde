@@ -17,7 +17,11 @@ export interface MentionState {
   startPosition?: number;
   focusIndex?: number;
   caret?: CaretCoordinates;
-  suggestions: MentionSuggestion[]
+  suggestions: MentionSuggestion[];
+  /**
+   * The character that triggered the mention. Example: @
+   */
+  triggeredBy?: string;
 }
 
 export interface TextAreaState {
@@ -32,7 +36,7 @@ export interface TextAreaProps {
   readOnly?: boolean;
   height?: number;
   mentionStartCharacters?: string[];
-  loadMentionSuggestions?: (text: string) => Promise<MentionSuggestion[]>
+  loadMentionSuggestions?: (text: string, triggeredBy: string) => Promise<MentionSuggestion[]>
   textAreaProps?: Partial<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>,
     HTMLTextAreaElement>>;
 }
@@ -82,7 +86,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     const promiseIndex = ++this.suggestionsPromiseIndex;
     const { loadMentionSuggestions } = this.props;
     this.currentLoadSuggestionsPromise = this.currentLoadSuggestionsPromise
-      .then(() => loadMentionSuggestions(text))
+      .then(() => loadMentionSuggestions(text, this.state.mention.triggeredBy))
       .then(suggestions => {
         if (this.suggestionsPromiseIndex === promiseIndex) {
           this.setState({
@@ -111,10 +115,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   };
 
   handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const { mentionStartCharacters, loadMentionSuggestions } = this.props;
-
     const { key } = event;
-
     const { selectionStart } = event.currentTarget;
     const { mention } = this.state;
 
@@ -140,18 +141,32 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
               focusIndex: mod(mention.focusIndex + focusDelta, mention.suggestions.length)
             }
           });
-        } else {
-          // In this case, the mentions box was open but the user typed something else
-          const searchText = this.props.value.substr(mention.startPosition);
-          this.startLoadingSuggestions(searchText);
-          if (mention.status !== "loading") {
-            this.setState({
-              mention: {
-                ...this.state.mention,
-                status: "loading"
-              }
-            });
-          }
+        }
+        break;
+      default:
+      // Ignore
+    }
+  };
+
+  handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const { mentionStartCharacters } = this.props;
+    const { mention } = this.state;
+    const { key } = event;
+
+    switch (mention.status) {
+      case "loading":
+      case "active":
+        // In this case, the mentions box was open but the user typed something else
+        const searchText = this.props.value.substr(mention.startPosition) + key;
+        console.log(searchText);
+        this.startLoadingSuggestions(searchText);
+        if (mention.status !== "loading") {
+          this.setState({
+            mention: {
+              ...this.state.mention,
+              status: "loading"
+            }
+          });
         }
         break;
       case "inactive":
@@ -165,12 +180,12 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
             status: "loading",
             startPosition: event.currentTarget.selectionStart + 1,
             caret: caret,
-            suggestions: []
+            suggestions: [],
+            triggeredBy: event.key
           }
         });
         break;
     }
-
   };
 
   render () {
@@ -180,8 +195,12 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       textAreaProps,
       height,
       value,
-      mentionStartCharacters
+      mentionStartCharacters,
+      loadMentionSuggestions
     } = this.props;
+
+    const mentionsEnabled = mentionStartCharacters && mentionStartCharacters.length && loadMentionSuggestions;
+
     const { mention } = this.state;
     return (
       <div className="mde-textarea-wrapper">
@@ -194,13 +213,18 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         value={value}
         data-testid="text-area"
         onBlur={
-          mentionStartCharacters && mentionStartCharacters.length
+          mentionsEnabled
             ? this.handleBlur
             : undefined
         }
         onKeyDown={
-          mentionStartCharacters && mentionStartCharacters.length
+          mentionsEnabled
             ? this.handleKeyDown
+            : undefined
+        }
+        onKeyPress={
+          mentionsEnabled
+            ? this.handleKeyPress
             : undefined
         }
         {...textAreaProps}
