@@ -10,7 +10,11 @@ import { insertText } from "../util/InsertTextAtPosition";
 
 export interface MentionState {
   status: "active" | "inactive" | "loading";
+  /**
+   * Selection start by the time the mention was activated
+   */
   startPosition?: number;
+  focusIndex?: number;
   caret?: CaretCoordinates;
   suggestions: MentionSuggestion[]
 }
@@ -84,7 +88,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
             mention: {
               ...this.state.mention,
               status: "active",
-              suggestions
+              suggestions,
+              focusIndex: 0
             }
           });
           this.suggestionsPromiseIndex = 0;
@@ -129,13 +134,13 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
           // In this case, the mentions box was open but the user typed something else
           const searchText = this.props.value.substr(this.state.mention.startPosition);
           this.startLoadingSuggestions(searchText);
-          if(this.state.mention.status !== "loading") {
+          if (this.state.mention.status !== "loading") {
             this.setState({
               mention: {
                 ...this.state.mention,
                 status: "loading"
               }
-            })
+            });
           }
         }
         break;
@@ -167,6 +172,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       value,
       mentionStartCharacters
     } = this.props;
+    const { mention } = this.state;
     return (
       <div className="mde-textarea-wrapper">
       <textarea
@@ -189,9 +195,11 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         }
         {...textAreaProps}
       />
-        {this.state.mention.status === "active" && this.state.mention.suggestions.length && <Mention caret={this.state.mention.caret}
-                                                            suggestions={this.state.mention.suggestions}
-                                                            onSuggestionSelected={this.handleSuggestionSelected}/>}
+        {mention.status === "active" && mention.suggestions.length && <Mention caret={mention.caret}
+                                                                               suggestions={mention.suggestions}
+                                                                               onSuggestionSelected={this.handleSuggestionSelected}
+                                                                               focusIndex={mention.focusIndex}
+        />}
       </div>
     );
   }

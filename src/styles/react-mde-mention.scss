@@ -1,3 +1,5 @@
+@import "variables";
+
 ul.mde-mention {
   position: absolute;
   min-width: 180px;
@@ -8,19 +10,25 @@ ul.mde-mention {
   background: #fff;
   border: 1px solid #e1e4e8;
   border-radius: 3px;
-  box-shadow: 0 1px 5px rgba(27,31,35,.15);
+  box-shadow: 0 1px 5px rgba(27, 31, 35, .15);
 
   li {
     padding: 4px 8px;
-    font-weight: 600;
     border-bottom: 1px solid #e1e4e8;
+
     &:first-child {
       border-top-left-radius: 3px;
       border-top-right-radius: 3px;
     }
+
     &:last-child {
       border-bottom-right-radius: 3px;
       border-bottom-left-radius: 3px;
+    }
+
+    &[aria-selected=true] {
+      color: $mde-white-color;
+      background-color: $mde-selected-color;
     }
   }
 }
