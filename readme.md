@@ -1,5 +1,6 @@
 # 📝 react-mde
 
+![npm](https://img.shields.io/npm/dt/react-mde)
 [![MinZipped](https://badgen.net/bundlephobia/minzip/react-mde)](https://bundlephobia.com/result?p=react-mde)
 
 A simple yet powerful and extensible **React Markdown Editor**. React-mde has no 3rd party dependencies.
