@@ -192,4 +192,5 @@ In order to make React-mde zero deps, I've embedded two small libraries:
 ## About the author
 
 Made with :heart: by André Pena and [other awesome contributors](https://github.com/andrerpena/react-mde/graphs/contributors).
-Check out my website: http://andrerpena.me.
+
+[![twitter](https://img.shields.io/twitter/follow/andrerpena?style=social)](https://twitter.com/andrerpena)
