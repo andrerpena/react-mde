@@ -39,6 +39,7 @@ export interface ReactMdeProps {
   loadingPreview?: React.ReactNode;
   readOnly?: boolean;
   disablePreview?: boolean;
+  autoGrow?: boolean;
   suggestionTriggerCharacters?: string[];
   loadSuggestions?: (text: string) => Promise<Suggestion[]>;
   textAreaProps?: Partial<
@@ -58,6 +59,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   commandOrchestrator: CommandOrchestrator;
 
   textAreaRef: HTMLTextAreaElement;
+  textAreaLineHeight: number;
   previewRef: Preview;
 
   // resizeYStart will be null when it is not resizing
@@ -73,6 +75,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     getIcon: name => <SvgIcon icon={name} />,
     emptyPreviewHtml: "<p>&nbsp;</p>",
     readOnly: false,
+    autoGrow: false,
     l18n: enL18n,
     minEditorHeight: 200,
     maxEditorHeight: 500,
@@ -141,11 +144,40 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     document.addEventListener<"mouseup">("mouseup", this.handleGripMouseUp);
   }
 
+  adjustEditorSize = () => {
+    const { autoGrow } = this.props;
+
+    if (!autoGrow || !this.textAreaRef) {
+      return;
+    }
+
+    if (this.textAreaRef.scrollHeight > this.textAreaRef.offsetHeight) {
+      this.setState({
+        editorHeight: this.textAreaRef.scrollHeight + this.textAreaLineHeight
+      });
+    }
+  };
+
   setTextAreaRef = (element: HTMLTextAreaElement) => {
+    const { autoGrow } = this.props;
+
     this.textAreaRef = element;
     this.commandOrchestrator = new TextAreaCommandOrchestrator(
       this.textAreaRef
     );
+
+    if (autoGrow && element) {
+      const computed = window.getComputedStyle(element);
+      let lineHeight = parseInt(computed.getPropertyValue("line-height"), 10);
+
+      if (isNaN(lineHeight)) {
+        lineHeight = parseInt(computed.getPropertyValue("font-size"), 10) * 1.5;
+      }
+
+      this.textAreaLineHeight = lineHeight;
+    }
+
+    this.adjustEditorSize();
   };
 
   handleCommand = (command: Command) => {
@@ -203,7 +235,13 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
               editorRef={this.setTextAreaRef}
               onChange={this.handleTextChange}
               readOnly={readOnly}
-              textAreaProps={textAreaProps}
+              textAreaProps={{
+                ...textAreaProps,
+                onKeyDown: e => {
+                  this.adjustEditorSize();
+                  textAreaProps.onKeyDown && textAreaProps.onKeyDown(e);
+                }
+              }}
               height={this.state.editorHeight}
               value={value}
               suggestionTriggerCharacters={suggestionTriggerCharacters}
