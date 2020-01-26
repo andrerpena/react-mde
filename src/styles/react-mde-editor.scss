@@ -11,4 +11,8 @@
     resize: none;
     overflow-y: auto;
   }
+
+  & textarea.hidden {
+    visibility: hidden;
+  }
 }
