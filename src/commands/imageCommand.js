@@ -2,6 +2,7 @@ import { selectWord } from "../util/MarkdownUtil";
 
 export const imageCommand = {
   name: "image",
+  tooltip: "Add an image",
   buttonProps: { "aria-label": "Add image" },
   execute: (state0, api) => {
     // Select everything

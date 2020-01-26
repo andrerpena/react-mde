@@ -2,6 +2,7 @@ import { selectWord } from "../util/MarkdownUtil";
 
 export const linkCommand = {
   name: "link",
+  tooltip: "Add a link (ctrl+k)",
   buttonProps: { "aria-label": "Add a link" },
   execute: (state0, api) => {
     // Adjust the selection to encompass the whole word if the caret is inside one

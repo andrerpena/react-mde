@@ -6,6 +6,7 @@ import {
 
 export const codeCommand = {
   name: "code",
+  tooltip: "Insert Code",
   buttonProps: { "aria-label": "Insert code" },
   execute: (state0, api) => {
     // Adjust the selection to encompass the whole word if the caret is inside one

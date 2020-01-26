@@ -1,34 +1,42 @@
 import React from "react";
+import Tooltip from "rc-tooltip";
 
-const defaultButtonProps = {
-  tabIndex: -1
-};
+export const ToolbarButton = ({
+  buttonComponentClass,
+  buttonContent,
+  buttonProps,
+  onClick,
+  readOnly,
+  name,
+  tooltip
+}) => {
+  const button = React.createElement(
+    buttonComponentClass || "button",
+    {
+      "data-name": name,
+      ...{ tabIndex: -1, ...(buttonProps || {}) },
+      ...{
+        onClick,
+        disabled: readOnly,
+        type: "button"
+      }
+    },
+    buttonContent
+  );
 
-export const ToolbarButton = props => {
-  const {
-    buttonComponentClass,
-    buttonContent,
-    buttonProps,
-    onClick,
-    readOnly,
-    name
-  } = props;
-  const finalButtonProps = { ...defaultButtonProps, ...(buttonProps || {}) };
-  const finalButtonComponent = buttonComponentClass || "button";
   return (
     <li className="mde-header-item">
-      {React.createElement(
-        finalButtonComponent,
-        {
-          "data-name": name,
-          ...finalButtonProps,
-          ...{
-            onClick,
-            disabled: readOnly,
-            type: "button"
-          }
-        },
-        buttonContent
+      {tooltip ? (
+        <Tooltip
+          placement="bottom"
+          trigger={["hover"]}
+          transitionName="fade"
+          overlay={<span>{tooltip}</span>}
+        >
+          {button}
+        </Tooltip>
+      ) : (
+        <>{button}</>
       )}
     </li>
   );

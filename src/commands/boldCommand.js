@@ -2,6 +2,7 @@ import { selectWord } from "../util/MarkdownUtil";
 
 export const boldCommand = {
   name: "bold",
+  tooltip: "Add bold text (ctrl+b)",
   buttonProps: { "aria-label": "Add bold text" },
   execute: (state0, api) => {
     // Adjust the selection to encompass the whole word if the caret is inside one

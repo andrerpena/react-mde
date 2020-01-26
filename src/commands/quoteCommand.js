@@ -6,6 +6,7 @@ import {
 
 export const quoteCommand = {
   name: "quote",
+  tooltip: "Inset a quote",
   buttonProps: { "aria-label": "Insert a quote" },
   execute: (state0, api) => {
     // Adjust the selection to encompass the whole word if the caret is inside one

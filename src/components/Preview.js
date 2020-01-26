@@ -12,7 +12,6 @@ export class Preview extends React.Component {
   componentDidMount() {
     const { markdown, generateMarkdownPreview } = this.props;
     generateMarkdownPreview(markdown).then(preview => {
-      console.log("preview", preview);
       this.setState({
         preview,
         loading: false

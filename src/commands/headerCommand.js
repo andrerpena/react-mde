@@ -20,6 +20,7 @@ function setHeader(state0, api, prefix) {
 export const headerCommand = {
   name: "header",
   buttonProps: { "aria-label": "Add header" },
+  tooltip: "Add a header",
   children: [
     {
       name: "header-1",

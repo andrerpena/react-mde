@@ -72,6 +72,7 @@ export const makeList = (state0, api, insertBefore) => {
 
 export const unorderedListCommand = {
   name: "unordered-list",
+  tooltip: "Add an unordered list",
   buttonProps: { "aria-label": "Add unordered list" },
   execute: (state0, api) => {
     makeList(state0, api, "- ");
@@ -81,6 +82,7 @@ export const unorderedListCommand = {
 
 export const orderedListCommand = {
   name: "ordered-list",
+  tooltip: "Add an ordered list",
   buttonProps: { "aria-label": "Add ordered list" },
   execute: (state0, api) => {
     makeList(state0, api, (_, index) => `${index + 1}. `);
@@ -90,6 +92,7 @@ export const orderedListCommand = {
 
 export const checkedListCommand = {
   name: "checked-list",
+  tooltip: "Add a check list",
   buttonProps: { "aria-label": "Add checked list" },
   execute: (state0, api) => {
     makeList(state0, api, () => `- [ ] `);

@@ -1,5 +1,6 @@
 import React from "react";
 import { ToolbarButton } from "./ToolbarButton";
+import Tooltip from "rc-tooltip";
 
 const defaultHeaderButtonProps = {
   tabIndex: -1
@@ -51,30 +52,13 @@ export class ToolbarDropdown extends React.Component {
   };
 
   render() {
-    const { getIcon, readOnly } = this.props;
-
-    const items = this.props.commands.map((command, index) => {
-      return (
-        <ToolbarButton
-          key={`header-item${index}`}
-          name={command.name}
-          buttonProps={command.buttonProps}
-          buttonContent={
-            command.icon ? command.icon(getIcon) : getIcon(command.name)
-          }
-          onClick={e => this.handleOnClickCommand(e, command)}
-          readOnly={readOnly}
-        />
-      );
-    });
-
-    const dropdown = this.state.open ? (
-      <ul className="react-mde-dropdown" ref={ref => (this.dropdown = ref)}>
-        {items}
-      </ul>
-    ) : null;
-
-    const { buttonContent, buttonProps } = this.props;
+    const {
+      buttonContent,
+      buttonProps,
+      getIcon,
+      readOnly,
+      tooltip
+    } = this.props;
 
     const finalButtonProps = {
       ...defaultHeaderButtonProps,
@@ -83,16 +67,38 @@ export class ToolbarDropdown extends React.Component {
 
     return (
       <li className="mde-header-item">
-        <button
-          type="button"
-          {...finalButtonProps}
-          ref={ref => (this.dropdownOpener = ref)}
-          onClick={this.handleClick}
-          disabled={readOnly}
+        <Tooltip
+          placement="bottom"
+          trigger={["hover"]}
+          transitionName="fade"
+          overlay={<span>{tooltip || "Hello"}</span>}
         >
-          {buttonContent}
-        </button>
-        {dropdown}
+          <button
+            type="button"
+            {...finalButtonProps}
+            ref={ref => (this.dropdownOpener = ref)}
+            onClick={this.handleClick}
+            disabled={readOnly}
+          >
+            {buttonContent}
+          </button>
+        </Tooltip>
+        {this.state.open ? (
+          <ul className="react-mde-dropdown" ref={ref => (this.dropdown = ref)}>
+            {this.props.commands.map((command, index) => (
+              <ToolbarButton
+                key={`header-item${index}`}
+                name={command.name}
+                buttonProps={command.buttonProps}
+                buttonContent={
+                  command.icon ? command.icon(getIcon) : getIcon(command.name)
+                }
+                onClick={e => this.handleOnClickCommand(e, command)}
+                readOnly={readOnly}
+              />
+            ))}
+          </ul>
+        ) : null}
       </li>
     );
   }

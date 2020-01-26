@@ -2,6 +2,7 @@ import { selectWord } from "../util/MarkdownUtil";
 
 export const italicCommand = {
   name: "italic",
+  tooltip: "Add italic text (ctrl+i)",
   buttonProps: { "aria-label": "Add italic text" },
   execute: (state0, api) => {
     // Adjust the selection to encompass the whole word if the caret is inside one

@@ -20,21 +20,14 @@ export class TextArea extends React.Component {
    * suggestionsPromiseIndex increments every time the mentions query
    */
 
-  constructor(props) {
-    super(props);
-    this.state = { mention: { status: "inactive", suggestions: [] } };
-  }
+  state = { mention: { status: "inactive", suggestions: [] } };
 
   handleTextAreaRef = element => {
-    const { editorRef } = this.props;
     this.textAreaElement = element;
-    editorRef(element);
+    this.props.editorRef(element);
   };
 
-  handleOnChange = event => {
-    const { onChange } = this.props;
-    onChange(event.target.value);
-  };
+  handleOnChange = ({ target: { value } }) => this.props.onChange(value);
 
   handleBlur = () => {
     const { mention } = this.state;
