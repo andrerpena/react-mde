@@ -2,31 +2,30 @@ import React from "react";
 import Tooltip from "rc-tooltip";
 
 export const ToolbarButton = ({
-  buttonComponentClass,
   buttonContent,
   buttonProps,
   onClick,
-  readOnly,
+  disabled,
   name,
   tooltip
 }) => {
-  const button = React.createElement(
-    buttonComponentClass || "button",
-    {
-      "data-name": name,
-      ...{ tabIndex: -1, ...(buttonProps || {}) },
-      ...{
-        onClick,
-        disabled: readOnly,
-        type: "button"
-      }
-    },
-    buttonContent
+  const button = (
+    <button
+      {...buttonProps}
+      type="button"
+      data-name={name}
+      data-tip={tooltip}
+      tabIndex="-1"
+      style={disabled ? { cursor: "not-allowed", color: "#ccc" } : undefined}
+      onClick={!disabled ? onClick : null}
+    >
+      {buttonContent}
+    </button>
   );
 
   return (
     <li className="mde-header-item">
-      {tooltip ? (
+      {!disabled && tooltip ? (
         <Tooltip
           placement="bottom"
           trigger={["hover"]}
@@ -36,7 +35,7 @@ export const ToolbarButton = ({
           {button}
         </Tooltip>
       ) : (
-        <>{button}</>
+        button
       )}
     </li>
   );

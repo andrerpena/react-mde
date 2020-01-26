@@ -1,10 +1,10 @@
 import React from "react";
+import Tooltip from "rc-tooltip";
 import { classNames } from "../util/ClassNames";
 import { ToolbarButtonGroup } from "./ToolbarButtonGroup";
 import { ToolbarDropdown } from "./ToolbarDropdown";
 import { ToolbarButton } from "./ToolbarButton";
 import { SvgIcon } from "../icons";
-import Tooltip from "rc-tooltip";
 
 export const Toolbar = ({
   classes,
@@ -18,6 +18,8 @@ export const Toolbar = ({
   tab
 }) => {
   const isPreviewing = tab === "preview";
+  const disabled = isPreviewing ? true : readOnly;
+
   return (commands && commands.length > 0) || children ? (
     <div className={classNames("mde-header", classes)}>
       {commands.map((commandGroup, i) => (
@@ -33,6 +35,7 @@ export const Toolbar = ({
                   }
                   commands={props.children}
                   onCommand={cmd => onCommand(cmd)}
+                  disabled={disabled}
                 />
               ) : (
                 <ToolbarButton
@@ -42,7 +45,7 @@ export const Toolbar = ({
                     props.icon ? props.icon(getIcon) : getIcon(props.name)
                   }
                   onClick={() => onCommand(props)}
-                  readOnly={readOnly}
+                  disabled={disabled}
                 />
               )
             )}

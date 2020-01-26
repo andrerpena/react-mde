@@ -1,10 +1,5 @@
 import React from "react";
 import { ToolbarButton } from "./ToolbarButton";
-import Tooltip from "rc-tooltip";
-
-const defaultHeaderButtonProps = {
-  tabIndex: -1
-};
 
 export class ToolbarDropdown extends React.Component {
   state = {
@@ -41,8 +36,7 @@ export class ToolbarDropdown extends React.Component {
   };
 
   handleOnClickCommand = (_, command) => {
-    const { onCommand } = this.props;
-    onCommand(command);
+    this.props.onCommand(command);
     this.closeDropdown();
   };
 
@@ -56,33 +50,31 @@ export class ToolbarDropdown extends React.Component {
       buttonContent,
       buttonProps,
       getIcon,
-      readOnly,
+      disabled,
       tooltip
     } = this.props;
 
     const finalButtonProps = {
-      ...defaultHeaderButtonProps,
+      ...{ tabIndex: -1 },
       ...(buttonProps || {})
     };
 
     return (
       <li className="mde-header-item">
-        <Tooltip
-          placement="bottom"
-          trigger={["hover"]}
-          transitionName="fade"
-          overlay={<span>{tooltip || "Hello"}</span>}
+        <button
+          type="button"
+          {...finalButtonProps}
+          ref={ref => (this.dropdownOpener = ref)}
+          onClick={!disabled ? this.handleClick : null}
+          style={{
+            ...{ transition: "none" },
+            ...(disabled
+              ? { cursor: "not-allowed", color: "#ccc", transition: "none" }
+              : {})
+          }}
         >
-          <button
-            type="button"
-            {...finalButtonProps}
-            ref={ref => (this.dropdownOpener = ref)}
-            onClick={this.handleClick}
-            disabled={readOnly}
-          >
-            {buttonContent}
-          </button>
-        </Tooltip>
+          {buttonContent}
+        </button>
         {this.state.open ? (
           <ul className="react-mde-dropdown" ref={ref => (this.dropdown = ref)}>
             {this.props.commands.map((command, index) => (
@@ -94,7 +86,7 @@ export class ToolbarDropdown extends React.Component {
                   command.icon ? command.icon(getIcon) : getIcon(command.name)
                 }
                 onClick={e => this.handleOnClickCommand(e, command)}
-                readOnly={readOnly}
+                readOnly={disabled}
               />
             ))}
           </ul>
