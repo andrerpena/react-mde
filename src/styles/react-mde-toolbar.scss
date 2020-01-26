@@ -9,32 +9,44 @@
   border-radius: $mde-border-radius $mde-border-radius 0 0;
   background: $mde-toolbar-color;
 
+  .separator {
+    display: inline-block;
+    width: 0;
+    border-left: 1px solid #d9d9d9;
+    border-right: 1px solid #fff;
+    color: transparent;
+    text-indent: -10px;
+    margin: 0 6px;
+  }
+
   .mde-tabs {
     display: flex;
     flex-direction: row;
 
     button {
       border-radius: $mde-border-radius;
-      margin: 6px 3px;
+      margin: 9px 6px;
       background-color: transparent;
       border: 1px solid transparent;
+      transition: all 0.3s ease-in-out;
       cursor: pointer;
-      &:first-child {
-        margin-left: 6px;
-      }
       &.selected {
-        border: 1px solid $mde-border-color
+        border: 1px solid $mde-border-color;
+      }
+      &:hover {
+        border: 1px solid $mde-border-color;
+        background: #ebebeb;
       }
     }
   }
 
   .svg-icon {
-    width: 1em;
-    height: 1em;
+    width: 1.1em;
+    height: 1.1em;
     display: inline-block;
     font-size: inherit;
     overflow: visible;
-    vertical-align: -.125em;
+    vertical-align: -0.125em;
   }
 
   ul.mde-header-group {
@@ -55,12 +67,13 @@
       button {
         text-align: left;
         cursor: pointer;
-        height: 22px;
         padding: 4px;
         margin: 0;
         border: none;
         background: none;
         color: $mde-button-color;
+        border: 1px solid transparent;
+        transition: all 0.3s ease-in-out;
         @keyframes tooltip-appear {
           from {
             opacity: 0;
@@ -74,6 +87,10 @@
           animation-duration: 0.2s;
           animation-delay: 0.5s;
           animation-fill-mode: forwards;
+        }
+        &:hover {
+          border: 1px solid $mde-border-color;
+          background: #ebebeb;
         }
         &.tooltipped {
           &:hover::before {
@@ -112,7 +129,6 @@
             white-space: nowrap;
           }
         }
-
       }
       ul.react-mde-dropdown {
         position: absolute;
@@ -157,7 +173,6 @@
               }
             }
           }
-
         }
         &::before {
           position: absolute;
@@ -185,4 +200,3 @@
     }
   }
 }
-
