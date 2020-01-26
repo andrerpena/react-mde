@@ -1,15 +1,23 @@
 @import "variables.scss";
 
 .mde-preview {
-  .mde-preview-content {
-    padding: $mde-preview-padding;
+  overflow-y: auto;
 
-    p, blockquote, ul, ol, dl, table, pre {
+  .mde-preview-content {
+    p,
+    blockquote,
+    ul,
+    ol,
+    dl,
+    table,
+    pre {
       margin-top: 0;
       margin-bottom: 16px;
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       margin-top: 24px;
       margin-bottom: 16px;
       font-weight: 600;
@@ -26,7 +34,8 @@
     h3 {
       font-size: 1.2em;
     }
-    ul, ol {
+    ul,
+    ol {
       padding-left: 2em;
     }
     blockquote {
@@ -48,7 +57,8 @@
       font-size: 90%;
       background-color: rgba(0, 0, 0, 0.04);
       border-radius: 3px;
-      &::before, &::after {
+      &::before,
+      &::after {
         letter-spacing: -0.2em;
         content: "\00a0";
       }
@@ -71,7 +81,8 @@
         word-wrap: normal;
         background-color: transparent;
         border: 0;
-        &::before, &::after {
+        &::before,
+        &::after {
           content: none;
         }
       }
@@ -116,11 +127,11 @@
           font-weight: bold;
         }
       }
-      th, td {
+      th,
+      td {
         padding: 6px 13px;
         border: 1px solid $mde-border-color;
       }
     }
   }
 }
-

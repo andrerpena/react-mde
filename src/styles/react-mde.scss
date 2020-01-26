@@ -6,9 +6,14 @@ $grip-height: 10px;
   box-sizing: border-box;
 }
 
+:focus {
+  outline: none;
+}
+
 .react-mde {
   border: 1px solid $mde-border-color;
   border-radius: $mde-border-radius;
+  width: 100%;
 
   .grip {
     border-top: 1px solid $mde-border-color;

@@ -6,12 +6,9 @@ const defaultHeaderButtonProps = {
 };
 
 export class ToolbarDropdown extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false
-    };
-  }
+  state = {
+    open: false
+  };
 
   componentDidMount() {
     document.addEventListener("click", this.handleGlobalClick, false);
@@ -27,17 +24,9 @@ export class ToolbarDropdown extends React.Component {
     }
   };
 
-  openDropdown = () => {
-    this.setState({
-      open: true
-    });
-  };
+  openDropdown = () => this.setState({ open: true });
 
-  closeDropdown() {
-    this.setState({
-      open: false
-    });
-  }
+  closeDropdown = () => this.setState({ open: false });
 
   clickedOutside = e => {
     const { target } = e;
@@ -62,10 +51,9 @@ export class ToolbarDropdown extends React.Component {
   };
 
   render() {
-    const { getIcon, commands, readOnly } = this.props;
-    const { open } = this.state;
+    const { getIcon, readOnly } = this.props;
 
-    const items = commands.map((command, index) => {
+    const items = this.props.commands.map((command, index) => {
       return (
         <ToolbarButton
           key={`header-item${index}`}
@@ -80,13 +68,8 @@ export class ToolbarDropdown extends React.Component {
       );
     });
 
-    const dropdown = open ? (
-      <ul
-        className="react-mde-dropdown"
-        ref={ref => {
-          this.dropdown = ref;
-        }}
-      >
+    const dropdown = this.state.open ? (
+      <ul className="react-mde-dropdown" ref={ref => (this.dropdown = ref)}>
         {items}
       </ul>
     ) : null;
@@ -103,9 +86,7 @@ export class ToolbarDropdown extends React.Component {
         <button
           type="button"
           {...finalButtonProps}
-          ref={ref => {
-            this.dropdownOpener = ref;
-          }}
+          ref={ref => (this.dropdownOpener = ref)}
           onClick={this.handleClick}
           disabled={readOnly}
         >

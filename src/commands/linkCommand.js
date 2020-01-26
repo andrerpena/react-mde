@@ -11,11 +11,11 @@ export const linkCommand = {
     });
     const state1 = api.setSelectionRange(newSelectionRange);
     // Replaces the current selection with the bold mark up
-    const state2 = api.replaceSelection(`[${state1.selectedText}](url)`);
+    const state2 = api.replaceSelection(`[${state1.selectedText}](https://)`);
     // Adjust the selection to not contain the **
     api.setSelectionRange({
-      start: state2.selection.end - 6 - state1.selectedText.length,
-      end: state2.selection.end - 6
+      start: state2.selection.end - 11 - state1.selectedText.length,
+      end: state2.selection.end - 11
     });
   },
   keyCommand: "bold"

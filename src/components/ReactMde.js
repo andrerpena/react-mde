@@ -1,16 +1,21 @@
 import React from "react";
+import { Toolbar, TextArea } from ".";
 import { getDefaultCommands } from "../commands";
-import { Preview, Toolbar, TextArea } from ".";
-import { extractCommandMap } from "../util/CommandUtils";
-import { enL18n } from "../l18n/react-mde.en";
 import { TextAreaCommandOrchestrator } from "../commandOrchestrator";
 import { SvgIcon } from "../icons";
+import { extractCommandMap } from "../util/CommandUtils";
 import { classNames } from "../util/ClassNames";
 
 export class ReactMde extends React.Component {
-  // resizeYStart will be null when it is not resizing
-  gripDrag = null;
-  keyCommandMap = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      editorHeight: props.minEditorHeight
+    };
+    this.gripDrag = null;
+    this.keyCommandMap = {};
+    this.keyCommandMap = extractCommandMap(props.commands);
+  }
 
   static defaultProps = {
     commands: getDefaultCommands(),
@@ -18,7 +23,6 @@ export class ReactMde extends React.Component {
     emptyPreviewHtml: "<p>&nbsp;</p>",
     readOnly: false,
     autoGrow: false,
-    l18n: enL18n,
     minEditorHeight: 200,
     maxEditorHeight: 500,
     minPreviewHeight: 200,
@@ -27,14 +31,9 @@ export class ReactMde extends React.Component {
     suggestionTriggerCharacters: ["@"]
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      editorHeight: props.minEditorHeight
-    };
-    this.keyCommandMap = {};
-    const { commands } = this.props;
-    this.keyCommandMap = extractCommandMap(commands);
+  componentDidMount() {
+    document.addEventListener("mousemove", this.handleGripMouseMove);
+    document.addEventListener("mouseup", this.handleGripMouseUp);
   }
 
   handleTextChange = value => this.props.onChange(value);
@@ -70,15 +69,8 @@ export class ReactMde extends React.Component {
 
   handleTabChange = newTab => this.props.onTabChange(newTab);
 
-  componentDidMount() {
-    document.addEventListener("mousemove", this.handleGripMouseMove);
-    document.addEventListener("mouseup", this.handleGripMouseUp);
-  }
-
   adjustEditorSize = () => {
-    const { autoGrow } = this.props;
-
-    if (!autoGrow || !this.textAreaRef) {
+    if (!this.props.autoGrow || !this.textAreaRef) {
       return;
     }
 
@@ -90,14 +82,12 @@ export class ReactMde extends React.Component {
   };
 
   setTextAreaRef = element => {
-    const { autoGrow } = this.props;
-
     this.textAreaRef = element;
     this.commandOrchestrator = new TextAreaCommandOrchestrator(
       this.textAreaRef
     );
 
-    if (autoGrow && element) {
+    if (this.props.autoGrow && element) {
       const computed = window.getComputedStyle(element);
       let lineHeight = parseInt(computed.getPropertyValue("line-height"), 10);
 
@@ -111,28 +101,16 @@ export class ReactMde extends React.Component {
     this.adjustEditorSize();
   };
 
-  handleCommand = command => {
-    this.commandOrchestrator.executeCommand(command);
-  };
+  handleCommand = command => this.commandOrchestrator.executeCommand(command);
 
   render() {
     const {
-      getIcon,
-      commands,
       classes,
       className,
-      loadingPreview,
-      emptyPreviewHtml,
       readOnly,
-      disablePreview,
-      value,
-      l18n,
-      minPreviewHeight,
+      maxEditorWidth,
       textAreaProps,
-      selectedTab,
-      generateMarkdownPreview,
-      loadSuggestions,
-      suggestionTriggerCharacters
+      selectedTab
     } = this.props;
 
     return (
@@ -146,70 +124,39 @@ export class ReactMde extends React.Component {
            */
           className
         )}
+        style={{ width: maxEditorWidth || "100%" }}
       >
         <Toolbar
+          {...this.props}
           classes={classes.toolbar}
-          getIcon={getIcon}
-          commands={commands}
           onCommand={this.handleCommand}
           onTabChange={this.handleTabChange}
           tab={selectedTab}
           readOnly={readOnly}
-          disablePreview={disablePreview}
-          l18n={l18n}
         />
-        <>
-          <TextArea
-            classes={classes.textArea}
-            suggestionsDropdownClasses={classes.suggestionsDropdown}
-            editorRef={this.setTextAreaRef}
-            onChange={this.handleTextChange}
-            readOnly={readOnly}
-            textAreaProps={{
-              ...textAreaProps,
-              onKeyDown: e => {
-                this.adjustEditorSize();
-                if (textAreaProps && textAreaProps.onKeyDown)
-                  textAreaProps.onKeyDown(e);
-              }
-            }}
-            height={this.state.editorHeight}
-            value={value}
-            suggestionTriggerCharacters={suggestionTriggerCharacters}
-            loadSuggestions={loadSuggestions}
-            selectedTab={selectedTab === "preview"}
-          />
-          {selectedTab === "preview" && (
-            <Preview
-              classes={classes.preview}
-              previewRef={c => (this.previewRef = c)}
-              loadingPreview={loadingPreview || emptyPreviewHtml}
-              minHeight={minPreviewHeight}
-              generateMarkdownPreview={generateMarkdownPreview}
-              markdown={value}
-            />
-          )}
-          <div
-            className={classNames("grip", classes.grip)}
-            onMouseDown={this.handleGripMouseDown}
-          >
-            <svg
-              aria-hidden="true"
-              data-prefix="far"
-              data-icon="ellipsis-h"
-              role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-              className="icon"
-            >
-              <path
-                fill="currentColor"
-                d="M304 256c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm120-48c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zm-336 0c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
-                className=""
-              />
-            </svg>
-          </div>
-        </>
+        <TextArea
+          {...this.props}
+          suggestionsDropdownClasses={classes.suggestionsDropdown}
+          editorRef={this.setTextAreaRef}
+          onChange={this.handleTextChange}
+          readOnly={readOnly}
+          textAreaProps={{
+            ...textAreaProps,
+            onKeyDown: e => {
+              this.adjustEditorSize();
+              if (textAreaProps && textAreaProps.onKeyDown)
+                textAreaProps.onKeyDown(e);
+            }
+          }}
+          height={this.state.editorHeight}
+          selectedTab={selectedTab === "preview"}
+        />
+        <div
+          className={classNames("grip", classes.grip)}
+          onMouseDown={this.handleGripMouseDown}
+        >
+          <SvgIcon icon="grip" />
+        </div>
       </div>
     );
   }

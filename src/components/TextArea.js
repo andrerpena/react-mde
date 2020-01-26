@@ -1,4 +1,5 @@
 import React from "react";
+import { Preview } from ".";
 import { classNames } from "../util/ClassNames";
 import { getCaretCoordinates } from "../util/TextAreaCaretPosition";
 import { insertText } from "../util/InsertTextAtPosition";
@@ -195,6 +196,10 @@ export class TextArea extends React.Component {
       textAreaProps,
       height,
       value,
+      minPreviewHeight,
+      generateMarkdownPreview,
+      emptyPreviewHtml,
+      loadingPreview,
       suggestionTriggerCharacters,
       loadSuggestions,
       selectedTab,
@@ -211,7 +216,7 @@ export class TextArea extends React.Component {
       <div className="mde-textarea-wrapper">
         <textarea
           className={classNames("mde-text", {
-            ...classes,
+            ...classes.textArea,
             hidden: selectedTab
           })}
           style={{ height }}
@@ -225,6 +230,17 @@ export class TextArea extends React.Component {
           onKeyPress={suggestionsEnabled ? this.handleKeyPress : undefined}
           {...textAreaProps}
         />
+        {selectedTab && (
+          <Preview
+            style={{ height }}
+            classes={classes.preview}
+            previewRef={c => (this.previewRef = c)}
+            loadingPreview={loadingPreview || emptyPreviewHtml}
+            minHeight={minPreviewHeight}
+            generateMarkdownPreview={generateMarkdownPreview}
+            markdown={value}
+          />
+        )}
         {mention.status === "active" && mention.suggestions.length && (
           <SuggestionsDropdown
             classes={suggestionsDropdownClasses}

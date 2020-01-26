@@ -1,18 +1,20 @@
-@import "variables.scss";
-
 .mde-textarea-wrapper {
   position: relative;
+  padding: 10px;
 
   textarea.mde-text {
     width: 100%;
     border: 0;
-    padding: $mde-editor-padding;
     vertical-align: top;
     resize: none;
     overflow-y: auto;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   & textarea.hidden {
-    visibility: hidden;
+    display: none;
   }
 }

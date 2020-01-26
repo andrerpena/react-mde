@@ -12,6 +12,7 @@ export class Preview extends React.Component {
   componentDidMount() {
     const { markdown, generateMarkdownPreview } = this.props;
     generateMarkdownPreview(markdown).then(preview => {
+      console.log("preview", preview);
       this.setState({
         preview,
         loading: false
@@ -20,7 +21,7 @@ export class Preview extends React.Component {
   }
 
   render() {
-    const { classes, minHeight, loadingPreview } = this.props;
+    const { classes, loadingPreview, style } = this.props;
     const { preview, loading } = this.state;
     const finalHtml = loading ? loadingPreview : preview;
 
@@ -41,13 +42,7 @@ export class Preview extends React.Component {
     return (
       <div
         className={classNames("mde-preview", classes, { loading })}
-        style={{
-          maxHeight: minHeight,
-          position: "absolute",
-          top: "52px",
-          width: "100%",
-          overflowY: "scroll"
-        }}
+        style={style}
         data-testid="mde-preview"
       >
         {content}

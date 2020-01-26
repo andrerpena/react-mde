@@ -60,6 +60,7 @@ export class App extends React.Component {
           selectedTab={this.state.tab}
           loadSuggestions={this.loadSuggestions}
           suggestionTriggerCharacters={["@"]}
+          minEditorHeight={300}
           classes={{
             suggestionsDropdown: "bbbb"
           }}

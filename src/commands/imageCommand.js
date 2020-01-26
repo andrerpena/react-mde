@@ -13,11 +13,11 @@ export const imageCommand = {
     // Replaces the current selection with the image
     const imageTemplate =
       state1.selectedText || "https://example.com/your-image.png";
-    api.replaceSelection(`![](${imageTemplate})`);
+    api.replaceSelection(`![example.png](${imageTemplate})`);
     // Adjust the selection to not contain the **
     api.setSelectionRange({
-      start: 4 + state1.selection.start,
-      end: 4 + state1.selection.start + imageTemplate.length
+      start: 15 + state1.selection.start,
+      end: 15 + state1.selection.start + imageTemplate.length
     });
   },
   keyCommand: "image"
