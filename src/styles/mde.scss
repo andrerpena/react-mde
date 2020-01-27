@@ -4,10 +4,6 @@
   box-sizing: border-box;
 }
 
-:focus {
-  outline: none;
-}
-
 .react-mde {
   border: 1px solid $border-color;
   border-radius: $border-radius;
