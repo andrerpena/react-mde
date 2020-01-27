@@ -15,7 +15,7 @@ export const ToolbarDropdown = ({
   tooltip
 }) => {
   const finalButtonProps = {
-    ...{ tabIndex: -1 },
+    ...{ tabIndex: 0 },
     ...(buttonProps || {})
   };
 

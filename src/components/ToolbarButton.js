@@ -15,7 +15,7 @@ export const ToolbarButton = ({
       {...buttonProps}
       className={disabled ? "disabled" : undefined}
       data-name={name}
-      tabIndex="-1"
+      tabIndex="0"
       onClick={!disabled ? onClick : null}
     >
       {buttonContent}

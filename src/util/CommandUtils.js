@@ -15,5 +15,6 @@ export function extractCommandMap(groups) {
       }
     }
   }
+
   return result;
 }

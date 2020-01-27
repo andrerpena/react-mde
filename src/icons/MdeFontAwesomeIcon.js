@@ -1,26 +1,22 @@
 import React from "react";
 
-export const MdeFontAwesomeIcon = ({ icon }) => {
-  let transformedIcon = icon;
+const selectedIcon = icon => {
   switch (icon) {
     case "header":
-      transformedIcon = "heading";
-      break;
+      return "heading";
     case "quote":
-      transformedIcon = "quote-right";
-      break;
+      return "quote-right";
     case "unordered-list":
-      transformedIcon = "tasks";
-      break;
+      return "tasks";
     case "ordered-list":
-      transformedIcon = "list-ol";
-      break;
+      return "list-ol";
     case "checked-list":
-      transformedIcon = "tasks";
-      break;
+      return "tasks";
     default:
-      transformedIcon = icon;
+      return icon;
   }
+};
 
-  return <i className={`fas fa-${transformedIcon}`} aria-hidden="true" />;
+export const MdeFontAwesomeIcon = ({ icon }) => {
+  return <i className={`fas fa-${selectedIcon(icon)}`} aria-hidden="true" />;
 };

@@ -1,7 +1,7 @@
 import * as MarkdownUtil from "./util/MarkdownUtil";
 import * as commands from "./commands";
 import {
-  ReactMde,
+  MDEditor,
   Preview,
   SuggestionsDropdown,
   TextArea,
@@ -24,4 +24,4 @@ export {
   commands
 };
 
-export default ReactMde;
+export default MDEditor;

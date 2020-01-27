@@ -1,19 +1,18 @@
 import React from "react";
 import { Toolbar, TextArea } from ".";
 import { getDefaultCommands } from "../commands";
-import { TextAreaCommandOrchestrator } from "../commandOrchestrator";
 import { SvgIcon } from "../icons";
 import { extractCommandMap } from "../util/CommandUtils";
 import { classNames } from "../util/ClassNames";
+import Commander from "./Commander";
 
-export class ReactMde extends React.Component {
+export class MDEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       editorHeight: props.minEditorHeight
     };
     this.gripDrag = null;
-    this.keyCommandMap = {};
     this.keyCommandMap = extractCommandMap(props.commands);
   }
 
@@ -57,12 +56,12 @@ export class ReactMde extends React.Component {
         newHeight >= this.props.minEditorHeight &&
         newHeight <= this.props.maxEditorHeight
       ) {
-        this.setState({
-          ...this.state,
+        this.setState(prevState => ({
+          ...prevState,
           editorHeight:
             this.gripDrag.originalHeight +
             (event.clientY - this.gripDrag.originalDragY)
-        });
+        }));
       }
     }
   };
@@ -70,11 +69,11 @@ export class ReactMde extends React.Component {
   handleTabChange = newTab => this.props.onTabChange(newTab);
 
   adjustEditorSize = () => {
-    if (!this.props.autoGrow || !this.textAreaRef) {
-      return;
-    }
-
-    if (this.textAreaRef.scrollHeight > this.textAreaRef.offsetHeight) {
+    if (
+      this.props.autoGrow &&
+      this.textAreaRef &&
+      this.textAreaRef.scrollHeight > this.textAreaRef.offsetHeight
+    ) {
       this.setState({
         editorHeight: this.textAreaRef.scrollHeight + this.textAreaLineHeight
       });
@@ -83,9 +82,6 @@ export class ReactMde extends React.Component {
 
   setTextAreaRef = element => {
     this.textAreaRef = element;
-    this.commandOrchestrator = new TextAreaCommandOrchestrator(
-      this.textAreaRef
-    );
 
     if (this.props.autoGrow && element) {
       const computed = window.getComputedStyle(element);
@@ -101,7 +97,12 @@ export class ReactMde extends React.Component {
     this.adjustEditorSize();
   };
 
-  handleCommand = command => this.commandOrchestrator.executeCommand(command);
+  handleCommand = command => {
+    const { start, end } = Commander(this.textAreaRef, command.name);
+    this.textAreaRef.focus();
+    this.textAreaRef.selectionStart = start;
+    this.textAreaRef.selectionEnd = end;
+  };
 
   render() {
     const {

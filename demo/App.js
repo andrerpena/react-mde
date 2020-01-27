@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactMde from "../src";
+import MDEditor from "../src";
 import { Converter } from "showdown";
 
 export class App extends React.Component {
@@ -50,7 +50,7 @@ export class App extends React.Component {
   render() {
     return (
       <div className="container">
-        <ReactMde
+        <MDEditor
           onChange={this.handleValueChange}
           onTabChange={this.handleTabChange}
           value={this.state.value}

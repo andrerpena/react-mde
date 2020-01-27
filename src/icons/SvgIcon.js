@@ -258,7 +258,7 @@ export const SvgIcon = ({ icon }) => {
       return boldIcon;
     case "italic":
       return italicIcon;
-    case "strikethrough":
+    case "strike-through":
       return strikeThroughIcon;
     case "link":
       return linkIcon;
