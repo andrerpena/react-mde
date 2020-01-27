@@ -11,11 +11,11 @@ export const ToolbarButton = ({
 }) => {
   const button = (
     <button
-      {...buttonProps}
       type="button"
+      {...buttonProps}
+      className={disabled ? "disabled" : undefined}
       data-name={name}
       tabIndex="-1"
-      style={disabled ? { cursor: "not-allowed", color: "#ccc" } : undefined}
       onClick={!disabled ? onClick : null}
     >
       {buttonContent}
@@ -24,7 +24,7 @@ export const ToolbarButton = ({
 
   return (
     <li className="mde-header-item">
-      {!disabled && tooltip ? (
+      {tooltip ? (
         <Tooltip
           placement="bottom"
           trigger={["hover"]}

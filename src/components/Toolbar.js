@@ -7,6 +7,8 @@ import { ToolbarDropdown } from "./ToolbarDropdown";
 import { ToolbarButton } from "./ToolbarButton";
 import { SvgIcon } from "../icons";
 
+const { Fragment } = React;
+
 export const Toolbar = ({
   classes,
   getIcon,
@@ -24,7 +26,7 @@ export const Toolbar = ({
   return (commands && commands.length > 0) || children ? (
     <div className={classNames("mde-header", classes)}>
       {commands.map((commandGroup, i) => (
-        <React.Fragment key={i}>
+        <Fragment key={i}>
           <ToolbarButtonGroup>
             {commandGroup.commands.map(props =>
               props.children ? (
@@ -52,10 +54,10 @@ export const Toolbar = ({
             )}
           </ToolbarButtonGroup>
           <Separator />
-        </React.Fragment>
+        </Fragment>
       ))}
       {!disablePreview ? (
-        <React.Fragment>
+        <Fragment>
           <div className="mde-tabs">
             <Tooltip
               placement="bottom"
@@ -71,7 +73,7 @@ export const Toolbar = ({
             </Tooltip>
           </div>
           <Separator />
-        </React.Fragment>
+        </Fragment>
       ) : null}
     </div>
   ) : null;

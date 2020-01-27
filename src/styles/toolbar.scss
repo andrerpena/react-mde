@@ -29,7 +29,7 @@
       padding: 8px;
       background-color: transparent;
       border: none;
-      transition: all 0.3s ease-in-out;
+      transition: background 0.3s ease-in-out;
       cursor: pointer;
       &:hover {
         background: #dcdcdc;
@@ -61,6 +61,11 @@
       display: inline-block;
       position: relative;
 
+      & .disabled {
+        cursor: not-allowed;
+        color: #ccc;
+      }
+
       button {
         text-align: left;
         cursor: pointer;
@@ -70,15 +75,15 @@
         border: 0;
         color: $button-color;
         border-radius: $border-radius;
-        transition: all 0.3s ease-in-out;
+        transition: background 0.3s ease-in-out;
         &:hover {
           background: #dcdcdc;
         }
       }
       ul.react-mde-dropdown {
         position: absolute;
-        left: 0;
-        top: 30px;
+        left: 5px;
+        top: 35px;
         background-color: white;
         border: 1px solid $border-color;
         padding: 5px;

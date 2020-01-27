@@ -1,114 +1,68 @@
 import React from "react";
 import Tooltip from "rc-tooltip";
+import ClickHandler from "./ClickHandler";
 import { ToolbarButton } from "./ToolbarButton";
 
-export class ToolbarDropdown extends React.Component {
-  state = {
-    open: false
+const { Fragment } = React;
+
+export const ToolbarDropdown = ({
+  buttonContent,
+  buttonProps,
+  commands,
+  getIcon,
+  disabled,
+  onCommand,
+  tooltip
+}) => {
+  const finalButtonProps = {
+    ...{ tabIndex: -1 },
+    ...(buttonProps || {})
   };
 
-  componentDidMount() {
-    document.addEventListener("click", this.handleGlobalClick, false);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("click", this.handleGlobalClick, false);
-  }
-
-  handleGlobalClick = e => {
-    if (this.clickedOutside(e)) {
-      this.closeDropdown();
-    }
-  };
-
-  openDropdown = () => this.setState({ open: true });
-
-  closeDropdown = () => this.setState({ open: false });
-
-  clickedOutside = e => {
-    const { target } = e;
-    return (
-      this.state.open &&
-      this.dropdown &&
-      this.dropdownOpener &&
-      !this.dropdown.contains(target) &&
-      !this.dropdownOpener.contains(target)
-    );
-  };
-
-  handleOnClickCommand = (_, command) => {
-    this.props.onCommand(command);
-    this.closeDropdown();
-  };
-
-  handleClick = () => {
-    if (!this.state.open) this.openDropdown();
-    else this.closeDropdown();
-  };
-
-  render() {
-    const {
-      buttonContent,
-      buttonProps,
-      getIcon,
-      disabled,
-      tooltip
-    } = this.props;
-
-    const finalButtonProps = {
-      ...{ tabIndex: -1 },
-      ...(buttonProps || {})
-    };
-
-    const button = (
-      <button
-        type="button"
-        {...finalButtonProps}
-        ref={ref => (this.dropdownOpener = ref)}
-        onClick={!disabled ? this.handleClick : null}
-        style={{
-          ...{ transition: "none" },
-          ...(disabled
-            ? { cursor: "not-allowed", color: "#ccc", transition: "none" }
-            : {})
-        }}
-      >
-        {buttonContent}
-      </button>
-    );
-
-    return (
-      <li className="mde-header-item">
-        {!disabled && tooltip ? (
-          <Tooltip
-            placement="bottom"
-            trigger={["hover"]}
-            transitionName="fade"
-            overlay={<span>{tooltip}</span>}
-          >
-            {button}
-          </Tooltip>
-        ) : (
-          button
+  return (
+    <li className="mde-header-item">
+      <ClickHandler>
+        {({ isVisible, closeDropdown, handleClick }) => (
+          <Fragment>
+            <Tooltip
+              placement="bottom"
+              trigger={["hover"]}
+              transitionName="fade"
+              overlay={<span>{tooltip}</span>}
+            >
+              <button
+                type="button"
+                {...finalButtonProps}
+                className={disabled ? "disabled" : undefined}
+                onClick={!disabled ? handleClick : null}
+              >
+                {buttonContent}
+              </button>
+            </Tooltip>
+            {isVisible ? (
+              <ul className="react-mde-dropdown">
+                {commands.map((command, index) => (
+                  <ToolbarButton
+                    key={`header-item${index}`}
+                    name={command.name}
+                    buttonProps={command.buttonProps}
+                    buttonContent={
+                      command.icon
+                        ? command.icon(getIcon)
+                        : getIcon(command.name)
+                    }
+                    onClick={() => {
+                      onCommand(command);
+                      closeDropdown();
+                    }}
+                    readOnly={disabled}
+                  />
+                ))}
+              </ul>
+            ) : null}
+          </Fragment>
         )}
-
-        {this.state.open ? (
-          <ul className="react-mde-dropdown" ref={ref => (this.dropdown = ref)}>
-            {this.props.commands.map((command, index) => (
-              <ToolbarButton
-                key={`header-item${index}`}
-                name={command.name}
-                buttonProps={command.buttonProps}
-                buttonContent={
-                  command.icon ? command.icon(getIcon) : getIcon(command.name)
-                }
-                onClick={e => this.handleOnClickCommand(e, command)}
-                readOnly={disabled}
-              />
-            ))}
-          </ul>
-        ) : null}
-      </li>
-    );
-  }
-}
+      </ClickHandler>
+    </li>
+  );
+};
