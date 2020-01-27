@@ -1,3 +1,4 @@
+export * from "./Separator";
 export * from "./ToolbarButtonGroup";
 export * from "./ToolbarButton";
 export * from "./ToolbarDropdown";

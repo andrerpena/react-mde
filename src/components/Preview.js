@@ -2,12 +2,9 @@ import * as React from "react";
 import { classNames } from "../util/ClassNames";
 
 export class Preview extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true
-    };
-  }
+  state = {
+    loading: true
+  };
 
   componentDidMount() {
     const { markdown, generateMarkdownPreview } = this.props;

@@ -14,7 +14,6 @@ export const ToolbarButton = ({
       {...buttonProps}
       type="button"
       data-name={name}
-      data-tip={tooltip}
       tabIndex="-1"
       style={disabled ? { cursor: "not-allowed", color: "#ccc" } : undefined}
       onClick={!disabled ? onClick : null}

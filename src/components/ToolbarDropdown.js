@@ -1,4 +1,5 @@
 import React from "react";
+import Tooltip from "rc-tooltip";
 import { ToolbarButton } from "./ToolbarButton";
 
 export class ToolbarDropdown extends React.Component {
@@ -59,22 +60,38 @@ export class ToolbarDropdown extends React.Component {
       ...(buttonProps || {})
     };
 
+    const button = (
+      <button
+        type="button"
+        {...finalButtonProps}
+        ref={ref => (this.dropdownOpener = ref)}
+        onClick={!disabled ? this.handleClick : null}
+        style={{
+          ...{ transition: "none" },
+          ...(disabled
+            ? { cursor: "not-allowed", color: "#ccc", transition: "none" }
+            : {})
+        }}
+      >
+        {buttonContent}
+      </button>
+    );
+
     return (
       <li className="mde-header-item">
-        <button
-          type="button"
-          {...finalButtonProps}
-          ref={ref => (this.dropdownOpener = ref)}
-          onClick={!disabled ? this.handleClick : null}
-          style={{
-            ...{ transition: "none" },
-            ...(disabled
-              ? { cursor: "not-allowed", color: "#ccc", transition: "none" }
-              : {})
-          }}
-        >
-          {buttonContent}
-        </button>
+        {!disabled && tooltip ? (
+          <Tooltip
+            placement="bottom"
+            trigger={["hover"]}
+            transitionName="fade"
+            overlay={<span>{tooltip}</span>}
+          >
+            {button}
+          </Tooltip>
+        ) : (
+          button
+        )}
+
         {this.state.open ? (
           <ul className="react-mde-dropdown" ref={ref => (this.dropdown = ref)}>
             {this.props.commands.map((command, index) => (

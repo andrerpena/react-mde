@@ -1,6 +1,7 @@
 import React from "react";
 import Tooltip from "rc-tooltip";
 import { classNames } from "../util/ClassNames";
+import { Separator } from "./Separator";
 import { ToolbarButtonGroup } from "./ToolbarButtonGroup";
 import { ToolbarDropdown } from "./ToolbarDropdown";
 import { ToolbarButton } from "./ToolbarButton";
@@ -50,7 +51,7 @@ export const Toolbar = ({
               )
             )}
           </ToolbarButtonGroup>
-          <i className="separator">|</i>
+          <Separator />
         </React.Fragment>
       ))}
       {!disablePreview ? (
@@ -67,7 +68,7 @@ export const Toolbar = ({
               <SvgIcon icon={isPreviewing ? "eye-closed" : "eye-open"} />
             </button>
           </Tooltip>
-          <i className="separator">|</i>
+          <Separator />
         </div>
       ) : null}
     </div>
