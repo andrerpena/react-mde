@@ -23,33 +23,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 @import "vars.scss";
 
-.rc-tooltip.rc-tooltip-zoom-enter,
-.rc-tooltip.rc-tooltip-zoom-leave {
-  display: block;
-}
-.rc-tooltip-zoom-enter,
-.rc-tooltip-zoom-appear {
-  opacity: 0;
-  animation-duration: 0.3s;
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  animation-play-state: paused;
-}
-.rc-tooltip-zoom-leave {
-  animation-duration: 0.3s;
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.6, -0.3, 0.74, 0.05);
-  animation-play-state: paused;
-}
-.rc-tooltip-zoom-enter.rc-tooltip-zoom-enter-active,
-.rc-tooltip-zoom-appear.rc-tooltip-zoom-appear-active {
-  animation-name: rcToolTipZoomIn;
-  animation-play-state: running;
-}
-.rc-tooltip-zoom-leave.rc-tooltip-zoom-leave-active {
-  animation-name: rcToolTipZoomOut;
-  animation-play-state: running;
-}
 .rc-tooltip {
   position: absolute;
   z-index: 1070;
@@ -183,7 +156,12 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   opacity: 0;
 }
 .fade-enter,
-.fade-appear,
+.fade-appear {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+  animation-play-state: paused;
+}
 .fade-leave {
   animation-duration: 0.1s;
   animation-fill-mode: both;

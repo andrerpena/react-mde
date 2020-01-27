@@ -20,22 +20,19 @@
   }
 
   .mde-tabs {
-    display: flex;
-    flex-direction: row;
+    display: inline-block;
+    position: relative;
+    padding: 10px 5px;
 
     button {
       border-radius: $border-radius;
-      margin: 9px 6px;
+      padding: 8px;
       background-color: transparent;
-      border: 1px solid transparent;
+      border: none;
       transition: all 0.3s ease-in-out;
       cursor: pointer;
-      &.selected {
-        border: 1px solid $border-color;
-      }
       &:hover {
-        border: 1px solid $border-color;
-        background: #ebebeb;
+        background: #dcdcdc;
       }
     }
   }
@@ -63,20 +60,19 @@
     li.mde-header-item {
       display: inline-block;
       position: relative;
-      margin: 0 4px;
+
       button {
         text-align: left;
         cursor: pointer;
-        padding: 4px;
+        padding: 8px;
         margin: 0;
-        border: none;
         background: none;
+        border: 0;
         color: $button-color;
-        border: 1px solid transparent;
+        border-radius: $border-radius;
         transition: all 0.3s ease-in-out;
         &:hover {
-          border: 1px solid $border-color;
-          background: #ebebeb;
+          background: #dcdcdc;
         }
       }
       ul.react-mde-dropdown {

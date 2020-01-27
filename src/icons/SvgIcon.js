@@ -205,7 +205,7 @@ export const eyeOpenIcon = (
     data-prefix="fas"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="180 300 1400 600"
+    viewBox="180 350 1400 600"
     data-fa-i2svg=""
   >
     <path
@@ -222,7 +222,7 @@ export const eyeClosedIcon = (
     data-prefix="fas"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="50 0 450 450"
+    viewBox="50 15 450 450"
     data-fa-i2svg=""
   >
     <path

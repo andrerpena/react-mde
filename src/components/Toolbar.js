@@ -55,21 +55,23 @@ export const Toolbar = ({
         </React.Fragment>
       ))}
       {!disablePreview ? (
-        <div className="mde-tabs">
-          <Tooltip
-            placement="bottom"
-            trigger={["hover"]}
-            overlay={<span>{isPreviewing ? "Hide Preview" : "Preview"}</span>}
-          >
-            <button
-              type="button"
-              onClick={() => onTabChange(isPreviewing ? "write" : "preview")}
+        <React.Fragment>
+          <div className="mde-tabs">
+            <Tooltip
+              placement="bottom"
+              trigger={["hover"]}
+              overlay={<span>{isPreviewing ? "Hide Preview" : "Preview"}</span>}
             >
-              <SvgIcon icon={isPreviewing ? "eye-closed" : "eye-open"} />
-            </button>
-          </Tooltip>
+              <button
+                type="button"
+                onClick={() => onTabChange(isPreviewing ? "write" : "preview")}
+              >
+                <SvgIcon icon={isPreviewing ? "eye-closed" : "eye-open"} />
+              </button>
+            </Tooltip>
+          </div>
           <Separator />
-        </div>
+        </React.Fragment>
       ) : null}
     </div>
   ) : null;
