@@ -6955,7 +6955,7 @@ rc-tooltip@^4.0.0-alpha.3:
   dependencies:
     rc-trigger "^4.0.0-alpha.5"
 
-rc-trigger@^4.0.0-alpha.5:
+rc-trigger@^4.0.0-alpha.5, rc-trigger@^4.0.0-rc.4:
   version "4.0.0-rc.4"
   resolved "https://registry.yarnpkg.com/rc-trigger/-/rc-trigger-4.0.0-rc.4.tgz#e0a7f9d4510018dd4b83b5fd5d5dca009ae2f806"
   integrity sha512-WMeQsN0b6qHtmU8dABcc81XVHUhem6PCx3fLaaFpDVQdOfIBA3Hjkp3KFirqEhjInp5Y7+EMo6YTkBcShJqfQg==
