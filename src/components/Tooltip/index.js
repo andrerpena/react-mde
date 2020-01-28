@@ -29,6 +29,8 @@ import getPlacements from "./placements";
 import { ConfigConsumer } from "./context";
 import { classNames } from "../../util/ClassNames";
 
+const { cloneElement, Component, isValidElement } = React;
+
 const splitObject = (obj, keys) => {
   const picked = {};
   const omitted = { ...obj };
@@ -75,7 +77,7 @@ function getDisabledCompatibleChildren(element) {
       ...omitted,
       pointerEvents: "none"
     };
-    const child = React.cloneElement(element, {
+    const child = cloneElement(element, {
       style: buttonStyle,
       className: null
     });
@@ -88,7 +90,7 @@ function getDisabledCompatibleChildren(element) {
   return element;
 }
 
-class Tooltip extends React.Component {
+class Tooltip extends Component {
   constructor(props) {
     super(props);
 
@@ -212,7 +214,7 @@ class Tooltip extends React.Component {
     }
 
     const child = getDisabledCompatibleChildren(
-      React.isValidElement(children) ? children : <span>{children}</span>
+      isValidElement(children) ? children : <span>{children}</span>
     );
 
     const childProps = child.props;
@@ -238,7 +240,7 @@ class Tooltip extends React.Component {
         onVisibleChange={this.onVisibleChange}
         onPopupAlign={this.onPopupAlign}
       >
-        {visible ? React.cloneElement(child, { className: childCls }) : child}
+        {visible ? cloneElement(child, { className: childCls }) : child}
       </RcTooltip>
     );
   };
