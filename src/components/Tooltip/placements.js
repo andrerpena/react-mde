@@ -24,7 +24,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 import { placements } from "rc-tooltip/lib/placements";
-import { BuildInPlacements } from "rc-trigger";
 
 const autoAdjustOverflowEnabled = {
   adjustX: 1,

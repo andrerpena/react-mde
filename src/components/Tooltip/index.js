@@ -25,11 +25,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import React from "react";
 import RcTooltip from "rc-tooltip";
-import {
-  AlignType,
-  ActionType,
-  BuildInPlacements
-} from "rc-trigger/lib/interface";
 import getPlacements, { AdjustOverflow, PlacementsConfig } from "./placements";
 import { ConfigConsumer, ConfigConsumerProps } from "../config-provider";
 import { classNames } from "../../util/ClassNames";
