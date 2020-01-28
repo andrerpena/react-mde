@@ -227,7 +227,6 @@ export class TextArea extends React.Component {
           <Preview
             style={{ height }}
             classes={classes.preview}
-            previewRef={c => (this.previewRef = c)}
             loadingPreview={loadingPreview || emptyPreviewHtml}
             minHeight={minPreviewHeight}
             generateMarkdownPreview={generateMarkdownPreview}

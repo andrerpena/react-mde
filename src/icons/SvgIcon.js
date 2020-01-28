@@ -4,8 +4,6 @@ const checkedListIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="tasks"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -22,8 +20,6 @@ const orderedListIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="list-ol"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -40,8 +36,6 @@ const unorderedListIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="list-ul"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -58,8 +52,6 @@ const imageIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="image"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -76,8 +68,6 @@ const codeIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="code"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 640 512"
@@ -94,8 +84,6 @@ const quoteIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="quote-right"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -112,8 +100,6 @@ const linkIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="link"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -130,8 +116,6 @@ const strikeThroughIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="strikethrough"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -148,8 +132,6 @@ const italicIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="italic"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 320 512"
@@ -166,8 +148,6 @@ const headerIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="heading"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -184,8 +164,6 @@ const boldIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
-    data-icon="bold"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 384 512"
@@ -202,7 +180,6 @@ export const eyeOpenIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="180 350 1400 600"
@@ -219,7 +196,6 @@ export const eyeClosedIcon = (
   <svg
     className="svg-icon"
     aria-hidden="true"
-    data-prefix="fas"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="50 15 450 450"
@@ -235,8 +211,6 @@ export const eyeClosedIcon = (
 export const gripIcon = (
   <svg
     aria-hidden="true"
-    data-prefix="far"
-    data-icon="ellipsis-h"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"

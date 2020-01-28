@@ -23,7 +23,87 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { placements } from "rc-tooltip/lib/placements";
+const autoAdjustOverflow = {
+  adjustX: 1,
+  adjustY: 1
+};
+
+const targetOffset = [0, 0];
+
+export const placements = {
+  left: {
+    points: ["cr", "cl"],
+    overflow: autoAdjustOverflow,
+    offset: [-4, 0],
+    targetOffset
+  },
+  right: {
+    points: ["cl", "cr"],
+    overflow: autoAdjustOverflow,
+    offset: [4, 0],
+    targetOffset
+  },
+  top: {
+    points: ["bc", "tc"],
+    overflow: autoAdjustOverflow,
+    offset: [0, -4],
+    targetOffset
+  },
+  bottom: {
+    points: ["tc", "bc"],
+    overflow: autoAdjustOverflow,
+    offset: [0, 4],
+    targetOffset
+  },
+  topLeft: {
+    points: ["bl", "tl"],
+    overflow: autoAdjustOverflow,
+    offset: [0, -4],
+    targetOffset
+  },
+  leftTop: {
+    points: ["tr", "tl"],
+    overflow: autoAdjustOverflow,
+    offset: [-4, 0],
+    targetOffset
+  },
+  topRight: {
+    points: ["br", "tr"],
+    overflow: autoAdjustOverflow,
+    offset: [0, -4],
+    targetOffset
+  },
+  rightTop: {
+    points: ["tl", "tr"],
+    overflow: autoAdjustOverflow,
+    offset: [4, 0],
+    targetOffset
+  },
+  bottomRight: {
+    points: ["tr", "br"],
+    overflow: autoAdjustOverflow,
+    offset: [0, 4],
+    targetOffset
+  },
+  rightBottom: {
+    points: ["bl", "br"],
+    overflow: autoAdjustOverflow,
+    offset: [4, 0],
+    targetOffset
+  },
+  bottomLeft: {
+    points: ["tl", "bl"],
+    overflow: autoAdjustOverflow,
+    offset: [0, 4],
+    targetOffset
+  },
+  leftBottom: {
+    points: ["br", "bl"],
+    overflow: autoAdjustOverflow,
+    offset: [-4, 0],
+    targetOffset
+  }
+};
 
 const autoAdjustOverflowEnabled = {
   adjustX: 1,
@@ -34,8 +114,6 @@ const autoAdjustOverflowDisabled = {
   adjustX: 0,
   adjustY: 0
 };
-
-const targetOffset = [0, 0];
 
 export function getOverflowOptions(autoAdjustOverflow) {
   if (typeof autoAdjustOverflow === "boolean") {

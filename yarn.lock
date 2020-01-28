@@ -6948,17 +6948,10 @@ rc-animate@^2.10.2:
     rc-util "^4.15.3"
     react-lifecycles-compat "^3.0.4"
 
-rc-tooltip@^4.0.0-alpha.3:
-  version "4.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/rc-tooltip/-/rc-tooltip-4.0.0-alpha.3.tgz#ef4e117f1914514b30265af1bda79243ad651eec"
-  integrity sha512-QSw6H2MMkNsRDJn0pCVARQVy+OCgVB65dPHuW/7UbJHDZTcOuTLwNtY4MbY2tMages7RVB31I7WT0KwhCslqwg==
-  dependencies:
-    rc-trigger "^4.0.0-alpha.5"
-
-rc-trigger@^4.0.0-alpha.5:
-  version "4.0.0-rc.4"
-  resolved "https://registry.yarnpkg.com/rc-trigger/-/rc-trigger-4.0.0-rc.4.tgz#e0a7f9d4510018dd4b83b5fd5d5dca009ae2f806"
-  integrity sha512-WMeQsN0b6qHtmU8dABcc81XVHUhem6PCx3fLaaFpDVQdOfIBA3Hjkp3KFirqEhjInp5Y7+EMo6YTkBcShJqfQg==
+rc-trigger@^4.0.0-rc.5:
+  version "4.0.0-rc.5"
+  resolved "https://registry.yarnpkg.com/rc-trigger/-/rc-trigger-4.0.0-rc.5.tgz#5f6b884ae683299fb9f46e43d43f6ef522ba982d"
+  integrity sha512-CUimlGKduOzBJxMEib3MzWhFpSq0wFk/iXxonaIIth/zVMZ4at+Wf3yxh8apY6UuYZlrJiA8S58/BfePpT+g0Q==
   dependencies:
     classnames "^2.2.6"
     prop-types "15.x"

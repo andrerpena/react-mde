@@ -61,11 +61,6 @@
       display: inline-block;
       position: relative;
 
-      & .disabled {
-        cursor: not-allowed;
-        color: #ccc;
-      }
-
       button {
         text-align: left;
         cursor: pointer;
@@ -78,6 +73,14 @@
         transition: background 0.3s ease-in-out;
         &:hover {
           background: #dcdcdc;
+        }
+        &:disabled {
+          cursor: not-allowed;
+          color: #ccc;
+        }
+        &:focus {
+          outline: none;
+          box-shadow: none;
         }
       }
       ul.react-mde-dropdown {

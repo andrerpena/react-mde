@@ -1,5 +1,5 @@
 import React from "react";
-import Tooltip from "rc-tooltip";
+import Tooltip from "./Tooltip";
 
 export const ToolbarButton = ({
   buttonContent,
@@ -16,7 +16,8 @@ export const ToolbarButton = ({
       className={disabled ? "disabled" : undefined}
       data-name={name}
       tabIndex="0"
-      onClick={!disabled ? onClick : null}
+      disabled={disabled}
+      onClick={onClick}
     >
       {buttonContent}
     </button>
@@ -26,9 +27,8 @@ export const ToolbarButton = ({
     <li className="mde-header-item">
       {tooltip ? (
         <Tooltip
-          placement="bottom"
+          placement="top"
           trigger={["hover"]}
-          transitionName="fade"
           overlay={<span>{tooltip}</span>}
         >
           {button}

@@ -1,5 +1,6 @@
 import React from "react";
-import Tooltip from "rc-tooltip";
+// import Tooltip from "rc-tooltip";
+import Tooltip from "./Tooltip";
 import { classNames } from "../util/ClassNames";
 import { Separator } from "./Separator";
 import { ToolbarButtonGroup } from "./ToolbarButtonGroup";
@@ -60,7 +61,7 @@ export const Toolbar = ({
         <Fragment>
           <div className="mde-tabs">
             <Tooltip
-              placement="bottom"
+              placement="top"
               trigger={["hover"]}
               overlay={<span>{isPreviewing ? "Hide Preview" : "Preview"}</span>}
             >

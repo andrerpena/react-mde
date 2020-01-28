@@ -24,12 +24,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 import React from "react";
-import RcTooltip from "rc-tooltip";
-import getPlacements, { AdjustOverflow, PlacementsConfig } from "./placements";
-import { ConfigConsumer, ConfigConsumerProps } from "../config-provider";
+import RcTooltip from "./tooltip";
+import getPlacements from "./placements";
+import { ConfigConsumer } from "./context";
 import { classNames } from "../../util/ClassNames";
-
-export { AdjustOverflow, PlacementsConfig };
 
 const splitObject = (obj, keys) => {
   const picked = {};
@@ -245,9 +243,7 @@ class Tooltip extends React.Component {
     );
   };
 
-  render() {
-    return <ConfigConsumer>{this.renderTooltip}</ConfigConsumer>;
-  }
+  render = () => <ConfigConsumer>{this.renderTooltip}</ConfigConsumer>;
 }
 
 export default Tooltip;

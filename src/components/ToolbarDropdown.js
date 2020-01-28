@@ -1,5 +1,5 @@
 import React from "react";
-import Tooltip from "rc-tooltip";
+import Tooltip from "./Tooltip";
 import ClickHandler from "./ClickHandler";
 import { ToolbarButton } from "./ToolbarButton";
 
@@ -25,16 +25,16 @@ export const ToolbarDropdown = ({
         {({ isVisible, closeDropdown, handleClick }) => (
           <Fragment>
             <Tooltip
-              placement="bottom"
+              placement="top"
               trigger={["hover"]}
-              transitionName="fade"
               overlay={<span>{tooltip}</span>}
             >
               <button
                 type="button"
                 {...finalButtonProps}
                 className={disabled ? "disabled" : undefined}
-                onClick={!disabled ? handleClick : null}
+                onClick={handleClick}
+                disabled={disabled}
               >
                 {buttonContent}
               </button>

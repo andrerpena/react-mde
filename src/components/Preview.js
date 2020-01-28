@@ -28,7 +28,6 @@ export class Preview extends React.Component {
         <div
           className="mde-preview-content"
           dangerouslySetInnerHTML={{ __html: finalHtml || "<p>&nbsp;</p>" }}
-          ref={p => (this.previewRef = p)}
         />
       );
     } else {

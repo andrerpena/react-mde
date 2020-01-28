@@ -12,13 +12,63 @@ $preview-default-min-height: $editor-default-min-height !default;
 $preview-default-height: auto !default;
 $white-color: white !default;
 $grip-height: 10px;
-$font-size-base: 12px;
-$line-height-base: 1.5;
-$border-radius-base: 4px;
+
+$font-size-base: 14px;
+$line-height-base: 1.5715;
+$border-radius-base: 2px;
 $overlay-shadow: 0 0 4px rgba(0, 0, 0, 0.17);
-$tooltip-color: #fff;
-$tooltip-bg: #373737;
 $tooltip-opacity: 1;
+
+/*
+The MIT License (MIT)
+Copyright (c) 2015-present Alipay.com, https://www.alipay.com/
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS 
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+$box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+  0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+$tooltip-max-width: 250px;
+$tooltip-color: #fff;
+$tooltip-bg: rgba(0, 0, 0, 0.75);
 $tooltip-arrow-width: 5px;
-$tooltip-distance: $tooltip-arrow-width + 4;
+$tooltip-distance: $tooltip-arrow-width - 1px + 4px;
 $tooltip-arrow-color: $tooltip-bg;
+$tooltip-arrow-shadow-width: 3px;
+$tooltip-arrow-rotate-width: 13.07106781px;
+$tooltip-arrow-offset-vertical: 5px; // 8 - 3px
+$tooltip-arrow-offset-horizontal: 13px; // 16 - 3px
+$text-color: rbga(0, 0, 0, 0.65);
+$zindex-tooltip: 1060;
+$animation-duration-slow: 0.3s; // Modal
+$animation-duration-base: 0.2s;
+$animation-duration-fast: 0.1s; // Tooltip
+$ease-base-out: cubic-bezier(0.7, 0.3, 0.1, 1);
+$ease-base-in: cubic-bezier(0.9, 0, 0.3, 0.7);
+$ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+$ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+$ease-out-back: cubic-bezier(0.12, 0.4, 0.29, 1.46);
+$ease-in-back: cubic-bezier(0.71, -0.46, 0.88, 0.6);
+$ease-in-out-back: cubic-bezier(0.71, -0.46, 0.29, 1.46);
+$ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+$ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+$ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+$ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+$ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+$ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);

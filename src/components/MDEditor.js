@@ -66,7 +66,9 @@ export class MDEditor extends React.Component {
     }
   };
 
-  handleTabChange = newTab => this.props.onTabChange(newTab);
+  handleTabChange = newTab => {
+    this.props.onTabChange(newTab);
+  };
 
   adjustEditorSize = () => {
     if (
@@ -79,6 +81,8 @@ export class MDEditor extends React.Component {
       });
     }
   };
+
+  setPreviewRef = node => (this.previewAreaRef = node);
 
   setTextAreaRef = element => {
     this.textAreaRef = element;
