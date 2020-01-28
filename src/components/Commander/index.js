@@ -1,11 +1,11 @@
 import {
   getBreaksNeededForEmptyLineAfter,
   getBreaksNeededForEmptyLineBefore,
+  getStateFromTextArea,
+  insertBeforeEachLine,
+  insertText,
   selectWord
-} from "../util/MarkdownUtil";
-import { insertText } from "../util/InsertTextAtPosition";
-import { insertBeforeEachLine } from "../util/InsertBeforeEachLine";
-import { getStateFromTextArea } from "../util/GetStateFromTextArea";
+} from "~utils";
 
 const Commander = (currentTextArea, command) => {
   const textAreaState = getStateFromTextArea(currentTextArea);

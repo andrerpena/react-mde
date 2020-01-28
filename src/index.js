@@ -1,4 +1,3 @@
-import * as MarkdownUtil from "./util/MarkdownUtil";
 import * as commands from "./commands";
 import {
   MDEditor,
@@ -18,7 +17,6 @@ export {
   Toolbar,
   ToolbarButtonGroup,
   ToolbarDropdown,
-  MarkdownUtil,
   SvgIcon,
   MdeFontAwesomeIcon,
   commands

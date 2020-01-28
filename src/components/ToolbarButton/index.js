@@ -1,5 +1,5 @@
 import React from "react";
-import Tooltip from "./Tooltip";
+import { Tooltip } from "~components";
 
 export const ToolbarButton = ({
   buttonContent,

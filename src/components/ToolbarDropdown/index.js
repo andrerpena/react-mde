@@ -1,7 +1,5 @@
 import React from "react";
-import Tooltip from "./Tooltip";
-import ClickHandler from "./ClickHandler";
-import { ToolbarButton } from "./ToolbarButton";
+import { ClickHandler, Tooltip, ToolbarButton } from "~components";
 
 const { Fragment } = React;
 

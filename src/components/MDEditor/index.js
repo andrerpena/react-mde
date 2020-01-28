@@ -1,10 +1,9 @@
 import React from "react";
-import { Toolbar, TextArea } from ".";
-import { getDefaultCommands } from "../commands";
-import { SvgIcon } from "../icons";
-import { extractCommandMap } from "../util/CommandUtils";
-import { classNames } from "../util/ClassNames";
-import Commander from "./Commander";
+import { Toolbar, TextArea } from "~components";
+import { getDefaultCommands } from "~commands";
+import { SvgIcon } from "~icons";
+import { classNames, extractCommandMap } from "~utils";
+import Commander from "../Commander";
 
 export class MDEditor extends React.Component {
   constructor(props) {

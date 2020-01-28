@@ -24,10 +24,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 import React from "react";
+import { classNames } from "~utils";
 import RcTooltip from "./tooltip";
 import getPlacements from "./placements";
 import { ConfigConsumer } from "./context";
-import { classNames } from "../../util/ClassNames";
 
 const { cloneElement, Component, isValidElement } = React;
 
@@ -90,7 +90,7 @@ function getDisabledCompatibleChildren(element) {
   return element;
 }
 
-class Tooltip extends Component {
+export class Tooltip extends Component {
   constructor(props) {
     super(props);
 

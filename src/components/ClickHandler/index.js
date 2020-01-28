@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-class ClickHandler extends React.Component {
+export class ClickHandler extends React.Component {
   state = {
     isVisible: false
   };

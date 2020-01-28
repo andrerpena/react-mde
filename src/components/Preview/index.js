@@ -1,5 +1,5 @@
 import * as React from "react";
-import { classNames } from "../util/ClassNames";
+import { classNames } from "~utils";
 
 export class Preview extends React.Component {
   state = {

@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { classNames } from "../util/ClassNames";
+import { classNames } from "~utils";
 
 export const SuggestionsDropdown = ({
   classes,

@@ -1,10 +1,7 @@
 import React from "react";
-import { Preview } from ".";
-import { classNames } from "../util/ClassNames";
-import { getCaretCoordinates } from "../util/TextAreaCaretPosition";
-import { insertText } from "../util/InsertTextAtPosition";
-import { mod } from "../util/Math";
-import { SuggestionsDropdown } from "./SuggestionsDropdown";
+import { Preview } from "~components";
+import { classNames, getCaretCoordinates, insertText, mod } from "~utils";
+import { SuggestionsDropdown } from "../SuggestionsDropdown";
 
 export class TextArea extends React.Component {
   /**

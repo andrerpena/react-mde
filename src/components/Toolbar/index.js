@@ -1,12 +1,13 @@
 import React from "react";
-// import Tooltip from "rc-tooltip";
-import Tooltip from "./Tooltip";
-import { classNames } from "../util/ClassNames";
-import { Separator } from "./Separator";
-import { ToolbarButtonGroup } from "./ToolbarButtonGroup";
-import { ToolbarDropdown } from "./ToolbarDropdown";
-import { ToolbarButton } from "./ToolbarButton";
-import { SvgIcon } from "../icons";
+import {
+  Separator,
+  ToolbarButtonGroup,
+  ToolbarDropdown,
+  ToolbarButton,
+  Tooltip
+} from "~components";
+import { classNames } from "~utils";
+import { SvgIcon } from "~icons";
 
 const { Fragment } = React;
 
