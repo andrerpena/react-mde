@@ -25,7 +25,7 @@ const plugins = [
       }),
     plugins: [autoprefixer],
     minimize: true,
-    sourceMap: true,
+    sourceMap: false,
     extract: true,
     extensions: [".sass", ".scss", ".css"]
   }),
@@ -59,7 +59,7 @@ const resolutions = {
 
 const output = [
   {
-    file: pkg.browser,
+    file: pkg.fallback,
     format: "umd",
     name: "UMD-MDEditor",
     ...resolutions
@@ -72,8 +72,7 @@ const output = [
   },
   {
     file: pkg.browser,
-    format: "es",
-    sourcemap: true,
+    format: "esm",
     name: "MDEditor",
     ...resolutions
   }

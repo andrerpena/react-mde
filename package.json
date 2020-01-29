@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "React Markdown Editor",
   "browser": "dist/index.js",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
+  "main": "dist/cjs/index.cjs.js",
+  "fallback": "dist/umd/index.umd.js",
   "style": "dist/index.css",
   "files": [
     "dist"
