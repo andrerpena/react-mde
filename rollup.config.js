@@ -1,3 +1,4 @@
+import fs from "fs";
 import babel from "rollup-plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 // import { eslint } from 'rollup-plugin-eslint';
@@ -12,7 +13,9 @@ import { terser } from "rollup-plugin-terser";
 import { localResolver } from "./utils/resolver";
 import pkg from "./package.json";
 
-const banner = ["/*!", pkg.name, pkg.version, "*/\n"].join(" ");
+const MITLICENSE = fs.readFileSync("./LICENSE");
+
+const banner = [`/*!\n${pkg.name} ${pkg.version}\n${MITLICENSE}*/\n`].join(" ");
 
 const plugins = [
   postcss({
@@ -50,8 +53,7 @@ const resolutions = {
   globals: {
     react: "React",
     "react-is": "reactIs",
-    "rc-trigger": "Trigger",
-    "react-markdown": "ReactMarkdown"
+    "rc-trigger": "Trigger"
   },
   exports: "named"
 };
@@ -80,6 +82,6 @@ const output = [
 export default {
   input: "./src/index.js",
   output,
-  external: ["react", "react-dom", "rc-trigger", "react-markdown"],
+  external: ["react", "react-dom", "rc-trigger"],
   plugins
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import Preview from "~components/Preview";
+// import Preview from "~components/Preview";
 import SuggestionsDropdown from "~components/SuggestionsDropdown";
 import { classNames, getCaretCoordinates, insertText, mod } from "~utils";
 
@@ -182,6 +182,7 @@ export class TextArea extends React.Component {
   render() {
     const {
       classes,
+      children,
       readOnly,
       textAreaProps,
       height,
@@ -219,13 +220,12 @@ export class TextArea extends React.Component {
           {...textAreaProps}
         />
         {selectedTab && (
-          <Preview
+          <div
+            className={classNames("mde-preview", classes)}
             style={{ height }}
-            classes={classes.preview}
-            minHeight={minPreviewHeight}
-            markdown={value}
-            markdownProps={markdownProps}
-          />
+          >
+            {children}
+          </div>
         )}
         {mention.status === "active" && mention.suggestions.length && (
           <SuggestionsDropdown
