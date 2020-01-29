@@ -1,8 +1,12 @@
-import React from "react";
-import MDEditor from "../dist/index.js";
+import React, { Component } from "react";
+import { render } from "react-dom";
 import { Converter } from "showdown";
+import MDEditor from "../../dist/index.js";
+import "../../dist/index.css";
+import "./styles/demo.scss";
+import "./styles/variables.scss";
 
-export class App extends React.Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,3 +73,5 @@ export class App extends React.Component {
     );
   }
 }
+
+render(<App />, document.getElementById("root"));

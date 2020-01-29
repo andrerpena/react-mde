@@ -7,7 +7,7 @@ import webpackConfig from "../webpack.config.demo.dev";
 import { name } from "../package.json";
 
 const webpackCompiler = webpack(webpackConfig);
-const port = 8000;
+const PORT = 8080;
 
 const app = express();
 
@@ -16,6 +16,6 @@ app.use(webpackHotMiddleware(webpackCompiler));
 
 app.get("*", (_, res) => res.sendFile(resolve(`${__dirname}/index.html`)));
 
-app.listen(port, () =>
-  console.log(`${name} running on http://localhost:${port}`)
+app.listen(PORT, () =>
+  console.log(`${name} running on http://localhost:${PORT}`)
 );
