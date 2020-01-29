@@ -1,5 +1,5 @@
 import React from "react";
-import { Tooltip } from "~components";
+import Tooltip from "~components/Tooltip";
 
 export const ToolbarButton = ({
   buttonContent,
@@ -39,3 +39,5 @@ export const ToolbarButton = ({
     </li>
   );
 };
+
+export default ToolbarButton;

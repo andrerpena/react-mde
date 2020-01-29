@@ -1,5 +1,7 @@
 import React from "react";
-import { ClickHandler, Tooltip, ToolbarButton } from "~components";
+import ClickHandler from "~components/ClickHandler";
+import Tooltip from "~components/Tooltip";
+import ToolbarButton from "~components/ToolbarButton";
 
 const { Fragment } = React;
 
@@ -64,3 +66,5 @@ export const ToolbarDropdown = ({
     </li>
   );
 };
+
+export default ToolbarDropdown;

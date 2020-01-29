@@ -1,5 +1,5 @@
-import * as React from "react";
-import MDEditor from "../src";
+import React from "react";
+import MDEditor from "../dist/index.js";
 import { Converter } from "showdown";
 
 export class App extends React.Component {

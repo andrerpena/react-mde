@@ -1,5 +1,6 @@
 import React from "react";
-import { Toolbar, TextArea } from "~components";
+import Toolbar from "~components/Toolbar";
+import TextArea from "~components/TextArea";
 import { getDefaultCommands } from "~commands";
 import { SvgIcon } from "~icons";
 import { classNames, extractCommandMap } from "~utils";
@@ -165,3 +166,5 @@ export class MDEditor extends React.Component {
     );
   }
 }
+
+export default MDEditor;

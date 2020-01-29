@@ -9,3 +9,5 @@ export const ToolbarButtonGroup = ({ children }) => (
 // ToolbarButtonGroup.propTypes = {
 //   children: PropTypes.number.isRequired
 // };
+
+export default ToolbarButtonGroup;

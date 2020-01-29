@@ -1,7 +1,7 @@
 import React from "react";
-import { Preview } from "~components";
+import Preview from "~components/Preview";
+import SuggestionsDropdown from "~components/SuggestionsDropdown";
 import { classNames, getCaretCoordinates, insertText, mod } from "~utils";
-import { SuggestionsDropdown } from "../SuggestionsDropdown";
 
 export class TextArea extends React.Component {
   /**
@@ -243,3 +243,5 @@ export class TextArea extends React.Component {
     );
   }
 }
+
+export default TextArea;

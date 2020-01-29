@@ -1,4 +1,4 @@
-import * as commands from "./commands";
+import * as commands from "~commands";
 import {
   MDEditor,
   Preview,
@@ -7,8 +7,9 @@ import {
   Toolbar,
   ToolbarButtonGroup,
   ToolbarDropdown
-} from "./components";
-import { SvgIcon, MdeFontAwesomeIcon } from "./icons";
+} from "~components";
+import { SvgIcon, MdeFontAwesomeIcon } from "~icons";
+import "~styles/all.scss";
 
 export {
   TextArea,

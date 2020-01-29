@@ -1,11 +1,9 @@
 import React from "react";
-import {
-  Separator,
-  ToolbarButtonGroup,
-  ToolbarDropdown,
-  ToolbarButton,
-  Tooltip
-} from "~components";
+import Separator from "~components/Separator";
+import ToolbarButtonGroup from "~components/ToolbarButtonGroup";
+import ToolbarDropdown from "~components/ToolbarDropdown";
+import ToolbarButton from "~components/ToolbarButton";
+import Tooltip from "~components/Tooltip";
 import { classNames } from "~utils";
 import { SvgIcon } from "~icons";
 
@@ -80,3 +78,5 @@ export const Toolbar = ({
     </div>
   ) : null;
 };
+
+export default Toolbar;
