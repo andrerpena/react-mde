@@ -1,40 +1,30 @@
-import { boldCommand } from "./boldCommand";
-import { italicCommand } from "./italicCommand";
-import { strikeThroughCommand } from "./strikeThroughCommand";
-import { headerCommand } from "./headerCommand";
-import { linkCommand } from "./linkCommand";
-import { quoteCommand } from "./quoteCommand";
-import { codeCommand } from "./codeCommand";
-import { imageCommand } from "./imageCommand";
-import {
-  checkedListCommand,
-  orderedListCommand,
-  unorderedListCommand
-} from "./listCommands";
+import bold from "./bold";
+import code from "./code";
+import header from "./header";
+import image from "./image";
+import italic from "./italic";
+import link from "./link";
+import quote from "./quote";
+import { checkedList, orderedList, unorderedList } from "./lists";
+import strikeThrough from "./strikeThrough";
 
 const getDefaultCommands = () => [
-  {
-    commands: [headerCommand, boldCommand, italicCommand, strikeThroughCommand]
-  },
-  {
-    commands: [linkCommand, quoteCommand, codeCommand, imageCommand]
-  },
-  {
-    commands: [unorderedListCommand, orderedListCommand, checkedListCommand]
-  }
+  [header, bold, italic, strikeThrough],
+  [link, quote, code, image],
+  [unorderedList, orderedList, checkedList]
 ];
 
-export {
-  boldCommand,
-  italicCommand,
-  strikeThroughCommand,
-  headerCommand,
-  linkCommand,
-  quoteCommand,
-  codeCommand,
-  imageCommand,
-  checkedListCommand,
-  orderedListCommand,
-  unorderedListCommand,
-  getDefaultCommands
+const commands = {
+  header,
+  bold,
+  italic,
+  link,
+  quote,
+  code,
+  image,
+  unorderedList,
+  orderedList,
+  checkedList
 };
+
+export { commands, getDefaultCommands };

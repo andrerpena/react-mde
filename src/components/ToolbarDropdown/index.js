@@ -46,11 +46,7 @@ export const ToolbarDropdown = ({
                     key={`header-item${index}`}
                     name={command.name}
                     buttonProps={command.buttonProps}
-                    buttonContent={
-                      command.icon
-                        ? command.icon(getIcon)
-                        : getIcon(command.name)
-                    }
+                    buttonContent={command.icon}
                     onClick={() => {
                       onCommand(command);
                       closeDropdown();

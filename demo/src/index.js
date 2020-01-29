@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import { Converter } from "showdown";
-import MDEditor from "../../dist/index.js";
-import "../../dist/index.css";
+import MDEditor from "../../src/index.js";
+import "../../src/styles/all.scss";
 import "./styles/demo.scss";
 import "./styles/variables.scss";
 
@@ -10,8 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "## Hello",
-      tab: "write"
+      value: "## Hello"
     };
     this.converter = new Converter({
       tables: true,
@@ -22,8 +21,6 @@ class App extends Component {
   }
 
   handleValueChange = value => this.setState({ value });
-
-  handleTabChange = tab => this.setState({ tab });
 
   loadSuggestions = async text => {
     return new Promise(resolve => {
@@ -51,27 +48,23 @@ class App extends Component {
     });
   };
 
-  render() {
-    return (
-      <div className="container">
-        <MDEditor
-          onChange={this.handleValueChange}
-          onTabChange={this.handleTabChange}
-          value={this.state.value}
-          generateMarkdownPreview={markdown =>
-            Promise.resolve(this.converter.makeHtml(markdown))
-          }
-          selectedTab={this.state.tab}
-          loadSuggestions={this.loadSuggestions}
-          suggestionTriggerCharacters={["@"]}
-          minEditorHeight={300}
-          classes={{
-            suggestionsDropdown: "bbbb"
-          }}
-        />
-      </div>
-    );
-  }
+  render = () => (
+    <div className="container">
+      <MDEditor
+        onChange={this.handleValueChange}
+        value={this.state.value}
+        generateMarkdownPreview={markdown =>
+          Promise.resolve(this.converter.makeHtml(markdown))
+        }
+        loadSuggestions={this.loadSuggestions}
+        suggestionTriggerCharacters={["@"]}
+        minEditorHeight={300}
+        classes={{
+          suggestionsDropdown: "bbbb"
+        }}
+      />
+    </div>
+  );
 }
 
 render(<App />, document.getElementById("root"));

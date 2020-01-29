@@ -10,7 +10,9 @@
 }
 
 .react-mde {
-  border: 1px solid $border-color;
+  border-left: 1px solid $border-color;
+  border-right: 1px solid $border-color;
+  border-bottom: 1px solid $border-color;
   border-radius: $border-radius;
   width: 100%;
 

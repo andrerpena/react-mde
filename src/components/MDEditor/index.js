@@ -10,7 +10,8 @@ export class MDEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorHeight: props.minEditorHeight
+      editorHeight: props.minEditorHeight,
+      tab: props.selectedTab
     };
     this.gripDrag = null;
     this.keyCommandMap = extractCommandMap(props.commands);
@@ -25,7 +26,7 @@ export class MDEditor extends React.Component {
     minEditorHeight: 200,
     maxEditorHeight: 500,
     minPreviewHeight: 200,
-    selectedTab: "write",
+    selectedTab: "",
     disablePreview: false,
     suggestionTriggerCharacters: ["@"]
   };
@@ -67,7 +68,9 @@ export class MDEditor extends React.Component {
   };
 
   handleTabChange = newTab => {
-    this.props.onTabChange(newTab);
+    const { onTabChange } = this.props;
+    if (onTabChange) onTabChange(newTab);
+    else this.setState({ tab: newTab });
   };
 
   adjustEditorSize = () => {
@@ -109,6 +112,8 @@ export class MDEditor extends React.Component {
   };
 
   render() {
+    const { tab } = this.state;
+
     const {
       classes,
       className,
@@ -136,7 +141,7 @@ export class MDEditor extends React.Component {
           classes={classes.toolbar}
           onCommand={this.handleCommand}
           onTabChange={this.handleTabChange}
-          tab={selectedTab}
+          tab={selectedTab || tab}
           readOnly={readOnly}
         />
         <TextArea
@@ -154,7 +159,7 @@ export class MDEditor extends React.Component {
             }
           }}
           height={this.state.editorHeight}
-          selectedTab={selectedTab === "preview"}
+          selectedTab={selectedTab === "preview" || tab === "preview"}
         />
         <div
           className={classNames("grip", classes.grip)}

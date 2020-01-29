@@ -5,7 +5,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  border-bottom: 1px solid $border-color;
+  border-top: 1px solid $border-color;
   border-radius: $border-radius $border-radius 0 0;
   background: $toolbar-color;
 
@@ -16,7 +16,6 @@
     border-right: 1px solid #fff;
     color: transparent;
     text-indent: -10px;
-    margin: 0 6px;
   }
 
   .mde-tabs {

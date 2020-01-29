@@ -1,4 +1,6 @@
 .mde-textarea-wrapper {
+  border-top: 1px solid $border-color;
+
   textarea.mde-text {
     padding: 10px;
     width: 100%;
