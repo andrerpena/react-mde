@@ -34,11 +34,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.jpe?g$|\.gif$|\.png$|\.ico$/,
-        use: "file-loader?name=[name].[ext]"
-      },
-      {
-        test: /\.eot|\.ttf|\.svg|\.woff2?/,
+        test: /\.eot|\.ttf|\.svg|\.woff2\.jpe?g$|\.gif$|\.png$|\.ico$/,
         use: "file-loader?name=[name].[ext]"
       }
     ]

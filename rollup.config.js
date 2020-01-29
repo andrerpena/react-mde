@@ -1,22 +1,20 @@
 import babel from "rollup-plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 // import { eslint } from 'rollup-plugin-eslint';
-import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import license from "rollup-plugin-license";
 import filesize from "rollup-plugin-filesize";
 import resolve from "@rollup/plugin-node-resolve";
-import localResolve from "rollup-plugin-local-resolve";
 import sass from "node-sass";
 import autoprefixer from "autoprefixer";
 import postcss from "rollup-plugin-postcss";
 // import stylelint from 'rollup-plugin-stylelint';
 import { terser } from "rollup-plugin-terser";
+import { localResolver } from "./utils/resolver";
 import pkg from "./package.json";
 
 const banner = ["/*!", pkg.name, pkg.version, "*/\n"].join(" ");
 
 const plugins = [
-  peerDepsExternal(),
   postcss({
     preprocessor: (_, id) =>
       new Promise(resolve => {
@@ -34,7 +32,7 @@ const plugins = [
     exclude: "node_modules/**"
   }),
   resolve(),
-  localResolve(),
+  localResolver(),
   commonjs(),
   terser({
     sourcemap: true,
@@ -81,6 +79,6 @@ const output = [
 export default {
   input: "./src/index.js",
   output,
-  // external,
+  external: ["react", "react-dom", "rc-trigger"],
   plugins
 };
