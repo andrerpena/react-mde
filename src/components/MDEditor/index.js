@@ -17,20 +17,6 @@ export class MDEditor extends React.Component {
     this.keyCommandMap = extractCommandMap(props.commands);
   }
 
-  static defaultProps = {
-    commands: getDefaultCommands(),
-    getIcon: name => <SvgIcon icon={name} />,
-    emptyPreviewHtml: "<p>&nbsp;</p>",
-    readOnly: false,
-    autoGrow: false,
-    minEditorHeight: 200,
-    maxEditorHeight: 500,
-    minPreviewHeight: 200,
-    selectedTab: "",
-    disablePreview: false,
-    suggestionTriggerCharacters: ["@"]
-  };
-
   componentDidMount() {
     document.addEventListener("mousemove", this.handleGripMouseMove);
     document.addEventListener("mouseup", this.handleGripMouseUp);
@@ -117,7 +103,6 @@ export class MDEditor extends React.Component {
     const {
       classes,
       className,
-      readOnly,
       maxEditorWidth,
       textAreaProps,
       selectedTab
@@ -125,16 +110,8 @@ export class MDEditor extends React.Component {
 
     return (
       <div
-        className={classNames(
-          "react-mde",
-          "react-mde-tabbed-layout",
-          classes.reactMde,
-          /**
-           * "className" is OBSOLETE and will soon be removed
-           */
-          className
-        )}
-        style={{ width: maxEditorWidth || "100%" }}
+        className={classNames("mde", classes.mde, className)}
+        style={{ width: maxEditorWidth }}
       >
         <Toolbar
           {...this.props}
@@ -142,14 +119,12 @@ export class MDEditor extends React.Component {
           onCommand={this.handleCommand}
           onTabChange={this.handleTabChange}
           tab={selectedTab || tab}
-          readOnly={readOnly}
         />
         <TextArea
           {...this.props}
           suggestionsDropdownClasses={classes.suggestionsDropdown}
           editorRef={this.setTextAreaRef}
           onChange={this.handleTextChange}
-          readOnly={readOnly}
           textAreaProps={{
             ...textAreaProps,
             onKeyDown: e => {
@@ -171,5 +146,21 @@ export class MDEditor extends React.Component {
     );
   }
 }
+
+MDEditor.defaultProps = {
+  classes: {},
+  commands: getDefaultCommands(),
+  emptyPreviewHtml: "<p>&nbsp;</p>",
+  readOnly: false,
+  autoGrow: false,
+  minEditorHeight: 250,
+  maxEditorHeight: 500,
+  minPreviewHeight: 200,
+  maxEditorWidth: "100%",
+  selectedTab: "",
+  disablePreview: false,
+  suggestionTriggerCharacters: ["@"],
+  markdownProps: {}
+};
 
 export default MDEditor;

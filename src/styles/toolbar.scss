@@ -109,15 +109,21 @@
               border: 0;
               text-align: left;
               &.header-1 {
-                font-size: 20px;
+                font-size: 36px;
               }
               &.header-2 {
-                font-size: 18px;
+                font-size: 30px;
               }
               &.header-3 {
-                font-size: 14px;
+                font-size: 24px;
               }
               &.header-4 {
+                font-size: 18px;
+              }
+              &.header-5 {
+                font-size: 14px;
+              }
+              &.header-6 {
                 font-size: 12px;
               }
             }

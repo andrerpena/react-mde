@@ -12,12 +12,12 @@ export const ToolbarButton = ({
   const button = (
     <button
       type="button"
-      {...buttonProps}
+      tabIndex="0"
       className={disabled ? "disabled" : undefined}
       data-name={name}
-      tabIndex="0"
       disabled={disabled}
       onClick={onClick}
+      {...buttonProps}
     >
       {buttonContent}
     </button>

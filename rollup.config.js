@@ -50,7 +50,8 @@ const resolutions = {
   globals: {
     react: "React",
     "react-is": "reactIs",
-    "rc-trigger": "Trigger"
+    "rc-trigger": "Trigger",
+    "react-markdown": "ReactMarkdown"
   },
   exports: "named"
 };
@@ -79,6 +80,6 @@ const output = [
 export default {
   input: "./src/index.js",
   output,
-  external: ["react", "react-dom", "rc-trigger"],
+  external: ["react", "react-dom", "rc-trigger", "react-markdown"],
   plugins
 };

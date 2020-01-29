@@ -22,6 +22,14 @@ const header = {
     {
       name: "header-4",
       icon: <p className="header-4">Header 4</p>
+    },
+    {
+      name: "header-5",
+      icon: <p className="header-5">Header 5</p>
+    },
+    {
+      name: "header-6",
+      icon: <p className="header-6">Header 6</p>
     }
   ]
 };

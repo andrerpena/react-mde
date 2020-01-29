@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-import { Converter } from "showdown";
 import MDEditor from "../../src/index.js";
+// import MDEditor from "../../dist/index.js";
 import "../../src/styles/all.scss";
+// import "../../dist/index.css";
 import "./styles/demo.scss";
-import "./styles/variables.scss";
 
 class App extends Component {
   constructor(props) {
@@ -12,15 +12,11 @@ class App extends Component {
     this.state = {
       value: "## Hello"
     };
-    this.converter = new Converter({
-      tables: true,
-      simplifiedAutoLink: true,
-      strikethrough: true,
-      tasklists: true
-    });
   }
 
-  handleValueChange = value => this.setState({ value });
+  handleValueChange = value => {
+    this.setState({ value });
+  };
 
   loadSuggestions = async text => {
     return new Promise(resolve => {
@@ -53,15 +49,8 @@ class App extends Component {
       <MDEditor
         onChange={this.handleValueChange}
         value={this.state.value}
-        generateMarkdownPreview={markdown =>
-          Promise.resolve(this.converter.makeHtml(markdown))
-        }
         loadSuggestions={this.loadSuggestions}
         suggestionTriggerCharacters={["@"]}
-        minEditorHeight={300}
-        classes={{
-          suggestionsDropdown: "bbbb"
-        }}
       />
     </div>
   );

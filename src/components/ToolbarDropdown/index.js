@@ -9,12 +9,11 @@ export const ToolbarDropdown = ({
   buttonContent,
   buttonProps,
   commands,
-  getIcon,
   disabled,
   onCommand,
   tooltip
 }) => {
-  const finalButtonProps = {
+  const additionalButtonProps = {
     ...{ tabIndex: 0 },
     ...(buttonProps || {})
   };
@@ -31,7 +30,7 @@ export const ToolbarDropdown = ({
             >
               <button
                 type="button"
-                {...finalButtonProps}
+                {...additionalButtonProps}
                 className={disabled ? "disabled" : undefined}
                 onClick={handleClick}
                 disabled={disabled}

@@ -187,9 +187,7 @@ export class TextArea extends React.Component {
       height,
       value,
       minPreviewHeight,
-      generateMarkdownPreview,
-      emptyPreviewHtml,
-      loadingPreview,
+      markdownProps,
       suggestionTriggerCharacters,
       loadSuggestions,
       selectedTab,
@@ -224,10 +222,9 @@ export class TextArea extends React.Component {
           <Preview
             style={{ height }}
             classes={classes.preview}
-            loadingPreview={loadingPreview || emptyPreviewHtml}
             minHeight={minPreviewHeight}
-            generateMarkdownPreview={generateMarkdownPreview}
             markdown={value}
+            markdownProps={markdownProps}
           />
         )}
         {mention.status === "active" && mention.suggestions.length && (

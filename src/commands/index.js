@@ -27,4 +27,6 @@ const commands = {
   checkedList
 };
 
-export { commands, getDefaultCommands };
+export { getDefaultCommands };
+
+export default commands;

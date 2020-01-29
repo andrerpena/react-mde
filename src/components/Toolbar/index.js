@@ -11,7 +11,6 @@ const { Fragment } = React;
 
 export const Toolbar = ({
   classes,
-  getIcon,
   commands,
   onCommand,
   readOnly,

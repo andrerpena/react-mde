@@ -140,6 +140,12 @@ const Commander = (currentTextArea, command) => {
     case "header-4": {
       return setHeader("#### ");
     }
+    case "header-5": {
+      return setHeader("##### ");
+    }
+    case "header-6": {
+      return setHeader("###### ");
+    }
     case "image": {
       // Replaces the current selection with the image
       const imageTemplate =
