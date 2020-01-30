@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-// import MDEditor from "../../src/index.js";
+import MDEditor from "../../src/index.js";
 import ReactMarkdown from "react-markdown";
-import MDEditor from "../../dist/index.js";
-// import "../../src/styles/all.scss";
+// import MDEditor from "../../dist/index.js";
+import "../../src/styles/all.scss";
 import "../../dist/index.css";
 import "./styles/demo.scss";
 

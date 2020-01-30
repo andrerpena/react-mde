@@ -187,8 +187,6 @@ export class TextArea extends React.Component {
       textAreaProps,
       height,
       value,
-      minPreviewHeight,
-      markdownProps,
       suggestionTriggerCharacters,
       loadSuggestions,
       selectedTab,
