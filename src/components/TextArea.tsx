@@ -37,9 +37,16 @@ export interface TextAreaProps {
   readOnly?: boolean;
   height?: number;
   suggestionTriggerCharacters?: string[];
-  loadSuggestions?: (text: string, triggeredBy: string) => Promise<Suggestion[]>
-  textAreaProps?: Partial<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-    HTMLTextAreaElement>>;
+  loadSuggestions?: (
+    text: string,
+    triggeredBy: string
+  ) => Promise<Suggestion[]>;
+  textAreaProps?: Partial<
+    React.DetailedHTMLProps<
+      React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+      HTMLTextAreaElement
+    >
+  >;
 }
 
 export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
@@ -60,15 +67,17 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
    */
   suggestionsPromiseIndex: number = 0;
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = { mention: { status: "inactive", suggestions: [] } };
   }
 
   handleTextAreaRef = (element: HTMLTextAreaElement) => {
     const { editorRef } = this.props;
-    this.textAreaElement = element;
-    editorRef(element);
+    if (editorRef) {
+      this.textAreaElement = element;
+      editorRef(element);
+    }
   };
 
   handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -136,7 +145,11 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     switch (mention.status) {
       case "loading":
       case "active":
-        if (key === "Escape" || (key === "Backspace" && selectionStart <= this.state.mention.startPosition)) {
+        if (
+          key === "Escape" ||
+          (key === "Backspace" &&
+            selectionStart <= this.state.mention.startPosition)
+        ) {
           // resetting suggestionsPromiseIndex will cause any promise that is yet to be resolved to have no effect
           // when they finish loading.
           this.suggestionsPromiseIndex = 0;
@@ -157,16 +170,26 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
               }
             });
           }
-        } else if (mention.status === "active" && (key === "ArrowUp" || key === "ArrowDown")) {
+        } else if (
+          mention.status === "active" &&
+          (key === "ArrowUp" || key === "ArrowDown")
+        ) {
           event.preventDefault();
           const focusDelta = key === "ArrowUp" ? -1 : 1;
           this.setState({
             mention: {
               ...mention,
-              focusIndex: mod(mention.focusIndex + focusDelta, mention.suggestions.length)
+              focusIndex: mod(
+                mention.focusIndex + focusDelta,
+                mention.suggestions.length
+              )
             }
           });
-        } else if (key === "Enter" && mention.status === "active" && mention.suggestions.length) {
+        } else if (
+          key === "Enter" &&
+          mention.status === "active" &&
+          mention.suggestions.length
+        ) {
           event.preventDefault();
           this.handleSuggestionSelected(mention.focusIndex);
         }
@@ -215,7 +238,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     }
   };
 
-  render () {
+  render() {
     const {
       classes,
       readOnly,
@@ -227,43 +250,36 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       suggestionsDropdownClasses
     } = this.props;
 
-    const suggestionsEnabled = suggestionTriggerCharacters && suggestionTriggerCharacters.length && loadSuggestions;
+    const suggestionsEnabled =
+      suggestionTriggerCharacters &&
+      suggestionTriggerCharacters.length &&
+      loadSuggestions;
 
     const { mention } = this.state;
     return (
       <div className="mde-textarea-wrapper">
-      <textarea
-        className={classNames("mde-text", classes)}
-        style={{ height }}
-        ref={this.handleTextAreaRef}
-        onChange={this.handleOnChange}
-        readOnly={readOnly}
-        value={value}
-        data-testid="text-area"
-        onBlur={
-          suggestionsEnabled
-            ? this.handleBlur
-            : undefined
-        }
-        onKeyDown={
-          suggestionsEnabled
-            ? this.handleKeyDown
-            : undefined
-        }
-        onKeyPress={
-          suggestionsEnabled
-            ? this.handleKeyPress
-            : undefined
-        }
-        {...textAreaProps}
-      />
-        {mention.status === "active" && mention.suggestions.length &&
-        <SuggestionsDropdown classes={suggestionsDropdownClasses}
-                             caret={mention.caret}
-                             suggestions={mention.suggestions}
-                             onSuggestionSelected={this.handleSuggestionSelected}
-                             focusIndex={mention.focusIndex}
-        />}
+        <textarea
+          className={classNames("mde-text", classes)}
+          style={{ height }}
+          ref={this.handleTextAreaRef}
+          onChange={this.handleOnChange}
+          readOnly={readOnly}
+          value={value}
+          data-testid="text-area"
+          onBlur={suggestionsEnabled ? this.handleBlur : undefined}
+          onKeyDown={suggestionsEnabled ? this.handleKeyDown : undefined}
+          onKeyPress={suggestionsEnabled ? this.handleKeyPress : undefined}
+          {...textAreaProps}
+        />
+        {mention.status === "active" && mention.suggestions.length && (
+          <SuggestionsDropdown
+            classes={suggestionsDropdownClasses}
+            caret={mention.caret}
+            suggestions={mention.suggestions}
+            onSuggestionSelected={this.handleSuggestionSelected}
+            focusIndex={mention.focusIndex}
+          />
+        )}
       </div>
     );
   }

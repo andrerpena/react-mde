@@ -3,7 +3,8 @@ import {
   Command,
   CommandGroup,
   GenerateMarkdownPreview,
-  GetIcon, Suggestion
+  GetIcon,
+  Suggestion
 } from "../types";
 import { getDefaultCommands } from "../commands";
 import { Preview, Toolbar, TextArea } from ".";
@@ -79,7 +80,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     minPreviewHeight: 200,
     selectedTab: "write",
     disablePreview: false,
-    suggestionTriggerCharacters: ['@']
+    suggestionTriggerCharacters: ["@"]
   };
 
   constructor(props: ReactMdeProps) {
@@ -195,39 +196,41 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           disablePreview={disablePreview}
           l18n={l18n}
         />
-        {selectedTab === "write" ? (
-          <>
-            <TextArea
-              classes={classes?.textArea}
-              suggestionsDropdownClasses={classes?.suggestionsDropdown}
-              editorRef={this.setTextAreaRef}
-              onChange={this.handleTextChange}
-              readOnly={readOnly}
-              textAreaProps={textAreaProps}
-              height={this.state.editorHeight}
-              value={value}
-              suggestionTriggerCharacters={suggestionTriggerCharacters}
-              loadSuggestions={loadSuggestions}
-            />
-            <div className={classNames("grip", classes?.grip)} onMouseDown={this.handleGripMouseDown}>
-              <svg
-                aria-hidden="true"
-                data-prefix="far"
-                data-icon="ellipsis-h"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                className="icon"
-              >
-                <path
-                  fill="currentColor"
-                  d="M304 256c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm120-48c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zm-336 0c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
-                  className=""
-                />
-              </svg>
-            </div>
-          </>
-        ) : (
+        <div className={classNames({ invisible: selectedTab !== "write" })}>
+          <TextArea
+            classes={classes?.textArea}
+            suggestionsDropdownClasses={classes?.suggestionsDropdown}
+            editorRef={this.setTextAreaRef}
+            onChange={this.handleTextChange}
+            readOnly={readOnly}
+            textAreaProps={textAreaProps}
+            height={this.state.editorHeight}
+            value={value}
+            suggestionTriggerCharacters={suggestionTriggerCharacters}
+            loadSuggestions={loadSuggestions}
+          />
+          <div
+            className={classNames("grip", classes?.grip)}
+            onMouseDown={this.handleGripMouseDown}
+          >
+            <svg
+              aria-hidden="true"
+              data-prefix="far"
+              data-icon="ellipsis-h"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              className="icon"
+            >
+              <path
+                fill="currentColor"
+                d="M304 256c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm120-48c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zm-336 0c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
+                className=""
+              />
+            </svg>
+          </div>
+        </div>
+        {selectedTab !== "write" && (
           <Preview
             classes={classes?.preview}
             previewRef={c => (this.previewRef = c)}

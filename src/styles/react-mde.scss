@@ -22,4 +22,8 @@ $grip-height: 10px;
       height: $grip-height;
     }
   }
+
+  .invisible {
+    display: none;
+  }
 }
