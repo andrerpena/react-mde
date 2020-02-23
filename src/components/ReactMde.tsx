@@ -25,9 +25,9 @@ export interface ReactMdeProps {
   selectedTab: "write" | "preview";
   onTabChange: (tab: "write" | "preview") => void;
   generateMarkdownPreview: GenerateMarkdownPreview;
-  minEditorHeight: number;
-  maxEditorHeight: number;
-  minPreviewHeight: number;
+  minEditorHeight: number | string;
+  maxEditorHeight: number | string;
+  minPreviewHeight: number | string;
   classes?: Classes;
   /**
    * "className" is OBSOLETE when will soon be removed in favor of the "classes" prop
