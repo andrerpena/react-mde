@@ -6,6 +6,7 @@ import { classNames, ClassValue } from "../util/ClassNames";
 import { ToolbarButtonGroup } from "./ToolbarButtonGroup";
 import { ToolbarDropdown } from "./ToolbarDropdown";
 import { ToolbarButton } from "./ToolbarButton";
+import { ButtonChildProps } from "../child-props";
 
 export interface ToolbarProps {
   classes?: ClassValue;
@@ -17,6 +18,9 @@ export interface ToolbarProps {
   disablePreview: boolean;
   tab: Tab;
   l18n: L18n;
+  writeButtonProps: ButtonChildProps;
+  previewButtonProps: ButtonChildProps;
+  buttonProps: ButtonChildProps;
 }
 
 export class Toolbar extends React.Component<ToolbarProps> {
@@ -34,7 +38,10 @@ export class Toolbar extends React.Component<ToolbarProps> {
       commands,
       onCommand,
       readOnly,
-      disablePreview
+      disablePreview,
+      writeButtonProps,
+      previewButtonProps,
+      buttonProps
     } = this.props;
     if ((!commands || commands.length === 0) && !children) {
       return null;
@@ -47,6 +54,7 @@ export class Toolbar extends React.Component<ToolbarProps> {
               type="button"
               className={classNames({ selected: this.props.tab === "write" })}
               onClick={() => this.handleTabChange("write")}
+              {...writeButtonProps}
             >
               {l18n.write}
             </button>
@@ -54,6 +62,7 @@ export class Toolbar extends React.Component<ToolbarProps> {
               type="button"
               className={classNames({ selected: this.props.tab === "preview" })}
               onClick={() => this.handleTabChange("preview")}
+              {...previewButtonProps}
             >
               {l18n.preview}
             </button>
@@ -66,7 +75,7 @@ export class Toolbar extends React.Component<ToolbarProps> {
                 return (
                   <ToolbarDropdown
                     key={j}
-                    buttonProps={c.buttonProps}
+                    buttonProps={{ ...(buttonProps || {}), ...c.buttonProps }}
                     getIcon={getIcon}
                     buttonContent={c.icon ? c.icon(getIcon) : getIcon(c.name)}
                     commands={c.children}
@@ -80,10 +89,9 @@ export class Toolbar extends React.Component<ToolbarProps> {
                   key={j}
                   name={c.name}
                   buttonContent={c.icon ? c.icon(getIcon) : getIcon(c.name)}
-                  buttonProps={c.buttonProps}
+                  buttonProps={{ ...(buttonProps || {}), ...c.buttonProps }}
                   onClick={() => onCommand(c as Command)}
                   readOnly={readOnly}
-                  buttonComponentClass={c.buttonComponentClass}
                 />
               );
             })}

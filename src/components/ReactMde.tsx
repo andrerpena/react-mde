@@ -18,6 +18,7 @@ import {
 } from "../commandOrchestrator";
 import { SvgIcon } from "../icons";
 import { classNames, ClassValue } from "../util/ClassNames";
+import { ChildProps, TextAreaChildProps } from "../child-props";
 
 export interface ReactMdeProps {
   value: string;
@@ -30,7 +31,7 @@ export interface ReactMdeProps {
   minPreviewHeight: number;
   classes?: Classes;
   /**
-   * "className" is OBSOLETE when will soon be removed in favor of the "classes" prop
+   * "className" is OBSOLETE. It will soon be removed in favor of the "classes" prop
    */
   className?: ClassValue;
   commands?: CommandGroup[];
@@ -42,12 +43,11 @@ export interface ReactMdeProps {
   disablePreview?: boolean;
   suggestionTriggerCharacters?: string[];
   loadSuggestions?: (text: string) => Promise<Suggestion[]>;
-  textAreaProps?: Partial<
-    React.DetailedHTMLProps<
-      React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-      HTMLTextAreaElement
-    >
-  >;
+  childProps?: ChildProps;
+  /**
+   * "textAreaProps" is OBSOLETE. It will soon be removed in favor of the "defaultChildProps" prop
+   */
+  textAreaProps?: TextAreaChildProps;
   l18n?: L18n;
 }
 
@@ -166,12 +166,15 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       value,
       l18n,
       minPreviewHeight,
+      childProps,
       textAreaProps,
       selectedTab,
       generateMarkdownPreview,
       loadSuggestions,
       suggestionTriggerCharacters
     } = this.props;
+
+    const finalChildProps = childProps || {};
 
     return (
       <div
@@ -195,6 +198,9 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           readOnly={readOnly}
           disablePreview={disablePreview}
           l18n={l18n}
+          buttonProps={finalChildProps.commandButtons}
+          writeButtonProps={finalChildProps.writeButton}
+          previewButtonProps={finalChildProps.previewButton}
         />
         <div className={classNames({ invisible: selectedTab !== "write" })}>
           <TextArea
@@ -203,7 +209,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             editorRef={this.setTextAreaRef}
             onChange={this.handleTextChange}
             readOnly={readOnly}
-            textAreaProps={textAreaProps}
+            textAreaProps={(childProps && childProps.textArea) || textAreaProps}
             height={this.state.editorHeight}
             value={value}
             suggestionTriggerCharacters={suggestionTriggerCharacters}

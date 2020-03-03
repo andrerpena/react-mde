@@ -11,7 +11,7 @@ export interface AppState {
 export class App extends React.Component<{}, AppState> {
   converter: Showdown.Converter;
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       value: "**Hello world!!!**",
@@ -36,10 +36,11 @@ export class App extends React.Component<{}, AppState> {
   loadSuggestions = async (text: string) => {
     return new Promise<Suggestion[]>((accept, reject) => {
       setTimeout(() => {
-        const suggestions: Suggestion[] = [{
-          preview: "Andre",
-          value: "@andre"
-        },
+        const suggestions: Suggestion[] = [
+          {
+            preview: "Andre",
+            value: "@andre"
+          },
           {
             preview: "Angela",
             value: "@angela"
@@ -52,13 +53,13 @@ export class App extends React.Component<{}, AppState> {
             preview: "Louise",
             value: "@louise"
           }
-        ].filter((i => i.preview.toLowerCase().includes(text.toLowerCase())));
+        ].filter(i => i.preview.toLowerCase().includes(text.toLowerCase()));
         accept(suggestions);
       }, 250);
     });
   };
 
-  render () {
+  render() {
     return (
       <div className="container">
         <ReactMde
