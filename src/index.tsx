@@ -21,6 +21,11 @@ import { L18n } from "./types/L18n";
 import { TextState, TextApi } from "./types/CommandOptions";
 import { Command, Suggestion } from "./types";
 import { Classes } from "./classes";
+import {
+  ChildProps,
+  ButtonChildProps,
+  TextAreaChildProps
+} from "./child-props";
 
 export {
   ReactMdeProps,
@@ -46,7 +51,10 @@ export {
   TextState,
   TextApi,
   Command,
-  Classes
+  Classes,
+  ChildProps,
+  ButtonChildProps,
+  TextAreaChildProps
 };
 
 export default ReactMde;
