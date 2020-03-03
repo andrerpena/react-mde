@@ -1,4 +1,6 @@
+import * as React from "react";
+
 export interface L18n {
-  write: string
-  preview: string
+  write: React.ReactNode;
+  preview: React.ReactNode;
 }
