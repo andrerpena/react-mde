@@ -138,7 +138,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   };
 
   handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const { key } = event;
+    const { key, shiftKey } = event;
     const { selectionStart } = event.currentTarget;
     const { mention } = this.state;
 
@@ -172,7 +172,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
           }
         } else if (
           mention.status === "active" &&
-          (key === "ArrowUp" || key === "ArrowDown")
+          (key === "ArrowUp" || key === "ArrowDown") &&
+          !shiftKey
         ) {
           event.preventDefault();
           const focusDelta = key === "ArrowUp" ? -1 : 1;
