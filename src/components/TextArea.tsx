@@ -146,7 +146,6 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     const textForInsert = this.props.value
       .substr(this.textAreaElement.selectionStart, this.textAreaElement.selectionEnd - this.textAreaElement.selectionStart)
 
-    console.log({textForInsert})
 
     insertText(this.textAreaElement, mention.suggestions[index].value + ' ');
     this.setState({
