@@ -125,10 +125,29 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       });
   };
 
+  loadEmptySuggestion = (target: HTMLTextAreaElement, key: string) => {
+    const caret = getCaretCoordinates(target, key);
+    this.startLoadingSuggestions("");
+    this.setState({
+      mention: {
+        status: "loading",
+        startPosition: target.selectionStart + 1,
+        caret: caret,
+        suggestions: [],
+        triggeredBy: key
+      }
+    });
+  }
+
   handleSuggestionSelected = (index: number) => {
     const { mention } = this.state;
-    this.textAreaElement.selectionStart = mention.startPosition - 1;
-    insertText(this.textAreaElement, mention.suggestions[index].value + " ");
+
+    this.textAreaElement.selectionStart = mention.startPosition - 1
+    const textForInsert = this.props.value
+      .substr(this.textAreaElement.selectionStart, this.textAreaElement.selectionEnd - this.textAreaElement.selectionStart)
+
+
+    insertText(this.textAreaElement, mention.suggestions[index].value + ' ');
     this.setState({
       mention: {
         status: "inactive",
@@ -138,8 +157,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   };
 
   handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const { key } = event;
-    const { selectionStart } = event.currentTarget;
+    const { key, shiftKey, currentTarget } = event;
+    const { selectionStart } = currentTarget;
     const { mention } = this.state;
 
     switch (mention.status) {
@@ -159,20 +178,10 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
               suggestions: []
             }
           });
-        } else if (key === "Backspace") {
-          const searchText = this.props.value.substr(mention.startPosition + 1);
-          this.startLoadingSuggestions(searchText);
-          if (mention.status !== "loading") {
-            this.setState({
-              mention: {
-                ...this.state.mention,
-                status: "loading"
-              }
-            });
-          }
         } else if (
           mention.status === "active" &&
-          (key === "ArrowUp" || key === "ArrowDown")
+          (key === "ArrowUp" || key === "ArrowDown") &&
+          !shiftKey
         ) {
           event.preventDefault();
           const focusDelta = key === "ArrowUp" ? -1 : 1;
@@ -199,16 +208,70 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     }
   };
 
+  handleKeyUp = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const { key } = event;
+    const { mention } = this.state;
+    const { suggestionTriggerCharacters, value } = this.props;
+
+    switch (mention.status) {
+      case "loading":
+      case "active":
+        if (key === "Backspace") {
+          const searchText = value.substr(mention.startPosition, this.textAreaElement.selectionStart - mention.startPosition)
+
+          this.startLoadingSuggestions(searchText);
+          if (mention.status !== "loading") {
+            this.setState({
+              mention: {
+                ...this.state.mention,
+                status: "loading"
+              }
+            });
+          }
+        }
+        break;
+      case "inactive":
+        if (key === "Backspace") {
+          const prevChar = value.charAt(this.textAreaElement.selectionStart - 1)
+          const isAtMention = suggestionTriggerCharacters.includes(
+            value.charAt(this.textAreaElement.selectionStart - 1)
+          )
+
+          if (isAtMention) {
+            this.loadEmptySuggestion(event.currentTarget, prevChar)
+          }
+        }
+        break;
+      default:
+      // Ignore
+    }
+  };
+
   handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const { suggestionTriggerCharacters } = this.props;
+    const { suggestionTriggerCharacters, value } = this.props;
     const { mention } = this.state;
     const { key } = event;
 
     switch (mention.status) {
       case "loading":
       case "active":
+        if (key === " ") {
+          this.setState({
+            mention: {
+              ...this.state.mention,
+              status: "inactive"
+            }
+          });
+
+          return
+        }
+
+        const searchText = value.substr(
+          mention.startPosition,
+          this.textAreaElement.selectionStart - mention.startPosition
+        ) + key
+
         // In this case, the mentions box was open but the user typed something else
-        const searchText = this.props.value.substr(mention.startPosition) + key;
         this.startLoadingSuggestions(searchText);
         if (mention.status !== "loading") {
           this.setState({
@@ -220,20 +283,14 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         }
         break;
       case "inactive":
-        if (suggestionTriggerCharacters.indexOf(event.key) === -1) {
+        if (
+          suggestionTriggerCharacters.indexOf(event.key) === -1 ||
+          !/\s|\(|\[|^.{0}$/.test(value.charAt(this.textAreaElement.selectionStart - 1))
+        ) {
           return;
         }
-        const caret = getCaretCoordinates(event.currentTarget, "@");
-        this.startLoadingSuggestions("");
-        this.setState({
-          mention: {
-            status: "loading",
-            startPosition: event.currentTarget.selectionStart + 1,
-            caret: caret,
-            suggestions: [],
-            triggeredBy: event.key
-          }
-        });
+
+        this.loadEmptySuggestion(event.currentTarget, event.key)
         break;
     }
   };
@@ -268,6 +325,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
           data-testid="text-area"
           onBlur={suggestionsEnabled ? this.handleBlur : undefined}
           onKeyDown={suggestionsEnabled ? this.handleKeyDown : undefined}
+          onKeyUp={suggestionsEnabled ? this.handleKeyUp : undefined}
           onKeyPress={suggestionsEnabled ? this.handleKeyPress : undefined}
           {...textAreaProps}
         />
