@@ -107,9 +107,9 @@ while the documentation is not complete.
 - **readOnly?: boolean**: Flag to render the editor in read-only mode.
 - **textAreaProps**: Extra props to be passed to the `textarea` component.
 - **l18n**: A localization option. It contains the strings `write` and `preview`.
-- **minEditorHeight (number | string)**: The minimum height of the editor.
-- **maxEditorHeight (number | string)**: The max height of the editor (after that, it will scroll).
-- **minPreviewHeight (number | string)**: The minimum height of the preview.
+- **minEditorHeight (number)**: The minimum height of the editor.
+- **maxEditorHeight (number)**: The max height of the editor (after that, it will scroll).
+- **minPreviewHeight (number)**: The minimum height of the preview.
 - **loadSuggestions (text: string, triggeredBy: string) => Promise<Suggestion[]>**: Function to load mention suggestions based on the
 given `text` and `triggeredBy` (character that triggered the suggestions). The result should be an array of `{preview: React.ReactNode, value: string}`.
 The `preview` is what is going to be displayed in the suggestions box. The `value` is what is going to be inserted in the `textarea` on click or enter.
