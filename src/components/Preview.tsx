@@ -39,6 +39,17 @@ export class Preview extends React.Component<
     });
   }
 
+  componentWillReceiveProps(nextProps): void {
+    if(nextProps.markdown !== this.props.markdown) {
+      nextProps.generateMarkdownPreview(nextProps.markdown).then(preview => {
+        this.setState({
+          preview,
+          loading: false
+        });
+      });
+    }
+  }
+
   render() {
     const { classes, minHeight, loadingPreview } = this.props;
     const { preview, loading } = this.state;
