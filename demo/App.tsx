@@ -76,6 +76,7 @@ export class App extends React.Component<{}, AppState> {
             suggestionsDropdown: "bbbb"
           }}
         />
+        value: <input type="text" value={this.state.value} onChange={(e) => {this.handleValueChange(e.target.value) }}/>
       </div>
     );
   }
