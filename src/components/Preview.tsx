@@ -4,7 +4,7 @@ import { classNames, ClassValue } from "../util/ClassNames";
 
 export interface PreviewProps {
   classes?: ClassValue;
-  previewRef?: (ref: Preview) => void;
+  previewRef?: React.Ref<any>;
   loadingPreview?: React.ReactNode;
   minHeight: number;
   generateMarkdownPreview: GenerateMarkdownPreview;
@@ -18,7 +18,8 @@ export const Preview: Preview = ({
   minHeight,
   loadingPreview,
   generateMarkdownPreview,
-  markdown
+  markdown,
+  previewRef
 }) => {
   const [preview, loading] = useMarkdownPreview(
     generateMarkdownPreview,
@@ -32,7 +33,7 @@ export const Preview: Preview = ({
       style={{ minHeight: minHeight + 10 }}
       data-testid="mde-preview"
     >
-      <div className="mde-preview-content" ref={p => (this.previewRef = p)}>
+      <div className="mde-preview-content" ref={previewRef}>
         {typeof finalHtml === "string" ? (
           <div
             dangerouslySetInnerHTML={{ __html: finalHtml || "<p>&nbsp;</p>" }}
