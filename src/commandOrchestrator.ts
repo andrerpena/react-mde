@@ -24,7 +24,7 @@ export class TextAreaTextApi implements TextApi {
     this.textArea.selectionEnd = selection.end;
     return getStateFromTextArea(this.textArea);
   }
-  
+
   getState(): TextState {
     return getStateFromTextArea(this.textArea);
   }

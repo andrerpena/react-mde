@@ -40,7 +40,7 @@ export class Preview extends React.Component<
   }
 
   componentWillReceiveProps(nextProps): void {
-    if(nextProps.markdown !== this.props.markdown) {
+    if (nextProps.markdown !== this.props.markdown) {
       nextProps.generateMarkdownPreview(nextProps.markdown).then(preview => {
         this.setState({
           preview,
