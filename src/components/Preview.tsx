@@ -11,61 +11,57 @@ export interface PreviewProps {
   markdown: string;
 }
 
-export interface ReactMdePreviewState {
-  loading: boolean;
-  preview?: React.ReactNode;
-}
+export type Preview = React.FunctionComponent<PreviewProps>;
 
-export class Preview extends React.Component<
-  PreviewProps,
-  ReactMdePreviewState
-> {
-  previewRef: HTMLDivElement;
+export const Preview: Preview = ({
+  classes,
+  minHeight,
+  loadingPreview,
+  generateMarkdownPreview,
+  markdown
+}) => {
+  const [preview, loading] = useMarkdownPreview(
+    generateMarkdownPreview,
+    markdown
+  );
+  const finalHtml = loading ? loadingPreview : preview;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true
-    };
-  }
-
-  componentDidMount(): void {
-    const { markdown, generateMarkdownPreview } = this.props;
-    generateMarkdownPreview(markdown).then(preview => {
-      this.setState({
-        preview,
-        loading: false
-      });
-    });
-  }
-
-  render() {
-    const { classes, minHeight, loadingPreview } = this.props;
-    const { preview, loading } = this.state;
-    const finalHtml = loading ? loadingPreview : preview;
-
-    let content;
-
-    if (typeof finalHtml === "string") {
-      content = (
-        <div
-          className="mde-preview-content"
-          dangerouslySetInnerHTML={{ __html: finalHtml || "<p>&nbsp;</p>" }}
-          ref={p => (this.previewRef = p)}
-        />
-      );
-    } else {
-      content = <div className="mde-preview-content">{finalHtml}</div>;
-    }
-
-    return (
-      <div
-        className={classNames("mde-preview", classes, { loading })}
-        style={{ minHeight: minHeight + 10 }}
-        data-testid="mde-preview"
-      >
-        {content}
+  return (
+    <div
+      className={classNames("mde-preview", classes, { loading })}
+      style={{ minHeight: minHeight + 10 }}
+      data-testid="mde-preview"
+    >
+      <div className="mde-preview-content" ref={p => (this.previewRef = p)}>
+        {typeof finalHtml === "string" ? (
+          <div
+            dangerouslySetInnerHTML={{ __html: finalHtml || "<p>&nbsp;</p>" }}
+          />
+        ) : (
+          finalHtml
+        )}
       </div>
-    );
-  }
+    </div>
+  );
+};
+
+/**
+ * Hook that asynchronously generates the markdown preview
+ */
+function useMarkdownPreview(
+  generateMarkdownPreview: GenerateMarkdownPreview,
+  markdown: string
+): [React.ReactNode, boolean] {
+  const [markdownPreview, setMarkdownPreview] = React.useState(
+    "" as React.ReactNode
+  );
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    generateMarkdownPreview(markdown).then(preview => {
+      setMarkdownPreview(preview);
+    });
+    setLoading(false);
+  }, [generateMarkdownPreview, markdown]);
+  return [markdownPreview, loading];
 }
