@@ -4,7 +4,7 @@ import {
   CaretCoordinates,
   getCaretCoordinates
 } from "../util/TextAreaCaretPosition";
-import { Suggestion } from "../types";
+import { Suggestion, Highlight } from "../types";
 import { insertText } from "../util/InsertTextAtPosition";
 import { mod } from "../util/Math";
 import { SuggestionsDropdown } from "./SuggestionsDropdown";
@@ -41,6 +41,7 @@ export interface TextAreaProps {
     text: string,
     triggeredBy: string
   ) => Promise<Suggestion[]>;
+  highlight?: (text: string) => Highlight[];
   textAreaProps?: Partial<
     React.DetailedHTMLProps<
       React.TextareaHTMLAttributes<HTMLTextAreaElement>,
@@ -51,6 +52,9 @@ export interface TextAreaProps {
 
 export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   textAreaElement?: HTMLTextAreaElement;
+  highlightBackdropElement?: HTMLDivElement;
+  highlightContainerElement?: HTMLDivElement;
+
   currentLoadSuggestionsPromise?: Promise<unknown> = Promise.resolve(undefined);
 
   /**
@@ -295,6 +299,73 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     }
   };
 
+  handleHighlightBackdropRef = (element: HTMLDivElement) => {
+    this.highlightBackdropElement = element;
+  }
+
+  handleHighlightContainerRef = (element: HTMLDivElement) => {
+    this.highlightContainerElement = element
+  }
+  
+
+  handleScroll = (ev: React.UIEvent<HTMLTextAreaElement>) => {
+    const {scrollTop, scrollLeft} = (ev.target as HTMLElement);
+    if (this.highlightBackdropElement && this.highlightContainerElement) {
+      this.highlightContainerElement.style.height = this.textAreaElement.scrollHeight  + "px"
+      this.highlightBackdropElement.scrollTop = scrollTop
+      this.highlightBackdropElement.style.transform = (scrollLeft > 0) ? 'translateX(' + -scrollLeft + 'px)' : '';
+    }
+    if (this.props.textAreaProps && this.props.textAreaProps.onScroll) {
+      this.props.textAreaProps.onScroll(ev);
+    }
+  }
+
+  generateHighlightTextPartials(text: string, highlights: Highlight[]): React.ReactNode[] {
+    let offset = 0;
+    let elements: React.ReactNode[] = [];
+    highlights.forEach(({ color, range: [start, end] }) => {
+      const part = text.slice(offset, start)
+      if (part) {
+        elements.push(part)
+      }
+
+      elements.push(React.createElement("mark", { className: "mde-highlight", key: `${start}_${end}`, style: { backgroundColor: color }}, text.slice(start, end).replace(/\n$/g, "\n\n")))
+      offset = end;
+    })
+    if (offset < text.length - 1) {
+      elements.push(text.slice(offset, text.length - 1))
+    }
+    return elements;
+  }
+
+  onScrollHighlightContainer = (ev: React.UIEvent<HTMLDivElement>) => {
+    if (ev.target instanceof Element) {
+      ev.target.scrollLeft = 0
+    }
+  }
+
+  renderHighlights() {
+    const { value, highlight } = this.props
+    if (!highlight) return null
+    const highlightElements = this.generateHighlightTextPartials(value, highlight(value))
+    if (highlightElements.length === 0) return null
+
+    return (
+      <div
+        ref={this.handleHighlightBackdropRef} 
+        className="mde-highlight-backdrop"
+      >
+        <div
+          ref={this.handleHighlightContainerRef}
+          className="mde-highlights"
+          onScroll={this.onScrollHighlightContainer}
+        >
+          {highlightElements}
+        </div>
+      </div>
+    )
+  }
+
   render() {
     const {
       classes,
@@ -304,7 +375,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       value,
       suggestionTriggerCharacters,
       loadSuggestions,
-      suggestionsDropdownClasses
+      suggestionsDropdownClasses,
+      highlight,
     } = this.props;
 
     const suggestionsEnabled =
@@ -312,9 +384,12 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       suggestionTriggerCharacters.length &&
       loadSuggestions;
 
+    const highlightsEnabled = !!highlight
+
     const { mention } = this.state;
     return (
       <div className="mde-textarea-wrapper">
+        {this.renderHighlights()}
         <textarea
           className={classNames("mde-text", classes)}
           style={{ height }}
@@ -327,6 +402,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
           onKeyDown={suggestionsEnabled ? this.handleKeyDown : undefined}
           onKeyUp={suggestionsEnabled ? this.handleKeyUp : undefined}
           onKeyPress={suggestionsEnabled ? this.handleKeyPress : undefined}
+          onScroll={highlightsEnabled ? this.handleScroll : undefined}
           {...textAreaProps}
         />
         {mention.status === "active" && mention.suggestions.length && (

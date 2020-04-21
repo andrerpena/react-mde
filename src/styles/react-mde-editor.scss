@@ -2,8 +2,38 @@
 
 .mde-textarea-wrapper {
   position: relative;
+  background-color: #fff;
+  font-size: 18px;
+
+  .mde-highlight-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid transparent;
+
+    .mde-highlights {
+      height: auto;
+      width: auto;
+      color: transparent;
+      padding: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow: auto;
+
+      .mde-highlight {
+        position: relative;
+        color: inherit;
+        background-color: yellow;
+      }
+    }
+  }
 
   textarea.mde-text {
+    position: relative;
+    background-color: transparent;
     width: 100%;
     border: 0;
     padding: $mde-editor-padding;

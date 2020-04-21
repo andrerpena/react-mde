@@ -6,3 +6,4 @@ export * from "./TextInsertionResult";
 export * from "./TextRange";
 export * from "./TextSection";
 export * from "./Suggestion";
+export * from "./Highlight"

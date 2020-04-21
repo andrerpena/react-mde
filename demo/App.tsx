@@ -8,13 +8,43 @@ export interface AppState {
   tab: "write" | "preview";
 }
 
+const findIndicies = (source: string, needle: string): number[]  => {
+  if (!source) {
+    return [];
+  }
+  // if find is empty string return all indexes.
+  if (!needle) {
+    // or shorter arrow function:
+    // return source.split('').map((_,i) => i);
+    return source.split('').map(function(_, i) { return i; });
+  }
+  var result = [];
+  for (let i = 0; i < source.length; ++i) {
+    // If you want to search case insensitive use 
+    // if (source.substring(i, i + find.length).toLowerCase() == find) {
+    if (source.substring(i, i + needle.length) == needle) {
+      result.push(i);
+    }
+  }
+  return result;
+}
+
+const text = `
+**Lorem** ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt 
+ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo 
+duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+`
+
 export class App extends React.Component<{}, AppState> {
   converter: Showdown.Converter;
 
   constructor(props) {
     super(props);
     this.state = {
-      value: "**Hello world!!!**",
+      value: text,
       tab: "write"
     };
     this.converter = new Showdown.Converter({
@@ -74,6 +104,12 @@ export class App extends React.Component<{}, AppState> {
           suggestionTriggerCharacters={["@"]}
           classes={{
             suggestionsDropdown: "bbbb"
+          }}
+          highlight={(content) => {
+            return findIndicies(content, "Lorem").map(startIndex => ({
+              color: "pink",
+              range: [startIndex, startIndex + "Lorem".length] as [number, number]
+            }))
           }}
         />
         value:{" "}

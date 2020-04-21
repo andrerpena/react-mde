@@ -4,7 +4,8 @@ import {
   CommandGroup,
   GenerateMarkdownPreview,
   GetIcon,
-  Suggestion
+  Suggestion,
+  Highlight,
 } from "../types";
 import { getDefaultCommands } from "../commands";
 import { Preview, Toolbar, TextArea } from ".";
@@ -49,6 +50,7 @@ export interface ReactMdeProps {
    */
   textAreaProps?: TextAreaChildProps;
   l18n?: L18n;
+  highlight?: (text: string) => Highlight[];
 }
 
 export interface ReactMdeState {
@@ -165,13 +167,14 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       disablePreview,
       value,
       l18n,
+      highlight,
       minPreviewHeight,
       childProps,
       textAreaProps,
       selectedTab,
       generateMarkdownPreview,
       loadSuggestions,
-      suggestionTriggerCharacters
+      suggestionTriggerCharacters,
     } = this.props;
 
     const finalChildProps = childProps || {};
@@ -214,6 +217,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             value={value}
             suggestionTriggerCharacters={suggestionTriggerCharacters}
             loadSuggestions={loadSuggestions}
+            highlight={highlight}
           />
           <div
             className={classNames("grip", classes?.grip)}
