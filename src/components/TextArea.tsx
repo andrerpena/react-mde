@@ -47,6 +47,7 @@ export interface TextAreaProps {
       HTMLTextAreaElement
     >
   >;
+  textAreaComponent?: React.ReactNode;
 }
 
 export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
@@ -313,9 +314,10 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       loadSuggestions;
 
     const { mention } = this.state;
+    const TextAreaComponent: any = this.props.textAreaComponent || "textarea"
     return (
       <div className="mde-textarea-wrapper">
-        <textarea
+        <TextAreaComponent
           className={classNames("mde-text", classes)}
           style={{ height }}
           ref={this.handleTextAreaRef}

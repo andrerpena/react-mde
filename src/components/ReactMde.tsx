@@ -48,6 +48,7 @@ export interface ReactMdeProps {
    * "textAreaProps" is OBSOLETE. It will soon be removed in favor of the "defaultChildProps" prop
    */
   textAreaProps?: TextAreaChildProps;
+  textAreaComponent?: React.ReactNode;
   l18n?: L18n;
 }
 
@@ -210,6 +211,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             onChange={this.handleTextChange}
             readOnly={readOnly}
             textAreaProps={(childProps && childProps.textArea) || textAreaProps}
+            textAreaComponent={this.props.textAreaComponent}
             height={this.state.editorHeight}
             value={value}
             suggestionTriggerCharacters={suggestionTriggerCharacters}
