@@ -3,12 +3,10 @@ import {
   Command,
   CommandGroup,
   GenerateMarkdownPreview,
-  GetIcon,
-  Suggestion
+  GetIcon
 } from "../types";
 import { getDefaultCommands } from "../commands";
 import { Preview, Toolbar, TextArea } from ".";
-import { extractCommandMap } from "../util/CommandUtils";
 import { Tab } from "../types/Tab";
 import { Classes, L18n } from "..";
 import { enL18n } from "../l18n/react-mde.en";
@@ -17,8 +15,8 @@ import {
   TextAreaCommandOrchestrator
 } from "../commandOrchestrator";
 import { SvgIcon } from "../icons";
-import { classNames, ClassValue } from "../util/ClassNames";
-import { ChildProps, TextAreaChildProps } from "../child-props";
+import { classNames } from "../util/ClassNames";
+import { ChildProps } from "../child-props";
 
 export interface ReactMdeProps {
   value: string;
@@ -30,24 +28,14 @@ export interface ReactMdeProps {
   maxEditorHeight: number;
   minPreviewHeight: number;
   classes?: Classes;
-  /**
-   * "className" is OBSOLETE. It will soon be removed in favor of the "classes" prop
-   */
-  className?: ClassValue;
   commands?: CommandGroup[];
   getIcon?: GetIcon;
-  // deprecated. Use emptyPreview instead
-  emptyPreviewHtml?: string;
   loadingPreview?: React.ReactNode;
   readOnly?: boolean;
   disablePreview?: boolean;
   suggestionTriggerCharacters?: string[];
   loadSuggestions?: (text: string) => Promise<Suggestion[]>;
   childProps?: ChildProps;
-  /**
-   * "textAreaProps" is OBSOLETE. It will soon be removed in favor of the "defaultChildProps" prop
-   */
-  textAreaProps?: TextAreaChildProps;
   l18n?: L18n;
 }
 
@@ -67,12 +55,9 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     originalHeight: number;
   } = null;
 
-  keyCommandMap: { [key: string]: Command };
-
   static defaultProps: Partial<ReactMdeProps> = {
     commands: getDefaultCommands(),
     getIcon: name => <SvgIcon icon={name} />,
-    emptyPreviewHtml: "<p>&nbsp;</p>",
     readOnly: false,
     l18n: enL18n,
     minEditorHeight: 200,
@@ -88,9 +73,6 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     this.state = {
       editorHeight: props.minEditorHeight
     };
-    this.keyCommandMap = {};
-    const { commands } = this.props;
-    this.keyCommandMap = extractCommandMap(commands);
   }
 
   handleTextChange = (value: string) => {
@@ -158,16 +140,13 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       getIcon,
       commands,
       classes,
-      className,
       loadingPreview,
-      emptyPreviewHtml,
       readOnly,
       disablePreview,
       value,
       l18n,
       minPreviewHeight,
       childProps,
-      textAreaProps,
       selectedTab,
       generateMarkdownPreview,
       loadSuggestions,
@@ -181,11 +160,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         className={classNames(
           "react-mde",
           "react-mde-tabbed-layout",
-          classes?.reactMde,
-          /**
-           * "className" is OBSOLETE and will soon be removed
-           */
-          className
+          classes?.reactMde
         )}
       >
         <Toolbar
@@ -209,7 +184,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             editorRef={this.setTextAreaRef}
             onChange={this.handleTextChange}
             readOnly={readOnly}
-            textAreaProps={(childProps && childProps.textArea) || textAreaProps}
+            textAreaProps={childProps && childProps.textArea}
             height={this.state.editorHeight}
             value={value}
             suggestionTriggerCharacters={suggestionTriggerCharacters}
@@ -240,7 +215,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           <Preview
             classes={classes?.preview}
             previewRef={c => (this.previewRef = c)}
-            loadingPreview={loadingPreview || emptyPreviewHtml}
+            loadingPreview={loadingPreview}
             minHeight={minPreviewHeight}
             generateMarkdownPreview={generateMarkdownPreview}
             markdown={value}
