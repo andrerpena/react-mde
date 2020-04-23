@@ -19,4 +19,8 @@ export interface TextApi {
    * @param selection
    */
   setSelectionRange (selection: TextRange): TextState;
+  /**
+   * Get the current text state
+   */
+  getState(): TextState;
 }
