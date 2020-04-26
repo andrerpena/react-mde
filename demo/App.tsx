@@ -75,9 +75,6 @@ export class App extends React.Component<{}, AppState> {
           classes={{
             suggestionsDropdown: "bbbb"
           }}
-          textAreaComponent={React.forwardRef<HTMLTextAreaElement>((p, ref) => (
-            <textarea ref={ref} {...p} />
-          ))}
         />
       </div>
     );
