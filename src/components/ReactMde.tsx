@@ -3,20 +3,19 @@ import {
   Command,
   CommandGroup,
   GenerateMarkdownPreview,
-  GetIcon
+  GetIcon,
+  Suggestion
 } from "../types";
 import { getDefaultCommands } from "../commands";
 import { Preview, Toolbar, TextArea } from ".";
 import { Tab } from "../types/Tab";
 import { Classes, L18n } from "..";
 import { enL18n } from "../l18n/react-mde.en";
-import {
-  CommandOrchestrator,
-  TextAreaCommandOrchestrator
-} from "../commandOrchestrator";
 import { SvgIcon } from "../icons";
 import { classNames } from "../util/ClassNames";
 import { ChildProps } from "../child-props";
+import { CommandOrchestrator } from "../commandOrchestrator";
+import { Refs } from "../refs";
 
 export interface ReactMdeProps {
   value: string;
@@ -28,6 +27,7 @@ export interface ReactMdeProps {
   maxEditorHeight: number;
   minPreviewHeight: number;
   classes?: Classes;
+  refs?: Refs;
   commands?: CommandGroup[];
   getIcon?: GetIcon;
   loadingPreview?: React.ReactNode;
@@ -44,10 +44,11 @@ export interface ReactMdeState {
 }
 
 export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
+  /**
+   * "finalRefs" is a clone of "props.refs" except that undefined refs are set to default values
+   */
+  finalRefs: Refs;
   commandOrchestrator: CommandOrchestrator;
-
-  textAreaRef: HTMLTextAreaElement;
-  previewRef: Preview;
 
   // resizeYStart will be null when it is not resizing
   gripDrag: {
@@ -70,6 +71,17 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
   constructor(props: ReactMdeProps) {
     super(props);
+    this.finalRefs = { ...(props.refs || {}) };
+    if (!this.finalRefs.textarea) {
+      this.finalRefs.textarea = React.createRef<HTMLTextAreaElement>();
+    }
+    if (!this.finalRefs.preview) {
+      this.finalRefs.preview = React.createRef<HTMLDivElement>();
+    }
+    this.commandOrchestrator = new CommandOrchestrator(
+      this.props.commands,
+      this.finalRefs.textarea
+    );
     this.state = {
       editorHeight: props.minEditorHeight
     };
@@ -124,15 +136,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     document.addEventListener<"mouseup">("mouseup", this.handleGripMouseUp);
   }
 
-  setTextAreaRef = (element: HTMLTextAreaElement) => {
-    this.textAreaRef = element;
-    this.commandOrchestrator = new TextAreaCommandOrchestrator(
-      this.textAreaRef
-    );
-  };
-
-  handleCommand = (command: Command) => {
-    this.commandOrchestrator.executeCommand(command);
+  handleCommand = async (command: Command) => {
+    await this.commandOrchestrator.executeCommand(command);
   };
 
   render() {
@@ -181,7 +186,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           <TextArea
             classes={classes?.textArea}
             suggestionsDropdownClasses={classes?.suggestionsDropdown}
-            editorRef={this.setTextAreaRef}
+            refObject={this.finalRefs.textarea}
             onChange={this.handleTextChange}
             readOnly={readOnly}
             textAreaProps={childProps && childProps.textArea}
@@ -189,6 +194,9 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             value={value}
             suggestionTriggerCharacters={suggestionTriggerCharacters}
             loadSuggestions={loadSuggestions}
+            onPossibleKeyCommand={
+              this.commandOrchestrator.handlePossibleKeyCommand
+            }
           />
           <div
             className={classNames("grip", classes?.grip)}
@@ -214,7 +222,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         {selectedTab !== "write" && (
           <Preview
             classes={classes?.preview}
-            previewRef={c => (this.previewRef = c)}
+            refObject={this.finalRefs.preview}
             loadingPreview={loadingPreview}
             minHeight={minPreviewHeight}
             generateMarkdownPreview={generateMarkdownPreview}

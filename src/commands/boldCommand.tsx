@@ -21,5 +21,5 @@ export const boldCommand: Command = {
       end: state2.selection.end - 2
     });
   },
-  keyCommand: "bold"
+  handleKeyCommand: e => (e.ctrlKey || e.metaKey) && e.key == "b"
 };

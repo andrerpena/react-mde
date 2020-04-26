@@ -21,5 +21,5 @@ export const linkCommand: Command = {
       end: state2.selection.end - 6
     });
   },
-  keyCommand: "bold"
+  handleKeyCommand: e => (e.ctrlKey || e.metaKey) && e.key == "k"
 };

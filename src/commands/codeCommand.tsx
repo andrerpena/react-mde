@@ -56,6 +56,5 @@ export const codeCommand: Command = {
       start: selectionStart,
       end: selectionEnd
     });
-  },
-  keyCommand: "code"
+  }
 };
