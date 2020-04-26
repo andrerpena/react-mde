@@ -6,6 +6,8 @@
 
 A simple yet powerful and extensible **React Markdown Editor**. React-mde has no 3rd party dependencies.
 
+Check the 9.0.0 breaking changes on how to migrate from 8.3.0: https://github.com/andrerpena/react-mde/releases/tag/9.0.0
+
 ## Demo
 
 - [Demo](http://andrerpena.me/react-mde/)
