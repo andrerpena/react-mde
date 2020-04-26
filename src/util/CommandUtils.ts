@@ -3,7 +3,9 @@ import { Command, CommandGroup } from "../types";
 // Extracts a map that associate "key commands" (strings) with react-mde Commands.
 // This is important because, when pressing tab, for example, Draft.js issues
 // a "tab" command. We need to associate the key bindings with react-mde commands.
-export function extractCommandMap (groups: CommandGroup[]): { [key: string]: Command } {
+export function extractCommandMap(
+  groups: CommandGroup[]
+): { [key: string]: Command } {
   const result: { [key: string]: Command } = {};
   if (!groups || !groups.length) {
     return result;

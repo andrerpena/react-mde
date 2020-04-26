@@ -8,6 +8,7 @@ import { Suggestion } from "../types";
 import { insertText } from "../util/InsertTextAtPosition";
 import { mod } from "../util/Math";
 import { SuggestionsDropdown } from "./SuggestionsDropdown";
+import { DetailedHTMLFactory, TextareaHTMLAttributes } from "react";
 
 export interface MentionState {
   status: "active" | "inactive" | "loading";
@@ -47,7 +48,20 @@ export interface TextAreaProps {
       HTMLTextAreaElement
     >
   >;
-  textAreaComponent?: React.ReactNode;
+  /**
+   * Custom textarea component. "textAreaComponent" can be any React component which
+   * props are a subset of the props of an HTMLTextAreaElement
+   */
+  textAreaComponent?: React.ClassType<
+    Partial<
+      DetailedHTMLFactory<
+        TextareaHTMLAttributes<HTMLTextAreaElement>,
+        HTMLTextAreaElement
+      >
+    >,
+    any,
+    any
+  >;
 }
 
 export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
@@ -138,17 +152,18 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         triggeredBy: key
       }
     });
-  }
+  };
 
   handleSuggestionSelected = (index: number) => {
     const { mention } = this.state;
 
-    this.textAreaElement.selectionStart = mention.startPosition - 1
-    const textForInsert = this.props.value
-      .substr(this.textAreaElement.selectionStart, this.textAreaElement.selectionEnd - this.textAreaElement.selectionStart)
+    this.textAreaElement.selectionStart = mention.startPosition - 1;
+    const textForInsert = this.props.value.substr(
+      this.textAreaElement.selectionStart,
+      this.textAreaElement.selectionEnd - this.textAreaElement.selectionStart
+    );
 
-
-    insertText(this.textAreaElement, mention.suggestions[index].value + ' ');
+    insertText(this.textAreaElement, mention.suggestions[index].value + " ");
     this.setState({
       mention: {
         status: "inactive",
@@ -218,7 +233,10 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       case "loading":
       case "active":
         if (key === "Backspace") {
-          const searchText = value.substr(mention.startPosition, this.textAreaElement.selectionStart - mention.startPosition)
+          const searchText = value.substr(
+            mention.startPosition,
+            this.textAreaElement.selectionStart - mention.startPosition
+          );
 
           this.startLoadingSuggestions(searchText);
           if (mention.status !== "loading") {
@@ -233,13 +251,15 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         break;
       case "inactive":
         if (key === "Backspace") {
-          const prevChar = value.charAt(this.textAreaElement.selectionStart - 1)
+          const prevChar = value.charAt(
+            this.textAreaElement.selectionStart - 1
+          );
           const isAtMention = suggestionTriggerCharacters.includes(
             value.charAt(this.textAreaElement.selectionStart - 1)
-          )
+          );
 
           if (isAtMention) {
-            this.loadEmptySuggestion(event.currentTarget, prevChar)
+            this.loadEmptySuggestion(event.currentTarget, prevChar);
           }
         }
         break;
@@ -264,13 +284,14 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
             }
           });
 
-          return
+          return;
         }
 
-        const searchText = value.substr(
-          mention.startPosition,
-          this.textAreaElement.selectionStart - mention.startPosition
-        ) + key
+        const searchText =
+          value.substr(
+            mention.startPosition,
+            this.textAreaElement.selectionStart - mention.startPosition
+          ) + key;
 
         // In this case, the mentions box was open but the user typed something else
         this.startLoadingSuggestions(searchText);
@@ -286,12 +307,14 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       case "inactive":
         if (
           suggestionTriggerCharacters.indexOf(event.key) === -1 ||
-          !/\s|\(|\[|^.{0}$/.test(value.charAt(this.textAreaElement.selectionStart - 1))
+          !/\s|\(|\[|^.{0}$/.test(
+            value.charAt(this.textAreaElement.selectionStart - 1)
+          )
         ) {
           return;
         }
 
-        this.loadEmptySuggestion(event.currentTarget, event.key)
+        this.loadEmptySuggestion(event.currentTarget, event.key);
         break;
     }
   };
@@ -305,7 +328,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       value,
       suggestionTriggerCharacters,
       loadSuggestions,
-      suggestionsDropdownClasses
+      suggestionsDropdownClasses,
+      textAreaComponent
     } = this.props;
 
     const suggestionsEnabled =
@@ -314,7 +338,13 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       loadSuggestions;
 
     const { mention } = this.state;
-    const TextAreaComponent: any = this.props.textAreaComponent || "textarea"
+
+    const TextAreaComponent = (textAreaComponent ||
+      "textarea") as DetailedHTMLFactory<
+      TextareaHTMLAttributes<HTMLTextAreaElement>,
+      HTMLTextAreaElement
+    >;
+
     return (
       <div className="mde-textarea-wrapper">
         <TextAreaComponent
