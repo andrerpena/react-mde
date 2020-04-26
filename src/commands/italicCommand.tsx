@@ -21,5 +21,5 @@ export const italicCommand: Command = {
       end: state2.selection.end - 1
     });
   },
-  keyCommand: "italic"
+  handleKeyCommand: e => (e.ctrlKey || e.metaKey) && e.key == "i"
 };

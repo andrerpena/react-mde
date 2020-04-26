@@ -33,7 +33,7 @@ export interface TextAreaProps {
   suggestionsDropdownClasses?: ClassValue;
   value: string;
   onChange: (value: string) => void;
-  editorRef?: (ref: HTMLTextAreaElement) => void;
+  refObject?: React.RefObject<HTMLTextAreaElement>;
   readOnly?: boolean;
   height?: number;
   suggestionTriggerCharacters?: string[];
@@ -47,10 +47,17 @@ export interface TextAreaProps {
       HTMLTextAreaElement
     >
   >;
+
+  /**
+   * On keydown, the TextArea will trigger "onPossibleKeyCommand" as an opportunity for React-Mde to
+   * execute a command. If a command is executed, React-Mde should return true, otherwise, false.
+   */
+  onPossibleKeyCommand?: (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => boolean;
 }
 
 export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
-  textAreaElement?: HTMLTextAreaElement;
   currentLoadSuggestionsPromise?: Promise<unknown> = Promise.resolve(undefined);
 
   /**
@@ -72,12 +79,16 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     this.state = { mention: { status: "inactive", suggestions: [] } };
   }
 
-  handleTextAreaRef = (element: HTMLTextAreaElement) => {
-    const { editorRef } = this.props;
-    if (editorRef) {
-      this.textAreaElement = element;
-      editorRef(element);
-    }
+  suggestionsEnabled() {
+    return (
+      this.props.suggestionTriggerCharacters &&
+      this.props.suggestionTriggerCharacters.length &&
+      this.props.loadSuggestions
+    );
+  }
+
+  getTextArea = (): HTMLTextAreaElement => {
+    return this.props.refObject.current;
   };
 
   handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -142,13 +153,13 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   handleSuggestionSelected = (index: number) => {
     const { mention } = this.state;
 
-    this.textAreaElement.selectionStart = mention.startPosition - 1;
+    this.getTextArea().selectionStart = mention.startPosition - 1;
     const textForInsert = this.props.value.substr(
-      this.textAreaElement.selectionStart,
-      this.textAreaElement.selectionEnd - this.textAreaElement.selectionStart
+      this.getTextArea().selectionStart,
+      this.getTextArea().selectionEnd - this.getTextArea().selectionStart
     );
 
-    insertText(this.textAreaElement, mention.suggestions[index].value + " ");
+    insertText(this.getTextArea(), mention.suggestions[index].value + " ");
     this.setState({
       mention: {
         status: "inactive",
@@ -158,6 +169,28 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   };
 
   handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (this.props.onPossibleKeyCommand) {
+      const handled = this.props.onPossibleKeyCommand(event);
+      if (handled) {
+        // If the keydown resulted in a command being executed, we will just close the suggestions if they are open.
+        // Resetting suggestionsPromiseIndex will cause any promise that is yet to be resolved to have no effect
+        // when they finish loading.
+        // TODO: The code below is duplicate, we need to clean this up
+        this.suggestionsPromiseIndex = 0;
+        this.setState({
+          mention: {
+            status: "inactive",
+            suggestions: []
+          }
+        });
+        return;
+      }
+    }
+
+    if (!this.suggestionsEnabled()) {
+      return;
+    }
+
     const { key, shiftKey, currentTarget } = event;
     const { selectionStart } = currentTarget;
     const { mention } = this.state;
@@ -220,7 +253,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         if (key === "Backspace") {
           const searchText = value.substr(
             mention.startPosition,
-            this.textAreaElement.selectionStart - mention.startPosition
+            this.getTextArea().selectionStart - mention.startPosition
           );
 
           this.startLoadingSuggestions(searchText);
@@ -236,11 +269,9 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         break;
       case "inactive":
         if (key === "Backspace") {
-          const prevChar = value.charAt(
-            this.textAreaElement.selectionStart - 1
-          );
+          const prevChar = value.charAt(this.getTextArea().selectionStart - 1);
           const isAtMention = suggestionTriggerCharacters.includes(
-            value.charAt(this.textAreaElement.selectionStart - 1)
+            value.charAt(this.getTextArea().selectionStart - 1)
           );
 
           if (isAtMention) {
@@ -275,7 +306,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         const searchText =
           value.substr(
             mention.startPosition,
-            this.textAreaElement.selectionStart - mention.startPosition
+            this.getTextArea().selectionStart - mention.startPosition
           ) + key;
 
         // In this case, the mentions box was open but the user typed something else
@@ -293,7 +324,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         if (
           suggestionTriggerCharacters.indexOf(event.key) === -1 ||
           !/\s|\(|\[|^.{0}$/.test(
-            value.charAt(this.textAreaElement.selectionStart - 1)
+            value.charAt(this.getTextArea().selectionStart - 1)
           )
         ) {
           return;
@@ -327,7 +358,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         <textarea
           className={classNames("mde-text", classes)}
           style={{ height }}
-          ref={this.handleTextAreaRef}
+          ref={this.props.refObject}
           onChange={this.handleOnChange}
           readOnly={readOnly}
           value={value}

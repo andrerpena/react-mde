@@ -42,6 +42,5 @@ export const quoteCommand: Command = {
       start: selectionStart,
       end: selectionEnd
     });
-  },
-  keyCommand: "quote"
+  }
 };

@@ -79,14 +79,6 @@ export class App extends React.Component<{}, AppState> {
             <textarea ref={ref} {...p} />
           ))}
         />
-        value:{" "}
-        <input
-          type="text"
-          value={this.state.value}
-          onChange={e => {
-            this.handleValueChange(e.target.value);
-          }}
-        />
       </div>
     );
   }

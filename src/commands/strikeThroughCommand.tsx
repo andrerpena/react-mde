@@ -20,6 +20,5 @@ export const strikeThroughCommand: Command = {
       start: state2.selection.end - 2 - state1.selectedText.length,
       end: state2.selection.end - 2
     });
-  },
-  keyCommand: "strikeThrough"
+  }
 };

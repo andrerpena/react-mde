@@ -8,17 +8,14 @@ import {
 } from "../types";
 import { getDefaultCommands } from "../commands";
 import { Preview, Toolbar, TextArea } from ".";
-import { extractCommandMap } from "../util/CommandUtils";
 import { Tab } from "../types/Tab";
 import { Classes, L18n } from "..";
 import { enL18n } from "../l18n/react-mde.en";
-import {
-  CommandOrchestrator,
-  TextAreaCommandOrchestrator
-} from "../commandOrchestrator";
 import { SvgIcon } from "../icons";
-import { classNames, ClassValue } from "../util/ClassNames";
-import { ChildProps, TextAreaChildProps } from "../child-props";
+import { classNames } from "../util/ClassNames";
+import { ChildProps } from "../child-props";
+import { CommandOrchestrator } from "../commandOrchestrator";
+import { Refs } from "../refs";
 
 export interface ReactMdeProps {
   value: string;
@@ -30,24 +27,15 @@ export interface ReactMdeProps {
   maxEditorHeight: number;
   minPreviewHeight: number;
   classes?: Classes;
-  /**
-   * "className" is OBSOLETE. It will soon be removed in favor of the "classes" prop
-   */
-  className?: ClassValue;
+  refs?: Refs;
   commands?: CommandGroup[];
   getIcon?: GetIcon;
-  // deprecated. Use emptyPreview instead
-  emptyPreviewHtml?: string;
   loadingPreview?: React.ReactNode;
   readOnly?: boolean;
   disablePreview?: boolean;
   suggestionTriggerCharacters?: string[];
   loadSuggestions?: (text: string) => Promise<Suggestion[]>;
   childProps?: ChildProps;
-  /**
-   * "textAreaProps" is OBSOLETE. It will soon be removed in favor of the "defaultChildProps" prop
-   */
-  textAreaProps?: TextAreaChildProps;
   l18n?: L18n;
 }
 
@@ -56,10 +44,11 @@ export interface ReactMdeState {
 }
 
 export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
+  /**
+   * "finalRefs" is a clone of "props.refs" except that undefined refs are set to default values
+   */
+  finalRefs: Refs;
   commandOrchestrator: CommandOrchestrator;
-
-  textAreaRef: HTMLTextAreaElement;
-  previewRef: Preview;
 
   // resizeYStart will be null when it is not resizing
   gripDrag: {
@@ -67,12 +56,9 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     originalHeight: number;
   } = null;
 
-  keyCommandMap: { [key: string]: Command };
-
   static defaultProps: Partial<ReactMdeProps> = {
     commands: getDefaultCommands(),
     getIcon: name => <SvgIcon icon={name} />,
-    emptyPreviewHtml: "<p>&nbsp;</p>",
     readOnly: false,
     l18n: enL18n,
     minEditorHeight: 200,
@@ -85,12 +71,20 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
   constructor(props: ReactMdeProps) {
     super(props);
+    this.finalRefs = { ...(props.refs || {}) };
+    if (!this.finalRefs.textarea) {
+      this.finalRefs.textarea = React.createRef<HTMLTextAreaElement>();
+    }
+    if (!this.finalRefs.preview) {
+      this.finalRefs.preview = React.createRef<HTMLDivElement>();
+    }
+    this.commandOrchestrator = new CommandOrchestrator(
+      this.props.commands,
+      this.finalRefs.textarea
+    );
     this.state = {
       editorHeight: props.minEditorHeight
     };
-    this.keyCommandMap = {};
-    const { commands } = this.props;
-    this.keyCommandMap = extractCommandMap(commands);
   }
 
   handleTextChange = (value: string) => {
@@ -142,15 +136,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     document.addEventListener<"mouseup">("mouseup", this.handleGripMouseUp);
   }
 
-  setTextAreaRef = (element: HTMLTextAreaElement) => {
-    this.textAreaRef = element;
-    this.commandOrchestrator = new TextAreaCommandOrchestrator(
-      this.textAreaRef
-    );
-  };
-
-  handleCommand = (command: Command) => {
-    this.commandOrchestrator.executeCommand(command);
+  handleCommand = async (command: Command) => {
+    await this.commandOrchestrator.executeCommand(command);
   };
 
   render() {
@@ -158,16 +145,13 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       getIcon,
       commands,
       classes,
-      className,
       loadingPreview,
-      emptyPreviewHtml,
       readOnly,
       disablePreview,
       value,
       l18n,
       minPreviewHeight,
       childProps,
-      textAreaProps,
       selectedTab,
       generateMarkdownPreview,
       loadSuggestions,
@@ -181,11 +165,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         className={classNames(
           "react-mde",
           "react-mde-tabbed-layout",
-          classes?.reactMde,
-          /**
-           * "className" is OBSOLETE and will soon be removed
-           */
-          className
+          classes?.reactMde
         )}
       >
         <Toolbar
@@ -206,14 +186,17 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           <TextArea
             classes={classes?.textArea}
             suggestionsDropdownClasses={classes?.suggestionsDropdown}
-            editorRef={this.setTextAreaRef}
+            refObject={this.finalRefs.textarea}
             onChange={this.handleTextChange}
             readOnly={readOnly}
-            textAreaProps={(childProps && childProps.textArea) || textAreaProps}
+            textAreaProps={childProps && childProps.textArea}
             height={this.state.editorHeight}
             value={value}
             suggestionTriggerCharacters={suggestionTriggerCharacters}
             loadSuggestions={loadSuggestions}
+            onPossibleKeyCommand={
+              this.commandOrchestrator.handlePossibleKeyCommand
+            }
           />
           <div
             className={classNames("grip", classes?.grip)}
@@ -239,8 +222,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         {selectedTab !== "write" && (
           <Preview
             classes={classes?.preview}
-            previewRef={c => (this.previewRef = c)}
-            loadingPreview={loadingPreview || emptyPreviewHtml}
+            refObject={this.finalRefs.preview}
+            loadingPreview={loadingPreview}
             minHeight={minPreviewHeight}
             generateMarkdownPreview={generateMarkdownPreview}
             markdown={value}

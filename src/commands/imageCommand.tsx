@@ -22,6 +22,5 @@ export const imageCommand: Command = {
       start: 4 + state1.selection.start,
       end: 4 + state1.selection.start + imageTemplate.length
     });
-  },
-  keyCommand: "image"
+  }
 };

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { TextApi, TextState } from "./CommandOptions";
+import { HandleKeyCommand } from "./FunctionTypes";
 
 export type GetIcon = (iconName: string) => React.ReactNode;
 
@@ -9,8 +10,11 @@ export interface Command {
   icon?: (getIconFromProvider: GetIcon) => React.ReactNode;
   buttonProps?: any;
   children?: Command[];
-  execute?: (state: TextState, api: TextApi) => void;
-  // Draft.js triggers Key Commands. the keyCommand property determines
-  // which Draft.js key command should be handled by this react-mde command
-  keyCommand?: string;
+  execute?: (state: TextState, api: TextApi) => void | Promise<void>;
+  /**
+   * On every key-down, "handleKeyCommand", if defined, will be executed for every command.
+   * The first "HandleKeyCommand" that returns true will cause the command to be executed.
+   * "HandleKeyCommand" for subsequent commands will not be executed after the first one returns true.
+   */
+  handleKeyCommand?: HandleKeyCommand;
 }
