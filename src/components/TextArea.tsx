@@ -8,7 +8,6 @@ import { Suggestion } from "../types";
 import { insertText } from "../util/InsertTextAtPosition";
 import { mod } from "../util/Math";
 import { SuggestionsDropdown } from "./SuggestionsDropdown";
-import { DetailedHTMLFactory, TextareaHTMLAttributes } from "react";
 
 export interface MentionState {
   status: "active" | "inactive" | "loading";
@@ -47,20 +46,6 @@ export interface TextAreaProps {
       React.TextareaHTMLAttributes<HTMLTextAreaElement>,
       HTMLTextAreaElement
     >
-  >;
-  /**
-   * Custom textarea component. "textAreaComponent" can be any React component which
-   * props are a subset of the props of an HTMLTextAreaElement
-   */
-  textAreaComponent?: React.ClassType<
-    Partial<
-      DetailedHTMLFactory<
-        TextareaHTMLAttributes<HTMLTextAreaElement>,
-        HTMLTextAreaElement
-      >
-    >,
-    any,
-    any
   >;
 }
 
@@ -328,8 +313,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       value,
       suggestionTriggerCharacters,
       loadSuggestions,
-      suggestionsDropdownClasses,
-      textAreaComponent
+      suggestionsDropdownClasses
     } = this.props;
 
     const suggestionsEnabled =
@@ -338,16 +322,9 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       loadSuggestions;
 
     const { mention } = this.state;
-
-    const TextAreaComponent = (textAreaComponent ||
-      "textarea") as DetailedHTMLFactory<
-      TextareaHTMLAttributes<HTMLTextAreaElement>,
-      HTMLTextAreaElement
-    >;
-
     return (
       <div className="mde-textarea-wrapper">
-        <TextAreaComponent
+        <textarea
           className={classNames("mde-text", classes)}
           style={{ height }}
           ref={this.handleTextAreaRef}
