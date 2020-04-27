@@ -75,14 +75,8 @@ export class App extends React.Component<{}, AppState> {
           classes={{
             suggestionsDropdown: "bbbb"
           }}
-          textAreaComponent={CustomTextArea}
         />
       </div>
     );
   }
 }
-
-const CustomTextArea = React.forwardRef((props: any, ref: any) => {
-  const style = { ...props.style, backgroundColor: "blue" };
-  return <textarea {...props} style={style} ref={ref} />;
-});
