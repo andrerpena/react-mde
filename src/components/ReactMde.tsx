@@ -16,6 +16,7 @@ import { classNames } from "../util/ClassNames";
 import { ChildProps } from "../child-props";
 import { CommandOrchestrator } from "../commandOrchestrator";
 import { Refs } from "../refs";
+import { DetailedHTMLFactory, TextareaHTMLAttributes } from "react";
 
 export interface ReactMdeProps {
   value: string;
@@ -37,6 +38,20 @@ export interface ReactMdeProps {
   loadSuggestions?: (text: string) => Promise<Suggestion[]>;
   childProps?: ChildProps;
   l18n?: L18n;
+  /**
+   * Custom textarea component. "textAreaComponent" can be any React component which
+   * props are a subset of the props of an HTMLTextAreaElement
+   */
+  textAreaComponent?: React.ClassType<
+    Partial<
+      DetailedHTMLFactory<
+        TextareaHTMLAttributes<HTMLTextAreaElement>,
+        HTMLTextAreaElement
+      >
+    >,
+    any,
+    any
+  >;
 }
 
 export interface ReactMdeState {
@@ -155,7 +170,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       selectedTab,
       generateMarkdownPreview,
       loadSuggestions,
-      suggestionTriggerCharacters
+      suggestionTriggerCharacters,
+      textAreaComponent
     } = this.props;
 
     const finalChildProps = childProps || {};
@@ -189,6 +205,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             refObject={this.finalRefs.textarea}
             onChange={this.handleTextChange}
             readOnly={readOnly}
+            textAreaComponent={textAreaComponent}
             textAreaProps={childProps && childProps.textArea}
             height={this.state.editorHeight}
             value={value}

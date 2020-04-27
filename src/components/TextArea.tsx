@@ -8,6 +8,7 @@ import { Suggestion } from "../types";
 import { insertText } from "../util/InsertTextAtPosition";
 import { mod } from "../util/Math";
 import { SuggestionsDropdown } from "./SuggestionsDropdown";
+import { DetailedHTMLFactory, TextareaHTMLAttributes } from "react";
 
 export interface MentionState {
   status: "active" | "inactive" | "loading";
@@ -41,13 +42,26 @@ export interface TextAreaProps {
     text: string,
     triggeredBy: string
   ) => Promise<Suggestion[]>;
+  /**
+   * Custom textarea component. "textAreaComponent" can be any React component which
+   * props are a subset of the props of an HTMLTextAreaElement
+   */
+  textAreaComponent?: React.ClassType<
+    Partial<
+      DetailedHTMLFactory<
+        TextareaHTMLAttributes<HTMLTextAreaElement>,
+        HTMLTextAreaElement
+      >
+    >,
+    any,
+    any
+  >;
   textAreaProps?: Partial<
     React.DetailedHTMLProps<
       React.TextareaHTMLAttributes<HTMLTextAreaElement>,
       HTMLTextAreaElement
     >
   >;
-
   /**
    * On keydown, the TextArea will trigger "onPossibleKeyCommand" as an opportunity for React-Mde to
    * execute a command. If a command is executed, React-Mde should return true, otherwise, false.
@@ -344,7 +358,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       value,
       suggestionTriggerCharacters,
       loadSuggestions,
-      suggestionsDropdownClasses
+      suggestionsDropdownClasses,
+      textAreaComponent
     } = this.props;
 
     const suggestionsEnabled =
@@ -353,9 +368,16 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       loadSuggestions;
 
     const { mention } = this.state;
+
+    const TextAreaComponent = (textAreaComponent ||
+      "textarea") as DetailedHTMLFactory<
+      TextareaHTMLAttributes<HTMLTextAreaElement>,
+      HTMLTextAreaElement
+    >;
+
     return (
       <div className="mde-textarea-wrapper">
-        <textarea
+        <TextAreaComponent
           className={classNames("mde-text", classes)}
           style={{ height }}
           ref={this.props.refObject}
