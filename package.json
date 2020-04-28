@@ -1,6 +1,6 @@
 {
   "name": "react-mde",
-  "version": "9.1.0",
+  "version": "9.1.1",
   "description": "React Markdown Editor",
   "main": "./lib/js/index.js",
   "types": "./lib/definitions/index.d.ts",
