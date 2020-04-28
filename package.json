@@ -14,7 +14,8 @@
     "lint": "pretty-quick",
     "tsc": "tsc",
     "webpack": "webpack --config webpack.config.demo.dev.js",
-    "webpack:prod": "webpack --config webpack.config.demo.prod.js"
+    "webpack:prod": "webpack --config webpack.config.demo.prod.js",
+    "cypress:open": "cypress open"
   },
   "repository": {
     "type": "git",
