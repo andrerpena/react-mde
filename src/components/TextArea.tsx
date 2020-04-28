@@ -172,6 +172,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     if (this.props.onPossibleKeyCommand) {
       const handled = this.props.onPossibleKeyCommand(event);
       if (handled) {
+        event.preventDefault();
         // If the keydown resulted in a command being executed, we will just close the suggestions if they are open.
         // Resetting suggestionsPromiseIndex will cause any promise that is yet to be resolved to have no effect
         // when they finish loading.
