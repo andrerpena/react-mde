@@ -1,8 +1,15 @@
 const DELAY = 500;
 
-context("Mentions", () => {
+context("Suggestions", () => {
   beforeEach(() => {
     cy.visit("http://localhost:4000");
+  });
+  it("'@' should display the suggestions box", () => {
+    cy.get(".mde-suggestions").should("not.exist");
+    cy.get(".mde-text")
+      .type("{selectall}{backspace}")
+      .type("@");
+    cy.get(".mde-suggestions").should("exist");
   });
   it("'@ + Enter' should select the first suggestion", () => {
     cy.get(".mde-text")
