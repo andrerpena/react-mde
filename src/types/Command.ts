@@ -4,13 +4,18 @@ import { HandleKeyCommand } from "./FunctionTypes";
 
 export type GetIcon = (iconName: string) => React.ReactNode;
 
+export interface ExecuteOptions {
+  initialState: TextState;
+  textApi: TextApi;
+}
+
 export interface Command {
   name: string;
   buttonComponentClass?: React.ComponentClass | string;
   icon?: (getIconFromProvider: GetIcon) => React.ReactNode;
   buttonProps?: any;
   children?: Command[];
-  execute?: (state: TextState, api: TextApi) => void | Promise<void>;
+  execute?: (options: ExecuteOptions) => void | Promise<void>;
   /**
    * On every key-down, "handleKeyCommand", if defined, will be executed for every command.
    * The first "HandleKeyCommand" that returns true will cause the command to be executed.

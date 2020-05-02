@@ -1,24 +1,23 @@
 import * as React from "react";
 import { Command } from "../types";
-import { TextApi, TextState } from "..";
 import { selectWord } from "../util/MarkdownUtil";
 
 export const imageCommand: Command = {
   name: "image",
   buttonProps: { "aria-label": "Add image" },
-  execute: (state0: TextState, api: TextApi) => {
+  execute: ({ initialState, textApi }) => {
     // Select everything
     const newSelectionRange = selectWord({
-      text: state0.text,
-      selection: state0.selection
+      text: initialState.text,
+      selection: initialState.selection
     });
-    const state1 = api.setSelectionRange(newSelectionRange);
+    const state1 = textApi.setSelectionRange(newSelectionRange);
     // Replaces the current selection with the image
     const imageTemplate =
       state1.selectedText || "https://example.com/your-image.png";
-    api.replaceSelection(`![](${imageTemplate})`);
+    textApi.replaceSelection(`![](${imageTemplate})`);
     // Adjust the selection to not contain the **
-    api.setSelectionRange({
+    textApi.setSelectionRange({
       start: 4 + state1.selection.start,
       end: 4 + state1.selection.start + imageTemplate.length
     });

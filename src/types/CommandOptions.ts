@@ -1,9 +1,9 @@
-import { TextRange } from "./TextRange";
+import { Selection } from "./Selection";
 
 export interface TextState {
   text: string;
   selectedText: string;
-  selection: TextRange;
+  selection: Selection;
 }
 
 export interface TextApi {
@@ -18,7 +18,7 @@ export interface TextApi {
    * Selects the specified text range
    * @param selection
    */
-  setSelectionRange(selection: TextRange): TextState;
+  setSelectionRange(selection: Selection): TextState;
   /**
    * Get the current text state
    */

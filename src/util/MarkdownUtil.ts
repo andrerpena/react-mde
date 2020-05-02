@@ -1,6 +1,6 @@
-import { TextRange, TextSection } from "../types";
+import { Selection, TextSection } from "../types";
 
-export function getSurroundingWord (text: string, position: number): TextRange {
+export function getSurroundingWord(text: string, position: number): Selection {
   if (!text) throw Error("Argument 'text' should be truthy");
 
   const isWordDelimiter = (c: string) => c === " " || c.charCodeAt(0) === 10;
@@ -29,7 +29,13 @@ export function getSurroundingWord (text: string, position: number): TextRange {
   return { start, end };
 }
 
-export function selectWord ({ text, selection }: TextSection): TextRange {
+/**
+ * If the cursor is inside a word and (selection.start === selection.end)
+ * returns a new Selection where the whole word is selected
+ * @param text
+ * @param selection
+ */
+export function selectWord({ text, selection }: TextSection): Selection {
   if (text && text.length && selection.start === selection.end) {
     // the user is pointing to a word
     return getSurroundingWord(text, selection.start);
@@ -41,7 +47,10 @@ export function selectWord ({ text, selection }: TextSection): TextRange {
  *  Gets the number of line-breaks that would have to be inserted before the given 'startPosition'
  *  to make sure there's an empty line between 'startPosition' and the previous text
  */
-export function getBreaksNeededForEmptyLineBefore(text = "", startPosition: number): number {
+export function getBreaksNeededForEmptyLineBefore(
+  text = "",
+  startPosition: number
+): number {
   if (startPosition === 0) return 0;
 
   // rules:
@@ -51,7 +60,7 @@ export function getBreaksNeededForEmptyLineBefore(text = "", startPosition: numb
 
   let neededBreaks = 2;
   let isInFirstLine = true;
-  for (let i = startPosition - 1; i >= 0 && (neededBreaks >= 0); i--) {
+  for (let i = startPosition - 1; i >= 0 && neededBreaks >= 0; i--) {
     switch (text.charCodeAt(i)) {
       case 32: // blank space
         continue;
@@ -70,7 +79,10 @@ export function getBreaksNeededForEmptyLineBefore(text = "", startPosition: numb
  *  Gets the number of line-breaks that would have to be inserted after the given 'startPosition'
  *  to make sure there's an empty line between 'startPosition' and the next text
  */
-export function getBreaksNeededForEmptyLineAfter(text = "", startPosition: number): number {
+export function getBreaksNeededForEmptyLineAfter(
+  text = "",
+  startPosition: number
+): number {
   if (startPosition === text.length - 1) return 0;
 
   // rules:
@@ -80,7 +92,7 @@ export function getBreaksNeededForEmptyLineAfter(text = "", startPosition: numbe
 
   let neededBreaks = 2;
   let isInLastLine = true;
-  for (let i = startPosition; i < text.length && (neededBreaks >= 0); i++) {
+  for (let i = startPosition; i < text.length && neededBreaks >= 0; i++) {
     switch (text.charCodeAt(i)) {
       case 32:
         continue;

@@ -1,4 +1,4 @@
-import { Command, CommandGroup, TextRange } from "./types";
+import { Command, CommandGroup, Selection } from "./types";
 import { TextApi, TextState } from "./types/CommandOptions";
 import { insertText } from "./util/InsertTextAtPosition";
 import { extractKeyActivatedCommands } from "./util/CommandUtils";
@@ -17,7 +17,7 @@ export class TextAreaTextApi implements TextApi {
     return getStateFromTextArea(textArea);
   }
 
-  setSelectionRange(selection: TextRange): TextState {
+  setSelectionRange(selection: Selection): TextState {
     const textArea = this.textAreaRef.current;
     textArea.focus();
     textArea.selectionStart = selection.start;
@@ -90,10 +90,10 @@ export class CommandOrchestrator {
     }
 
     this.isExecuting = true;
-    const result = command.execute(
-      getStateFromTextArea(this.textAreaRef.current),
-      this.textApi
-    );
+    const result = command.execute({
+      initialState: getStateFromTextArea(this.textAreaRef.current),
+      textApi: this.textApi
+    });
     await result;
     this.isExecuting = false;
   }

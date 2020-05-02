@@ -85,23 +85,23 @@ export const makeList = (
 export const unorderedListCommand: Command = {
   name: "unordered-list",
   buttonProps: { "aria-label": "Add unordered list" },
-  execute: (state0: TextState, api: TextApi) => {
-    makeList(state0, api, "- ");
+  execute: ({ initialState, textApi }) => {
+    makeList(initialState, textApi, "- ");
   }
 };
 
 export const orderedListCommand: Command = {
   name: "ordered-list",
   buttonProps: { "aria-label": "Add ordered list" },
-  execute: (state0: TextState, api: TextApi) => {
-    makeList(state0, api, (item, index) => `${index + 1}. `);
+  execute: ({ initialState, textApi }) => {
+    makeList(initialState, textApi, (item, index) => `${index + 1}. `);
   }
 };
 
 export const checkedListCommand: Command = {
   name: "checked-list",
   buttonProps: { "aria-label": "Add checked list" },
-  execute: (state0: TextState, api: TextApi) => {
-    makeList(state0, api, (item, index) => `- [ ] `);
+  execute: ({ initialState, textApi }) => {
+    makeList(initialState, textApi, (item, index) => `- [ ] `);
   }
 };
