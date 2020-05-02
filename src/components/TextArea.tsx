@@ -387,7 +387,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
           value={value}
           data-testid="text-area"
           onBlur={suggestionsEnabled ? this.handleBlur : undefined}
-          onKeyDown={suggestionsEnabled ? this.handleKeyDown : undefined}
+          onKeyDown={this.handleKeyDown}
           onKeyUp={suggestionsEnabled ? this.handleKeyUp : undefined}
           onKeyPress={suggestionsEnabled ? this.handleKeyPress : undefined}
           {...textAreaProps}
