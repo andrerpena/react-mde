@@ -1,7 +1,7 @@
-import { Command, CommandGroup, Selection } from "./types";
-import { TextApi, TextState } from "./types/CommandOptions";
-import { insertText } from "./util/InsertTextAtPosition";
-import { extractKeyActivatedCommands } from "./util/CommandUtils";
+import { Command, CommandMap, Selection } from "../types";
+import { TextApi, TextState } from "..";
+import { insertText } from "../util/InsertTextAtPosition";
+import { extractKeyActivatedCommands } from "./command-utils";
 import * as React from "react";
 
 export class TextAreaTextApi implements TextApi {
@@ -48,39 +48,51 @@ export function getStateFromTextArea(textArea: HTMLTextAreaElement): TextState {
 export class CommandOrchestrator {
   textAreaRef: React.RefObject<HTMLTextAreaElement>;
   textApi: TextApi;
-  commands: CommandGroup[];
-  keyActivatedCommands: Command[];
+  commandMap: CommandMap;
+  /**
+   * Names of commands that can be activated by the keyboard
+   */
+  keyActivatedCommands: string[];
   /**
    * Indicates whether there is a command currently executing
    */
   isExecuting: boolean;
 
   constructor(
-    commands: CommandGroup[],
+    commandMap: CommandMap,
     textArea: React.RefObject<HTMLTextAreaElement>
   ) {
-    this.commands = commands;
-    this.keyActivatedCommands = extractKeyActivatedCommands(commands);
+    this.commandMap = commandMap;
+    this.keyActivatedCommands = extractKeyActivatedCommands(commandMap);
     this.textAreaRef = textArea;
     this.textApi = new TextAreaTextApi(textArea);
   }
 
+  getCommand = (name: string): Command => {
+    const command = this.commandMap[name];
+    if (!command) {
+      throw new Error(`Cannot execute command. Command not found: ${name}`);
+    }
+    return command;
+  };
+
   /**
-   * Tries to find a command the wants to handle the keyboard event
+   * Tries to find a command the wants to handle the keyboard event.
+   * If a command is found, it is executed and the function returns
    */
   handlePossibleKeyCommand = (
     e: React.KeyboardEvent<HTMLTextAreaElement>
   ): boolean => {
-    for (const command of this.keyActivatedCommands) {
-      if (command.handleKeyCommand(e)) {
-        this.executeCommand(command).then(r => {});
+    for (const commandName of this.keyActivatedCommands) {
+      if (this.getCommand(commandName).handleKeyCommand(e)) {
+        this.executeCommand(commandName).then(r => {});
         return true;
       }
     }
     return false;
   };
 
-  async executeCommand(command: Command): Promise<void> {
+  async executeCommand(commandName: string): Promise<void> {
     if (this.isExecuting) {
       // The simplest thing to do is to ignore commands while
       // there is already a command executing. The alternative would be to queue commands
@@ -90,6 +102,7 @@ export class CommandOrchestrator {
     }
 
     this.isExecuting = true;
+    const command = this.commandMap[commandName];
     const result = command.execute({
       initialState: getStateFromTextArea(this.textAreaRef.current),
       textApi: this.textApi

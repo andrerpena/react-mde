@@ -1,5 +1,4 @@
-export * from "./Command";
-export * from "./CommandGroup";
+export * from "../commands/command";
 export * from "./FunctionTypes";
 export * from "./MarkdownState";
 export * from "./Selection";

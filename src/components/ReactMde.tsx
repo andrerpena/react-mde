@@ -1,22 +1,31 @@
 import * as React from "react";
 import {
   Command,
-  CommandGroup,
+  CommandMap,
   GenerateMarkdownPreview,
   GetIcon,
-  Suggestion
+  Suggestion,
+  ToolbarCommands
 } from "../types";
-import { getDefaultCommands } from "../commands";
-import { Preview, Toolbar, TextArea } from ".";
+import { Preview, Toolbar, TextArea, ToolbarButtonData } from ".";
 import { Tab } from "../types/Tab";
 import { Classes, L18n } from "..";
 import { enL18n } from "../l18n/react-mde.en";
 import { SvgIcon } from "../icons";
 import { classNames } from "../util/ClassNames";
 import { ChildProps } from "../child-props";
-import { CommandOrchestrator } from "../commandOrchestrator";
+import { CommandOrchestrator } from "../commands/command-orchestrator";
 import { Refs } from "../refs";
-import { DetailedHTMLFactory, TextareaHTMLAttributes } from "react";
+import {
+  ButtonHTMLAttributes,
+  DetailedHTMLFactory,
+  TextareaHTMLAttributes
+} from "react";
+import {
+  getDefaultCommandMap,
+  getDefaultToolbarCommands
+} from "../commands/default-commands/defaults";
+import { ComponentSubsetOf } from "../util/type-utils";
 
 export interface ReactMdeProps {
   value: string;
@@ -29,7 +38,8 @@ export interface ReactMdeProps {
   minPreviewHeight: number;
   classes?: Classes;
   refs?: Refs;
-  commands?: CommandGroup[];
+  toolbarCommands?: ToolbarCommands;
+  commands?: CommandMap;
   getIcon?: GetIcon;
   loadingPreview?: React.ReactNode;
   readOnly?: boolean;
@@ -42,15 +52,17 @@ export interface ReactMdeProps {
    * Custom textarea component. "textAreaComponent" can be any React component which
    * props are a subset of the props of an HTMLTextAreaElement
    */
-  textAreaComponent?: React.ClassType<
-    Partial<
-      DetailedHTMLFactory<
-        TextareaHTMLAttributes<HTMLTextAreaElement>,
-        HTMLTextAreaElement
-      >
-    >,
-    any,
-    any
+  textAreaComponent?: ComponentSubsetOf<
+    HTMLTextAreaElement,
+    TextareaHTMLAttributes<HTMLTextAreaElement>
+  >;
+  /**
+   * Custom toolbar button component. "toolbarButtonComponent" can be any React component which
+   * props are a subset of the props of an HTMLButtonElement
+   */
+  toolbarButtonComponent?: ComponentSubsetOf<
+    HTMLButtonElement,
+    ButtonHTMLAttributes<HTMLButtonElement>
   >;
 }
 
@@ -72,7 +84,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   } = null;
 
   static defaultProps: Partial<ReactMdeProps> = {
-    commands: getDefaultCommands(),
+    commands: getDefaultCommandMap(),
+    toolbarCommands: getDefaultToolbarCommands(),
     getIcon: name => <SvgIcon icon={name} />,
     readOnly: false,
     l18n: enL18n,
@@ -151,14 +164,15 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     document.addEventListener<"mouseup">("mouseup", this.handleGripMouseUp);
   }
 
-  handleCommand = async (command: Command) => {
-    await this.commandOrchestrator.executeCommand(command);
+  handleCommand = async (commandName: string) => {
+    await this.commandOrchestrator.executeCommand(commandName);
   };
 
   render() {
     const {
       getIcon,
       commands,
+      toolbarCommands,
       classes,
       loadingPreview,
       readOnly,
@@ -176,6 +190,19 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
     const finalChildProps = childProps || {};
 
+    const toolbarButtons = toolbarCommands.map(group => {
+      return group.map(c => {
+        const command = commands[c];
+        return {
+          commandName: c,
+          buttonContent: command.icon
+            ? command.icon(getIcon)
+            : getIcon(command.name),
+          buttonProps: command.buttonProps
+        } as ToolbarButtonData;
+      });
+    });
+
     return (
       <div
         className={classNames(
@@ -186,8 +213,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       >
         <Toolbar
           classes={classes?.toolbar}
-          getIcon={getIcon}
-          commands={commands}
+          buttons={toolbarButtons}
           onCommand={this.handleCommand}
           onTabChange={this.handleTabChange}
           tab={selectedTab}

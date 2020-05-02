@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Command } from "../types";
-import { TextApi, TextState } from "..";
-import { selectWord } from "../util/MarkdownUtil";
+import { Command } from "../../types";
+import { TextApi, TextState } from "../../index";
+import { selectWord } from "../../util/MarkdownUtil";
 
 export const italicCommand: Command = {
   name: "italic",

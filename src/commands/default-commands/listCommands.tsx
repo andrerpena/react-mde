@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Command } from "../types";
-import { TextApi, TextState } from "..";
+import { Command } from "../../types";
+import { TextApi, TextState } from "../../index";
 import {
   getBreaksNeededForEmptyLineAfter,
   getBreaksNeededForEmptyLineBefore,
   selectWord
-} from "../util/MarkdownUtil";
+} from "../../util/MarkdownUtil";
 
 export type AlterLineFunction = (line: string, index: number) => string;
 

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { TextApi, TextState } from "./CommandOptions";
-import { HandleKeyCommand } from "./FunctionTypes";
+import { TextApi, TextState } from "..";
+import { HandleKeyCommand } from "../types";
 
 export type GetIcon = (iconName: string) => React.ReactNode;
 
@@ -14,7 +14,6 @@ export interface Command {
   buttonComponentClass?: React.ComponentClass | string;
   icon?: (getIconFromProvider: GetIcon) => React.ReactNode;
   buttonProps?: any;
-  children?: Command[];
   execute?: (options: ExecuteOptions) => void | Promise<void>;
   /**
    * On every key-down, "handleKeyCommand", if defined, will be executed for every command.
@@ -23,3 +22,6 @@ export interface Command {
    */
   handleKeyCommand?: HandleKeyCommand;
 }
+
+export type ToolbarCommands = string[][];
+export type CommandMap = Record<string, Command>;

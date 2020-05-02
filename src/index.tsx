@@ -1,5 +1,4 @@
 import * as MarkdownUtil from "./util/MarkdownUtil";
-import * as commands from "./commands";
 import {
   ReactMde,
   ReactMdeProps,
@@ -12,9 +11,7 @@ import {
   Toolbar,
   ToolbarProps,
   ToolbarButtonGroup,
-  ToolbarButtonGroupProps,
-  ToolbarDropdown,
-  ToolbarDropdownProps
+  ToolbarButtonGroupProps
 } from "./components";
 import { IconProviderProps, SvgIcon, MdeFontAwesomeIcon } from "./icons";
 import { L18n } from "./types/L18n";
@@ -40,14 +37,11 @@ export {
   ToolbarProps,
   ToolbarButtonGroup,
   ToolbarButtonGroupProps,
-  ToolbarDropdown,
-  ToolbarDropdownProps,
   MarkdownUtil,
   L18n,
   SvgIcon,
   MdeFontAwesomeIcon,
   IconProviderProps,
-  commands,
   TextState,
   TextApi,
   Command,

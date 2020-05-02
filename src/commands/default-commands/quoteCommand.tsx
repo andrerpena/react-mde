@@ -1,14 +1,14 @@
 import * as React from "react";
-import { Command } from "../types";
+import { Command } from "../../types";
 import {
   getBreaksNeededForEmptyLineAfter,
   getBreaksNeededForEmptyLineBefore,
   selectWord
-} from "../util/MarkdownUtil";
+} from "../../util/MarkdownUtil";
 
-export const codeCommand: Command = {
-  name: "code",
-  buttonProps: { "aria-label": "Insert code" },
+export const quoteCommand: Command = {
+  name: "quote",
+  buttonProps: { "aria-label": "Insert a quote" },
   execute: ({ initialState, textApi }) => {
     // Adjust the selection to encompass the whole word if the caret is inside one
     const newSelectionRange = selectWord({
@@ -16,21 +16,6 @@ export const codeCommand: Command = {
       selection: initialState.selection
     });
     const state1 = textApi.setSelectionRange(newSelectionRange);
-
-    // when there's no breaking line
-    if (state1.selectedText.indexOf("\n") === -1) {
-      textApi.replaceSelection(`\`${state1.selectedText}\``);
-      // Adjust the selection to not contain the **
-
-      const selectionStart = state1.selection.start + 1;
-      const selectionEnd = selectionStart + state1.selectedText.length;
-
-      textApi.setSelectionRange({
-        start: selectionStart,
-        end: selectionEnd
-      });
-      return;
-    }
 
     const breaksBeforeCount = getBreaksNeededForEmptyLineBefore(
       state1.text,
@@ -44,11 +29,12 @@ export const codeCommand: Command = {
     );
     const breaksAfter = Array(breaksAfterCount + 1).join("\n");
 
+    // Replaces the current selection with the quote mark up
     textApi.replaceSelection(
-      `${breaksBefore}\`\`\`\n${state1.selectedText}\n\`\`\`${breaksAfter}`
+      `${breaksBefore}> ${state1.selectedText}${breaksAfter}`
     );
 
-    const selectionStart = state1.selection.start + breaksBeforeCount + 4;
+    const selectionStart = state1.selection.start + breaksBeforeCount + 2;
     const selectionEnd = selectionStart + state1.selectedText.length;
 
     textApi.setSelectionRange({

@@ -1,18 +1,21 @@
 import * as React from "react";
-import { Command, CommandGroup, GetIcon } from "../types";
 import { Tab } from "../types/Tab";
 import { L18n } from "..";
 import { classNames, ClassValue } from "../util/ClassNames";
 import { ToolbarButtonGroup } from "./ToolbarButtonGroup";
-import { ToolbarDropdown } from "./ToolbarDropdown";
 import { ToolbarButton } from "./ToolbarButton";
 import { ButtonChildProps } from "../child-props";
 
+export interface ToolbarButtonData {
+  commandName: string;
+  buttonContent: React.ReactNode;
+  buttonProps: any;
+}
+
 export interface ToolbarProps {
   classes?: ClassValue;
-  getIcon: GetIcon;
-  commands: CommandGroup[];
-  onCommand: (command: Command) => void;
+  buttons: ToolbarButtonData[][];
+  onCommand: (commandName: string) => void;
   onTabChange: (tab: Tab) => void;
   readOnly: boolean;
   disablePreview: boolean;
@@ -29,13 +32,14 @@ export class Toolbar extends React.Component<ToolbarProps> {
     onTabChange(tab);
   };
 
+  handle;
+
   render() {
     const { l18n } = this.props;
     const {
       classes,
-      getIcon,
       children,
-      commands,
+      buttons,
       onCommand,
       readOnly,
       disablePreview,
@@ -43,54 +47,44 @@ export class Toolbar extends React.Component<ToolbarProps> {
       previewButtonProps,
       buttonProps
     } = this.props;
-    if ((!commands || commands.length === 0) && !children) {
+    if ((!buttons || buttons.length === 0) && !children) {
       return null;
     }
+
+    const writePreviewTabs = (
+      <div className="mde-tabs">
+        <button
+          type="button"
+          className={classNames({ selected: this.props.tab === "write" })}
+          onClick={() => this.handleTabChange("write")}
+          {...writeButtonProps}
+        >
+          {l18n.write}
+        </button>
+        <button
+          type="button"
+          className={classNames({ selected: this.props.tab === "preview" })}
+          onClick={() => this.handleTabChange("preview")}
+          {...previewButtonProps}
+        >
+          {l18n.preview}
+        </button>
+      </div>
+    );
+
     return (
       <div className={classNames("mde-header", classes)}>
-        {!disablePreview && (
-          <div className="mde-tabs">
-            <button
-              type="button"
-              className={classNames({ selected: this.props.tab === "write" })}
-              onClick={() => this.handleTabChange("write")}
-              {...writeButtonProps}
-            >
-              {l18n.write}
-            </button>
-            <button
-              type="button"
-              className={classNames({ selected: this.props.tab === "preview" })}
-              onClick={() => this.handleTabChange("preview")}
-              {...previewButtonProps}
-            >
-              {l18n.preview}
-            </button>
-          </div>
-        )}
-        {commands.map((commandGroup: CommandGroup, i: number) => (
+        {!disablePreview && writePreviewTabs}
+        {buttons.map((commandGroup: ToolbarButtonData[], i: number) => (
           <ToolbarButtonGroup key={i} hidden={this.props.tab === "preview"}>
-            {commandGroup.commands.map((c: Command, j) => {
-              if (c.children) {
-                return (
-                  <ToolbarDropdown
-                    key={j}
-                    buttonProps={{ ...(buttonProps || {}), ...c.buttonProps }}
-                    getIcon={getIcon}
-                    buttonContent={c.icon ? c.icon(getIcon) : getIcon(c.name)}
-                    commands={c.children}
-                    onCommand={cmd => onCommand(cmd)}
-                    readOnly={readOnly}
-                  />
-                );
-              }
+            {commandGroup.map((c: ToolbarButtonData, j) => {
               return (
                 <ToolbarButton
                   key={j}
-                  name={c.name}
-                  buttonContent={c.icon ? c.icon(getIcon) : getIcon(c.name)}
+                  name={c.commandName}
+                  buttonContent={c.buttonContent}
                   buttonProps={{ ...(buttonProps || {}), ...c.buttonProps }}
-                  onClick={() => onCommand(c as Command)}
+                  onClick={() => onCommand(c.commandName)}
                   readOnly={readOnly}
                 />
               );

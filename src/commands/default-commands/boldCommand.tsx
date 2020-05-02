@@ -1,11 +1,10 @@
 import * as React from "react";
-import { Command } from "../types";
-import { TextApi, TextState } from "..";
-import { selectWord } from "../util/MarkdownUtil";
+import { Command } from "../command";
+import { selectWord } from "../../util/MarkdownUtil";
 
-export const linkCommand: Command = {
-  name: "link",
-  buttonProps: { "aria-label": "Add a link" },
+export const boldCommand: Command = {
+  name: "bold",
+  buttonProps: { "aria-label": "Add bold text" },
   execute: ({ initialState, textApi }) => {
     // Adjust the selection to encompass the whole word if the caret is inside one
     const newSelectionRange = selectWord({
@@ -14,12 +13,12 @@ export const linkCommand: Command = {
     });
     const state1 = textApi.setSelectionRange(newSelectionRange);
     // Replaces the current selection with the bold mark up
-    const state2 = textApi.replaceSelection(`[${state1.selectedText}](url)`);
+    const state2 = textApi.replaceSelection(`**${state1.selectedText}**`);
     // Adjust the selection to not contain the **
     textApi.setSelectionRange({
-      start: state2.selection.end - 6 - state1.selectedText.length,
-      end: state2.selection.end - 6
+      start: state2.selection.end - 2 - state1.selectedText.length,
+      end: state2.selection.end - 2
     });
   },
-  handleKeyCommand: e => (e.ctrlKey || e.metaKey) && e.key == "k"
+  handleKeyCommand: e => (e.ctrlKey || e.metaKey) && e.key == "b"
 };
