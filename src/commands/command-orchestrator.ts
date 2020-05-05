@@ -1,5 +1,12 @@
-import { Command, CommandMap, Selection } from "../types";
-import { TextApi, TextState } from "..";
+import {
+  Command,
+  CommandContext,
+  CommandMap,
+  PasteCommandContext,
+  PasteOptions,
+  Selection
+} from "../types";
+import { L18n, TextApi, TextState } from "..";
 import { insertText } from "../util/InsertTextAtPosition";
 import { extractKeyActivatedCommands } from "./command-utils";
 import * as React from "react";
@@ -46,9 +53,10 @@ export function getStateFromTextArea(textArea: HTMLTextAreaElement): TextState {
 }
 
 export class CommandOrchestrator {
-  textAreaRef: React.RefObject<HTMLTextAreaElement>;
-  textApi: TextApi;
-  commandMap: CommandMap;
+  private readonly textAreaRef: React.RefObject<HTMLTextAreaElement>;
+  private readonly textApi: TextApi;
+  private readonly commandMap: CommandMap;
+  private readonly l18n: L18n;
   /**
    * Names of commands that can be activated by the keyboard
    */
@@ -58,14 +66,26 @@ export class CommandOrchestrator {
    */
   isExecuting: boolean;
 
+  private readonly pasteOptions?: PasteOptions;
+
   constructor(
     commandMap: CommandMap,
-    textArea: React.RefObject<HTMLTextAreaElement>
+    textArea: React.RefObject<HTMLTextAreaElement>,
+    l18n?: L18n,
+    pasteOptions?: PasteOptions
   ) {
+    if (pasteOptions && (!pasteOptions.command || !pasteOptions.saveImage)) {
+      throw new Error(
+        "paste options are incomplete. command and saveImage are required "
+      );
+    }
+
     this.commandMap = commandMap;
+    this.pasteOptions = pasteOptions;
     this.keyActivatedCommands = extractKeyActivatedCommands(commandMap);
     this.textAreaRef = textArea;
     this.textApi = new TextAreaTextApi(textArea);
+    this.l18n = l18n;
   }
 
   getCommand = (name: string): Command => {
@@ -92,7 +112,10 @@ export class CommandOrchestrator {
     return false;
   };
 
-  async executeCommand(commandName: string): Promise<void> {
+  async executeCommand(
+    commandName: string,
+    context?: CommandContext
+  ): Promise<void> {
     if (this.isExecuting) {
       // The simplest thing to do is to ignore commands while
       // there is already a command executing. The alternative would be to queue commands
@@ -105,9 +128,24 @@ export class CommandOrchestrator {
     const command = this.commandMap[commandName];
     const result = command.execute({
       initialState: getStateFromTextArea(this.textAreaRef.current),
-      textApi: this.textApi
+      textApi: this.textApi,
+      l18n: this.l18n,
+      context
     });
     await result;
     this.isExecuting = false;
+  }
+
+  /**
+   * Executes the paste command
+   * @param event
+   */
+  async executePasteCommand(event: React.ClipboardEvent): Promise<void> {
+    if (this.pasteOptions) {
+      return this.executeCommand(this.pasteOptions.command, {
+        saveImage: this.pasteOptions.saveImage,
+        event: event
+      } as PasteCommandContext);
+    }
   }
 }

@@ -11,6 +11,7 @@ import {
   unorderedListCommand
 } from "./listCommands";
 import { imageCommand } from "./imageCommand";
+import { saveImageCommand } from "./save-image-command";
 
 export function getDefaultToolbarCommands(): ToolbarCommands {
   return [
@@ -32,6 +33,7 @@ export function getDefaultCommandMap(): CommandMap {
     image: imageCommand,
     "unordered-list": unorderedListCommand,
     "ordered-list": orderedListCommand,
-    "checked-list": checkedListCommand
+    "checked-list": checkedListCommand,
+    "save-image": saveImageCommand
   };
 }

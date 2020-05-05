@@ -1,9 +1,9 @@
 import * as React from "react";
 import {
-  Command,
   CommandMap,
   GenerateMarkdownPreview,
   GetIcon,
+  PasteOptions,
   Suggestion,
   ToolbarCommands
 } from "../types";
@@ -16,16 +16,13 @@ import { classNames } from "../util/ClassNames";
 import { ChildProps } from "../child-props";
 import { CommandOrchestrator } from "../commands/command-orchestrator";
 import { Refs } from "../refs";
-import {
-  ButtonHTMLAttributes,
-  DetailedHTMLFactory,
-  TextareaHTMLAttributes
-} from "react";
+import { ButtonHTMLAttributes, TextareaHTMLAttributes } from "react";
 import {
   getDefaultCommandMap,
   getDefaultToolbarCommands
 } from "../commands/default-commands/defaults";
-import { ComponentSubsetOf } from "../util/type-utils";
+import { ComponentSimilarTo } from "../util/type-utils";
+import { GripSvg } from "./grip-svg";
 
 export interface ReactMdeProps {
   value: string;
@@ -47,12 +44,13 @@ export interface ReactMdeProps {
   suggestionTriggerCharacters?: string[];
   loadSuggestions?: (text: string) => Promise<Suggestion[]>;
   childProps?: ChildProps;
+  paste?: PasteOptions;
   l18n?: L18n;
   /**
    * Custom textarea component. "textAreaComponent" can be any React component which
    * props are a subset of the props of an HTMLTextAreaElement
    */
-  textAreaComponent?: ComponentSubsetOf<
+  textAreaComponent?: ComponentSimilarTo<
     HTMLTextAreaElement,
     TextareaHTMLAttributes<HTMLTextAreaElement>
   >;
@@ -60,7 +58,7 @@ export interface ReactMdeProps {
    * Custom toolbar button component. "toolbarButtonComponent" can be any React component which
    * props are a subset of the props of an HTMLButtonElement
    */
-  toolbarButtonComponent?: ComponentSubsetOf<
+  toolbarButtonComponent?: ComponentSimilarTo<
     HTMLButtonElement,
     ButtonHTMLAttributes<HTMLButtonElement>
   >;
@@ -108,7 +106,9 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     }
     this.commandOrchestrator = new CommandOrchestrator(
       this.props.commands,
-      this.finalRefs.textarea
+      this.finalRefs.textarea,
+      this.props.l18n,
+      this.props.paste
     );
     this.state = {
       editorHeight: props.minEditorHeight
@@ -149,6 +149,15 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         });
       }
     }
+  };
+
+  handlePaste = async (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const { paste } = this.props;
+    if (!paste || !paste.command || !paste.saveImage) {
+      return;
+    }
+
+    await this.commandOrchestrator.executePasteCommand(event);
   };
 
   handleTabChange = (newTab: Tab) => {
@@ -230,6 +239,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             suggestionsDropdownClasses={classes?.suggestionsDropdown}
             refObject={this.finalRefs.textarea}
             onChange={this.handleTextChange}
+            onPaste={this.handlePaste}
             readOnly={readOnly}
             textAreaComponent={textAreaComponent}
             textAreaProps={childProps && childProps.textArea}
@@ -245,21 +255,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             className={classNames("grip", classes?.grip)}
             onMouseDown={this.handleGripMouseDown}
           >
-            <svg
-              aria-hidden="true"
-              data-prefix="far"
-              data-icon="ellipsis-h"
-              role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-              className="icon"
-            >
-              <path
-                fill="currentColor"
-                d="M304 256c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm120-48c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zm-336 0c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
-                className=""
-              />
-            </svg>
+            <GripSvg />
           </div>
         </div>
         {selectedTab !== "write" && (

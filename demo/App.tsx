@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactMde from "../src";
 import * as Showdown from "showdown";
-import { Suggestion } from "../src/types";
+import { SaveImageHandler, Suggestion } from "../src/types";
 
 export interface AppState {
   value: string;
@@ -60,6 +60,20 @@ export class App extends React.Component<{}, AppState> {
   };
 
   render() {
+    const save: SaveImageHandler = async function*(data: ArrayBuffer) {
+      const wait = function(time: number) {
+        return new Promise((a, r) => {
+          setTimeout(() => a(), time);
+        });
+      };
+
+      await wait(2000);
+      console.log(data);
+      yield "https://picsum.photos/300";
+      await wait(2000);
+      return true;
+    };
+
     return (
       <div className="container">
         <ReactMde
@@ -72,6 +86,10 @@ export class App extends React.Component<{}, AppState> {
           selectedTab={this.state.tab}
           loadSuggestions={this.loadSuggestions}
           suggestionTriggerCharacters={["@"]}
+          paste={{
+            command: "save-image",
+            saveImage: save
+          }}
         />
       </div>
     );

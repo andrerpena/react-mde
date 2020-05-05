@@ -8,7 +8,12 @@ import { Suggestion } from "../types";
 import { insertText } from "../util/InsertTextAtPosition";
 import { mod } from "../util/Math";
 import { SuggestionsDropdown } from "./SuggestionsDropdown";
-import { DetailedHTMLFactory, TextareaHTMLAttributes } from "react";
+import {
+  ButtonHTMLAttributes,
+  DetailedHTMLFactory,
+  TextareaHTMLAttributes
+} from "react";
+import { ComponentSimilarTo } from "../util/type-utils";
 
 export interface MentionState {
   status: "active" | "inactive" | "loading";
@@ -42,19 +47,20 @@ export interface TextAreaProps {
     text: string,
     triggeredBy: string
   ) => Promise<Suggestion[]>;
+
+  onPaste: React.ClipboardEventHandler;
+
   /**
    * Custom textarea component. "textAreaComponent" can be any React component which
    * props are a subset of the props of an HTMLTextAreaElement
    */
-  textAreaComponent?: React.ClassType<
-    Partial<
-      DetailedHTMLFactory<
-        TextareaHTMLAttributes<HTMLTextAreaElement>,
-        HTMLTextAreaElement
-      >
-    >,
-    any,
-    any
+  textAreaComponent?: ComponentSimilarTo<
+    HTMLTextAreaElement,
+    TextareaHTMLAttributes<HTMLTextAreaElement>
+  >;
+  toolbarButtonComponent?: ComponentSimilarTo<
+    HTMLButtonElement,
+    ButtonHTMLAttributes<HTMLButtonElement>
   >;
   textAreaProps?: Partial<
     React.DetailedHTMLProps<
@@ -360,7 +366,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       suggestionTriggerCharacters,
       loadSuggestions,
       suggestionsDropdownClasses,
-      textAreaComponent
+      textAreaComponent,
+      onPaste
     } = this.props;
 
     const suggestionsEnabled =
@@ -390,6 +397,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
           onKeyDown={this.handleKeyDown}
           onKeyUp={suggestionsEnabled ? this.handleKeyUp : undefined}
           onKeyPress={suggestionsEnabled ? this.handleKeyPress : undefined}
+          onPaste={onPaste}
           {...textAreaProps}
         />
         {mention.status === "active" && mention.suggestions.length && (
