@@ -1,22 +1,28 @@
 import * as React from "react";
 import {
-  Command,
-  CommandGroup,
+  CommandMap,
   GenerateMarkdownPreview,
   GetIcon,
-  Suggestion
+  PasteOptions,
+  Suggestion,
+  ToolbarCommands
 } from "../types";
-import { getDefaultCommands } from "../commands";
-import { Preview, Toolbar, TextArea } from ".";
+import { Preview, Toolbar, TextArea, ToolbarButtonData } from ".";
 import { Tab } from "../types/Tab";
+import {
+  getDefaultCommandMap,
+  getDefaultToolbarCommands
+} from "../commands/default-commands/defaults";
 import { Classes, L18n } from "..";
 import { enL18n } from "../l18n/react-mde.en";
 import { SvgIcon } from "../icons";
 import { classNames } from "../util/ClassNames";
 import { ChildProps } from "../child-props";
-import { CommandOrchestrator } from "../commandOrchestrator";
+import { CommandOrchestrator } from "../commands/command-orchestrator";
 import { Refs } from "../refs";
-import { DetailedHTMLFactory, TextareaHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, TextareaHTMLAttributes } from "react";
+import { ComponentSimilarTo } from "../util/type-utils";
+import { GripSvg } from "./grip-svg";
 
 export interface ReactMdeProps {
   value: string;
@@ -29,7 +35,8 @@ export interface ReactMdeProps {
   minPreviewHeight: number;
   classes?: Classes;
   refs?: Refs;
-  commands?: CommandGroup[];
+  toolbarCommands?: ToolbarCommands;
+  commands?: CommandMap;
   getIcon?: GetIcon;
   loadingPreview?: React.ReactNode;
   readOnly?: boolean;
@@ -37,20 +44,23 @@ export interface ReactMdeProps {
   suggestionTriggerCharacters?: string[];
   loadSuggestions?: (text: string) => Promise<Suggestion[]>;
   childProps?: ChildProps;
+  paste?: PasteOptions;
   l18n?: L18n;
   /**
    * Custom textarea component. "textAreaComponent" can be any React component which
    * props are a subset of the props of an HTMLTextAreaElement
    */
-  textAreaComponent?: React.ClassType<
-    Partial<
-      DetailedHTMLFactory<
-        TextareaHTMLAttributes<HTMLTextAreaElement>,
-        HTMLTextAreaElement
-      >
-    >,
-    any,
-    any
+  textAreaComponent?: ComponentSimilarTo<
+    HTMLTextAreaElement,
+    TextareaHTMLAttributes<HTMLTextAreaElement>
+  >;
+  /**
+   * Custom toolbar button component. "toolbarButtonComponent" can be any React component which
+   * props are a subset of the props of an HTMLButtonElement
+   */
+  toolbarButtonComponent?: ComponentSimilarTo<
+    HTMLButtonElement,
+    ButtonHTMLAttributes<HTMLButtonElement>
   >;
 }
 
@@ -72,7 +82,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   } = null;
 
   static defaultProps: Partial<ReactMdeProps> = {
-    commands: getDefaultCommands(),
+    commands: getDefaultCommandMap(),
+    toolbarCommands: getDefaultToolbarCommands(),
     getIcon: name => <SvgIcon icon={name} />,
     readOnly: false,
     l18n: enL18n,
@@ -95,7 +106,9 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     }
     this.commandOrchestrator = new CommandOrchestrator(
       this.props.commands,
-      this.finalRefs.textarea
+      this.finalRefs.textarea,
+      this.props.l18n,
+      this.props.paste
     );
     this.state = {
       editorHeight: props.minEditorHeight
@@ -138,6 +151,15 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     }
   };
 
+  handlePaste = async (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const { paste } = this.props;
+    if (!paste || !paste.saveImage) {
+      return;
+    }
+
+    await this.commandOrchestrator.executePasteCommand(event);
+  };
+
   handleTabChange = (newTab: Tab) => {
     const { onTabChange } = this.props;
     onTabChange(newTab);
@@ -151,14 +173,14 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     document.addEventListener<"mouseup">("mouseup", this.handleGripMouseUp);
   }
 
-  handleCommand = async (command: Command) => {
-    await this.commandOrchestrator.executeCommand(command);
+  handleCommand = async (commandName: string) => {
+    await this.commandOrchestrator.executeCommand(commandName);
   };
 
   render() {
     const {
       getIcon,
-      commands,
+      toolbarCommands,
       classes,
       loadingPreview,
       readOnly,
@@ -176,6 +198,19 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
     const finalChildProps = childProps || {};
 
+    const toolbarButtons = toolbarCommands.map(group => {
+      return group.map(commandName => {
+        const command = this.commandOrchestrator.getCommand(commandName);
+        return {
+          commandName: commandName,
+          buttonContent: command.icon
+            ? command.icon(getIcon)
+            : getIcon(commandName),
+          buttonProps: command.buttonProps
+        } as ToolbarButtonData;
+      });
+    });
+
     return (
       <div
         className={classNames(
@@ -186,8 +221,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       >
         <Toolbar
           classes={classes?.toolbar}
-          getIcon={getIcon}
-          commands={commands}
+          buttons={toolbarButtons}
           onCommand={this.handleCommand}
           onTabChange={this.handleTabChange}
           tab={selectedTab}
@@ -204,6 +238,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             suggestionsDropdownClasses={classes?.suggestionsDropdown}
             refObject={this.finalRefs.textarea}
             onChange={this.handleTextChange}
+            onPaste={this.handlePaste}
             readOnly={readOnly}
             textAreaComponent={textAreaComponent}
             textAreaProps={childProps && childProps.textArea}
@@ -219,21 +254,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             className={classNames("grip", classes?.grip)}
             onMouseDown={this.handleGripMouseDown}
           >
-            <svg
-              aria-hidden="true"
-              data-prefix="far"
-              data-icon="ellipsis-h"
-              role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-              className="icon"
-            >
-              <path
-                fill="currentColor"
-                d="M304 256c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm120-48c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zm-336 0c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
-                className=""
-              />
-            </svg>
+            <GripSvg />
           </div>
         </div>
         {selectedTab !== "write" && (
