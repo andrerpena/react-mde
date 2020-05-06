@@ -37,3 +37,7 @@ export function getDefaultCommandMap(): CommandMap {
     "save-image": saveImageCommand
   };
 }
+
+export function getDefaultSaveImageCommandName() {
+  return "save-image";
+}

@@ -23,6 +23,7 @@ import {
   ButtonChildProps,
   TextAreaChildProps
 } from "./child-props";
+import { SaveImageHandler } from "./commands/command";
 
 export {
   ReactMdeProps,
@@ -48,7 +49,8 @@ export {
   Classes,
   ChildProps,
   ButtonChildProps,
-  TextAreaChildProps
+  TextAreaChildProps,
+  SaveImageHandler
 };
 
 export default ReactMde;

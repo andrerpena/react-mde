@@ -10,6 +10,7 @@ import { L18n, TextApi, TextState } from "..";
 import { insertText } from "../util/InsertTextAtPosition";
 import { extractKeyActivatedCommands } from "./command-utils";
 import * as React from "react";
+import { getDefaultSaveImageCommandName } from "./default-commands/defaults";
 
 export class TextAreaTextApi implements TextApi {
   textAreaRef: React.RefObject<HTMLTextAreaElement>;
@@ -74,10 +75,8 @@ export class CommandOrchestrator {
     l18n?: L18n,
     pasteOptions?: PasteOptions
   ) {
-    if (pasteOptions && (!pasteOptions.command || !pasteOptions.saveImage)) {
-      throw new Error(
-        "paste options are incomplete. command and saveImage are required "
-      );
+    if (pasteOptions && !pasteOptions.saveImage) {
+      throw new Error("paste options are incomplete. saveImage are required ");
     }
 
     this.commandMap = commandMap;
@@ -138,14 +137,16 @@ export class CommandOrchestrator {
 
   /**
    * Executes the paste command
-   * @param event
    */
   async executePasteCommand(event: React.ClipboardEvent): Promise<void> {
     if (this.pasteOptions) {
-      return this.executeCommand(this.pasteOptions.command, {
-        saveImage: this.pasteOptions.saveImage,
-        event: event
-      } as PasteCommandContext);
+      return this.executeCommand(
+        this.pasteOptions.command || getDefaultSaveImageCommandName(),
+        {
+          saveImage: this.pasteOptions.saveImage,
+          event: event
+        } as PasteCommandContext
+      );
     }
   }
 }

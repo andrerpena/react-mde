@@ -153,7 +153,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
   handlePaste = async (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
     const { paste } = this.props;
-    if (!paste || !paste.command || !paste.saveImage) {
+    if (!paste || !paste.saveImage) {
       return;
     }
 

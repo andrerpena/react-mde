@@ -47,7 +47,7 @@ export interface PasteOptions {
   /**
    * Command to execute on paste command
    */
-  command: string;
+  command?: string;
 }
 
 export type SaveImageHandler = (
