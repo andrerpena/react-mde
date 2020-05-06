@@ -12,7 +12,6 @@ export interface ExecuteOptions {
 }
 
 export interface Command {
-  name: string;
   buttonComponentClass?: React.ComponentClass | string;
   icon?: (getIconFromProvider: GetIcon) => React.ReactNode;
   buttonProps?: any;

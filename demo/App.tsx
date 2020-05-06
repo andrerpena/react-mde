@@ -85,7 +85,6 @@ export class App extends React.Component<{}, AppState> {
     return (
       <div className="container">
         <ReactMde
-          toolbarCommands={[["code", "bold"]]}
           onChange={this.handleValueChange}
           onTabChange={this.handleTabChange}
           value={this.state.value}

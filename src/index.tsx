@@ -16,14 +16,22 @@ import {
 import { IconProviderProps, SvgIcon, MdeFontAwesomeIcon } from "./icons";
 import { L18n } from "./types/L18n";
 import { TextState, TextApi } from "./types/CommandOptions";
-import { Command, Suggestion } from "./types";
+import { Command, ExecuteOptions, Suggestion } from "./types";
 import { Classes } from "./classes";
 import {
   ChildProps,
   ButtonChildProps,
   TextAreaChildProps
 } from "./child-props";
-import { SaveImageHandler } from "./commands/command";
+import {
+  CommandContext,
+  PasteCommandContext,
+  SaveImageHandler
+} from "./commands/command";
+import {
+  getDefaultCommandMap,
+  getDefaultToolbarCommands
+} from "./commands/default-commands/defaults";
 
 export {
   ReactMdeProps,
@@ -50,7 +58,12 @@ export {
   ChildProps,
   ButtonChildProps,
   TextAreaChildProps,
-  SaveImageHandler
+  SaveImageHandler,
+  getDefaultCommandMap,
+  getDefaultToolbarCommands,
+  CommandContext,
+  PasteCommandContext,
+  ExecuteOptions
 };
 
 export default ReactMde;

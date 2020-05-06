@@ -12,7 +12,7 @@ export function extractKeyActivatedCommands(
   for (const command in commandMap) {
     if (commandMap.hasOwnProperty(command)) {
       if (commandMap[command].handleKeyCommand) {
-        result.push(commandMap[command].name);
+        result.push(command);
       }
     }
   }

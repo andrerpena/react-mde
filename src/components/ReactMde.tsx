@@ -9,6 +9,10 @@ import {
 } from "../types";
 import { Preview, Toolbar, TextArea, ToolbarButtonData } from ".";
 import { Tab } from "../types/Tab";
+import {
+  getDefaultCommandMap,
+  getDefaultToolbarCommands
+} from "../commands/default-commands/defaults";
 import { Classes, L18n } from "..";
 import { enL18n } from "../l18n/react-mde.en";
 import { SvgIcon } from "../icons";
@@ -17,10 +21,6 @@ import { ChildProps } from "../child-props";
 import { CommandOrchestrator } from "../commands/command-orchestrator";
 import { Refs } from "../refs";
 import { ButtonHTMLAttributes, TextareaHTMLAttributes } from "react";
-import {
-  getDefaultCommandMap,
-  getDefaultToolbarCommands
-} from "../commands/default-commands/defaults";
 import { ComponentSimilarTo } from "../util/type-utils";
 import { GripSvg } from "./grip-svg";
 
@@ -180,7 +180,6 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   render() {
     const {
       getIcon,
-      commands,
       toolbarCommands,
       classes,
       loadingPreview,
@@ -200,13 +199,13 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     const finalChildProps = childProps || {};
 
     const toolbarButtons = toolbarCommands.map(group => {
-      return group.map(c => {
-        const command = commands[c];
+      return group.map(commandName => {
+        const command = this.commandOrchestrator.getCommand(commandName);
         return {
-          commandName: c,
+          commandName: commandName,
           buttonContent: command.icon
             ? command.icon(getIcon)
-            : getIcon(command.name),
+            : getIcon(commandName),
           buttonProps: command.buttonProps
         } as ToolbarButtonData;
       });

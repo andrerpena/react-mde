@@ -6,7 +6,7 @@ import {
   PasteOptions,
   Selection
 } from "../types";
-import { L18n, TextApi, TextState } from "..";
+import { getDefaultCommandMap, L18n, TextApi, TextState } from "..";
 import { insertText } from "../util/InsertTextAtPosition";
 import { extractKeyActivatedCommands } from "./command-utils";
 import * as React from "react";
@@ -70,7 +70,7 @@ export class CommandOrchestrator {
   private readonly pasteOptions?: PasteOptions;
 
   constructor(
-    commandMap: CommandMap,
+    customCommands: CommandMap,
     textArea: React.RefObject<HTMLTextAreaElement>,
     l18n?: L18n,
     pasteOptions?: PasteOptions
@@ -79,9 +79,9 @@ export class CommandOrchestrator {
       throw new Error("paste options are incomplete. saveImage are required ");
     }
 
-    this.commandMap = commandMap;
+    this.commandMap = { ...getDefaultCommandMap(), ...(customCommands || {}) };
     this.pasteOptions = pasteOptions;
-    this.keyActivatedCommands = extractKeyActivatedCommands(commandMap);
+    this.keyActivatedCommands = extractKeyActivatedCommands(customCommands);
     this.textAreaRef = textArea;
     this.textApi = new TextAreaTextApi(textArea);
     this.l18n = l18n;
@@ -148,5 +148,13 @@ export class CommandOrchestrator {
         } as PasteCommandContext
       );
     }
+  }
+
+  /**
+   * Returns a command by name
+   * @param name
+   */
+  getCommandByName(name: string) {
+    return this.commandMap[name];
   }
 }

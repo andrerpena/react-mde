@@ -20,7 +20,6 @@ function setHeader(initialState: TextState, api: TextApi, prefix: string) {
 }
 
 export const headerCommand: Command = {
-  name: "header",
   buttonProps: { "aria-label": "Add header" },
   execute: ({ initialState, textApi }) => {
     setHeader(initialState, textApi, "### ");

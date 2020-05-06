@@ -7,7 +7,6 @@ import {
 } from "../../util/MarkdownUtil";
 
 export const codeCommand: Command = {
-  name: "code",
   buttonProps: { "aria-label": "Insert code" },
   execute: ({ initialState, textApi }) => {
     // Adjust the selection to encompass the whole word if the caret is inside one

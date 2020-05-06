@@ -5,14 +5,9 @@ import {
   PasteCommandContext
 } from "../command";
 import { readFileAsync } from "../../util/files";
-import { text } from "express";
-import {
-  getBreaksNeededForEmptyLineAfter,
-  getBreaksNeededForEmptyLineBefore
-} from "../../util/MarkdownUtil";
+import { getBreaksNeededForEmptyLineBefore } from "../../util/MarkdownUtil";
 
 export const saveImageCommand: Command = {
-  name: "",
   async execute({
     initialState,
     textApi,
