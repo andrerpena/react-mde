@@ -32,6 +32,7 @@ export interface ReactMdeProps {
   generateMarkdownPreview: GenerateMarkdownPreview;
   minEditorHeight: number;
   maxEditorHeight: number;
+  initialEditorHeight?: number;
   minPreviewHeight: number;
   classes?: Classes;
   refs?: Refs;
@@ -111,7 +112,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       this.props.paste
     );
     this.state = {
-      editorHeight: props.minEditorHeight
+      editorHeight: props.initialEditorHeight ?? props.minEditorHeight
     };
   }
 
