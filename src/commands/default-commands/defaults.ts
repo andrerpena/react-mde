@@ -5,6 +5,7 @@ import { italicCommand } from "./italicCommand";
 import { strikeThroughCommand } from "./strikeThroughCommand";
 import { linkCommand } from "./linkCommand";
 import { quoteCommand } from "./quoteCommand";
+import { codeCommand } from "./codeCommand";
 import {
   checkedListCommand,
   orderedListCommand,
@@ -29,7 +30,7 @@ export function getDefaultCommandMap(): CommandMap {
     strikethrough: strikeThroughCommand,
     link: linkCommand,
     quote: quoteCommand,
-    code: quoteCommand,
+    code: codeCommand,
     image: imageCommand,
     "unordered-list": unorderedListCommand,
     "ordered-list": orderedListCommand,
