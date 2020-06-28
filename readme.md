@@ -95,7 +95,7 @@ given a command name.
 The types are described below
 
 - **value: string**: The Markdown value.
-- **onChange**: (value: string): Event handler for the `onChange` event.
+- **onChange: (value: string)**: Event handler for the `onChange` event.
 - **selectedTab: "write" | "preview"**: The currently selected tab.
 - **onTabChange: (tab) => void**: Function called when the selected tab changes.
 - **classes?: [Object](https://github.com/andrerpena/react-mde/blob/master/src/classes.ts) **: An object containing the following optional properties: *reactMde*, *toolbar*, *preview*, *textArea*, *grip* and *suggestionsDropdown*. 
