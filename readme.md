@@ -98,7 +98,7 @@ The types are described below
 - **onChange: (value: string)**: Event handler for the `onChange` event.
 - **selectedTab: "write" | "preview"**: The currently selected tab.
 - **onTabChange: (tab) => void**: Function called when the selected tab changes.
-- **classes?: [Object](https://github.com/andrerpena/react-mde/blob/master/src/classes.ts) **: An object containing the following optional properties: *reactMde*, *toolbar*, *preview*, *textArea*, *grip* and *suggestionsDropdown*. 
+- **classes?: [Object](https://github.com/andrerpena/react-mde/blob/master/src/classes.ts)**: An object containing the following optional properties: *reactMde*, *toolbar*, *preview*, *textArea*, *grip* and *suggestionsDropdown*. 
 This allows for passing class names to each of the inner components of React-mde. Classes defined in the *classes* prop
 follow the specification of [Jed Watson's classNames project](https://github.com/JedWatson/classnames).
 - **commands?: Record<string, Command>**: An object with string properties representing keys, and a Command object as value for each key. These are custom commands. Commands are explained in more details below.
