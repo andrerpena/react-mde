@@ -111,8 +111,12 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       this.props.l18n,
       this.props.paste
     );
+    const minEditorHeight = Math.min(
+      props.maxEditorHeight,
+      props.minEditorHeight
+    );
     this.state = {
-      editorHeight: props.initialEditorHeight ?? props.minEditorHeight
+      editorHeight: props.initialEditorHeight ?? minEditorHeight
     };
   }
 
