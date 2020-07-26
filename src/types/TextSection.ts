@@ -1,6 +1,6 @@
-import { TextRange } from "./TextRange";
+import { Selection } from "./Selection";
 
 export interface TextSection {
-    text: string;
-    selection: TextRange;
+  text: string;
+  selection: Selection;
 }

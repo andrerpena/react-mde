@@ -14,7 +14,8 @@
       "es2015.collection",
       "es2016",
       "es2016.array.include"
-    ]
+    ],
+    "skipLibCheck": true
   },
   "include": [
     "./src/**/*.ts",
@@ -22,5 +23,9 @@
     "./test/**/*.ts",
     "./demo/**/*.ts",
     "./demo/**/*.tsx"
+  ],
+  "exclude": [
+    "**/__tests__/**",
+    "cypress/**"
   ]
 }

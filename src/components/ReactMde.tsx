@@ -1,24 +1,28 @@
 import * as React from "react";
 import {
-  Command,
-  CommandGroup,
+  CommandMap,
   GenerateMarkdownPreview,
   GetIcon,
-  Suggestion
+  PasteOptions,
+  Suggestion,
+  ToolbarCommands
 } from "../types";
-import { getDefaultCommands } from "../commands";
-import { Preview, Toolbar, TextArea } from ".";
-import { extractCommandMap } from "../util/CommandUtils";
+import { Preview, Toolbar, TextArea, ToolbarButtonData } from ".";
 import { Tab } from "../types/Tab";
+import {
+  getDefaultCommandMap,
+  getDefaultToolbarCommands
+} from "../commands/default-commands/defaults";
 import { Classes, L18n } from "..";
 import { enL18n } from "../l18n/react-mde.en";
-import {
-  CommandOrchestrator,
-  TextAreaCommandOrchestrator
-} from "../commandOrchestrator";
 import { SvgIcon } from "../icons";
-import { classNames, ClassValue } from "../util/ClassNames";
-import { ChildProps, TextAreaChildProps } from "../child-props";
+import { classNames } from "../util/ClassNames";
+import { ChildProps } from "../child-props";
+import { CommandOrchestrator } from "../commands/command-orchestrator";
+import { Refs } from "../refs";
+import { ButtonHTMLAttributes, TextareaHTMLAttributes } from "react";
+import { ComponentSimilarTo } from "../util/type-utils";
+import { GripSvg } from "./grip-svg";
 
 export interface ReactMdeProps {
   value: string;
@@ -28,27 +32,37 @@ export interface ReactMdeProps {
   generateMarkdownPreview: GenerateMarkdownPreview;
   minEditorHeight: number;
   maxEditorHeight: number;
+  initialEditorHeight?: number;
   minPreviewHeight: number;
   classes?: Classes;
-  /**
-   * "className" is OBSOLETE. It will soon be removed in favor of the "classes" prop
-   */
-  className?: ClassValue;
-  commands?: CommandGroup[];
+  refs?: Refs;
+  toolbarCommands?: ToolbarCommands;
+  commands?: CommandMap;
   getIcon?: GetIcon;
-  // deprecated. Use emptyPreview instead
-  emptyPreviewHtml?: string;
   loadingPreview?: React.ReactNode;
   readOnly?: boolean;
   disablePreview?: boolean;
   suggestionTriggerCharacters?: string[];
   loadSuggestions?: (text: string) => Promise<Suggestion[]>;
   childProps?: ChildProps;
-  /**
-   * "textAreaProps" is OBSOLETE. It will soon be removed in favor of the "defaultChildProps" prop
-   */
-  textAreaProps?: TextAreaChildProps;
+  paste?: PasteOptions;
   l18n?: L18n;
+  /**
+   * Custom textarea component. "textAreaComponent" can be any React component which
+   * props are a subset of the props of an HTMLTextAreaElement
+   */
+  textAreaComponent?: ComponentSimilarTo<
+    HTMLTextAreaElement,
+    TextareaHTMLAttributes<HTMLTextAreaElement>
+  >;
+  /**
+   * Custom toolbar button component. "toolbarButtonComponent" can be any React component which
+   * props are a subset of the props of an HTMLButtonElement
+   */
+  toolbarButtonComponent?: ComponentSimilarTo<
+    HTMLButtonElement,
+    ButtonHTMLAttributes<HTMLButtonElement>
+  >;
 }
 
 export interface ReactMdeState {
@@ -56,10 +70,11 @@ export interface ReactMdeState {
 }
 
 export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
+  /**
+   * "finalRefs" is a clone of "props.refs" except that undefined refs are set to default values
+   */
+  finalRefs: Refs;
   commandOrchestrator: CommandOrchestrator;
-
-  textAreaRef: HTMLTextAreaElement;
-  previewRef: Preview;
 
   // resizeYStart will be null when it is not resizing
   gripDrag: {
@@ -67,12 +82,10 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     originalHeight: number;
   } = null;
 
-  keyCommandMap: { [key: string]: Command };
-
   static defaultProps: Partial<ReactMdeProps> = {
-    commands: getDefaultCommands(),
+    commands: getDefaultCommandMap(),
+    toolbarCommands: getDefaultToolbarCommands(),
     getIcon: name => <SvgIcon icon={name} />,
-    emptyPreviewHtml: "<p>&nbsp;</p>",
     readOnly: false,
     l18n: enL18n,
     minEditorHeight: 200,
@@ -85,12 +98,22 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
 
   constructor(props: ReactMdeProps) {
     super(props);
+    this.finalRefs = { ...(props.refs || {}) };
+    if (!this.finalRefs.textarea) {
+      this.finalRefs.textarea = React.createRef<HTMLTextAreaElement>();
+    }
+    if (!this.finalRefs.preview) {
+      this.finalRefs.preview = React.createRef<HTMLDivElement>();
+    }
+    this.commandOrchestrator = new CommandOrchestrator(
+      this.props.commands,
+      this.finalRefs.textarea,
+      this.props.l18n,
+      this.props.paste
+    );
     this.state = {
-      editorHeight: props.minEditorHeight
+      editorHeight: props.initialEditorHeight ?? props.minEditorHeight
     };
-    this.keyCommandMap = {};
-    const { commands } = this.props;
-    this.keyCommandMap = extractCommandMap(commands);
   }
 
   handleTextChange = (value: string) => {
@@ -129,6 +152,15 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     }
   };
 
+  handlePaste = async (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const { paste } = this.props;
+    if (!paste || !paste.saveImage) {
+      return;
+    }
+
+    await this.commandOrchestrator.executePasteCommand(event);
+  };
+
   handleTabChange = (newTab: Tab) => {
     const { onTabChange } = this.props;
     onTabChange(newTab);
@@ -142,56 +174,55 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     document.addEventListener<"mouseup">("mouseup", this.handleGripMouseUp);
   }
 
-  setTextAreaRef = (element: HTMLTextAreaElement) => {
-    this.textAreaRef = element;
-    this.commandOrchestrator = new TextAreaCommandOrchestrator(
-      this.textAreaRef
-    );
-  };
-
-  handleCommand = (command: Command) => {
-    this.commandOrchestrator.executeCommand(command);
+  handleCommand = async (commandName: string) => {
+    await this.commandOrchestrator.executeCommand(commandName);
   };
 
   render() {
     const {
       getIcon,
-      commands,
+      toolbarCommands,
       classes,
-      className,
       loadingPreview,
-      emptyPreviewHtml,
       readOnly,
       disablePreview,
       value,
       l18n,
       minPreviewHeight,
       childProps,
-      textAreaProps,
       selectedTab,
       generateMarkdownPreview,
       loadSuggestions,
-      suggestionTriggerCharacters
+      suggestionTriggerCharacters,
+      textAreaComponent
     } = this.props;
 
     const finalChildProps = childProps || {};
+
+    const toolbarButtons = toolbarCommands.map(group => {
+      return group.map(commandName => {
+        const command = this.commandOrchestrator.getCommand(commandName);
+        return {
+          commandName: commandName,
+          buttonContent: command.icon
+            ? command.icon(getIcon)
+            : getIcon(commandName),
+          buttonProps: command.buttonProps
+        } as ToolbarButtonData;
+      });
+    });
 
     return (
       <div
         className={classNames(
           "react-mde",
           "react-mde-tabbed-layout",
-          classes?.reactMde,
-          /**
-           * "className" is OBSOLETE and will soon be removed
-           */
-          className
+          classes?.reactMde
         )}
       >
         <Toolbar
           classes={classes?.toolbar}
-          getIcon={getIcon}
-          commands={commands}
+          buttons={toolbarButtons}
           onCommand={this.handleCommand}
           onTabChange={this.handleTabChange}
           tab={selectedTab}
@@ -206,41 +237,32 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           <TextArea
             classes={classes?.textArea}
             suggestionsDropdownClasses={classes?.suggestionsDropdown}
-            editorRef={this.setTextAreaRef}
+            refObject={this.finalRefs.textarea}
             onChange={this.handleTextChange}
+            onPaste={this.handlePaste}
             readOnly={readOnly}
-            textAreaProps={(childProps && childProps.textArea) || textAreaProps}
+            textAreaComponent={textAreaComponent}
+            textAreaProps={childProps && childProps.textArea}
             height={this.state.editorHeight}
             value={value}
             suggestionTriggerCharacters={suggestionTriggerCharacters}
             loadSuggestions={loadSuggestions}
+            onPossibleKeyCommand={
+              this.commandOrchestrator.handlePossibleKeyCommand
+            }
           />
           <div
             className={classNames("grip", classes?.grip)}
             onMouseDown={this.handleGripMouseDown}
           >
-            <svg
-              aria-hidden="true"
-              data-prefix="far"
-              data-icon="ellipsis-h"
-              role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-              className="icon"
-            >
-              <path
-                fill="currentColor"
-                d="M304 256c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48zm120-48c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zm-336 0c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"
-                className=""
-              />
-            </svg>
+            <GripSvg />
           </div>
         </div>
         {selectedTab !== "write" && (
           <Preview
             classes={classes?.preview}
-            previewRef={c => (this.previewRef = c)}
-            loadingPreview={loadingPreview || emptyPreviewHtml}
+            refObject={this.finalRefs.preview}
+            loadingPreview={loadingPreview}
             minHeight={minPreviewHeight}
             generateMarkdownPreview={generateMarkdownPreview}
             markdown={value}

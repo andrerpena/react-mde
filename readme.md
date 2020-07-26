@@ -6,16 +6,22 @@
 
 A simple yet powerful and extensible **React Markdown Editor**. React-mde has no 3rd party dependencies.
 
+- Check the 10.0.0 breaking changes on how to migrate from 9.*: https://github.com/andrerpena/react-mde/releases/tag/10.0.0
+- Check the 9.0.0 breaking changes on how to migrate from 8.*: https://github.com/andrerpena/react-mde/releases/tag/9.0.0.
+
 ## Demo
 
 - [Demo](http://andrerpena.me/react-mde/)
-- [Demo on CodeSandbox](https://codesandbox.io/s/react-mde-latest-bm6p3)
+- [CodeSandbox Demo JSX ](https://codesandbox.io/s/react-mde-latest-5i5ov?file=/src/index.js)
+- [CodeSandbox Demo TSX ](https://codesandbox.io/s/react-typescript-i3wju?file=/src/index.tsx)
+- [CodeSandbox Demo TSX - Customized toolbar](https://codesandbox.io/s/react-typescript-m7cbx?file=/src/index.tsx)
+- [CodeSandbox Demo TSX - Custom command](https://codesandbox.io/s/react-typescript-icqgv?file=/src/index.tsx)
 
 ## Goal
 
 The goal is to make react-mde to look and behave like the Github's Markdown editor. These are the major remaining features/changes. I plan to tackle them in orde but if you want to help, that would be amazing.
 
-- [ ] [Design improvements](https://github.com/andrerpena/react-mde/issues/207) (under development)
+- [ ] [Design improvements](https://github.com/andrerpena/react-mde/issues/207)
 - [ ] [Image upload support](https://github.com/andrerpena/react-mde/issues/189)
 
 
@@ -29,7 +35,7 @@ React-mde is agnostic regarding how to preview Markdown. The examples will use [
 
     npm install showdown
     
-> from version 7.4, it is also possible to return a Promise to React Element from `generateMarkdownPreview`, which makes
+It is also possible to return a Promise to React Element from `generateMarkdownPreview`, which makes
 it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as a preview. [View issue](https://github.com/andrerpena/react-mde/issues/161).
     
 ## Using
@@ -40,7 +46,6 @@ Minimal example using Showdown. [View live on CodeSandBox](https://codesandbox.i
 ```jsx
 import * as React from "react";
 import ReactMde from "react-mde";
-import ReactDOM from "react-dom";
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 
@@ -72,7 +77,7 @@ export default function App() {
 
 ### Customizing Icons
 
-React-mde comes with SVG icons extracted from [FontAwesome](https://fontawesome.com/) included.
+React-mde comes with SVG icons extracted from [FontAwesome](https://fontawesome.com/).
 
 You can customize the way icons are resolved by passing your own `getIcon` that will return a ReactNode
 given a command name.
@@ -90,31 +95,31 @@ given a command name.
 The types are described below
 
 - **value: string**: The Markdown value.
-- **onChange**: (value: string): Event handler for the `onChange` event.
+- **onChange: (value: string)**: Event handler for the `onChange` event.
 - **selectedTab: "write" | "preview"**: The currently selected tab.
 - **onTabChange: (tab) => void**: Function called when the selected tab changes.
-- **classes?**: [An object](https://github.com/andrerpena/react-mde/blob/master/src/classes.ts) containing the following optional properties: *reactMde*, *toolbar*, *preview*, *textArea*, *grip* and *suggestionsDropdown*. 
+- **classes?: [Object](https://github.com/andrerpena/react-mde/blob/master/src/classes.ts)**: An object containing the following optional properties: *reactMde*, *toolbar*, *preview*, *textArea*, *grip* and *suggestionsDropdown*. 
 This allows for passing class names to each of the inner components of React-mde. Classes defined in the *classes* prop
 follow the specification of [Jed Watson's classNames project](https://github.com/JedWatson/classnames).
-- **className?: string**: OBSOLETE - Optional class name to be added to the top level element. Use the *classes* prop instead.
-- **commands?: CommandGroup[]**: An array of `CommandGroup`, which, each one, contain a `commands` property (array of `Command`). If no commands are specified, the default will be used. Commands are explained in more details below.
+- **commands?: Record<string, Command>**: An object with string properties representing keys, and a Command object as value for each key. These are custom commands. Commands are explained in more details below.
+- **toolbarCommands?: string[][]**: Array of array of strings, indicating which commands should be displayed. Each outer array is a group. Example: `[["code", "bold"], ["italic"]]`
 - **generateMarkdownPreview: (markdown: string) => Promise<string | ReactElement>;**: Function that should return a Promise to the generated HTML or a React element for the preview. If this `prop` is falsy, then no preview is going to be generated.
 - **getIcon?: (commandName: string) => React.ReactNode }** An optional set of button content options, including an `iconProvider` to allow custom icon rendering.
 options. It is recommended to [inspect the layouts source code](https://github.com/andrerpena/react-mde/tree/master/src/components-layout) to see what options can be passed to each
 while the documentation is not complete.
 - **loadingPreview**: What to display in the preview while it is loading. Value can be string, React Element or anything React can render.
-- **emptyPreviewHtml (deprecated)**: What to display in the preview while it is loading. Deprecated in favor of loadingPreview
 - **readOnly?: boolean**: Flag to render the editor in read-only mode.
-- **textAreaProps**: Extra props to be passed to the `textarea` component.
-- **l18n**: A localization option. It contains the strings `write` and `preview`.
-- **minEditorHeight (number)**: The minimum height of the editor.
-- **maxEditorHeight (number)**: The max height of the editor (after that, it will scroll).
-- **minPreviewHeight (number)**: The minimum height of the preview.
-- **loadSuggestions (text: string, triggeredBy: string) => Promise<Suggestion[]>**: Function to load mention suggestions based on the
+- **textAreaProps?**: Extra props to be passed to the `textarea` component.
+- **l18n?**: A localization option. It contains the strings `write`, `preview` and `uploadingImage`.
+- **minEditorHeight?: number**: The minimum height of the editor.
+- **maxEditorHeight?: number**: The max height of the editor (after that, it will scroll).
+- **minPreviewHeight?: number**: The minimum height of the preview.
+- **loadSuggestions?: (text: string, triggeredBy: string) => Promise<Suggestion[]>**: Function to load mention suggestions based on the
 given `text` and `triggeredBy` (character that triggered the suggestions). The result should be an array of `{preview: React.ReactNode, value: string}`.
 The `preview` is what is going to be displayed in the suggestions box. The `value` is what is going to be inserted in the `textarea` on click or enter.
 - **suggestionTriggerCharacters (string[])**: Characters that will trigger mention suggestions to be loaded. This property is useless
 without `loadSuggestions`.
+- **childProps?: [Object](https://github.com/andrerpena/react-mde/blob/master/src/child-props.ts#L16)**: An object containing props to be passed to `writeButton`, `previewButton`, `commandButtons` and `textArea`.
 
 ## Styling
 
@@ -141,36 +146,9 @@ the user’s cookies and do something bad with it (like steal credentials). As a
  
 You might want to take a look at [showdown-xss-filter](https://github.com/VisionistInc/showdown-xss-filter).
 
-Starting from version 7.4, it is also possible to return a Promise to a React Element from `generateMarkdownPreview`, which makes
+It is also possible to return a Promise to a React Element from `generateMarkdownPreview`, which makes
 it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as a preview. [View issue](https://github.com/andrerpena/react-mde/issues/161).
 ReactMarkdown has built-in XSS protection.
-  
-
-## Commands
-
-You can create your own commands or reuse existing commands. The `commands` property of React-mde
-expects an array of `CommandGroup`, which contains an array of commands called `commands`. You can also
-import the existing commands as displayed below:
-
-
-```jsx
-import ReactMde, {commands} from "react-mde";
-
-const listCommands = [
-    {
-        commands: [
-            commands.orderedListCommand,
-            commands.unorderedListCommand,
-            commands.checkedListCommand
-        ]
-    }
-]
-
-<ReactMde
-    commands={listCommands}
-    ...
-/>
-```
 
 Please refer to the [commands source code](https://github.com/andrerpena/react-mde/tree/master/src/commands) to understand how they
 should be implemented.

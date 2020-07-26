@@ -2,13 +2,13 @@
 
 $grip-height: 10px;
 
-* {
-  box-sizing: border-box;
-}
-
 .react-mde {
   border: 1px solid $mde-border-color;
   border-radius: $mde-border-radius;
+
+  * {
+    box-sizing: border-box;
+  }
 
   .grip {
     border-top: 1px solid $mde-border-color;

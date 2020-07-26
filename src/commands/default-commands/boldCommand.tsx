@@ -1,25 +1,23 @@
 import * as React from "react";
-import { Command } from "../types";
-import { TextApi, TextState } from "..";
-import { selectWord } from "../util/MarkdownUtil";
+import { Command } from "../command";
+import { selectWord } from "../../util/MarkdownUtil";
 
 export const boldCommand: Command = {
-  name: "bold",
   buttonProps: { "aria-label": "Add bold text" },
-  execute: (state0: TextState, api: TextApi) => {
+  execute: ({ initialState, textApi }) => {
     // Adjust the selection to encompass the whole word if the caret is inside one
     const newSelectionRange = selectWord({
-      text: state0.text,
-      selection: state0.selection
+      text: initialState.text,
+      selection: initialState.selection
     });
-    const state1 = api.setSelectionRange(newSelectionRange);
+    const state1 = textApi.setSelectionRange(newSelectionRange);
     // Replaces the current selection with the bold mark up
-    const state2 = api.replaceSelection(`**${state1.selectedText}**`);
+    const state2 = textApi.replaceSelection(`**${state1.selectedText}**`);
     // Adjust the selection to not contain the **
-    api.setSelectionRange({
+    textApi.setSelectionRange({
       start: state2.selection.end - 2 - state1.selectedText.length,
       end: state2.selection.end - 2
     });
   },
-  keyCommand: "bold"
+  handleKeyCommand: e => (e.ctrlKey || e.metaKey) && e.key == "b"
 };

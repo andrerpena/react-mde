@@ -1,5 +1,4 @@
 import * as MarkdownUtil from "./util/MarkdownUtil";
-import * as commands from "./commands";
 import {
   ReactMde,
   ReactMdeProps,
@@ -12,20 +11,27 @@ import {
   Toolbar,
   ToolbarProps,
   ToolbarButtonGroup,
-  ToolbarButtonGroupProps,
-  ToolbarDropdown,
-  ToolbarDropdownProps
+  ToolbarButtonGroupProps
 } from "./components";
 import { IconProviderProps, SvgIcon, MdeFontAwesomeIcon } from "./icons";
 import { L18n } from "./types/L18n";
 import { TextState, TextApi } from "./types/CommandOptions";
-import { Command, Suggestion } from "./types";
+import { Command, ExecuteOptions, Suggestion } from "./types";
 import { Classes } from "./classes";
 import {
   ChildProps,
   ButtonChildProps,
   TextAreaChildProps
 } from "./child-props";
+import {
+  CommandContext,
+  PasteCommandContext,
+  SaveImageHandler
+} from "./commands/command";
+import {
+  getDefaultCommandMap,
+  getDefaultToolbarCommands
+} from "./commands/default-commands/defaults";
 
 export {
   ReactMdeProps,
@@ -40,21 +46,24 @@ export {
   ToolbarProps,
   ToolbarButtonGroup,
   ToolbarButtonGroupProps,
-  ToolbarDropdown,
-  ToolbarDropdownProps,
   MarkdownUtil,
   L18n,
   SvgIcon,
   MdeFontAwesomeIcon,
   IconProviderProps,
-  commands,
   TextState,
   TextApi,
   Command,
   Classes,
   ChildProps,
   ButtonChildProps,
-  TextAreaChildProps
+  TextAreaChildProps,
+  SaveImageHandler,
+  getDefaultCommandMap,
+  getDefaultToolbarCommands,
+  CommandContext,
+  PasteCommandContext,
+  ExecuteOptions
 };
 
 export default ReactMde;

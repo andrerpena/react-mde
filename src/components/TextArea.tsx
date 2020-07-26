@@ -8,6 +8,12 @@ import { Suggestion } from "../types";
 import { insertText } from "../util/InsertTextAtPosition";
 import { mod } from "../util/Math";
 import { SuggestionsDropdown } from "./SuggestionsDropdown";
+import {
+  ButtonHTMLAttributes,
+  DetailedHTMLFactory,
+  TextareaHTMLAttributes
+} from "react";
+import { ComponentSimilarTo } from "../util/type-utils";
 
 export interface MentionState {
   status: "active" | "inactive" | "loading";
@@ -33,7 +39,7 @@ export interface TextAreaProps {
   suggestionsDropdownClasses?: ClassValue;
   value: string;
   onChange: (value: string) => void;
-  editorRef?: (ref: HTMLTextAreaElement) => void;
+  refObject?: React.RefObject<HTMLTextAreaElement>;
   readOnly?: boolean;
   height?: number;
   suggestionTriggerCharacters?: string[];
@@ -41,16 +47,37 @@ export interface TextAreaProps {
     text: string,
     triggeredBy: string
   ) => Promise<Suggestion[]>;
+
+  onPaste: React.ClipboardEventHandler;
+
+  /**
+   * Custom textarea component. "textAreaComponent" can be any React component which
+   * props are a subset of the props of an HTMLTextAreaElement
+   */
+  textAreaComponent?: ComponentSimilarTo<
+    HTMLTextAreaElement,
+    TextareaHTMLAttributes<HTMLTextAreaElement>
+  >;
+  toolbarButtonComponent?: ComponentSimilarTo<
+    HTMLButtonElement,
+    ButtonHTMLAttributes<HTMLButtonElement>
+  >;
   textAreaProps?: Partial<
     React.DetailedHTMLProps<
       React.TextareaHTMLAttributes<HTMLTextAreaElement>,
       HTMLTextAreaElement
     >
   >;
+  /**
+   * On keydown, the TextArea will trigger "onPossibleKeyCommand" as an opportunity for React-Mde to
+   * execute a command. If a command is executed, React-Mde should return true, otherwise, false.
+   */
+  onPossibleKeyCommand?: (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => boolean;
 }
 
 export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
-  textAreaElement?: HTMLTextAreaElement;
   currentLoadSuggestionsPromise?: Promise<unknown> = Promise.resolve(undefined);
 
   /**
@@ -72,12 +99,16 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     this.state = { mention: { status: "inactive", suggestions: [] } };
   }
 
-  handleTextAreaRef = (element: HTMLTextAreaElement) => {
-    const { editorRef } = this.props;
-    if (editorRef) {
-      this.textAreaElement = element;
-      editorRef(element);
-    }
+  suggestionsEnabled() {
+    return (
+      this.props.suggestionTriggerCharacters &&
+      this.props.suggestionTriggerCharacters.length &&
+      this.props.loadSuggestions
+    );
+  }
+
+  getTextArea = (): HTMLTextAreaElement => {
+    return this.props.refObject.current;
   };
 
   handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -125,10 +156,30 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       });
   };
 
+  loadEmptySuggestion = (target: HTMLTextAreaElement, key: string) => {
+    const caret = getCaretCoordinates(target, key);
+    this.startLoadingSuggestions("");
+    this.setState({
+      mention: {
+        status: "loading",
+        startPosition: target.selectionStart + 1,
+        caret: caret,
+        suggestions: [],
+        triggeredBy: key
+      }
+    });
+  };
+
   handleSuggestionSelected = (index: number) => {
     const { mention } = this.state;
-    this.textAreaElement.selectionStart = mention.startPosition - 1;
-    insertText(this.textAreaElement, mention.suggestions[index].value + " ");
+
+    this.getTextArea().selectionStart = mention.startPosition - 1;
+    const textForInsert = this.props.value.substr(
+      this.getTextArea().selectionStart,
+      this.getTextArea().selectionEnd - this.getTextArea().selectionStart
+    );
+
+    insertText(this.getTextArea(), mention.suggestions[index].value + " ");
     this.setState({
       mention: {
         status: "inactive",
@@ -138,8 +189,31 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   };
 
   handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const { key, shiftKey } = event;
-    const { selectionStart } = event.currentTarget;
+    if (this.props.onPossibleKeyCommand) {
+      const handled = this.props.onPossibleKeyCommand(event);
+      if (handled) {
+        event.preventDefault();
+        // If the keydown resulted in a command being executed, we will just close the suggestions if they are open.
+        // Resetting suggestionsPromiseIndex will cause any promise that is yet to be resolved to have no effect
+        // when they finish loading.
+        // TODO: The code below is duplicate, we need to clean this up
+        this.suggestionsPromiseIndex = 0;
+        this.setState({
+          mention: {
+            status: "inactive",
+            suggestions: []
+          }
+        });
+        return;
+      }
+    }
+
+    if (!this.suggestionsEnabled()) {
+      return;
+    }
+
+    const { key, shiftKey, currentTarget } = event;
+    const { selectionStart } = currentTarget;
     const { mention } = this.state;
 
     switch (mention.status) {
@@ -159,17 +233,6 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
               suggestions: []
             }
           });
-        } else if (key === "Backspace") {
-          const searchText = this.props.value.substr(mention.startPosition + 1);
-          this.startLoadingSuggestions(searchText);
-          if (mention.status !== "loading") {
-            this.setState({
-              mention: {
-                ...this.state.mention,
-                status: "loading"
-              }
-            });
-          }
         } else if (
           mention.status === "active" &&
           (key === "ArrowUp" || key === "ArrowDown") &&
@@ -200,16 +263,74 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     }
   };
 
+  handleKeyUp = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const { key } = event;
+    const { mention } = this.state;
+    const { suggestionTriggerCharacters, value } = this.props;
+
+    switch (mention.status) {
+      case "loading":
+      case "active":
+        if (key === "Backspace") {
+          const searchText = value.substr(
+            mention.startPosition,
+            this.getTextArea().selectionStart - mention.startPosition
+          );
+
+          this.startLoadingSuggestions(searchText);
+          if (mention.status !== "loading") {
+            this.setState({
+              mention: {
+                ...this.state.mention,
+                status: "loading"
+              }
+            });
+          }
+        }
+        break;
+      case "inactive":
+        if (key === "Backspace") {
+          const prevChar = value.charAt(this.getTextArea().selectionStart - 1);
+          const isAtMention = suggestionTriggerCharacters.includes(
+            value.charAt(this.getTextArea().selectionStart - 1)
+          );
+
+          if (isAtMention) {
+            this.loadEmptySuggestion(event.currentTarget, prevChar);
+          }
+        }
+        break;
+      default:
+      // Ignore
+    }
+  };
+
   handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const { suggestionTriggerCharacters } = this.props;
+    const { suggestionTriggerCharacters, value } = this.props;
     const { mention } = this.state;
     const { key } = event;
 
     switch (mention.status) {
       case "loading":
       case "active":
+        if (key === " ") {
+          this.setState({
+            mention: {
+              ...this.state.mention,
+              status: "inactive"
+            }
+          });
+
+          return;
+        }
+
+        const searchText =
+          value.substr(
+            mention.startPosition,
+            this.getTextArea().selectionStart - mention.startPosition
+          ) + key;
+
         // In this case, the mentions box was open but the user typed something else
-        const searchText = this.props.value.substr(mention.startPosition) + key;
         this.startLoadingSuggestions(searchText);
         if (mention.status !== "loading") {
           this.setState({
@@ -221,20 +342,16 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
         }
         break;
       case "inactive":
-        if (suggestionTriggerCharacters.indexOf(event.key) === -1) {
+        if (
+          suggestionTriggerCharacters.indexOf(event.key) === -1 ||
+          !/\s|\(|\[|^.{0}$/.test(
+            value.charAt(this.getTextArea().selectionStart - 1)
+          )
+        ) {
           return;
         }
-        const caret = getCaretCoordinates(event.currentTarget, "@");
-        this.startLoadingSuggestions("");
-        this.setState({
-          mention: {
-            status: "loading",
-            startPosition: event.currentTarget.selectionStart + 1,
-            caret: caret,
-            suggestions: [],
-            triggeredBy: event.key
-          }
-        });
+
+        this.loadEmptySuggestion(event.currentTarget, event.key);
         break;
     }
   };
@@ -248,7 +365,9 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       value,
       suggestionTriggerCharacters,
       loadSuggestions,
-      suggestionsDropdownClasses
+      suggestionsDropdownClasses,
+      textAreaComponent,
+      onPaste
     } = this.props;
 
     const suggestionsEnabled =
@@ -257,19 +376,28 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       loadSuggestions;
 
     const { mention } = this.state;
+
+    const TextAreaComponent = (textAreaComponent ||
+      "textarea") as DetailedHTMLFactory<
+      TextareaHTMLAttributes<HTMLTextAreaElement>,
+      HTMLTextAreaElement
+    >;
+
     return (
       <div className="mde-textarea-wrapper">
-        <textarea
+        <TextAreaComponent
           className={classNames("mde-text", classes)}
           style={{ height }}
-          ref={this.handleTextAreaRef}
+          ref={this.props.refObject}
           onChange={this.handleOnChange}
           readOnly={readOnly}
           value={value}
           data-testid="text-area"
           onBlur={suggestionsEnabled ? this.handleBlur : undefined}
-          onKeyDown={suggestionsEnabled ? this.handleKeyDown : undefined}
+          onKeyDown={this.handleKeyDown}
+          onKeyUp={suggestionsEnabled ? this.handleKeyUp : undefined}
           onKeyPress={suggestionsEnabled ? this.handleKeyPress : undefined}
+          onPaste={onPaste}
           {...textAreaProps}
         />
         {mention.status === "active" && mention.suggestions.length && (

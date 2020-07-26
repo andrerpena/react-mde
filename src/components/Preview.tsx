@@ -4,7 +4,7 @@ import { classNames, ClassValue } from "../util/ClassNames";
 
 export interface PreviewProps {
   classes?: ClassValue;
-  previewRef?: (ref: Preview) => void;
+  refObject?: React.RefObject<HTMLDivElement>;
   loadingPreview?: React.ReactNode;
   minHeight: number;
   generateMarkdownPreview: GenerateMarkdownPreview;
@@ -20,8 +20,6 @@ export class Preview extends React.Component<
   PreviewProps,
   ReactMdePreviewState
 > {
-  previewRef: HTMLDivElement;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -39,8 +37,19 @@ export class Preview extends React.Component<
     });
   }
 
+  componentWillReceiveProps(nextProps): void {
+    if (nextProps.markdown !== this.props.markdown) {
+      nextProps.generateMarkdownPreview(nextProps.markdown).then(preview => {
+        this.setState({
+          preview,
+          loading: false
+        });
+      });
+    }
+  }
+
   render() {
-    const { classes, minHeight, loadingPreview } = this.props;
+    const { classes, minHeight, loadingPreview, refObject } = this.props;
     const { preview, loading } = this.state;
     const finalHtml = loading ? loadingPreview : preview;
 
@@ -51,7 +60,7 @@ export class Preview extends React.Component<
         <div
           className="mde-preview-content"
           dangerouslySetInnerHTML={{ __html: finalHtml || "<p>&nbsp;</p>" }}
-          ref={p => (this.previewRef = p)}
+          ref={refObject}
         />
       );
     } else {

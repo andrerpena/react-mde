@@ -1,32 +1,30 @@
 import * as React from "react";
-import { Command } from "../types";
-import { TextApi, TextState } from "..";
+import { Command } from "../../types";
 import {
   getBreaksNeededForEmptyLineAfter,
   getBreaksNeededForEmptyLineBefore,
   selectWord
-} from "../util/MarkdownUtil";
+} from "../../util/MarkdownUtil";
 
 export const codeCommand: Command = {
-  name: "code",
   buttonProps: { "aria-label": "Insert code" },
-  execute: (state0: TextState, api: TextApi) => {
+  execute: ({ initialState, textApi }) => {
     // Adjust the selection to encompass the whole word if the caret is inside one
     const newSelectionRange = selectWord({
-      text: state0.text,
-      selection: state0.selection
+      text: initialState.text,
+      selection: initialState.selection
     });
-    const state1 = api.setSelectionRange(newSelectionRange);
+    const state1 = textApi.setSelectionRange(newSelectionRange);
 
     // when there's no breaking line
     if (state1.selectedText.indexOf("\n") === -1) {
-      api.replaceSelection(`\`${state1.selectedText}\``);
+      textApi.replaceSelection(`\`${state1.selectedText}\``);
       // Adjust the selection to not contain the **
 
       const selectionStart = state1.selection.start + 1;
       const selectionEnd = selectionStart + state1.selectedText.length;
 
-      api.setSelectionRange({
+      textApi.setSelectionRange({
         start: selectionStart,
         end: selectionEnd
       });
@@ -45,17 +43,16 @@ export const codeCommand: Command = {
     );
     const breaksAfter = Array(breaksAfterCount + 1).join("\n");
 
-    api.replaceSelection(
+    textApi.replaceSelection(
       `${breaksBefore}\`\`\`\n${state1.selectedText}\n\`\`\`${breaksAfter}`
     );
 
     const selectionStart = state1.selection.start + breaksBeforeCount + 4;
     const selectionEnd = selectionStart + state1.selectedText.length;
 
-    api.setSelectionRange({
+    textApi.setSelectionRange({
       start: selectionStart,
       end: selectionEnd
     });
-  },
-  keyCommand: "code"
+  }
 };
