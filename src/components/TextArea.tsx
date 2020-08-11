@@ -389,16 +389,40 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
           className={classNames("mde-text", classes)}
           style={{ height }}
           ref={this.props.refObject}
-          onChange={this.handleOnChange}
           readOnly={readOnly}
           value={value}
           data-testid="text-area"
-          onBlur={suggestionsEnabled ? this.handleBlur : undefined}
-          onKeyDown={this.handleKeyDown}
-          onKeyUp={suggestionsEnabled ? this.handleKeyUp : undefined}
-          onKeyPress={suggestionsEnabled ? this.handleKeyPress : undefined}
-          onPaste={onPaste}
           {...textAreaProps}
+          onChange={event => {
+            textAreaProps?.onChange?.(event)
+            this.handleOnChange(event)
+          }}
+          onBlur={event => {
+            if (suggestionsEnabled) {
+              textAreaProps?.onBlur?.(event)
+              this.handleBlur()
+            }
+          }}
+          onKeyDown={event => {
+            textAreaProps?.onKeyDown?.(event)
+            this.handleKeyDown(event)
+          }}
+          onKeyUp={event => {
+            if (suggestionsEnabled) {
+              textAreaProps?.onKeyUp?.(event)
+              this.handleKeyUp(event)
+            }
+          }}
+          onKeyPress={event => {
+            if (suggestionsEnabled) {
+              textAreaProps?.onKeyPress?.(event)
+              this.handleKeyPress(event)
+            }
+          }}
+          onPaste={event => {
+            textAreaProps?.onPaste?.(event)
+            onPaste(event)
+          }}
         />
         {mention.status === "active" && mention.suggestions.length && (
           <SuggestionsDropdown
