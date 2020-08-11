@@ -109,7 +109,6 @@ options. It is recommended to [inspect the layouts source code](https://github.c
 while the documentation is not complete.
 - **loadingPreview**: What to display in the preview while it is loading. Value can be string, React Element or anything React can render.
 - **readOnly?: boolean**: Flag to render the editor in read-only mode.
-- **textAreaProps?**: Extra props to be passed to the `textarea` component.
 - **l18n?**: A localization option. It contains the strings `write`, `preview` and `uploadingImage`.
 - **minEditorHeight?: number**: The minimum height of the editor.
 - **maxEditorHeight?: number**: The max height of the editor (after that, it will scroll).
