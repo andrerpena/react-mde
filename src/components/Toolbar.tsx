@@ -10,6 +10,7 @@ export interface ToolbarButtonData {
   commandName: string;
   buttonContent: React.ReactNode;
   buttonProps: any;
+  buttonComponentClass: React.ComponentClass | string;
 }
 
 export interface ToolbarProps {
@@ -31,8 +32,6 @@ export class Toolbar extends React.Component<ToolbarProps> {
     const { onTabChange } = this.props;
     onTabChange(tab);
   };
-
-  handle;
 
   render() {
     const { l18n } = this.props;
@@ -86,6 +85,7 @@ export class Toolbar extends React.Component<ToolbarProps> {
                   buttonProps={{ ...(buttonProps || {}), ...c.buttonProps }}
                   onClick={() => onCommand(c.commandName)}
                   readOnly={readOnly}
+                  buttonComponentClass={c.buttonComponentClass}
                 />
               );
             })}

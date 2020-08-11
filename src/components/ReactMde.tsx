@@ -211,7 +211,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           buttonContent: command.icon
             ? command.icon(getIcon)
             : getIcon(commandName),
-          buttonProps: command.buttonProps
+          buttonProps: command.buttonProps,
+          buttonComponentClass: command.buttonComponentClass
         } as ToolbarButtonData;
       });
     });
