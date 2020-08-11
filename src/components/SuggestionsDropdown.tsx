@@ -15,17 +15,21 @@ export interface SuggestionsDropdownProps {
   focusIndex: number
 }
 
-export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownProps> = ({ classes, suggestions, caret, onSuggestionSelected, focusIndex }) => {
+export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownProps> = ({ classes, suggestions, caret, onSuggestionSelected, focusIndex, textareaRef }) => {
   const handleSuggestionClick = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
     const index = parseInt(event.currentTarget.attributes["data-index"].value);
     onSuggestionSelected(index);
   }, [suggestions]);
+
   // onMouseDown should be cancelled because onClick will handle it propertly. This way, the textarea does not lose
   // focus
   const handleMouseDown = useCallback((event: React.MouseEvent) => event.preventDefault(), []);
   return <ul className={classNames("mde-suggestions", classes)}
-             style={{ left: caret.left, top: caret.top }}>
+             style={{
+              left: caret.left - textareaRef.current.scrollLeft,
+              top: caret.top - textareaRef.current.scrollTop,
+            }}>
     {suggestions.map((s, i) => <li onClick={handleSuggestionClick}
                                    onMouseDown={handleMouseDown}
                                    key={i}

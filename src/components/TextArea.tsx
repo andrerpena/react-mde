@@ -407,6 +407,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
             suggestions={mention.suggestions}
             onSuggestionSelected={this.handleSuggestionSelected}
             focusIndex={mention.focusIndex}
+            textareaRef={this.props.refObject}
           />
         )}
       </div>
