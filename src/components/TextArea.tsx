@@ -394,34 +394,34 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
           data-testid="text-area"
           {...textAreaProps}
           onChange={event => {
-            textAreaProps?.onChange?.(event)
-            this.handleOnChange(event)
+            textAreaProps?.onChange?.(event);
+            this.handleOnChange(event);
           }}
           onBlur={event => {
             if (suggestionsEnabled) {
-              textAreaProps?.onBlur?.(event)
-              this.handleBlur()
+              textAreaProps?.onBlur?.(event);
+              this.handleBlur();
             }
           }}
           onKeyDown={event => {
-            textAreaProps?.onKeyDown?.(event)
-            this.handleKeyDown(event)
+            textAreaProps?.onKeyDown?.(event);
+            this.handleKeyDown(event);
           }}
           onKeyUp={event => {
             if (suggestionsEnabled) {
-              textAreaProps?.onKeyUp?.(event)
-              this.handleKeyUp(event)
+              textAreaProps?.onKeyUp?.(event);
+              this.handleKeyUp(event);
             }
           }}
           onKeyPress={event => {
             if (suggestionsEnabled) {
-              textAreaProps?.onKeyPress?.(event)
-              this.handleKeyPress(event)
+              textAreaProps?.onKeyPress?.(event);
+              this.handleKeyPress(event);
             }
           }}
           onPaste={event => {
-            textAreaProps?.onPaste?.(event)
-            onPaste(event)
+            textAreaProps?.onPaste?.(event);
+            onPaste(event);
           }}
         />
         {mention.status === "active" && mention.suggestions.length && (
@@ -431,7 +431,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
             suggestions={mention.suggestions}
             onSuggestionSelected={this.handleSuggestionSelected}
             focusIndex={mention.focusIndex}
-            textareaRef={this.props.refObject}
+            textAreaRef={this.props.refObject}
           />
         )}
       </div>

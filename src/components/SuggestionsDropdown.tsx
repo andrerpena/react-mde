@@ -5,37 +5,61 @@ import { Suggestion } from "../types";
 import { classNames, ClassValue } from "../util/ClassNames";
 
 export interface SuggestionsDropdownProps {
-  classes?: ClassValue,
-  caret: CaretCoordinates,
-  suggestions: Suggestion[]
-  onSuggestionSelected: (index: number) => void,
+  classes?: ClassValue;
+  caret: CaretCoordinates;
+  suggestions: Suggestion[];
+  onSuggestionSelected: (index: number) => void;
   /**
    * Which item is focused by the keyboard
    */
-  focusIndex: number
+  focusIndex: number;
+  textAreaRef: React.RefObject<HTMLTextAreaElement>;
 }
 
-export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownProps> = ({ classes, suggestions, caret, onSuggestionSelected, focusIndex, textareaRef }) => {
-  const handleSuggestionClick = useCallback((event: React.MouseEvent) => {
-    event.preventDefault();
-    const index = parseInt(event.currentTarget.attributes["data-index"].value);
-    onSuggestionSelected(index);
-  }, [suggestions]);
+export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownProps> = ({
+  classes,
+  suggestions,
+  caret,
+  onSuggestionSelected,
+  focusIndex,
+  textAreaRef
+}) => {
+  const handleSuggestionClick = useCallback(
+    (event: React.MouseEvent) => {
+      event.preventDefault();
+      const index = parseInt(
+        event.currentTarget.attributes["data-index"].value
+      );
+      onSuggestionSelected(index);
+    },
+    [suggestions]
+  );
 
   // onMouseDown should be cancelled because onClick will handle it propertly. This way, the textarea does not lose
   // focus
-  const handleMouseDown = useCallback((event: React.MouseEvent) => event.preventDefault(), []);
-  return <ul className={classNames("mde-suggestions", classes)}
-             style={{
-              left: caret.left - textareaRef.current.scrollLeft,
-              top: caret.top - textareaRef.current.scrollTop,
-            }}>
-    {suggestions.map((s, i) => <li onClick={handleSuggestionClick}
-                                   onMouseDown={handleMouseDown}
-                                   key={i}
-                                   aria-selected={focusIndex === i ? "true" : "false"}
-                                   data-index={`${i}`}>
-      {s.preview}
-    </li>)}
-  </ul>;
+  const handleMouseDown = useCallback(
+    (event: React.MouseEvent) => event.preventDefault(),
+    []
+  );
+  return (
+    <ul
+      className={classNames("mde-suggestions", classes)}
+      style={{
+        left: caret.left - textAreaRef.current.scrollLeft,
+        top: caret.top - textAreaRef.current.scrollTop
+      }}
+    >
+      {suggestions.map((s, i) => (
+        <li
+          onClick={handleSuggestionClick}
+          onMouseDown={handleMouseDown}
+          key={i}
+          aria-selected={focusIndex === i ? "true" : "false"}
+          data-index={`${i}`}
+        >
+          {s.preview}
+        </li>
+      ))}
+    </ul>
+  );
 };
