@@ -151,6 +151,36 @@ export class CommandOrchestrator {
   }
 
   /**
+   * Executes the drop command
+   */
+  async executeDropCommand(event: React.DragEvent): Promise<void> {
+    if (this.pasteOptions) {
+      return this.executeCommand(
+        this.pasteOptions.command || getDefaultSaveImageCommandName(),
+        {
+          saveImage: this.pasteOptions.saveImage,
+          event: event
+        } as PasteCommandContext
+      );
+    }
+  }
+
+  /**
+   * Executes the "select image" command
+   */
+  async executeSelectImageCommand(event: React.ChangeEvent): Promise<void> {
+    if (this.pasteOptions) {
+      return this.executeCommand(
+        this.pasteOptions.command || getDefaultSaveImageCommandName(),
+        {
+          saveImage: this.pasteOptions.saveImage,
+          event: event
+        } as PasteCommandContext
+      );
+    }
+  }
+
+  /**
    * Returns a command by name
    * @param name
    */
