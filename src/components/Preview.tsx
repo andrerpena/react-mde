@@ -28,6 +28,16 @@ export class Preview extends React.Component<
   }
 
   componentDidMount(): void {
+    this.generatePreview();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.markdown !== prevProps.markdown) {
+      this.generatePreview();
+    }
+  }
+
+  generatePreview(): void {
     const { markdown, generateMarkdownPreview } = this.props;
     generateMarkdownPreview(markdown).then(preview => {
       this.setState({
@@ -35,17 +45,6 @@ export class Preview extends React.Component<
         loading: false
       });
     });
-  }
-
-  componentWillReceiveProps(nextProps): void {
-    if (nextProps.markdown !== this.props.markdown) {
-      nextProps.generateMarkdownPreview(nextProps.markdown).then(preview => {
-        this.setState({
-          preview,
-          loading: false
-        });
-      });
-    }
   }
 
   render() {
