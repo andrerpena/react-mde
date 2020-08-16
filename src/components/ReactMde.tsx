@@ -165,6 +165,23 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     await this.commandOrchestrator.executePasteCommand(event);
   };
 
+  handleDrop = async (event: React.DragEvent<HTMLTextAreaElement>) => {
+    const { paste } = this.props;
+    if (!paste || !paste.saveImage) {
+      return;
+    }
+
+    await this.commandOrchestrator.executeDropCommand(event);
+  };
+
+  handleImageSelection = async (event: React.ChangeEvent) => {
+    const { paste } = this.props;
+    if (!paste || !paste.saveImage) {
+      return;
+    }
+    await this.commandOrchestrator.executeSelectImageCommand(event);
+  };
+
   handleTabChange = (newTab: Tab) => {
     const { onTabChange } = this.props;
     onTabChange(newTab);
@@ -245,6 +262,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             refObject={this.finalRefs.textarea}
             onChange={this.handleTextChange}
             onPaste={this.handlePaste}
+            onDrop={this.handleDrop}
             readOnly={readOnly}
             textAreaComponent={textAreaComponent}
             textAreaProps={childProps && childProps.textArea}
@@ -256,6 +274,20 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
               this.commandOrchestrator.handlePossibleKeyCommand
             }
           />
+          {this.props.paste && (
+            <label className={classNames("image-tip")}>
+              <input
+                className={classNames("image-input")}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={this.handleImageSelection}
+              />
+              <span>
+                Attach files by dragging & dropping, selecting or pasting them.
+              </span>
+            </label>
+          )}
           <div
             className={classNames("grip", classes?.grip)}
             onMouseDown={this.handleGripMouseDown}

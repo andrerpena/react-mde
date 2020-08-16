@@ -30,7 +30,7 @@ export interface CommandContext {
 
 export interface PasteCommandContext extends CommandContext {
   type: "paste";
-  event: React.ClipboardEvent;
+  event: React.ClipboardEvent | React.DragEvent | React.ChangeEvent;
   saveImage: SaveImageHandler;
 }
 

@@ -49,6 +49,7 @@ export interface TextAreaProps {
   ) => Promise<Suggestion[]>;
 
   onPaste: React.ClipboardEventHandler;
+  onDrop: React.DragEventHandler;
 
   /**
    * Custom textarea component. "textAreaComponent" can be any React component which
@@ -367,7 +368,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       loadSuggestions,
       suggestionsDropdownClasses,
       textAreaComponent,
-      onPaste
+      onPaste,
+      onDrop
     } = this.props;
 
     const suggestionsEnabled =
@@ -422,6 +424,15 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
           onPaste={event => {
             textAreaProps?.onPaste?.(event);
             onPaste(event);
+          }}
+          onDragOver={event => {
+            event.preventDefault();
+            event.stopPropagation();
+          }}
+          onDrop={event => {
+            textAreaProps?.onDrop?.(event);
+            onDrop(event);
+            event.preventDefault();
           }}
         />
         {mention.status === "active" && mention.suggestions.length && (

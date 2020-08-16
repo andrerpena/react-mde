@@ -26,4 +26,29 @@ $grip-height: 10px;
   .invisible {
     display: none;
   }
+
+  .image-tip {
+
+    display: flex !important;
+    padding: 7px 10px;
+    margin: 0;
+    font-size: 13px;
+    line-height: 16px;
+    color: gray;
+    background-color: $mde-toolbar-color;
+    border-top: 1px solid $mde-border-color;
+    position: relative;
+
+    .image-input {
+      min-height: 0;
+      opacity: .01;
+      width: 100% !important;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 5px;
+      cursor: pointer;
+    }
+
+  }
 }
