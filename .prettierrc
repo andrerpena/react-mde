@@ -4,5 +4,6 @@
   "useTabs": false,
   "jsxBracketSameLine": false,
   "arrowParens": "avoid",
-  "trailingComma": "none"
+  "trailingComma": "none",
+  "parser": typescript"
 }

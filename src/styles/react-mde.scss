@@ -28,7 +28,6 @@ $grip-height: 10px;
   }
 
   .image-tip {
-
     display: flex !important;
     padding: 7px 10px;
     margin: 0;
@@ -41,7 +40,7 @@ $grip-height: 10px;
 
     .image-input {
       min-height: 0;
-      opacity: .01;
+      opacity: 0.01;
       width: 100% !important;
       position: absolute;
       top: 0;
@@ -49,6 +48,11 @@ $grip-height: 10px;
       padding: 5px;
       cursor: pointer;
     }
-
   }
+}
+
+.react-mde-maximized {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }

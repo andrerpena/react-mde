@@ -1,11 +1,13 @@
 import * as React from "react";
 import ReactMde from "../src";
 import * as Showdown from "showdown";
+import { classNames } from "../src/util/ClassNames";
 import { SaveImageHandler, Suggestion } from "../src/types";
 
 export interface AppState {
   value: string;
   tab: "write" | "preview";
+  maximized: boolean;
 }
 
 export class App extends React.Component<{}, AppState> {
@@ -15,7 +17,8 @@ export class App extends React.Component<{}, AppState> {
     super(props);
     this.state = {
       value: "**Hello world!!!**",
-      tab: "write"
+      tab: "write",
+      maximized: false
     };
     this.converter = new Showdown.Converter({
       tables: true,
@@ -31,6 +34,10 @@ export class App extends React.Component<{}, AppState> {
 
   handleTabChange = (tab: "write" | "preview") => {
     this.setState({ tab });
+  };
+
+  handleMaximizedChange = (isMaximized: boolean) => {
+    this.setState({ maximized: isMaximized });
   };
 
   loadSuggestions = async (text: string) => {
@@ -60,9 +67,9 @@ export class App extends React.Component<{}, AppState> {
   };
 
   render() {
-    const save: SaveImageHandler = async function*(data: ArrayBuffer) {
+    const save: SaveImageHandler = async function* (data: ArrayBuffer) {
       // Promise that waits for "time" milliseconds
-      const wait = function(time: number) {
+      const wait = function (time: number) {
         return new Promise((a, r) => {
           setTimeout(() => a(), time);
         });
@@ -83,10 +90,13 @@ export class App extends React.Component<{}, AppState> {
     };
 
     return (
-      <div className="container">
+      <div
+        className={classNames("container", { maximized: this.state.maximized })}
+      >
         <ReactMde
           onChange={this.handleValueChange}
           onTabChange={this.handleTabChange}
+          onMaximizedChange={this.handleMaximizedChange}
           value={this.state.value}
           generateMarkdownPreview={markdown =>
             Promise.resolve(this.converter.makeHtml(markdown))

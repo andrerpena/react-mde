@@ -29,6 +29,7 @@ export interface ReactMdeProps {
   onChange: (value: string) => void;
   selectedTab: "write" | "preview";
   onTabChange: (tab: "write" | "preview") => void;
+  onMaximizedChange: (isMaximized: boolean) => void;
   generateMarkdownPreview: GenerateMarkdownPreview;
   minEditorHeight: number;
   maxEditorHeight: number;
@@ -67,6 +68,7 @@ export interface ReactMdeProps {
 
 export interface ReactMdeState {
   editorHeight: number;
+  maximized: boolean;
 }
 
 export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
@@ -116,7 +118,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       props.minEditorHeight
     );
     this.state = {
-      editorHeight: props.initialEditorHeight ?? minEditorHeight
+      editorHeight: props.initialEditorHeight ?? minEditorHeight,
+      maximized: false
     };
   }
 
@@ -187,6 +190,13 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     onTabChange(newTab);
   };
 
+  handleMaximize = () => {
+    const { onMaximizedChange } = this.props;
+    this.setState({ maximized: !this.state.maximized }, () =>
+      onMaximizedChange(this.state.maximized)
+    );
+  };
+
   componentDidMount() {
     document.addEventListener<"mousemove">(
       "mousemove",
@@ -239,6 +249,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
         className={classNames(
           "react-mde",
           "react-mde-tabbed-layout",
+          { "react-mde-maximized": this.state.maximized },
           classes?.reactMde
         )}
       >
@@ -247,6 +258,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           buttons={toolbarButtons}
           onCommand={this.handleCommand}
           onTabChange={this.handleTabChange}
+          onMaximize={this.handleMaximize}
           tab={selectedTab}
           readOnly={readOnly}
           disablePreview={disablePreview}
@@ -255,7 +267,11 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           writeButtonProps={finalChildProps.writeButton}
           previewButtonProps={finalChildProps.previewButton}
         />
-        <div className={classNames({ invisible: selectedTab !== "write" })}>
+        <div
+          className={classNames("mde-editor", {
+            invisible: selectedTab !== "write"
+          })}
+        >
           <TextArea
             classes={classes?.textArea}
             suggestionsDropdownClasses={classes?.suggestionsDropdown}
@@ -266,7 +282,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             readOnly={readOnly}
             textAreaComponent={textAreaComponent}
             textAreaProps={childProps && childProps.textArea}
-            height={this.state.editorHeight}
+            height={this.state.maximized ? undefined : this.state.editorHeight}
             value={value}
             suggestionTriggerCharacters={suggestionTriggerCharacters}
             loadSuggestions={loadSuggestions}
@@ -288,12 +304,14 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
               </span>
             </label>
           )}
-          <div
-            className={classNames("grip", classes?.grip)}
-            onMouseDown={this.handleGripMouseDown}
-          >
-            <GripSvg />
-          </div>
+          {!this.state.maximized ? (
+            <div
+              className={classNames("grip", classes?.grip)}
+              onMouseDown={this.handleGripMouseDown}
+            >
+              <GripSvg />
+            </div>
+          ) : null}
         </div>
         {selectedTab !== "write" && (
           <Preview

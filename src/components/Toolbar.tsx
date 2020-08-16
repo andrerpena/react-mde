@@ -5,6 +5,7 @@ import { classNames, ClassValue } from "../util/ClassNames";
 import { ToolbarButtonGroup } from "./ToolbarButtonGroup";
 import { ToolbarButton } from "./ToolbarButton";
 import { ButtonChildProps } from "../child-props";
+import { SvgIcon } from "../icons";
 
 export interface ToolbarButtonData {
   commandName: string;
@@ -18,6 +19,7 @@ export interface ToolbarProps {
   buttons: ToolbarButtonData[][];
   onCommand: (commandName: string) => void;
   onTabChange: (tab: Tab) => void;
+  onMaximize: () => void;
   readOnly: boolean;
   disablePreview: boolean;
   tab: Tab;
@@ -31,6 +33,11 @@ export class Toolbar extends React.Component<ToolbarProps> {
   handleTabChange = (tab: Tab) => {
     const { onTabChange } = this.props;
     onTabChange(tab);
+  };
+
+  handleMaximize = () => {
+    const { onMaximize } = this.props;
+    onMaximize();
   };
 
   render() {
@@ -91,6 +98,13 @@ export class Toolbar extends React.Component<ToolbarProps> {
             })}
           </ToolbarButtonGroup>
         ))}
+        <ul className="mde-header-group-right">
+          <li className="mde-header-item">
+            <button type="button" onClick={() => this.handleMaximize()}>
+              <SvgIcon icon="maximize" />
+            </button>
+          </li>
+        </ul>
       </div>
     );
   }
