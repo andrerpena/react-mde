@@ -283,9 +283,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
                 multiple
                 onChange={this.handleImageSelection}
               />
-              <span>
-                Attach files by dragging & dropping, selecting or pasting them.
-              </span>
+              <span>{l18n.pasteDropSelect}</span>
             </label>
           )}
           <div
