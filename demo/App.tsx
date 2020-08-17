@@ -60,9 +60,9 @@ export class App extends React.Component<{}, AppState> {
   };
 
   render() {
-    const save: SaveImageHandler = async function*(data: ArrayBuffer) {
+    const save: SaveImageHandler = async function* (data: ArrayBuffer) {
       // Promise that waits for "time" milliseconds
-      const wait = function(time: number) {
+      const wait = function (time: number) {
         return new Promise((a, r) => {
           setTimeout(() => a(), time);
         });
