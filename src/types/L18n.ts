@@ -7,4 +7,5 @@ export interface L18n {
    * Text used to indicate that an image is being uploaded
    */
   uploadingImage: string;
+  pasteDropSelect: string;
 }

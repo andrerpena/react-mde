@@ -28,7 +28,7 @@ $grip-height: 10px;
   }
 
   .image-tip {
-
+    user-select: none;
     display: flex !important;
     padding: 7px 10px;
     margin: 0;
