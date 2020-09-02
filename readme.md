@@ -4,10 +4,7 @@
 [![MinZipped](https://badgen.net/bundlephobia/minzip/react-mde)](https://bundlephobia.com/result?p=react-mde)
 [![twitter](https://img.shields.io/twitter/follow/andrerpena?style=social)](https://twitter.com/andrerpena)
 
-A simple yet powerful and extensible **React Markdown Editor**. React-mde has no 3rd party dependencies.
-
-- Check the 10.0.0 breaking changes on how to migrate from 9.*: https://github.com/andrerpena/react-mde/releases/tag/10.0.0
-- Check the 9.0.0 breaking changes on how to migrate from 8.*: https://github.com/andrerpena/react-mde/releases/tag/9.0.0.
+A simple yet powerful and extensible **React Markdown Editor** that aims to have feature parity with the Github Markdown editor. React-mde has no 3rd party dependencies.
 
 ## Demo
 
@@ -16,13 +13,6 @@ A simple yet powerful and extensible **React Markdown Editor**. React-mde has no
 - [CodeSandbox Demo TSX ](https://codesandbox.io/s/react-typescript-i3wju?file=/src/index.tsx)
 - [CodeSandbox Demo TSX - Customized toolbar](https://codesandbox.io/s/react-typescript-m7cbx?file=/src/index.tsx)
 - [CodeSandbox Demo TSX - Custom command](https://codesandbox.io/s/react-typescript-icqgv?file=/src/index.tsx)
-
-## Goal
-
-The goal is to make react-mde to look and behave like the Github's Markdown editor. These are the major remaining features/changes. I plan to tackle them in orde but if you want to help, that would be amazing.
-
-- [ ] [Design improvements](https://github.com/andrerpena/react-mde/issues/207)
-- [ ] [Image upload support](https://github.com/andrerpena/react-mde/issues/189)
 
 
 ## Installing
