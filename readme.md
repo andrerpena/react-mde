@@ -20,15 +20,6 @@ A simple yet powerful and extensible **React Markdown Editor** that aims to have
 
     npm i react-mde
     
-## Markdown Preview
-
-React-mde is agnostic regarding how to preview Markdown. The examples will use [Showdown](https://github.com/showdownjs/showdown)
-
-    npm install showdown
-    
-It is also possible to return a Promise to React Element from `generateMarkdownPreview`, which makes
-it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as a preview. [View issue](https://github.com/andrerpena/react-mde/issues/161).
-    
 ## Using
 
 React-mde is a completely controlled component.
@@ -65,6 +56,13 @@ export default function App() {
   );
 }
 ```
+
+## Markdown Preview
+
+React-mde is agnostic regarding how to preview Markdown. The prop `generateMarkdownPreview` should return a Promise of either a string or a `ReactElement`.
+- [Demo using Showdown ](https://codesandbox.io/s/react-mde-latest-5i5ov?file=/src/index.js)
+- [Demo using ReactMarkdown](https://codesandbox.io/s/react-mde-latest-forked-f9ti5?file=/src/index.js)
+
 
 ### Customizing Icons
 
