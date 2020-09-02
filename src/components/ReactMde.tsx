@@ -42,7 +42,10 @@ export interface ReactMdeProps {
   readOnly?: boolean;
   disablePreview?: boolean;
   suggestionTriggerCharacters?: string[];
-  loadSuggestions?: (text: string, triggeredBy: string) => Promise<Suggestion[]>;
+  loadSuggestions?: (
+    text: string,
+    triggeredBy: string
+  ) => Promise<Suggestion[]>;
   childProps?: ChildProps;
   paste?: PasteOptions;
   l18n?: L18n;
