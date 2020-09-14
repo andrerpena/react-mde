@@ -1,26 +1,11 @@
 @import "variables.scss";
 
-$grip-height: 10px;
-
 .react-mde {
   border: 1px solid $mde-border-color;
   border-radius: $mde-border-radius;
 
   * {
     box-sizing: border-box;
-  }
-
-  .grip {
-    border-top: 1px solid $mde-border-color;
-    background-color: $mde-toolbar-color;
-    text-align: center;
-    height: $grip-height;
-    color: black;
-    cursor: s-resize;
-
-    .icon {
-      height: $grip-height;
-    }
   }
 
   .invisible {
