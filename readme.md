@@ -4,39 +4,21 @@
 [![MinZipped](https://badgen.net/bundlephobia/minzip/react-mde)](https://bundlephobia.com/result?p=react-mde)
 [![twitter](https://img.shields.io/twitter/follow/andrerpena?style=social)](https://twitter.com/andrerpena)
 
-A simple yet powerful and extensible **React Markdown Editor**. React-mde has no 3rd party dependencies.
-
-- Check the 10.0.0 breaking changes on how to migrate from 9.*: https://github.com/andrerpena/react-mde/releases/tag/10.0.0
-- Check the 9.0.0 breaking changes on how to migrate from 8.*: https://github.com/andrerpena/react-mde/releases/tag/9.0.0.
+A simple yet powerful and extensible **React Markdown Editor** that aims to have feature parity with the Github Markdown editor. React-mde has no 3rd party dependencies.
 
 ## Demo
 
 - [Demo](http://andrerpena.me/react-mde/)
 - [CodeSandbox Demo JSX ](https://codesandbox.io/s/react-mde-latest-5i5ov?file=/src/index.js)
+- [CodeSandbox Demo JSX - Using ReactMarkdown instead of Showdown](https://codesandbox.io/s/react-mde-latest-forked-f9ti5?file=/src/index.js)
 - [CodeSandbox Demo TSX ](https://codesandbox.io/s/react-typescript-i3wju?file=/src/index.tsx)
 - [CodeSandbox Demo TSX - Customized toolbar](https://codesandbox.io/s/react-typescript-m7cbx?file=/src/index.tsx)
 - [CodeSandbox Demo TSX - Custom command](https://codesandbox.io/s/react-typescript-icqgv?file=/src/index.tsx)
-
-## Goal
-
-The goal is to make react-mde to look and behave like the Github's Markdown editor. These are the major remaining features/changes. I plan to tackle them in orde but if you want to help, that would be amazing.
-
-- [ ] [Design improvements](https://github.com/andrerpena/react-mde/issues/207)
-- [ ] [Image upload support](https://github.com/andrerpena/react-mde/issues/189)
 
 
 ## Installing
 
     npm i react-mde
-    
-## Markdown Preview
-
-React-mde is agnostic regarding how to preview Markdown. The examples will use [Showdown](https://github.com/showdownjs/showdown)
-
-    npm install showdown
-    
-It is also possible to return a Promise to React Element from `generateMarkdownPreview`, which makes
-it possible to use [ReactMarkdown](https://github.com/rexxars/react-markdown) as a preview. [View issue](https://github.com/andrerpena/react-mde/issues/161).
     
 ## Using
 
@@ -74,6 +56,13 @@ export default function App() {
   );
 }
 ```
+
+## Markdown Preview
+
+React-mde is agnostic regarding how to preview Markdown. The prop `generateMarkdownPreview` should return a Promise of either a string or a `ReactElement`.
+- [Demo using Showdown ](https://codesandbox.io/s/react-mde-latest-5i5ov?file=/src/index.js)
+- [Demo using ReactMarkdown](https://codesandbox.io/s/react-mde-latest-forked-f9ti5?file=/src/index.js)
+
 
 ### Customizing Icons
 
