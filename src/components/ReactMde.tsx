@@ -29,10 +29,10 @@ export interface ReactMdeProps {
   selectedTab: "write" | "preview";
   onTabChange: (tab: "write" | "preview") => void;
   generateMarkdownPreview: GenerateMarkdownPreview;
-  minEditorHeight: number;
-  maxEditorHeight: number;
+  minEditorHeight?: number;
+  maxEditorHeight?: number;
   initialEditorHeight?: number;
-  minPreviewHeight: number;
+  minPreviewHeight?: number;
   classes?: Classes;
   refs?: Refs;
   toolbarCommands?: ToolbarCommands;
