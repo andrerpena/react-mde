@@ -57,3 +57,4 @@ function buildDemo() {
 }
 
 exports.build = gulp.series(buildStyles, copyStyles, copyIndex, buildLib, buildDemo);
+exports["build-lib"] = gulp.series(buildStyles, copyStyles, buildLib);

@@ -5,6 +5,7 @@
   "main": "./lib/js/index.js",
   "types": "./lib/definitions/index.d.ts",
   "scripts": {
+    "prepare": "npm run build:lib",
     "test": "jest",
     "dev": "cross-env NODE_ENV=development ts-node ./demo/server.ts",
     "build:ts": "tsc --project ./tsconfig.build.json",
