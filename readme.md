@@ -19,7 +19,7 @@ A simple yet powerful and extensible **React Markdown Editor** that aims to have
 ## Installing
 
     npm i react-mde
-    
+
 ## Using
 
 React-mde is a completely controlled component.
@@ -87,7 +87,7 @@ The types are described below
 - **onChange: (value: string)**: Event handler for the `onChange` event.
 - **selectedTab: "write" | "preview"**: The currently selected tab.
 - **onTabChange: (tab) => void**: Function called when the selected tab changes.
-- **classes?: [Object](https://github.com/andrerpena/react-mde/blob/master/src/classes.ts)**: An object containing the following optional properties: *reactMde*, *toolbar*, *preview*, *textArea* and *suggestionsDropdown*. 
+- **classes?: [Object](https://github.com/andrerpena/react-mde/blob/master/src/classes.ts)**: An object containing the following optional properties: *reactMde*, *toolbar*, *preview*, *textArea* and *suggestionsDropdown*.
 This allows for passing class names to each of the inner components of React-mde. Classes defined in the *classes* prop
 follow the specification of [Jed Watson's classNames project](https://github.com/JedWatson/classnames).
 - **commands?: Record<string, Command>**: An object with string properties representing keys, and a Command object as value for each key. These are custom commands. Commands are explained in more details below.
@@ -98,7 +98,7 @@ options. It is recommended to [inspect the layouts source code](https://github.c
 while the documentation is not complete.
 - **loadingPreview**: What to display in the preview while it is loading. Value can be string, React Element or anything React can render.
 - **readOnly?: boolean**: Flag to render the editor in read-only mode.
-- **l18n?**: A localization option. It contains the strings `write`, `preview` and `uploadingImage`.
+- [**l18n?**](src/types/L18n.ts): A localization option. It contains the strings `write`, `preview`, `uploadingImage` and `pasteDropSelect`.
 - **minEditorHeight?: number**: The minimum height of the editor.
 - **maxEditorHeight?: number**: The max height of the editor (after that, it will scroll).
 - **minPreviewHeight?: number**: The minimum height of the preview.
@@ -116,22 +116,22 @@ The following styles from React-mde should be added: (Both .scss and .css files 
 Easiest way: import `react-mde-all.css`:
 
     import 'react-mde/lib/styles/css/react-mde-all.css';
-    
+
 If you want to have a more granular control over the styles, you can [import each individual file](https://github.com/andrerpena/react-mde/tree/master/src/styles).
-    
+
 If you're using SASS, you can override these variables: https://github.com/andrerpena/react-mde/blob/master/src/styles/variables.scss
 
 ## XSS concerns
 
 React-mde does not automatically sanitize the HTML preview. If your using Showdown,
 this has been taken from [their documentation](https://github.com/showdownjs/showdown/wiki/Markdown's-XSS-Vulnerability-(and-how-to-mitigate-it)):
-    
+
 > Cross-side scripting is a well known technique to gain access to private information of the users
-of a website. The attacker injects spurious HTML content (a script) on the web page which will read 
+of a website. The attacker injects spurious HTML content (a script) on the web page which will read
 the user’s cookies and do something bad with it (like steal credentials). As a countermeasure,
- you should filter any suspicious content coming from user input. Showdown doesn’t include an 
+ you should filter any suspicious content coming from user input. Showdown doesn’t include an
  XSS filter, so you must provide your own. But be careful in how you do it…
- 
+
 You might want to take a look at [showdown-xss-filter](https://github.com/VisionistInc/showdown-xss-filter).
 
 It is also possible to return a Promise to a React Element from `generateMarkdownPreview`, which makes
