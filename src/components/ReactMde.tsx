@@ -33,6 +33,7 @@ export interface ReactMdeProps {
   maxEditorHeight?: number;
   initialEditorHeight?: number;
   minPreviewHeight?: number;
+  heightUnits?: string;
   classes?: Classes;
   refs?: Refs;
   toolbarCommands?: ToolbarCommands;
@@ -87,6 +88,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     minEditorHeight: 200,
     maxEditorHeight: 500,
     minPreviewHeight: 200,
+    heightUnits: "px",
     selectedTab: "write",
     disablePreview: false,
     suggestionTriggerCharacters: ["@"]
@@ -167,6 +169,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       value,
       l18n,
       minPreviewHeight,
+      heightUnits,
       childProps,
       selectedTab,
       generateMarkdownPreview,
@@ -224,6 +227,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             textAreaComponent={textAreaComponent}
             textAreaProps={childProps && childProps.textArea}
             height={this.state.editorHeight}
+            heightUnits={this.props.heightUnits}
             value={value}
             suggestionTriggerCharacters={suggestionTriggerCharacters}
             loadSuggestions={loadSuggestions}
@@ -250,6 +254,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             refObject={this.finalRefs.preview}
             loadingPreview={loadingPreview}
             minHeight={minPreviewHeight}
+            heightUnits={heightUnits}
             generateMarkdownPreview={generateMarkdownPreview}
             markdown={value}
           />
