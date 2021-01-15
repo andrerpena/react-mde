@@ -107,6 +107,7 @@ given `text` and `triggeredBy` (character that triggered the suggestions). The r
 The `preview` is what is going to be displayed in the suggestions box. The `value` is what is going to be inserted in the `textarea` on click or enter.
 - **suggestionTriggerCharacters (string[])**: Characters that will trigger mention suggestions to be loaded. This property is useless
 without `loadSuggestions`.
+- **suggestionsAutoplace?: boolean**: Try to move the suggestions popover around so that it fits in the viewport, defaults to false
 - **childProps?: [Object](https://github.com/andrerpena/react-mde/blob/master/src/child-props.ts#L16)**: An object containing props to be passed to `writeButton`, `previewButton`, `commandButtons` and `textArea`.
 
 ## Styling
