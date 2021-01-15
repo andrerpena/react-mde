@@ -60,7 +60,7 @@ export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownPro
   if (suggestionsAutoplace && left +
     textAreaRef.current.getBoundingClientRect().left +
     textAreaRef.current.ownerDocument.defaultView.pageXOffset +
-    caret.lineHeight * 0.75 * Math.max.apply(Math, suggestions.map(x => x.preview.toString().length)) > vw)
+    caret.lineHeight * 0.6666 * Math.max.apply(Math, suggestions.map(x => x.preview.toString().length)) > vw)
     style.right = textAreaRef.current.offsetWidth - caret.left;
   else
     style.left = left;
