@@ -43,6 +43,7 @@ export interface ReactMdeProps {
   readOnly?: boolean;
   disablePreview?: boolean;
   suggestionTriggerCharacters?: string[];
+  suggestionsAutoplace?: boolean;
   loadSuggestions?: (
     text: string,
     triggeredBy: string
@@ -91,7 +92,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
     heightUnits: "px",
     selectedTab: "write",
     disablePreview: false,
-    suggestionTriggerCharacters: ["@"]
+    suggestionTriggerCharacters: ["@"],
+    suggestionsAutoplace: false
   };
 
   constructor(props: ReactMdeProps) {
@@ -219,6 +221,7 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
           <TextArea
             classes={classes?.textArea}
             suggestionsDropdownClasses={classes?.suggestionsDropdown}
+            suggestionsAutoplace={this.props.suggestionsAutoplace}
             refObject={this.finalRefs.textarea}
             onChange={this.handleTextChange}
             onPaste={this.handlePaste}
