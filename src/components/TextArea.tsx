@@ -400,8 +400,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
             this.handleOnChange(event);
           }}
           onBlur={event => {
+            textAreaProps?.onBlur?.(event);
             if (suggestionsEnabled) {
-              textAreaProps?.onBlur?.(event);
               this.handleBlur();
             }
           }}
@@ -410,14 +410,14 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
             this.handleKeyDown(event);
           }}
           onKeyUp={event => {
+            textAreaProps?.onKeyUp?.(event);
             if (suggestionsEnabled) {
-              textAreaProps?.onKeyUp?.(event);
               this.handleKeyUp(event);
             }
           }}
           onKeyPress={event => {
+            textAreaProps?.onKeyPress?.(event);
             if (suggestionsEnabled) {
-              textAreaProps?.onKeyPress?.(event);
               this.handleKeyPress(event);
             }
           }}
