@@ -79,7 +79,9 @@ export const saveImageCommand: Command = {
           end: initialState.selection.start + placeHolder.length
         });
 
-        const realImageMarkdown = imageUrl ? `${breaksBefore}![image](${imageUrl})` : "";
+        const realImageMarkdown = imageUrl
+          ? `${breaksBefore}![image](${imageUrl})`
+          : "";
         const selectionDelta = realImageMarkdown.length - placeHolder.length;
 
         textApi.replaceSelection(realImageMarkdown);
