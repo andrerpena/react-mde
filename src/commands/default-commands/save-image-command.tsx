@@ -42,8 +42,8 @@ export const saveImageCommand: Command = {
     const items = isPasteEvent(context)
       ? dataTransferToArray((event as React.ClipboardEvent).clipboardData.items)
       : isDragEvent(context)
-        ? dataTransferToArray((event as React.DragEvent).dataTransfer.items)
-        : fileListToArray(
+      ? dataTransferToArray((event as React.DragEvent).dataTransfer.items)
+      : fileListToArray(
           (event as React.ChangeEvent<HTMLInputElement>).target.files
         );
 
