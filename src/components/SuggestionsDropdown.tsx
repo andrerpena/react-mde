@@ -24,20 +24,16 @@ export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownPro
   focusIndex,
   textAreaRef
 }) => {
-  const handleSuggestionClick =
-    (event: React.MouseEvent) => {
-      event.preventDefault();
-      const index = parseInt(
-        event.currentTarget.attributes["data-index"].value
-      );
-      onSuggestionSelected(index);
-    };
+  const handleSuggestionClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    const index = parseInt(event.currentTarget.attributes["data-index"].value);
+    onSuggestionSelected(index);
+  };
 
   // onMouseDown should be cancelled because onClick will handle it propertly. This way, the textarea does not lose
   // focus
-  const handleMouseDown =
-    (event: React.MouseEvent) => event.preventDefault();
-  
+  const handleMouseDown = (event: React.MouseEvent) => event.preventDefault();
+
   return (
     <ul
       className={classNames("mde-suggestions", classes)}
