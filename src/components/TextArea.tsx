@@ -385,9 +385,9 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       "textarea") as DetailedHTMLFactory<
       TextareaHTMLAttributes<HTMLTextAreaElement>,
       HTMLTextAreaElement
-      >;
-    
-    const heightVal = (height && heightUnits) ? height + heightUnits : height;
+    >;
+
+    const heightVal = height && heightUnits ? height + heightUnits : height;
 
     return (
       <div className="mde-textarea-wrapper">
