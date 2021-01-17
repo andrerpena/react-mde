@@ -42,6 +42,7 @@ export interface TextAreaProps {
   refObject?: React.RefObject<HTMLTextAreaElement>;
   readOnly?: boolean;
   height?: number;
+  heightUnits?: string;
   suggestionTriggerCharacters?: string[];
   loadSuggestions?: (
     text: string,
@@ -363,6 +364,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       readOnly,
       textAreaProps,
       height,
+      heightUnits,
       value,
       suggestionTriggerCharacters,
       loadSuggestions,
@@ -383,13 +385,15 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       "textarea") as DetailedHTMLFactory<
       TextareaHTMLAttributes<HTMLTextAreaElement>,
       HTMLTextAreaElement
-    >;
+      >;
+    
+    const heightVal = (height && heightUnits) ? height + heightUnits : height;
 
     return (
       <div className="mde-textarea-wrapper">
         <TextAreaComponent
           className={classNames("mde-text", classes)}
-          style={{ height }}
+          style={{ height: heightVal }}
           ref={this.props.refObject}
           readOnly={readOnly}
           value={value}
