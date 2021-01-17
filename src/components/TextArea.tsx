@@ -42,6 +42,7 @@ export interface TextAreaProps {
   refObject?: React.RefObject<HTMLTextAreaElement>;
   readOnly?: boolean;
   height?: number;
+  heightUnits?: string;
   suggestionTriggerCharacters?: string[];
   suggestionsAutoplace?: boolean;
   loadSuggestions?: (
@@ -364,6 +365,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       readOnly,
       textAreaProps,
       height,
+      heightUnits,
       value,
       suggestionTriggerCharacters,
       loadSuggestions,
@@ -384,13 +386,15 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
       "textarea") as DetailedHTMLFactory<
       TextareaHTMLAttributes<HTMLTextAreaElement>,
       HTMLTextAreaElement
-    >;
+      >;
+    
+    const heightVal = (height && heightUnits) ? height + heightUnits : height;
 
     return (
       <div className="mde-textarea-wrapper">
         <TextAreaComponent
           className={classNames("mde-text", classes)}
-          style={{ height }}
+          style={{ height: heightVal }}
           ref={this.props.refObject}
           readOnly={readOnly}
           value={value}
@@ -401,8 +405,8 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
             this.handleOnChange(event);
           }}
           onBlur={event => {
+            textAreaProps?.onBlur?.(event);
             if (suggestionsEnabled) {
-              textAreaProps?.onBlur?.(event);
               this.handleBlur();
             }
           }}
@@ -411,14 +415,14 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
             this.handleKeyDown(event);
           }}
           onKeyUp={event => {
+            textAreaProps?.onKeyUp?.(event);
             if (suggestionsEnabled) {
-              textAreaProps?.onKeyUp?.(event);
               this.handleKeyUp(event);
             }
           }}
           onKeyPress={event => {
+            textAreaProps?.onKeyPress?.(event);
             if (suggestionsEnabled) {
-              textAreaProps?.onKeyPress?.(event);
               this.handleKeyPress(event);
             }
           }}
