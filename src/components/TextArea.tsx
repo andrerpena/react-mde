@@ -44,6 +44,7 @@ export interface TextAreaProps {
   height?: number;
   heightUnits?: string;
   suggestionTriggerCharacters?: string[];
+  suggestionsAutoplace?: boolean;
   loadSuggestions?: (
     text: string,
     triggeredBy: string
@@ -445,6 +446,7 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
             caret={mention.caret}
             suggestions={mention.suggestions}
             onSuggestionSelected={this.handleSuggestionSelected}
+            suggestionsAutoplace={this.props.suggestionsAutoplace}
             focusIndex={mention.focusIndex}
             textAreaRef={this.props.refObject}
           />
