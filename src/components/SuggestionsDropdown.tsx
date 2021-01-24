@@ -26,48 +26,56 @@ export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownPro
   focusIndex,
   textAreaRef
 }) => {
-  const handleSuggestionClick =
-    (event: React.MouseEvent) => {
-      event.preventDefault();
-      const index = parseInt(
-        event.currentTarget.attributes["data-index"].value
-      );
-      onSuggestionSelected(index);
-    };
+  const handleSuggestionClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    const index = parseInt(event.currentTarget.attributes["data-index"].value);
+    onSuggestionSelected(index);
+  };
 
-  // onMouseDown should be cancelled because onClick will handle it propertly. This way, the textarea does not lose
-  // focus
-  const handleMouseDown =
-    (event: React.MouseEvent) => event.preventDefault();
+  const handleMouseDown = (event: React.MouseEvent) => event.preventDefault();
 
-  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-  
+  const vw = Math.max(
+    document.documentElement.clientWidth || 0,
+    window.innerWidth || 0
+  );
+  const vh = Math.max(
+    document.documentElement.clientHeight || 0,
+    window.innerHeight || 0
+  );
+
   const left = caret.left - textAreaRef.current.scrollLeft;
   const top = caret.top - textAreaRef.current.scrollTop;
 
-  const style = {} as React.CSSProperties;
-  if (suggestionsAutoplace && top +
-    textAreaRef.current.getBoundingClientRect().top +
-    textAreaRef.current.ownerDocument.defaultView.pageYOffset +
-    caret.lineHeight * 1.5 * suggestions.length > vh)
+  const style: React.CSSProperties = {};
+  if (
+    suggestionsAutoplace &&
+    top +
+      textAreaRef.current.getBoundingClientRect().top +
+      textAreaRef.current.ownerDocument.defaultView.pageYOffset +
+      caret.lineHeight * 1.5 * suggestions.length >
+      vh
+  )
     style.bottom = textAreaRef.current.offsetHeight - caret.top;
-  else
-    style.top = top;
-  
-  if (suggestionsAutoplace && left +
-    textAreaRef.current.getBoundingClientRect().left +
-    textAreaRef.current.ownerDocument.defaultView.pageXOffset +
-    caret.lineHeight * 0.6666 * Math.max.apply(Math, suggestions.map(x => x.preview.toString().length)) > vw)
+  else style.top = top;
+
+  if (
+    suggestionsAutoplace &&
+    left +
+      textAreaRef.current.getBoundingClientRect().left +
+      textAreaRef.current.ownerDocument.defaultView.pageXOffset +
+      caret.lineHeight *
+        0.6666 *
+        Math.max.apply(
+          Math,
+          suggestions.map(x => x.preview.toString().length)
+        ) >
+      vw
+  )
     style.right = textAreaRef.current.offsetWidth - caret.left;
-  else
-    style.left = left;
-  
+  else style.left = left;
+
   return (
-    <ul
-      className={classNames("mde-suggestions", classes)}
-      style={style}
-    >
+    <ul className={classNames("mde-suggestions", classes)} style={style}>
       {suggestions.map((s, i) => (
         <li
           onClick={handleSuggestionClick}

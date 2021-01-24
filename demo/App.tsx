@@ -94,6 +94,7 @@ export class App extends React.Component<{}, AppState> {
           selectedTab={this.state.tab}
           loadSuggestions={this.loadSuggestions}
           suggestionTriggerCharacters={["@"]}
+          suggestionsAutoplace={true}
           paste={{
             saveImage: save
           }}

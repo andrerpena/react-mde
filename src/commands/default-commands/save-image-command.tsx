@@ -48,12 +48,13 @@ export const saveImageCommand: Command = {
         );
 
     for (const index in items) {
+      const initialState = textApi.getState();
       const breaksBeforeCount = getBreaksNeededForEmptyLineBefore(
         initialState.text,
         initialState.selection.start
       );
-      const breaksBefore = Array(breaksBeforeCount + 1).join("\n");
 
+      const breaksBefore = Array(breaksBeforeCount + 1).join("\n");
       const placeHolder = `${breaksBefore}![${l18n.uploadingImage}]()`;
 
       textApi.replaceSelection(placeHolder);
@@ -78,8 +79,9 @@ export const saveImageCommand: Command = {
           end: initialState.selection.start + placeHolder.length
         });
 
-        const realImageMarkdown = `${breaksBefore}![image](${imageUrl})`;
-
+        const realImageMarkdown = imageUrl
+          ? `${breaksBefore}![image](${imageUrl})`
+          : "";
         const selectionDelta = realImageMarkdown.length - placeHolder.length;
 
         textApi.replaceSelection(realImageMarkdown);
