@@ -51,9 +51,8 @@ export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownPro
     suggestionsAutoplace &&
     top +
       textAreaRef.current.getBoundingClientRect().top +
-      textAreaRef.current.ownerDocument.defaultView.pageYOffset +
-      caret.lineHeight * 1.5 * suggestions.length >
-      vh
+      textAreaRef.current.ownerDocument.defaultView.pageYOffset >
+      vh / 2
   )
     style.bottom = textAreaRef.current.offsetHeight - caret.top;
   else style.top = top;
@@ -62,14 +61,8 @@ export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownPro
     suggestionsAutoplace &&
     left +
       textAreaRef.current.getBoundingClientRect().left +
-      textAreaRef.current.ownerDocument.defaultView.pageXOffset +
-      caret.lineHeight *
-        0.6666 *
-        Math.max.apply(
-          Math,
-          suggestions.map(x => x.preview.toString().length)
-        ) >
-      vw
+      textAreaRef.current.ownerDocument.defaultView.pageXOffset >
+      vw / 2
   )
     style.right = textAreaRef.current.offsetWidth - caret.left;
   else style.left = left;
