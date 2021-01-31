@@ -49,22 +49,16 @@ export const SuggestionsDropdown: React.FunctionComponent<SuggestionsDropdownPro
   const style: React.CSSProperties = {};
   if (
     suggestionsAutoplace &&
-    top +
-      textAreaRef.current.getBoundingClientRect().top +
-      textAreaRef.current.ownerDocument.defaultView.pageYOffset >
-      vh / 2
+    top + textAreaRef.current.getBoundingClientRect().top > vh / 2
   )
-    style.bottom = textAreaRef.current.offsetHeight - caret.top;
+    style.bottom = textAreaRef.current.offsetHeight - top;
   else style.top = top;
 
   if (
     suggestionsAutoplace &&
-    left +
-      textAreaRef.current.getBoundingClientRect().left +
-      textAreaRef.current.ownerDocument.defaultView.pageXOffset >
-      vw / 2
+    left + textAreaRef.current.getBoundingClientRect().left > vw / 2
   )
-    style.right = textAreaRef.current.offsetWidth - caret.left;
+    style.right = textAreaRef.current.offsetWidth - left;
   else style.left = left;
 
   return (
