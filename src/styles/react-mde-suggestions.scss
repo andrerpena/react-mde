@@ -26,9 +26,11 @@ ul.mde-suggestions {
       border-bottom-left-radius: $mde-border-radius;
     }
 
-    &:hover, &[aria-selected=true] {
-      color: $mde-white-color;
-      background-color: $mde-selected-color;
+    &:not(.mde-loading-placeholder) {
+      &:hover, &[aria-selected=true] {
+        color: $mde-white-color;
+        background-color: $mde-selected-color;
+      }
     }
   }
 }

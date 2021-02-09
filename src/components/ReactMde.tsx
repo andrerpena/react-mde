@@ -47,7 +47,7 @@ export interface ReactMdeProps {
   loadSuggestions?: (
     text: string,
     triggeredBy: string
-  ) => Promise<Suggestion[]>;
+  ) => Promise<Suggestion[] | { loading: React.ReactNode }>;
   setSuggestions?: React.Ref<(suggestions: Suggestion[]) => void | null>;
   childProps?: ChildProps;
   paste?: PasteOptions;
