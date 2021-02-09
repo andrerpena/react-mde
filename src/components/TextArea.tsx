@@ -49,6 +49,7 @@ export interface TextAreaProps {
     text: string,
     triggeredBy: string
   ) => Promise<Suggestion[]>;
+  setSuggestions?: React.Ref<(suggestions: Suggestion[]) => void | null>;
 
   onPaste: React.ClipboardEventHandler;
   onDrop: React.DragEventHandler;
@@ -100,6 +101,9 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   constructor(props) {
     super(props);
     this.state = { mention: { status: "inactive", suggestions: [] } };
+    if (props.setSuggestions) {
+      props.setSuggestions.current = this.setSuggestions;
+    }
   }
 
   suggestionsEnabled() {
@@ -123,6 +127,29 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
     const { mention } = this.state;
     if (mention) {
       this.setState({ mention: { status: "inactive", suggestions: [] } });
+    }
+  };
+
+  setSuggestions = (suggestions: Suggestion[]) => {
+    if (this.state.mention.status === "inactive") {
+      return;
+    }
+    if (!suggestions.length) {
+      this.setState({
+        mention: {
+          status: "inactive",
+          suggestions: []
+        }
+      });
+    } else {
+      this.setState({
+        mention: {
+          ...this.state.mention,
+          status: "active",
+          suggestions,
+          focusIndex: 0
+        }
+      });
     }
   };
 
