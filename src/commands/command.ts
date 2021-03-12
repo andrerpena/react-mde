@@ -47,6 +47,15 @@ export interface PasteOptions {
    * Command to execute on paste command
    */
   command?: string;
+  /**
+   * The accept attribute specifies a filter for what file types the user can pick from the file input dialog box.
+   */
+  accept?: string;
+  /**
+   * When present, it specifies that the user is allowed to enter more than one value in the file input dialog box.
+   * By default is set to true
+   */
+  multiple?: boolean;
 }
 
 export type SaveImageHandler = (

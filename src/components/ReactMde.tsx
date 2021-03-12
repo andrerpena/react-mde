@@ -243,8 +243,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
               <input
                 className={classNames("image-input")}
                 type="file"
-                accept="image/*"
-                multiple
+                accept={this.props.paste.accept || "image/*"}
+                multiple={this.props.paste.multiple || true}
                 onChange={this.handleImageSelection}
               />
               <span>{l18n.pasteDropSelect}</span>
