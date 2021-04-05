@@ -109,6 +109,7 @@ The `preview` is what is going to be displayed in the suggestions box. The `valu
 without `loadSuggestions`.
 - **suggestionsAutoplace?: boolean**: Try to move the suggestions popover around so that it fits in the viewport, defaults to false
 - **childProps?: [Object](https://github.com/andrerpena/react-mde/blob/master/src/child-props.ts#L16)**: An object containing props to be passed to `writeButton`, `previewButton`, `commandButtons` and `textArea`.
+- **paste: [PasteOptions](https://github.com/andrerpena/react-mde/blob/master/src/commands/command.ts)**: Options for file upload. 
 
 ## Styling
 
