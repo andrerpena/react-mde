@@ -2,7 +2,8 @@ import {
   Command,
   CommandContext,
   ExecuteOptions,
-  PasteCommandContext
+  PasteCommandContext,
+  PasteOptions
 } from "../command";
 import { readFileAsync } from "../../util/files";
 import { getBreaksNeededForEmptyLineBefore } from "../../util/MarkdownUtil";
@@ -26,6 +27,42 @@ function fileListToArray(list: FileList): Array<File> {
   return result;
 }
 
+function filterItems(
+  items: File[],
+  { multiple, accept }: Pick<PasteOptions, "multiple" | "accept">
+): File[] {
+  let filteredItems = items;
+
+  if (!multiple) {
+    filteredItems = filteredItems.slice(0, 1);
+  }
+
+  if (accept) {
+    //https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#unique_file_type_specifiers
+    const acceptedTypes = accept.split(",");
+    const fileExtensions = new Set(
+      acceptedTypes.filter(t => /^\.\w+/.test(t)).map(t => t.split(".")[1])
+    );
+    const mimeTypes = new Set(
+      acceptedTypes.filter(t => /^[-\w.]+\/[-\w.]+$/.test(t))
+    );
+    const anyTypes = new Set(
+      acceptedTypes
+        .filter(t => /(audio|video|image)\/\*/.test(t))
+        .map(t => t.split("/")[0])
+    );
+
+    filteredItems = filteredItems.filter(
+      f =>
+        fileExtensions.has(f.name.split(".")[1]) ||
+        mimeTypes.has(f.type) ||
+        anyTypes.has(f.type.split("/")[0])
+    );
+  }
+
+  return filteredItems;
+}
+
 export const saveImageCommand: Command = {
   async execute({
     initialState,
@@ -37,7 +74,10 @@ export const saveImageCommand: Command = {
       throw new Error("wrong context");
     }
     const pasteContext = context as PasteCommandContext;
-    const { event, saveImage } = pasteContext;
+    const {
+      event,
+      pasteOptions: { saveImage, multiple, accept }
+    } = pasteContext;
 
     const items = isPasteEvent(context)
       ? dataTransferToArray((event as React.ClipboardEvent).clipboardData.items)
@@ -47,7 +87,9 @@ export const saveImageCommand: Command = {
           (event as React.ChangeEvent<HTMLInputElement>).target.files
         );
 
-    for (const index in items) {
+    const filteredItems = filterItems(items, { multiple, accept });
+
+    for (const index in filteredItems) {
       const initialState = textApi.getState();
       const breaksBeforeCount = getBreaksNeededForEmptyLineBefore(
         initialState.text,

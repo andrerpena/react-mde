@@ -143,7 +143,7 @@ export class CommandOrchestrator {
       return this.executeCommand(
         this.pasteOptions.command || getDefaultSaveImageCommandName(),
         {
-          saveImage: this.pasteOptions.saveImage,
+          pasteOptions: this.pasteOptions,
           event: event
         } as PasteCommandContext
       );
@@ -158,7 +158,7 @@ export class CommandOrchestrator {
       return this.executeCommand(
         this.pasteOptions.command || getDefaultSaveImageCommandName(),
         {
-          saveImage: this.pasteOptions.saveImage,
+          pasteOptions: this.pasteOptions,
           event: event
         } as PasteCommandContext
       );
@@ -173,7 +173,7 @@ export class CommandOrchestrator {
       return this.executeCommand(
         this.pasteOptions.command || getDefaultSaveImageCommandName(),
         {
-          saveImage: this.pasteOptions.saveImage,
+          pasteOptions: this.pasteOptions,
           event: event
         } as PasteCommandContext
       );

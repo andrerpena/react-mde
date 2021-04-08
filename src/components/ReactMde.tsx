@@ -73,6 +73,14 @@ export interface ReactMdeState {
   editorHeight: number;
 }
 
+const pasteOptionDefaults: Required<Omit<
+  PasteOptions,
+  "saveImage" | "command"
+>> = {
+  accept: "image/*",
+  multiple: false
+};
+
 export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
   /**
    * "finalRefs" is a clone of "props.refs" except that undefined refs are set to default values
@@ -110,6 +118,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
       this.finalRefs.textarea,
       this.props.l18n,
       this.props.paste
+        ? { ...pasteOptionDefaults, ...this.props.paste }
+        : undefined
     );
     const minEditorHeight = Math.min(
       props.maxEditorHeight,
@@ -243,8 +253,10 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
               <input
                 className={classNames("image-input")}
                 type="file"
-                accept={this.props.paste.accept || "image/*"}
-                multiple={this.props.paste.multiple || true}
+                accept={this.props.paste.accept ?? pasteOptionDefaults.accept}
+                multiple={
+                  this.props.paste.multiple ?? pasteOptionDefaults.multiple
+                }
                 onChange={this.handleImageSelection}
               />
               <span>{l18n.pasteDropSelect}</span>
