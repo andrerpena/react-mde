@@ -61,7 +61,7 @@ export const saveImageCommand: Command = {
 
       const blob = items[index];
       const blobContents = await readFileAsync(blob);
-      const savingImage = saveImage(blobContents);
+      const savingImage = saveImage(blobContents, blob);
       const imageUrl = (await savingImage.next()).value;
 
       const newState = textApi.getState();
