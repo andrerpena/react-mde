@@ -8,12 +8,11 @@ A simple yet powerful and extensible **React Markdown Editor** that aims to have
 
 ## Demo
 
-- [Demo](http://andrerpena.me/react-mde/)
-- [CodeSandbox Demo JSX ](https://codesandbox.io/s/react-mde-latest-5i5ov?file=/src/index.js)
-- [CodeSandbox Demo JSX - Using ReactMarkdown instead of Showdown](https://codesandbox.io/s/react-mde-latest-forked-f9ti5?file=/src/index.js)
-- [CodeSandbox Demo TSX ](https://codesandbox.io/s/react-typescript-i3wju?file=/src/index.tsx)
-- [CodeSandbox Demo TSX - Customized toolbar](https://codesandbox.io/s/react-typescript-m7cbx?file=/src/index.tsx)
-- [CodeSandbox Demo TSX - Custom command](https://codesandbox.io/s/react-typescript-icqgv?file=/src/index.tsx)
+- [Demo JSX ](https://codesandbox.io/s/react-mde-latest-5i5ov?file=/src/index.js)
+- [Demo JSX - Using ReactMarkdown instead of Showdown](https://codesandbox.io/s/react-mde-latest-forked-f9ti5?file=/src/index.js)
+- [Demo TSX ](https://codesandbox.io/s/react-typescript-i3wju?file=/src/index.tsx)
+- [Demo TSX - Customized toolbar](https://codesandbox.io/s/react-typescript-m7cbx?file=/src/index.tsx)
+- [Demo TSX - Custom command](https://codesandbox.io/s/react-typescript-icqgv?file=/src/index.tsx)
 
 
 ## Installing
@@ -110,6 +109,7 @@ The `preview` is what is going to be displayed in the suggestions box. The `valu
 without `loadSuggestions`.
 - **suggestionsAutoplace?: boolean**: Try to move the suggestions popover around so that it fits in the viewport, defaults to false
 - **childProps?: [Object](https://github.com/andrerpena/react-mde/blob/master/src/child-props.ts#L16)**: An object containing props to be passed to `writeButton`, `previewButton`, `commandButtons` and `textArea`.
+- **paste: [PasteOptions](https://github.com/andrerpena/react-mde/blob/master/src/commands/command.ts)**: Options for file upload. 
 
 ## Styling
 
