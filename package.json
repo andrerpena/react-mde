@@ -1,6 +1,6 @@
 {
   "name": "react-mde",
-  "version": "11.4.0",
+  "version": "11.5.0",
   "description": "React Markdown Editor",
   "main": "./lib/js/index.js",
   "types": "./lib/definitions/index.d.ts",
@@ -65,8 +65,8 @@
     "normalize.css": "^8.0.0",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-hot-loader": "^4.12.18",
     "sass-loader": "^8.0.0",
     "showdown": "^1.8.6",
@@ -82,8 +82,8 @@
   },
   "homepage": "https://github.com/andrerpena/react-mde.git#readme",
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
   },
   "style": "react-mde/lib/styles/css/react-mde-all.css",
   "resolutions": {
