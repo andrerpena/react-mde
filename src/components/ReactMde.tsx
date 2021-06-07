@@ -241,6 +241,8 @@ export class ReactMde extends React.Component<ReactMdeProps, ReactMdeState> {
             textAreaProps={childProps && childProps.textArea}
             height={this.state.editorHeight}
             heightUnits={this.props.heightUnits}
+            maxEditorHeight={maxEditorHeight}
+            minEditorHeight={minEditorHeight}
             value={value}
             suggestionTriggerCharacters={suggestionTriggerCharacters}
             loadSuggestions={loadSuggestions}
