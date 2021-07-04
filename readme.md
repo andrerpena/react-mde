@@ -1,3 +1,5 @@
+> This repository is now archived. Unfortunately I do not have the time to maintain it. Sorry for the inconvenience and thanks a lot to all the people who contributed to improving react-mde.
+
 # 📝 react-mde
 
 [![npm](https://img.shields.io/npm/dt/react-mde)](https://www.npmjs.com/package/react-mde)
