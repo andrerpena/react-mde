@@ -1,4 +1,5 @@
-import { Selection, TextSection } from "../types";
+import { TextSection } from "../types/TextSection";
+import { Selection } from "../types/Selection";
 
 export function getSurroundingWord(text: string, position: number): Selection {
   if (!text) throw Error("Argument 'text' should be truthy");

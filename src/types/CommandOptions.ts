@@ -18,7 +18,7 @@ export interface TextState {
   selection: Selection;
 }
 
-export interface TextApi {
+export interface TextController {
   /**
    * Replaces the current selection with the new text. This will make the new selectedText to be empty, the
    * selection start and selection end will be the same and will both point to the end

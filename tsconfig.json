@@ -1,22 +1,20 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
-    "outDir": "ts-build",
-    "noImplicitAny": false,
-    "jsx": "react",
+    // Default
     "target": "es5",
-    "module": "commonjs",
-    "lib": [
-      "dom",
-      "es2015",
-      "es2015.collection",
-      "es2016",
-      "es2016.array.include"
-    ],
-    "skipLibCheck": true
-  },
-  "exclude": [
-    "**/__tests__/**",
-    "cypress/**"
-  ]
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+
+    // Added
+    "jsx": "react",
+    "module": "ESNext",
+    "declaration": true,
+    "declarationDir": "types",
+    "sourceMap": true,
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+  }
 }
