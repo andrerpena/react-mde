@@ -1,27 +1,23 @@
 import * as React from "react";
-import {
-  getBreaksNeededForEmptyLineAfter,
-  getBreaksNeededForEmptyLineBefore,
-  selectWord
-} from "../../util/MarkdownUtil";
 import { Command } from "../command";
+import { markdownHelpers } from "../../helpers/markdown-helpers";
 
-export const quoteCommand: Command = {
+export const quote: Command = {
   execute: ({ initialState, textApi }) => {
     // Adjust the selection to encompass the whole word if the caret is inside one
-    const newSelectionRange = selectWord({
+    const newSelectionRange = markdownHelpers.selectWord({
       text: initialState.text,
       selection: initialState.selection
     });
     const state1 = textApi.setSelectionRange(newSelectionRange);
 
-    const breaksBeforeCount = getBreaksNeededForEmptyLineBefore(
+    const breaksBeforeCount = markdownHelpers.getBreaksNeededForEmptyLineBefore(
       state1.text,
       state1.selection.start
     );
     const breaksBefore = Array(breaksBeforeCount + 1).join("\n");
 
-    const breaksAfterCount = getBreaksNeededForEmptyLineAfter(
+    const breaksAfterCount = markdownHelpers.getBreaksNeededForEmptyLineAfter(
       state1.text,
       state1.selection.end
     );

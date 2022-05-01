@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Command } from "../command";
-import { selectWord } from "../../util/MarkdownUtil";
+import { markdownHelpers } from "../../helpers/markdown-helpers";
 import { TextController, TextState } from "../../types/CommandOptions";
 
 function setHeader(
@@ -9,7 +9,7 @@ function setHeader(
   prefix: string
 ) {
   // Adjust the selection to encompass the whole word if the caret is inside one
-  const newSelectionRange = selectWord({
+  const newSelectionRange = markdownHelpers.selectWord({
     text: initialState.text,
     selection: initialState.selection
   });
@@ -23,7 +23,7 @@ function setHeader(
   });
 }
 
-export const headerCommand: Command = {
+export const header: Command = {
   execute: ({ initialState, textApi }) => {
     setHeader(initialState, textApi, "### ");
   }

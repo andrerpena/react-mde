@@ -1,4 +1,4 @@
-export interface Selection {
+export interface SelectionRange {
   start: number;
   end: number;
 }

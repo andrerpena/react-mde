@@ -10,11 +10,17 @@ import {
 import { useTextAreaMarkdownEditor } from "../src/hooks/use-markdown-editor";
 import { faBold, faItalic } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { bold, italic } from "../src";
 
 export type DemoProps = {};
 
 export const Demo: React.FunctionComponent<DemoProps> = props => {
-  const { ref, commandController } = useTextAreaMarkdownEditor();
+  const { ref, commandController } = useTextAreaMarkdownEditor({
+    commandMap: {
+      bold: bold,
+      italic: italic
+    }
+  });
 
   return (
     <ChakraProvider>

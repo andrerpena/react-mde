@@ -1,11 +1,11 @@
 import * as React from "react";
-import { selectWord } from "../../util/MarkdownUtil";
 import { Command } from "../command";
+import { markdownHelpers } from "../../helpers/markdown-helpers";
 
-export const strikeThroughCommand: Command = {
+export const strikethrough: Command = {
   execute: ({ initialState, textApi }) => {
     // Adjust the selection to encompass the whole word if the caret is inside one
-    const newSelectionRange = selectWord({
+    const newSelectionRange = markdownHelpers.selectWord({
       text: initialState.text,
       selection: initialState.selection
     });

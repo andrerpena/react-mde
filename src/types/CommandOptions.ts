@@ -1,4 +1,4 @@
-import { Selection } from "./Selection";
+import { SelectionRange } from "./SelectionRange";
 
 /**
  * The state of the text of the whole editor
@@ -15,7 +15,7 @@ export interface TextState {
   /**
    * The section of the text that is selected
    */
-  selection: Selection;
+  selection: SelectionRange;
 }
 
 export interface TextController {
@@ -30,7 +30,7 @@ export interface TextController {
    * Selects the specified text range
    * @param selection
    */
-  setSelectionRange(selection: Selection): TextState;
+  setSelectionRange(selection: SelectionRange): TextState;
   /**
    * Get the current text state
    */

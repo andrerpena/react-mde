@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Command } from "../command";
-import { selectWord } from "../../util/MarkdownUtil";
+import { markdownHelpers } from "../../helpers/markdown-helpers";
 
-export const imageCommand: Command = {
+export const image: Command = {
   execute: ({ initialState, textApi }) => {
     // Replaces the current selection with the whole word selected
     const state1 = textApi.setSelectionRange(
-      selectWord({
+      markdownHelpers.selectWord({
         text: initialState.text,
         selection: initialState.selection
       })

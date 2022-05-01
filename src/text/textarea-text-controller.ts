@@ -1,6 +1,6 @@
 import { TextController, TextState } from "../types/CommandOptions";
 import * as React from "react";
-import { Selection } from "../types/Selection";
+import { SelectionRange } from "../types/SelectionRange";
 
 export class TextAreaTextController implements TextController {
   textAreaRef: React.RefObject<HTMLTextAreaElement>;
@@ -18,7 +18,7 @@ export class TextAreaTextController implements TextController {
     return getStateFromTextArea(textArea);
   }
 
-  setSelectionRange(selection: Selection): TextState {
+  setSelectionRange(selection: SelectionRange): TextState {
     const textArea = this.textAreaRef.current;
     if (!textArea) {
       throw new Error("TextAreaRef is not set");

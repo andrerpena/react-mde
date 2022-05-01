@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Command } from "../command";
-import { selectWord } from "../../util/MarkdownUtil";
+import { markdownHelpers } from "../../helpers/markdown-helpers";
 
-export const boldCommand: Command = {
+export const bold: Command = {
   execute: ({ initialState, textApi }) => {
     // Adjust the selection to encompass the whole word if the caret is inside one
-    const newSelectionRange = selectWord({
+    const newSelectionRange = markdownHelpers.selectWord({
       text: initialState.text,
       selection: initialState.selection
     });

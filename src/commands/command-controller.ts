@@ -1,8 +1,6 @@
 import { extractKeyActivatedCommands } from "./command-utils";
-import * as React from "react";
 import { TextController } from "../types/CommandOptions";
 import { Command, CommandContext, CommandMap } from "./command";
-import { getDefaultCommandMap } from "./markdown-commands/defaults";
 
 export class CommandController {
   private readonly textController: TextController;
@@ -18,7 +16,7 @@ export class CommandController {
 
   constructor(textController: TextController, commandMap: CommandMap) {
     this.textController = textController;
-    this.commandMap = { ...getDefaultCommandMap(), ...(commandMap || {}) };
+    this.commandMap = commandMap;
     this.keyActivatedCommands = extractKeyActivatedCommands(commandMap);
   }
 
