@@ -1,6 +1,8 @@
-> This repository is now archived. Unfortunately I do not have the time to maintain it. Sorry for the inconvenience and thanks a lot to all the people who contributed to improving react-mde.
+⚠️ Attention 
+===
+This repository is undergoing a huge refactoring and react-mde will now be headless. Meaning, it won't be opinionated about styles anymore. The `master` branch now contains the new version. No updates to the 11.5.0 will ever come.
 
-# 📝 react-mde
+# 📝 react-mde (11.5.0)
 
 [![npm](https://img.shields.io/npm/dt/react-mde)](https://www.npmjs.com/package/react-mde)
 [![MinZipped](https://badgen.net/bundlephobia/minzip/react-mde)](https://bundlephobia.com/result?p=react-mde)
