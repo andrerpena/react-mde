@@ -1,35 +1,25 @@
-import { extractKeyActivatedCommands } from "./command-utils";
 import { TextController } from "../types/CommandOptions";
-import { Command, CommandContext, CommandMap } from "./command";
+import { CommandContext, CommandMap } from "./command";
 
-export class CommandController {
+export class CommandController<CommandName extends string> {
   private readonly textController: TextController;
-  private readonly commandMap: CommandMap;
-  /**
-   * Names of commands that can be activated by the keyboard
-   */
-  keyActivatedCommands: string[];
+  private readonly commandMap: CommandMap<CommandName>;
+
   /**
    * Indicates whether there is a command currently executing
    */
   isExecuting: boolean = false;
 
-  constructor(textController: TextController, commandMap: CommandMap) {
+  constructor(
+    textController: TextController,
+    commandMap: CommandMap<CommandName>
+  ) {
     this.textController = textController;
     this.commandMap = commandMap;
-    this.keyActivatedCommands = extractKeyActivatedCommands(commandMap);
   }
 
-  getCommand = (name: string): Command => {
-    const command = this.commandMap[name];
-    if (!command) {
-      throw new Error(`Cannot execute command. Command not found: ${name}`);
-    }
-    return command;
-  };
-
   async executeCommand(
-    commandName: string,
+    commandName: CommandName,
     context?: CommandContext
   ): Promise<void> {
     if (this.isExecuting) {
