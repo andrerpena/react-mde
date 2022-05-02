@@ -1,5 +1,3 @@
-// Command controller
-
 // Individual commands
 import { header } from "./commands/markdown-commands/header";
 import { bold } from "./commands/markdown-commands/bold";
@@ -19,12 +17,16 @@ import type { TextController } from "./types/CommandOptions";
 import { TextAreaTextController } from "./text/textarea-text-controller";
 import { textHelpers } from "./helpers/textHelpers";
 import { code } from "./commands/markdown-commands/code";
+import { useTextAreaMarkdownEditor } from "./hooks/use-markdown-editor";
 
 export {
+  // helpers
   textHelpers,
+  // controllers
   CommandController,
   TextController,
   TextAreaTextController,
+  // commands
   header,
   bold,
   italic,
@@ -36,5 +38,7 @@ export {
   checkedListCommand,
   orderedListCommand,
   unorderedListCommand,
-  image
+  image,
+    // hooks
+  useTextAreaMarkdownEditor
 };
