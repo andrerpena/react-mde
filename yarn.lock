@@ -1544,7 +1544,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@16.9.4":
+"@types/react@*":
   version "16.9.4"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.4.tgz#de8cf5e5e2838659fb78fa93181078469eeb19fc"
   integrity sha512-ItGNmJvQ0IvWt8rbk5PLdpdQhvBVxAaXI9hDlx7UMd8Ie1iMIuwMNiKeTfmVN517CdplpyXvA22X4zm4jGGZnw==
@@ -4644,10 +4644,10 @@ react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-mde@12.0.4:
-  version "12.0.4"
-  resolved "https://registry.yarnpkg.com/react-mde/-/react-mde-12.0.4.tgz#001d88a15c5ca396e83e11928dec224d744d7ab5"
-  integrity sha512-nXqjy6LA9qEVSXafEEGWvIh9hIASKYaJOBIVCZbX4vaRdaFOvew8rcXMikIyzr2Ku+EPyJXPVkZC4bMdAqAp9g==
+react-mde@12.0.5:
+  version "12.0.5"
+  resolved "https://registry.yarnpkg.com/react-mde/-/react-mde-12.0.5.tgz#f94672a65174927a39e5f24bbc642376ac528f38"
+  integrity sha512-5yVQKxLTgFkvQACRoTjqBlZuAwgJrLGJudTlL7KNZ7GK06L6Pv7ii6ZejmzccAO38F7EHbM+73E+gpK/W1bTjw==
 
 react-refresh@^0.12.0:
   version "0.12.0"
