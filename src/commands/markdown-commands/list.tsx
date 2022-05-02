@@ -1,7 +1,7 @@
 import * as React from "react";
 import { TextController, TextState } from "../../types/CommandOptions";
 import { Command } from "../command";
-import { markdownHelpers } from "../../helpers/markdown-helpers";
+import { textHelpers } from "../../helpers/textHelpers";
 
 export type AlterLineFunction = (line: string, index: number) => string;
 
@@ -34,37 +34,42 @@ export function insertBeforeEachLine(
 
 export const makeList = (
   state0: TextState,
-  api: TextController,
+  textController: TextController,
   insertBefore: string | AlterLineFunction
 ) => {
   // Adjust the selection to encompass the whole word if the caret is inside one
-  const newSelectionRange = markdownHelpers.selectWord({
+  const newSelectionRange = textHelpers.selectWord({
     text: state0.text,
     selection: state0.selection
   });
-  const state1 = api.setSelectionRange(newSelectionRange);
+  const state1 = textController.setSelectionRange(newSelectionRange);
 
-  const breaksBeforeCount = markdownHelpers.getBreaksNeededForEmptyLineBefore(
+  const breaksBeforeCount = textHelpers.getBreaksNeededForEmptyLineBefore(
     state1.text,
     state1.selection.start
   );
   const breaksBefore = Array(breaksBeforeCount + 1).join("\n");
 
-  const breaksAfterCount = markdownHelpers.getBreaksNeededForEmptyLineAfter(
+  const breaksAfterCount = textHelpers.getBreaksNeededForEmptyLineAfter(
     state1.text,
     state1.selection.end
   );
   const breaksAfter = Array(breaksAfterCount + 1).join("\n");
 
-  const modifiedText = insertBeforeEachLine(state1.selectedText, insertBefore);
+  const modifiedText = insertBeforeEachLine(
+    textHelpers.getSelectedText(state1),
+    insertBefore
+  );
 
-  api.replaceSelection(
+  textController.replaceSelection(
     `${breaksBefore}${modifiedText.modifiedText}${breaksAfter}`
   );
 
   // Specifically when the text has only one line, we can exclude the "- ", for example, from the selection
   const oneLinerOffset =
-    state1.selectedText.indexOf("\n") === -1 ? modifiedText.insertionLength : 0;
+    textHelpers.getSelectedText(state1).indexOf("\n") === -1
+      ? modifiedText.insertionLength
+      : 0;
 
   const selectionStart =
     state1.selection.start + breaksBeforeCount + oneLinerOffset;
@@ -72,7 +77,7 @@ export const makeList = (
     selectionStart + modifiedText.modifiedText.length - oneLinerOffset;
 
   // Adjust the selection to not contain the **
-  api.setSelectionRange({
+  textController.setSelectionRange({
     start: selectionStart,
     end: selectionEnd
   });

@@ -7,7 +7,7 @@ import { italic } from "./commands/markdown-commands/italic";
 import { strikethrough } from "./commands/markdown-commands/strikethrough";
 import { link } from "./commands/markdown-commands/link";
 import { quote } from "./commands/markdown-commands/quote";
-import { code } from "./commands/markdown-commands/code";
+import { codeBlock } from "./commands/markdown-commands/codeBlock";
 import {
   checkedListCommand,
   orderedListCommand,
@@ -17,10 +17,11 @@ import { image } from "./commands/markdown-commands/image";
 import { CommandController } from "./commands/command-controller";
 import type { TextController } from "./types/CommandOptions";
 import { TextAreaTextController } from "./text/textarea-text-controller";
-import { markdownHelpers } from "./helpers/markdown-helpers";
+import { textHelpers } from "./helpers/textHelpers";
+import { code } from "./commands/markdown-commands/code";
 
 export {
-  markdownHelpers,
+  textHelpers,
   CommandController,
   TextController,
   TextAreaTextController,
@@ -31,6 +32,7 @@ export {
   link,
   quote,
   code,
+  codeBlock,
   checkedListCommand,
   orderedListCommand,
   unorderedListCommand,

@@ -34,28 +34,30 @@ export class CommandController {
   ): Promise<void> {
     if (this.isExecuting) {
       // The simplest thing to do is to ignore commands while
-      // there is already a command executing. The alternative would be to queue commands
+      // there is already a command execu
+      // ting. The alternative would be to queue commands
       // but there is no guarantee that the state after one command executes will still be compatible
       // with the next one. In fact, it is likely not to be.
       return;
     }
 
-    this.isExecuting = true;
     const command = this.commandMap[commandName];
-    const result = command.execute({
-      initialState: this.textController.getState(),
-      textApi: this.textController,
-      context
-    });
-    await result;
-    this.isExecuting = false;
-  }
 
-  /**
-   * Returns a command by name
-   * @param name
-   */
-  getCommandByName(name: string) {
-    return this.commandMap[name];
+    if (!command) {
+      throw new Error(
+        `Cannot execute command. Command not found: ${commandName}`
+      );
+    }
+
+    const executeOptions = {
+      initialState: this.textController.getState(),
+      textApi: this.textController
+    };
+
+    if (command.shouldUndo?.(executeOptions) && command?.undo) {
+      command.undo(executeOptions);
+    } else {
+      await command.execute(executeOptions);
+    }
   }
 }

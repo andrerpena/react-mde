@@ -1,53 +1,43 @@
 import * as React from "react";
 import { Command } from "../command";
-import { markdownHelpers } from "../../helpers/markdown-helpers";
+import { textHelpers } from "../../helpers/textHelpers";
 
 export const code: Command = {
-  execute: async ({ textApi, initialState }) => {
+  shouldUndo: options => {
+    return (
+      textHelpers.getCharactersBeforeSelection(options.initialState, 1) ===
+        "`" &&
+      textHelpers.getCharactersAfterSelection(options.initialState, 1) === "`"
+    );
+  },
+  execute: ({ initialState, textApi }) => {
     // Adjust the selection to encompass the whole word if the caret is inside one
-    const newSelectionRange = markdownHelpers.selectWord({
+    const newSelectionRange = textHelpers.selectWord({
       text: initialState.text,
       selection: initialState.selection
     });
     const state1 = textApi.setSelectionRange(newSelectionRange);
-
-    // when there's no breaking line
-    if (state1.selectedText.indexOf("\n") === -1) {
-      textApi.replaceSelection(`\`${state1.selectedText}\``);
-      // Adjust the selection to not contain the **
-
-      const selectionStart = state1.selection.start + 1;
-      const selectionEnd = selectionStart + state1.selectedText.length;
-
-      textApi.setSelectionRange({
-        start: selectionStart,
-        end: selectionEnd
-      });
-      return;
-    }
-
-    const breaksBeforeCount = markdownHelpers.getBreaksNeededForEmptyLineBefore(
-      state1.text,
-      state1.selection.start
+    // Replaces the current selection with the italic mark up
+    const state2 = textApi.replaceSelection(
+      `\`${textHelpers.getSelectedText(state1)}\``
     );
-    const breaksBefore = Array(breaksBeforeCount + 1).join("\n");
-
-    const breaksAfterCount = markdownHelpers.getBreaksNeededForEmptyLineAfter(
-      state1.text,
-      state1.selection.end
-    );
-    const breaksAfter = Array(breaksAfterCount + 1).join("\n");
-
-    textApi.replaceSelection(
-      `${breaksBefore}\`\`\`\n${state1.selectedText}\n\`\`\`${breaksAfter}`
-    );
-
-    const selectionStart = state1.selection.start + breaksBeforeCount + 4;
-    const selectionEnd = selectionStart + state1.selectedText.length;
-
+    // Adjust the selection to not contain the *
     textApi.setSelectionRange({
-      start: selectionStart,
-      end: selectionEnd
+      start:
+        state2.selection.end - 1 - textHelpers.getSelectedText(state1).length,
+      end: state2.selection.end - 1
+    });
+  },
+  undo: ({ initialState, textApi }) => {
+    const text = textHelpers.getSelectedText(initialState);
+    textApi.setSelectionRange({
+      start: initialState.selection.start - 1,
+      end: initialState.selection.end + 1
+    });
+    textApi.replaceSelection(text);
+    textApi.setSelectionRange({
+      start: initialState.selection.start - 1,
+      end: initialState.selection.end - 1
     });
   }
 };

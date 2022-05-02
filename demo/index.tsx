@@ -1,24 +1,20 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
-import {
-  Box,
-  Button,
-  ChakraProvider,
-  HStack,
-  Textarea
-} from "@chakra-ui/react";
+import { Box, ChakraProvider, HStack, Textarea } from "@chakra-ui/react";
 import { useTextAreaMarkdownEditor } from "../src/hooks/use-markdown-editor";
-import { faBold, faItalic } from "@fortawesome/free-solid-svg-icons";
+import { faBold, faItalic, faCode } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { bold, italic } from "../src";
+import { bold, code, italic } from "../src";
+import { ToolbarButton } from "./toolbar-button";
 
 export type DemoProps = {};
 
-export const Demo: React.FunctionComponent<DemoProps> = props => {
+export const Demo: React.FunctionComponent<DemoProps> = () => {
   const { ref, commandController } = useTextAreaMarkdownEditor({
     commandMap: {
       bold: bold,
-      italic: italic
+      italic: italic,
+      code: code
     }
   });
 
@@ -26,26 +22,27 @@ export const Demo: React.FunctionComponent<DemoProps> = props => {
     <ChakraProvider>
       <Box p={3}>
         <HStack py={2}>
-          <Button
-            variant={"outline"}
-            size={"sm"}
-            color={"gray.600"}
+          <ToolbarButton
             onClick={async () => {
               await commandController.executeCommand("bold");
             }}
           >
             <FontAwesomeIcon icon={faBold} />
-          </Button>
-          <Button
-            variant={"outline"}
-            size={"sm"}
-            color={"gray.600"}
+          </ToolbarButton>
+          <ToolbarButton
             onClick={async () => {
               await commandController.executeCommand("italic");
             }}
           >
             <FontAwesomeIcon icon={faItalic} />
-          </Button>
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={async () => {
+              await commandController.executeCommand("code");
+            }}
+          >
+            <FontAwesomeIcon icon={faCode} />
+          </ToolbarButton>
         </HStack>
         <Textarea
           ref={ref}

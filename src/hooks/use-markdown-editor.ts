@@ -10,12 +10,12 @@ export type UseTextAreaMarkdownEditorResult = {
   commandController: CommandController;
 };
 
-export type UseTextAreaMarkdownEditorOptions = {
-  commandMap: CommandMap;
+export type UseTextAreaMarkdownEditorOptions<CommandName extends string> = {
+  commandMap: CommandMap<CommandName>;
 };
 
-export function useTextAreaMarkdownEditor(
-  options: UseTextAreaMarkdownEditorOptions
+export function useTextAreaMarkdownEditor<CommandName extends string>(
+  options: UseTextAreaMarkdownEditorOptions<CommandName>
 ): UseTextAreaMarkdownEditorResult {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 

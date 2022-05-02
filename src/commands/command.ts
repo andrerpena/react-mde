@@ -3,15 +3,19 @@ import { TextController, TextState } from "../types/CommandOptions";
 export interface ExecuteOptions {
   initialState: TextState;
   textApi: TextController;
-  context?: CommandContext;
 }
 
 export interface Command {
-  execute: (options: ExecuteOptions) => void | Promise<void>;
+  shouldUndo?: (options: Pick<ExecuteOptions, "initialState">) => boolean;
+  execute: (options: ExecuteOptions) => void;
+  undo?: (options: ExecuteOptions) => void;
 }
 
 export interface CommandContext {
   type: string;
 }
 
-export type CommandMap = Record<string, Command>;
+export type CommandMap<CommandName extends string> = Record<
+  CommandName,
+  Command
+>;
