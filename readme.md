@@ -2,7 +2,7 @@
 ===
 This repository is undergoing a huge refactoring and react-mde will now be headless. Meaning, it won't be opinionated about styles anymore. The `master` branch now contains the new version. No updates to the 11.5.0 will ever come.
 
-You can check out the headless version with the `next` tag. [Here is a demo](https://codesandbox.io/s/keen-bash-9nv0q0?file=/src/index.tsx).
+You can check out the headless version (12.*) with the `next` tag. [Here is a demo](https://codesandbox.io/s/keen-bash-9nv0q0?file=/src/index.tsx).
 
 # 📝 react-mde (11.5.0)
 
