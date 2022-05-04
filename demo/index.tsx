@@ -1,10 +1,10 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { Box, ChakraProvider, HStack, Textarea } from "@chakra-ui/react";
-import { useTextAreaMarkdownEditor } from "../src/hooks/use-markdown-editor";
+import { useTextAreaMarkdownEditor } from "../src";
 import { faBold, faItalic, faCode } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { bold, code, italic } from "../src";
+import { boldCommand, codeCommand, italicCommand } from "../src";
 import { ToolbarButton } from "./toolbar-button";
 
 export type DemoProps = {};
@@ -12,9 +12,9 @@ export type DemoProps = {};
 export const Demo: React.FunctionComponent<DemoProps> = () => {
   const { ref, commandController } = useTextAreaMarkdownEditor({
     commandMap: {
-      bold: bold,
-      italic: italic,
-      code: code
+      bold: boldCommand,
+      italic: italicCommand,
+      code: codeCommand
     }
   });
 

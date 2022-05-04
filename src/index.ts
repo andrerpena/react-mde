@@ -1,44 +1,44 @@
 // Individual commands
-import { header } from "./commands/markdown-commands/header";
-import { bold } from "./commands/markdown-commands/bold";
-import { italic } from "./commands/markdown-commands/italic";
-import { strikethrough } from "./commands/markdown-commands/strikethrough";
-import { link } from "./commands/markdown-commands/link";
-import { quote } from "./commands/markdown-commands/quote";
-import { codeBlock } from "./commands/markdown-commands/codeBlock";
-import {
-  checkedListCommand,
-  orderedListCommand,
-  unorderedListCommand
-} from "./commands/markdown-commands/list";
-import { image } from "./commands/markdown-commands/image";
+import { headerCommand } from "./commands/markdown-commands/headerCommand";
+import { boldCommand } from "./commands/markdown-commands/boldCommand";
+import { italicCommand } from "./commands/markdown-commands/italicCommand";
+import { strikethroughCommand } from "./commands/markdown-commands/strikethroughCommand";
+import { linkCommand } from "./commands/markdown-commands/linkCommand";
+import { quoteCommand } from "./commands/markdown-commands/quoteCommand";
+import { imageCommand } from "./commands/markdown-commands/imageCommand";
 import { CommandController } from "./commands/command-controller";
 import type { TextController } from "./types/CommandOptions";
 import { TextAreaTextController } from "./text/textarea-text-controller";
-import { textHelpers } from "./helpers/textHelpers";
-import { code } from "./commands/markdown-commands/code";
+import * as textHelpers from "./helpers/textHelpers";
+import * as listHelpers from "./helpers/listHelpers";
+import { codeCommand } from "./commands/markdown-commands/codeCommand";
 import { useTextAreaMarkdownEditor } from "./hooks/use-markdown-editor";
+import { codeBlockCommand } from "./commands/markdown-commands/codeBlockCommand";
+import { checkedListCommand } from "./commands/markdown-commands/checkedListCommand";
+import { orderedListCommand } from "./commands/markdown-commands/orderedListCommand";
+import { unorderedListCommand } from "./commands/markdown-commands/unorderedListCommand";
 
 export {
   // helpers
   textHelpers,
+  listHelpers,
   // controllers
   CommandController,
   TextController,
   TextAreaTextController,
   // commands
-  header,
-  bold,
-  italic,
-  strikethrough,
-  link,
-  quote,
-  code,
-  codeBlock,
+  headerCommand,
+  boldCommand,
+  italicCommand,
+  strikethroughCommand,
+  linkCommand,
+  quoteCommand,
+  codeCommand,
+  codeBlockCommand,
   checkedListCommand,
   orderedListCommand,
   unorderedListCommand,
-  image,
+  imageCommand,
     // hooks
   useTextAreaMarkdownEditor
 };
