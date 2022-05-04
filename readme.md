@@ -4,6 +4,8 @@ This repository is undergoing a huge refactoring and react-mde will now be headl
 
 You can check out the headless version (12.*) with the `next` tag. [Here is a demo](https://codesandbox.io/s/keen-bash-9nv0q0?file=/src/index.tsx).
 
+I will close all issues related to the 11.* version since that's no longer being maintained.
+
 # 📝 react-mde (11.5.0)
 
 [![npm](https://img.shields.io/npm/dt/react-mde)](https://www.npmjs.com/package/react-mde)
