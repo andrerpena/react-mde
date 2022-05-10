@@ -1,8 +1,8 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { Box, ChakraProvider, HStack, Textarea } from "@chakra-ui/react";
-import { useTextAreaMarkdownEditor } from "../src";
-import { faBold, faItalic, faCode } from "@fortawesome/free-solid-svg-icons";
+import { headingLevel1Command, useTextAreaMarkdownEditor } from "../src";
+import { faBold, faItalic, faCode, faHeading } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { boldCommand, codeCommand, italicCommand } from "../src";
 import { ToolbarButton } from "./toolbar-button";
@@ -14,7 +14,8 @@ export const Demo: React.FunctionComponent<DemoProps> = () => {
     commandMap: {
       bold: boldCommand,
       italic: italicCommand,
-      code: codeCommand
+      code: codeCommand,
+      headingLevel1: headingLevel1Command
     }
   });
 
@@ -42,6 +43,13 @@ export const Demo: React.FunctionComponent<DemoProps> = () => {
             }}
           >
             <FontAwesomeIcon icon={faCode} />
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={async () => {
+              await commandController.executeCommand("headingLevel1");
+            }}
+          >
+            <FontAwesomeIcon icon={faHeading} />
           </ToolbarButton>
         </HStack>
         <Textarea

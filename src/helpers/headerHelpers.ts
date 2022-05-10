@@ -1,9 +1,7 @@
-import * as React from "react";
-import { Command } from "../command";
-import { TextController, TextState } from "../../types/CommandOptions";
-import { getSelectedText, selectWord } from "../../helpers/textHelpers";
+import { TextController, TextState } from "../types/CommandOptions";
+import { getSelectedText, selectWord } from "./textHelpers";
 
-function setHeader(
+export function setHeader(
   initialState: TextState,
   api: TextController,
   prefix: string
@@ -22,9 +20,3 @@ function setHeader(
     end: state2.selection.end
   });
 }
-
-export const headerCommand: Command = {
-  execute: ({ initialState, textApi }) => {
-    setHeader(initialState, textApi, "### ");
-  }
-};
