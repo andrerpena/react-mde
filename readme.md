@@ -1,69 +1,52 @@
-⚠️ Attention 
+Introduction 
 ===
-This repository is fork from original repo of andrerpena.
+This repository is fork from original repo of [andrerpena](https://github.com/andrerpena/react-mde).
+Unfortunately the original repo is archived, so I decided to make a fork project to develop the headless version of mde, 
+because I believe this is the best mde editor for today. 
 
-This repository is undergoing a huge refactoring and react-mde will now be headless, starting from version 12. Meaning, it won't be opinionated about styles anymore. The `master` branch now contains the new version. No updates to the 11.5.0 will ever come.
 
-You can check out the headless version (12.*) with the `next` tag. [Here is a demo](https://codesandbox.io/s/keen-bash-9nv0q0?file=/src/index.tsx).
+A simple yet powerful and extensible **React Markdown Editor** that aims to have feature parity with the Github Markdown editor. 
+React-mde has no 3rd party dependencies.
 
-I will close all issues related to the 11.* version since that's no longer being maintained.
-
-# 📝 The original react-mde (11.5.0)
-
-[![npm](https://img.shields.io/npm/dt/react-mde)](https://www.npmjs.com/package/react-mde)
-[![MinZipped](https://badgen.net/bundlephobia/minzip/react-mde)](https://bundlephobia.com/result?p=react-mde)
-[![twitter](https://img.shields.io/twitter/follow/andrerpena?style=social)](https://twitter.com/andrerpena)
-
-A simple yet powerful and extensible **React Markdown Editor** that aims to have feature parity with the Github Markdown editor. React-mde has no 3rd party dependencies.
-
-## Demo
-
-- [Demo JSX ](https://codesandbox.io/s/react-mde-latest-5i5ov?file=/src/index.js)
-- [Demo JSX - Using ReactMarkdown instead of Showdown](https://codesandbox.io/s/react-mde-latest-forked-f9ti5?file=/src/index.js)
-- [Demo TSX ](https://codesandbox.io/s/react-typescript-i3wju?file=/src/index.tsx)
-- [Demo TSX - Customized toolbar](https://codesandbox.io/s/react-typescript-m7cbx?file=/src/index.tsx)
-- [Demo TSX - Custom command](https://codesandbox.io/s/react-typescript-icqgv?file=/src/index.tsx)
-
+## [Demo](https://codesandbox.io/s/charming-marco-9m4z93?file=/src/index.tsx)
 
 ## Installing
 
-    npm i react-mde
+    npm i react-headless-mde
 
 ## Using
 
-React-mde is a completely controlled component.
-
-Minimal example using Showdown. [View live on CodeSandBox](https://codesandbox.io/s/react-mde-latest-bm6p3):
 ```jsx
-import * as React from "react";
-import ReactMde from "react-mde";
-import * as Showdown from "showdown";
-import "react-mde/lib/styles/css/react-mde-all.css";
+import {
+ boldCommand,
+ italicCommand,
+ linkCommand,
+ useTextAreaMarkdownEditor,
+} from 'react-mde';
 
-const converter = new Showdown.Converter({
-  tables: true,
-  simplifiedAutoLink: true,
-  strikethrough: true,
-  tasklists: true
-});
-
-export default function App() {
-  const [value, setValue] = React.useState("**Hello world!!!**");
-  const [selectedTab, setSelectedTab] = React.useState<"write" | "preview">("write");
+export const MarkdownEditor = () => {
+  const { ref, commandController } = useTextAreaMarkdownEditor({
+    commandMap: {
+      bold: boldCommand, 
+      italic: italicCommand,
+      link: linkCommand,
+    },
+  });
+ 
   return (
-    <div className="container">
-      <ReactMde
-        value={value}
-        onChange={setValue}
-        selectedTab={selectedTab}
-        onTabChange={setSelectedTab}
-        generateMarkdownPreview={markdown =>
-          Promise.resolve(converter.makeHtml(markdown))
-        }
-      />
-    </div>
+    <div className={'mb-4'}>
+      <div className={'mb-3 gap-1 flex flex-wrap'}>
+        <button
+          onClick={() => {
+           commandController.executeCommand('bold')
+          }}        
+        >B</button>
+      </div>
+
+      <textarea ref={ref} />
+  </div>
   );
-}
+};
 ```
 
 ## XSS concerns
