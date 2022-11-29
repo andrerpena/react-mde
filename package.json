@@ -1,6 +1,6 @@
 {
-  "name": "react-mde",
-  "version": "12.0.8",
+  "name": "react-headless-mde",
+  "version": "0.0.1",
   "description": "React Markdown Editor",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrerpena/react-mde.git"
+    "url": "git+https://github.com/webbrother/react-headless-mde.git"
   },
   "keywords": [
     "react",
@@ -28,7 +28,7 @@
   "author": "Andre Pena",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andrerpena/react-mde.git/issues"
+    "url": "https://github.com/webbrother/react-headless-mde.git/issues"
   },
   "devDependencies": {
     "@chakra-ui/react": "^1.8.8",
@@ -64,5 +64,5 @@
     "vite": "^2.9.5",
     "yarn": "^1.22.18"
   },
-  "homepage": "https://github.com/andrerpena/react-mde.git#readme"
+  "homepage": "https://github.com/webbrother/react-headless-mde.git#readme"
 }
