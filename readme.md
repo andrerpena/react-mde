@@ -45,6 +45,9 @@ export const MarkdownEditor = () => {
 ```
 ## Todo
 
+### Add to awesome-react-headless-components on stable version
+https://github.com/jxom/awesome-react-headless-components
+
 ### Third party
 - https://github.com/grassator/insert-text-at-cursor by https://twitter.com/d_kubyshkin
 
