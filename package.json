@@ -1,6 +1,6 @@
 {
   "name": "react-headless-mde",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "React Headless Markdown Editor",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
