@@ -1,10 +1,5 @@
 Introduction 
 ===
-This repository is fork from original repo of [andrerpena](https://github.com/andrerpena/react-mde).
-Unfortunately the original repo is archived, so I decided to make a fork project to develop the headless version of mde, 
-because I believe this is the best mde editor for today. 
-
-
 A simple yet powerful and extensible **React Markdown Editor** that aims to have feature parity with the Github Markdown editor. 
 React-mde has no 3rd party dependencies.
 
