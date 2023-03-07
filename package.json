@@ -1,7 +1,7 @@
 {
   "name": "react-headless-mde",
   "version": "0.0.2",
-  "description": "React Markdown Editor",
+  "description": "React Headless Markdown Editor",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "./dist/index.d.ts",
@@ -23,7 +23,8 @@
     "markdown",
     "editor",
     "text-editor",
-    "markdown-editor"
+    "markdown-editor",
+    "headless"
   ],
   "author": "Andre Pena",
   "license": "MIT",
