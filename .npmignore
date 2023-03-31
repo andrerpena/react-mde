@@ -1,5 +1,6 @@
 src
 .npmignore
+.npmrc
 .idea
 demo
 assets

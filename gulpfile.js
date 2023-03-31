@@ -43,17 +43,4 @@ function copyIndex() {
     .pipe(gulp.dest("./docs"));
 }
 
-// depends on copyIndex
-function buildDemo() {
-  return gulp
-    .src("demo/client.tsx")
-    .pipe(
-      webpackStream(
-        require("./webpack.config.demo.prod.js"),
-        require("webpack")
-      )
-    )
-    .pipe(gulp.dest("docs/"));
-}
-
-exports.build = gulp.series(buildStyles, copyStyles, copyIndex, buildLib, buildDemo);
+exports.build = gulp.series(buildStyles, copyStyles, copyIndex, buildLib);

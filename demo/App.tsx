@@ -9,7 +9,7 @@ export interface AppState {
 }
 
 export class App extends React.Component<{}, AppState> {
-  converter: Showdown.Converter;
+  converter: any;
 
   constructor(props) {
     super(props);
@@ -33,7 +33,17 @@ export class App extends React.Component<{}, AppState> {
     this.setState({ tab });
   };
 
-  loadSuggestions = async (text: string) => {
+  loadSuggestions = async (text: string, triggeredBy: string) => {
+    console.log('text', text, 'triggeredBy', triggeredBy)
+    if (triggeredBy === '@') {
+      return [
+        {
+          preview: "Correct",
+          value: "@correct"
+        },
+      ]
+    } 
+
     return new Promise<Suggestion[]>((accept, reject) => {
       setTimeout(() => {
         const suggestions: Suggestion[] = [

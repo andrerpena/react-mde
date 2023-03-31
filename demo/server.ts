@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import * as express from "express";
 import * as webpackMiddleware from "webpack-dev-middleware";
-import * as webpackHotMiddleware from "webpack-hot-middleware";
 import * as webpack from "webpack";
 import * as webpackConfig from "../webpack.config.demo.dev";
 const packageJson = require("../package.json");
@@ -16,7 +15,7 @@ require.extensions[".html"] = (module, filename) => {
 const app = express();
 
 app.use(webpackMiddleware(webpackCompiler));
-app.use(webpackHotMiddleware(webpackCompiler));
+// app.use(webpackHotMiddleware(webpackCompiler));
 app.use((req, res) => res.status(200).send(require("./index.html")));
 
 app.listen(port, "0.0.0.0", () => {

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { flushSync } from "react-dom"
 import { classNames, ClassValue } from "../util/ClassNames";
 import {
   CaretCoordinates,
@@ -162,15 +163,17 @@ export class TextArea extends React.Component<TextAreaProps, TextAreaState> {
   loadEmptySuggestion = (target: HTMLTextAreaElement, key: string) => {
     const caret = getCaretCoordinates(target, key);
     this.startLoadingSuggestions("");
-    this.setState({
-      mention: {
-        status: "loading",
-        startPosition: target.selectionStart + 1,
-        caret: caret,
-        suggestions: [],
-        triggeredBy: key
-      }
-    });
+    flushSync(() => {
+      this.setState({
+        mention: {
+          status: "loading",
+          startPosition: target.selectionStart + 1,
+          caret: caret,
+          suggestions: [],
+          triggeredBy: key
+        }
+      });
+    })
   };
 
   handleSuggestionSelected = (index: number) => {
