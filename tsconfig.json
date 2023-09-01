@@ -3,6 +3,7 @@
         "sourceMap": true,
         "outDir": "ts-build",
         "noImplicitAny": false,
+        "skipLibCheck": true,
         "jsx": "react",
         "target": "es5",
         "module": "commonjs",

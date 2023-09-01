@@ -5,6 +5,7 @@
         "jsx": "react",
         "target": "es5",
         "module": "commonjs",
+        "skipLibCheck": true,
         "typeRoots": [
             "./node_modules/@types"
         ],
